@@ -1,6 +1,6 @@
 # 当前 API 参考
 
-本文档以运行时应用 `backend/app/main_from_txt.py` 的 FastAPI OpenAPI 为准。启动后可通过 `/docs` 查看交互式 Swagger，通过 `/openapi.json` 获取机器可读契约。
+本文档以运行时应用 `backend/app/main_from_txt.py` 的 FastAPI OpenAPI 为准。启动后可通过 `/docs` 查看交互式 Swagger，通过 `/openapi.json` 获取机器可读契约。前端开发请优先阅读[前端联调 API 契约](./api-frontend-contract.md)，本页保留接口目录和闭环状态。
 
 ## 基本约定
 
