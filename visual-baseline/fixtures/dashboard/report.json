@@ -1,0 +1,5 @@
+{
+  "scope": "dashboard content only, identical browser fixture; does not certify backend parity",
+  "mean_rgb": 0.11194098159744165,
+  "changed_pixel_ratio": 0.0010909404262652955
+}

@@ -1,0 +1,186 @@
+.subsidy-picture{display:inline-block;vertical-align:middle;margin:0 3px}
+.subsidy-picture img{display:block;width:40px;height:40px;object-fit:cover;border-radius:2px}
+.withdrawal-panel [data-subsidy-batch]{padding:7px 12px;border:0;border-radius:2px;color:#fff;cursor:pointer;background:#858b9c}
+.withdrawal-panel [data-subsidy-batch="reject"]{background:#f58b85}
+.withdrawal-panel [data-subsidy-batch]:disabled{opacity:.5;cursor:default}
+.withdrawal-toolbar #withdrawalBatchRefuse{background:#ff5252;color:#fff}
+.withdrawal-toolbar #withdrawalBatchTransfer{background:#444c69;color:#fff}
+.withdrawal-toolbar #withdrawalBatchRefuse,.withdrawal-toolbar #withdrawalBatchTransfer{display:inline-block;height:auto;border-color:transparent;white-space:nowrap}
+.withdrawal-toolbar #withdrawalBatchRefuse:disabled,.withdrawal-toolbar #withdrawalBatchTransfer:disabled{opacity:.65}
+.withdrawal-toolbar #withdrawalBatchRefuse .shell-icon,.withdrawal-toolbar #withdrawalBatchTransfer .shell-icon{width:auto}
+.withdrawal-toolbar .withdrawal-summary{height:34px;display:inline-flex;align-items:center;padding:6px 12px;white-space:nowrap;border:1px solid #ddd;border-radius:3px;background:#f4f4f4;color:#1e90ff;font-size:14px;line-height:20px}
+.withdrawals-view .withdrawal-toolbar{height:auto;min-height:54px;flex-wrap:wrap}
+.withdrawal-toolbar #withdrawalBlacklist{background:#18bc9c;color:white;border-color:transparent;height:auto;white-space:nowrap}
+.withdrawal-panel .withdraw-blacklist{height:22px;padding:1px 5px;margin:0 2px;border:0;border-radius:2px;background:#f39c12;color:#fff;font:12px/18px "Source Sans Pro",sans-serif;cursor:pointer}
+.withdrawal-panel .review-edit{width:22px;height:22px;margin:0 2px;padding:1px 0;border:0;border-radius:2px;background:#18bc9c;color:#fff;font-size:13px;line-height:20px;cursor:pointer}
+.withdrawal-toolbar #withdrawalEdit{height:34px;border:0;border-radius:2px;background:#18bc9c;color:#fff;cursor:pointer}
+.withdrawal-toolbar #withdrawalEdit:disabled{opacity:.5;cursor:default}
+.withdrawal-form-fields .subsidy-form-full{grid-column:1/-1}
+.withdrawal-blacklist-dialog{width:800px;height:600px;max-width:calc(100vw - 30px);max-height:calc(100vh - 30px);padding:0;border:0;background:white;color:#333;box-shadow:1px 1px 50px #0005;font:14px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.withdrawal-blacklist-dialog::backdrop{background:#0005}
+.withdrawal-blacklist-dialog>header{height:45px;display:flex;align-items:center;padding:0 16px 0 20px;background:#2c3e50;color:white;cursor:move;touch-action:none;user-select:none}
+.withdrawal-blacklist-dialog>header span{margin-right:auto}
+.withdrawal-blacklist-dialog>header button{flex:0 0 16px;width:16px;height:45px;margin-left:10px;padding:0;border:0;background:none;color:white;cursor:pointer}
+.withdrawal-blacklist-dialog>header button:after{font:18px/45px MemberWindowIcons;content:'\e626'}
+.withdrawal-blacklist-dialog [data-blacklist-minimize]:after{content:'\e625'}.withdrawal-blacklist-dialog [data-blacklist-maximize]:after{content:'\e623'}
+.withdrawal-blacklist-dialog.expanded [data-blacklist-maximize]:after,.withdrawal-blacklist-dialog.minimized [data-blacklist-maximize]:after{content:'\e624'}
+.withdrawal-blacklist-dialog>main{height:calc(100% - 45px);padding:15px;overflow:auto}
+.withdrawal-blacklist-dialog.expanded{width:100vw;height:100vh;max-width:100vw;max-height:100vh}
+.withdrawal-blacklist-dialog.minimized{position:fixed;inset:auto auto 0 0;margin:0;width:180px;height:45px;max-width:180px;max-height:45px;overflow:hidden}
+.withdrawal-blacklist-dialog.minimized>main,.withdrawal-blacklist-dialog.minimized [data-blacklist-minimize],.withdrawal-blacklist-dialog.expanded [data-blacklist-minimize]{display:none}
+.withdrawal-blacklist-dialog.minimized,.withdrawal-blacklist-dialog.expanded{transform:none!important}
+.withdrawal-blacklist-dialog .game-user-panel .ads-filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:15px 0;margin:0 -15px;padding:0 0 15px}
+.withdrawal-blacklist-dialog .game-user-panel .ads-filters>label{display:grid;grid-template-columns:1fr 2fr;align-items:start;gap:0;padding:0 15px;margin:0;font-weight:400}
+.withdrawal-blacklist-dialog .game-user-panel .ads-filters>label>span{width:auto;padding:7px 15px 0;font:400 14px/22px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.withdrawal-blacklist-dialog .game-user-panel .ads-filters input,.withdrawal-blacklist-dialog .game-user-panel .ads-filters select{height:33px;width:calc(100% - 30px);margin:0 15px}
+.withdrawal-blacklist-dialog .game-user-panel .ads-filters>label:has(select){position:relative}
+.withdrawal-blacklist-dialog .game-user-panel .ads-filters select{appearance:none;padding-right:25px}
+.withdrawal-blacklist-dialog .game-user-panel .ads-filters>label:has(select):after{content:'';position:absolute;right:38px;top:15px;border-top:4px solid #000;border-right:3px solid transparent;border-left:3px solid transparent;pointer-events:none}
+.withdrawal-blacklist-dialog .game-user-panel .ads-filter-actions{grid-column:auto;padding-left:calc(33.333333% + 20px);white-space:nowrap}
+.withdrawal-blacklist-dialog .game-user-panel .ads-filters .ads-submit{background:#18bc9c!important;border-color:#18bc9c!important}
+.withdrawal-blacklist-dialog .ads-table{width:100%;white-space:nowrap}
+.withdrawal-blacklist-dialog .ads-table th,.withdrawal-blacklist-dialog .ads-table td{text-align:center}
+.withdrawal-blacklist-dialog .game-user-panel .blacklist-toggle{display:inline-block;width:29.765625px;height:30px;border:0;padding:0;background:transparent;color:#d2d6de;font-size:26.04px;line-height:26.04px;vertical-align:middle}
+.withdrawal-blacklist-dialog .blacklist-toggle .shell-icon{width:auto}
+.withdrawal-blacklist-dialog .blacklist-toggle[aria-checked=true]{color:#18bc9c}
+.withdrawal-blacklist-dialog .blacklist-toggle[aria-checked=false] .shell-icon{transform:rotate(180deg)}
+.withdrawal-blacklist-dialog .game-user-table-tools{gap:0}
+.withdrawal-blacklist-dialog .game-user-table-tools>button,.withdrawal-blacklist-dialog .game-user-table-tools summary{height:32.5625px;padding:6px 12px;color:#444;background:#f4f4f4;border:1px solid #ddd;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.withdrawal-blacklist-dialog .game-user-table-tools details{margin-left:-1px}
+.withdrawal-blacklist-dialog .game-user-table-tools summary{border-radius:0}
+.withdrawal-blacklist-dialog .game-user-table-tools [data-action=cards]{border-radius:3px 0 0 3px}
+.withdrawal-blacklist-dialog .game-user-table-tools .game-user-export summary{border-radius:0 4px 4px 0}
+.withdrawal-blacklist-dialog .game-user-table-tools .caret{display:inline-block;vertical-align:middle;margin-left:0;border-top:4px dashed;border-right:4px solid transparent;border-left:4px solid transparent}
+.withdrawal-blacklist-dialog .game-user-panel .ads-refresh .shell-icon{width:auto}
+.withdrawal-blacklist-dialog .game-user-panel .game-user-pagination{font:14px/34px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.withdrawal-blacklist-dialog .game-user-panel .ads-table th[aria-sort=descending] button:after{border-top-color:#8080ff}
+.withdrawal-blacklist-dialog .game-user-panel .ads-table th[aria-sort=ascending] button:before{border-bottom-color:#8080ff}
+.withdrawal-blacklist-dialog .game-user-panel .ads-table th button{padding-left:20px}
+.withdrawal-blacklist-dialog .game-user-panel .ads-table{white-space:nowrap}
+.withdrawal-blacklist-dialog .game-user-panel,.withdrawal-blacklist-dialog .game-user-panel .ads-table th{color:#333}
+@media(max-width:640px){.withdrawal-blacklist-dialog .game-user-panel .ads-filters{grid-template-columns:minmax(0,1fr)}.withdrawal-blacklist-dialog .game-user-panel .ads-filters>label{grid-template-columns:90px minmax(0,1fr)}.withdrawal-blacklist-dialog .game-user-panel .ads-filter-actions{padding-left:120px}.withdrawal-blacklist-dialog .ads-toolbar{flex-wrap:wrap}.withdrawal-blacklist-dialog .game-user-table-tools{flex-wrap:wrap}}
+.withdrawal-confirm{width:300px;padding:0;border:0;border-radius:2px;box-shadow:1px 1px 50px rgba(0,0,0,.3);color:#333;font:14px Arial,sans-serif}
+.withdrawal-confirm::backdrop{background:rgba(0,0,0,.3)}
+.withdrawal-confirm header{height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:#f8f8f8;border-bottom:1px solid #eee}
+.withdrawal-confirm header button{border:0;background:none;font-size:22px;cursor:pointer;color:#555}
+.withdrawal-confirm-message{padding:25px 20px;line-height:24px}
+.withdrawal-confirm footer{display:flex;justify-content:flex-end;gap:8px;padding:0 15px 12px}
+.withdrawal-confirm footer button{height:30px;border:1px solid #dedede;border-radius:2px;padding:0 15px;background:#fff;cursor:pointer}
+.withdrawal-confirm footer .withdrawal-confirm-ok{background:#3c8dbc;border-color:#3c8dbc;color:#fff}
+.withdrawal-sort{display:inline-flex;align-items:center;gap:5px;border:0;padding:0;background:none;font:inherit;font-weight:inherit;color:inherit;cursor:pointer}
+.withdrawal-sort span{font-size:10px;color:#ddd}
+th[aria-sort="ascending"] .withdrawal-sort span,th[aria-sort="descending"] .withdrawal-sort span{color:#8581f5}
+.withdrawal-columns{position:relative;margin-left:auto;font-size:13px}
+.withdrawal-columns summary{list-style:none;padding:8px 12px;cursor:pointer;border:1px solid #ddd;border-radius:3px;background:#f4f4f4}
+.withdrawal-columns summary::-webkit-details-marker{display:none}
+.withdrawal-column-options{position:absolute;right:0;top:100%;z-index:20;min-width:165px;max-height:420px;overflow:auto;padding:5px 0;background:white;border:1px solid #ddd;box-shadow:0 6px 12px rgba(0,0,0,.175)}
+.withdrawal-column-options label{display:flex;align-items:center;gap:6px;padding:4px 14px;white-space:nowrap;cursor:pointer}
+.withdrawal-column-options label:hover{background:#f5f5f5}
+.withdrawal-panel [data-review-cell][hidden],.withdrawal-panel [data-review-column][hidden]{display:none}
+.subsidy-gallery{position:fixed;inset:0;width:100vw;height:100vh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:transparent;color:white;overflow:hidden}
+.subsidy-gallery::backdrop{background:rgba(0,0,0,.85)}
+.subsidy-gallery figure{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);margin:0;max-width:86vw}
+.subsidy-gallery-stage{display:flex;align-items:center;justify-content:center;min-width:180px;min-height:100px}
+.subsidy-gallery img{display:block;max-width:86vw;max-height:80vh;width:auto;height:auto;object-fit:contain}
+.subsidy-gallery img[hidden],.subsidy-gallery button[hidden]{display:none}
+.subsidy-gallery figcaption{text-align:center;padding:10px;font:14px Arial,sans-serif;color:#eee;background:rgba(0,0,0,.5)}
+.subsidy-gallery-status{padding:30px;font-size:14px;text-align:center}
+.subsidy-gallery button{position:absolute;z-index:1;border:0;background:rgba(0,0,0,.25);color:white;cursor:pointer;line-height:1}
+.subsidy-gallery-close{right:25px;top:20px;width:40px;height:40px;font-size:36px}
+.subsidy-gallery-prev,.subsidy-gallery-next{top:50%;transform:translateY(-50%);width:45px;height:70px;font-size:55px}
+.subsidy-gallery-prev{left:15px}.subsidy-gallery-next{right:15px}
+.subsidy-gallery button:focus-visible{outline:2px solid white;outline-offset:3px}
+.withdrawal-toolbar #reviewSearchToggle{order:10}
+.withdrawal-tabs button{height:41px}
+.withdrawal-panel .ads-filter-actions button{height:33px}
+.withdrawal-panel #reviewFilters[hidden]{display:none}
+@media(min-width:1201px){
+ .withdrawal-panel #reviewFilters{margin:0 -15px;gap:15px 0;padding:15px 0 25px}
+ .withdrawal-panel #reviewFilters>label{display:grid;grid-template-columns:calc((100% + 15px)/3) minmax(0,1fr);gap:15px;padding:0 30px 0 15px}
+ .withdrawal-panel #reviewFilters>label>span{width:auto}
+ .withdrawal-panel #reviewFilters input,.withdrawal-panel #reviewFilters select{height:33px}
+ .withdrawal-panel #reviewFilters .ads-filter-actions{padding-left:calc((100% - 30px)/3 + 30px)}
+}
+.withdrawal-panel #reviewFilters[data-review-kind="subsidies"] .ads-filter-actions{grid-column:2}
+@media(max-width:1000px){.withdrawal-panel #reviewFilters[data-review-kind="subsidies"] .ads-filter-actions{grid-column:auto}}
+.withdrawal-toolbar #reviewViewToggle{margin-left:auto}
+.withdrawal-toolbar #reviewViewToggle+.withdrawal-columns{margin-left:0}
+.review-card-title{display:none}
+.withdrawal-panel .review-card-view{display:block;white-space:normal}
+.review-card-view thead{display:none}
+.review-card-view tbody{display:block;width:100%}
+.withdrawal-panel .review-card-view tbody tr{display:block;padding:8px;border:1px solid #ddd;border-bottom:0;background:#fff}
+.withdrawal-panel .review-card-view tbody tr:last-child{border-bottom:1px solid #ddd}
+.withdrawal-panel .review-card-view tbody td{display:block;padding:0;border:0;background:transparent;text-align:left;line-height:24px;overflow-wrap:anywhere}
+.review-card-view .review-card-title{display:inline-block;min-width:30%;font-weight:bold;vertical-align:top}
+.review-card-view .review-card-value{display:inline-block;max-width:70%;vertical-align:top}
+.withdrawal-panel .review-card-view .review-card-empty{display:none}
+.withdrawal-panel .review-card-view tbody td[colspan]{text-align:center;padding:6px}
+.review-export{position:relative;font-size:13px}
+.review-export summary{list-style:none;padding:8px 12px;border:1px solid #ddd;border-radius:3px;background:#f4f4f4;cursor:pointer}
+.review-export summary::-webkit-details-marker{display:none}
+.review-export-options{position:absolute;right:0;top:100%;z-index:20;min-width:160px;padding:5px 0;background:#fff;border:1px solid #ddd;box-shadow:0 6px 12px rgba(0,0,0,.175)}
+.withdrawal-toolbar .review-export-options button{display:block;width:100%;height:auto;border:0;border-radius:0;text-align:left;background:white;padding:5px 20px}
+.withdrawal-toolbar .review-export-options button:hover{background:#f5f5f5}
+.review-export-table{position:absolute;left:-100000px;top:0;background:white;color:black}
+.withdrawal-panel .pagination{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-top:10px;font-size:13px}
+.review-page-info{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.review-page-info select{padding:5px 8px;border:1px solid #ddd;border-radius:3px;background:#fff}
+.withdrawal-panel .pagination nav{display:flex;align-items:center}
+.withdrawal-panel .pagination nav button,.review-page-gap{padding:6px 12px;border:1px solid #ddd;background:white;color:#337ab7;line-height:20px}
+.withdrawal-panel .pagination nav button{cursor:pointer}
+.withdrawal-panel .pagination nav button[aria-current="page"]{background:#337ab7;border-color:#337ab7;color:white}
+@media(max-width:640px){.withdrawal-panel .pagination{align-items:flex-start;flex-direction:column}}
+.daterangepicker{font-family:Arial,sans-serif;font-size:13px;color:#333;line-height:1.5}
+.daterangepicker .hide{display:none!important}
+.daterangepicker th,.daterangepicker td{font-size:12px}
+.withdrawal-panel #reviewFilters .sp_container{width:100%;min-width:0}
+.withdrawal-panel #reviewFilters .sp_container input.sp_input{width:100%;padding-right:25px}
+.withdrawal-panel #reviewFilters .sp_container input.sp_hidden{display:none}
+.withdrawal-panel #reviewFilters .sp_container .sp_clear_btn{padding:0}
+.withdrawal-panel .withdrawal-toolbar #reviewViewToggle:before{content:none}
+.withdrawal-panel .withdrawal-toolbar #reviewViewToggle,.withdrawal-panel .withdrawal-toolbar #reviewSearchToggle{width:39px;height:auto;padding:6px 12px;color:#444;align-self:flex-start}
+.withdrawal-panel .withdrawal-toolbar #reviewViewToggle{border-radius:3px 0 0 3px}
+.withdrawal-panel .withdrawal-toolbar .withdrawal-columns,.withdrawal-panel .withdrawal-toolbar .review-export{margin-left:-5px}
+.withdrawal-panel .withdrawal-toolbar #reviewViewToggle+.withdrawal-columns{margin-left:-5px}
+.withdrawal-panel .withdrawal-toolbar details{align-self:flex-start}
+.withdrawal-panel .withdrawal-toolbar summary{height:32.5625px;padding:6px 12px;border-radius:0;color:#444;font:13px/1.42857143 "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.withdrawal-panel .withdrawal-toolbar .review-export summary{border-radius:0 4px 4px 0}
+.withdrawal-panel .withdrawal-toolbar .caret{padding:0;margin-left:0;color:inherit;border-top:4px dashed;border-right:4px solid transparent;border-left:4px solid transparent;border-bottom:0}
+.withdrawal-panel .withdrawal-toolbar #reviewSearchToggle{margin-left:1px}
+.withdrawal-panel .ads-table:not(.review-card-view) th,.withdrawal-panel .ads-table:not(.review-card-view) td{border-color:#f4f4f4}
+.withdrawal-panel .ads-table:not(.review-card-view) tbody tr:nth-child(odd) td{background:#f9f9f9}
+.withdrawal-panel .ads-table:not(.review-card-view) tbody tr:nth-child(even) td{background:white}
+.withdrawal-panel .ads-table:not(.review-card-view) tbody tr:hover td{background:#f5f5f5}
+.withdrawal-panel .review-badge-info{background:#1688f1}
+.withdrawal-panel .review-search-value{color:#4397fd}
+.withdrawals-view .withdrawal-tabs,.subsidies-view .withdrawal-tabs{gap:4px;padding-top:15px}
+.withdrawal-panel .withdrawal-tabs button{height:42px;padding:10px 15px;color:#95a5a6;background:#d8e0e6;border:1px solid #e8edf0;border-bottom-color:transparent;border-radius:3px 3px 0 0;font:14px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.withdrawal-panel .withdrawal-tabs button.active{color:#7b8a8b;background:white}
+.withdrawals-view .withdrawal-panel .pagination,.subsidies-view .withdrawal-panel .pagination{font:14px/34px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;color:#333;min-height:54px;margin:0;padding:10px 0}
+.subsidies-view .withdrawal-panel{box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.withdrawal-panel .withdrawal-toolbar #reviewViewToggle:focus,.withdrawal-panel .withdrawal-toolbar #reviewSearchToggle:focus,.withdrawal-panel .withdrawal-toolbar summary:focus{background:#e7e7e7;border-color:#8c8c8c;color:#333}
+.withdrawal-panel .pagination{align-items:flex-start}
+.withdrawal-panel .review-page-info{display:block;line-height:34px;white-space:nowrap}
+.withdrawal-panel .review-page-info>span:first-child{margin-right:5px}
+.withdrawal-panel .review-page-size{display:inline}
+.withdrawal-panel .pagination [hidden]{display:none}
+#reviewPageSizeMenu{position:relative;display:inline-block;vertical-align:middle;line-height:18.5714px}
+#reviewPageSizeMenu summary{list-style:none;cursor:pointer;padding:6px 12px;border:1px solid #ddd;border-radius:3px;background:#f4f4f4;color:#444;font:13px/1.42857143 "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+#reviewPageSizeMenu summary::-webkit-details-marker{display:none}
+#reviewPageSizeMenu .caret{border-top:0;border-bottom:4px dashed;margin-left:0}
+#reviewPageSizeMenu>div{position:absolute;left:0;bottom:calc(100% + 2px);padding:5px 0;min-width:160px;max-height:300px;overflow:auto;background:#fff;box-shadow:0 6px 12px #0003;border-radius:2px;z-index:25}
+#reviewPageSizeMenu button{display:block;width:100%;height:auto;border:0;background:white;padding:3px 20px;font:13px/20.4295px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;text-align:left}
+#reviewPageSizeMenu [aria-current=true]{background:#444c69;color:white}
+#reviewPageSizeMenu button:hover{background:#f5f5f5;color:#333}
+.withdrawal-panel .pagination nav{flex-wrap:wrap;line-height:20px;align-items:baseline}
+.withdrawal-panel .pagination nav button,.withdrawal-panel .review-page-gap{height:34px;padding:6px 12px;margin-left:-1px;border:1px solid #ddd;border-radius:0;background:#fafafa;color:#666;font:14px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.withdrawal-panel .pagination nav button:first-child{margin-left:0;border-radius:3px 0 0 3px}
+.withdrawal-panel .pagination .review-page-gap{background:white;color:#777}
+.withdrawal-panel .pagination nav button[aria-current=page]{position:relative;background:#444c69;border-color:#444c69;color:white}
+.withdrawal-panel .pagination nav input{height:34px;width:50px;padding:6px 12px;border:1px solid #d2d6de;border-radius:0;margin:0 5px;color:#555;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.withdrawal-panel .pagination nav [data-review-jump]{height:auto;margin-left:0;background:#f4f4f4;color:#444;font-size:13px;line-height:1.42857143}
+@media(max-width:1000px){.withdrawal-panel .withdrawal-toolbar{height:auto;min-height:54px;flex-wrap:wrap}.withdrawal-panel .pagination{flex-wrap:wrap}.withdrawal-panel .review-page-info{white-space:normal}}
+.withdrawal-panel .pagination .review-page-jump{display:inline-block;align-self:flex-start;font:14px/1.5715 "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;white-space:nowrap}
+.withdrawal-panel .pagination nav input{height:33px;display:inline-block}
+.withdrawal-panel .pagination nav [data-review-jump]{vertical-align:middle;border-radius:3px}

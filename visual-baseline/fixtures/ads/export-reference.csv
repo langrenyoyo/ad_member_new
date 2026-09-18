@@ -1,0 +1,4 @@
+﻿上级Id,上级支付宝姓名,会员ID,用户账号,支付宝姓名,游戏名称,ECPM,金币,广告平台,抽奖,任务,奖励类型,广告类型,副广类型,状态,观看时间,广告代码位,广告request_id,交易trans_id
+8100,上级姓名,8200,对照账号0,测试姓名,对照游戏,0,0,测试平台,否,是,提升,"<span class=""label label-success"">激励</span>","<span class=""label label-info"">开屏</span>","<span class=""label label-info"">失败</span>","2026-09-16 08:00:00",code,REQ-0,TRANS-0
+8100,上级姓名,8201,对照账号1,测试姓名,对照游戏,12.5,1.25,测试平台,是,否,领取,"<span class=""label label-warning"">副广</span>","<span class=""label label-success"">Banner</span>","<span class=""label label-success"">成功</span>","2026-09-16 08:00:00",code,REQ-1,TRANS-1
+8100,上级姓名,8202,对照账号2,测试姓名,对照游戏,99,9.9,测试平台,否,是,提升,"<span class=""label label-success"">激励</span>","<span class=""label label-warning"">插屏</span>","<span class=""label label-info"">失败</span>","2026-09-16 08:00:00",code,REQ-2,TRANS-2

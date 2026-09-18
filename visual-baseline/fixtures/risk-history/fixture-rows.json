@@ -1,0 +1,77 @@
+[
+  {
+    "id": 9100,
+    "user_id": 8100,
+    "game_id": 6100,
+    "agent_id": 7100,
+    "user": {
+      "username": "fixture 001",
+      "parent_id": 8000
+    },
+    "game": {
+      "name": "fixture game 0"
+    },
+    "agent": {
+      "name": "fixture agent 0"
+    },
+    "tagcode": "fixture-code",
+    "tags": "fixture tag",
+    "hardware_main_id": "fixture-device-0",
+    "ip": "192.0.2.1",
+    "network_status": 0,
+    "action": "fixture action",
+    "risk_score": 10,
+    "risk_level": "low",
+    "create_time": 1789689600
+  },
+  {
+    "id": 9101,
+    "user_id": 8101,
+    "game_id": 6101,
+    "agent_id": 7101,
+    "user": {
+      "username": "fixture <>&",
+      "parent_id": 8000
+    },
+    "game": {
+      "name": "fixture game 1"
+    },
+    "agent": {
+      "name": "fixture agent 1"
+    },
+    "tagcode": "fixture <>&",
+    "tags": "fixture <>&",
+    "hardware_main_id": "fixture-device-1",
+    "ip": "192.0.2.2",
+    "network_status": 1,
+    "action": "fixture action",
+    "risk_score": 11,
+    "risk_level": "low",
+    "create_time": 1789689660
+  },
+  {
+    "id": 9102,
+    "user_id": 8102,
+    "game_id": 6102,
+    "agent_id": 7102,
+    "user": {
+      "username": "fixture 003",
+      "parent_id": 8000
+    },
+    "game": {
+      "name": "fixture game 2"
+    },
+    "agent": {
+      "name": "fixture agent 2"
+    },
+    "tagcode": "",
+    "tags": "",
+    "hardware_main_id": "fixture-device-2",
+    "ip": "192.0.2.3",
+    "network_status": 0,
+    "action": "fixture action",
+    "risk_score": 12,
+    "risk_level": "low",
+    "create_time": 1789689720
+  }
+]

@@ -1,0 +1,95 @@
+[
+  {
+    "id": 8100,
+    "username": "fixture 001",
+    "image_url": "",
+    "parent_id": 8000,
+    "parent_username": "fixture parent",
+    "parent_name": "fixture parent",
+    "game_id": 6100,
+    "agent_id": 7100,
+    "game": {
+      "name": "fixture game 0"
+    },
+    "agent": {
+      "name": "fixture agent 0"
+    },
+    "name": "fixture name 0",
+    "coin_user": 100,
+    "coin_user_month": 10,
+    "coin_user_day": 0,
+    "coin": 10.5,
+    "freeze_coin": 0,
+    "is_white": 0,
+    "status": 1,
+    "game_addiction_enable": 0,
+    "game_addiction_time": "2026-09-18 08:00:00",
+    "exchange_enable": 1,
+    "last_login_device_id": "fixture-device",
+    "last_login_ip": "192.0.2.1",
+    "last_login_time": 1789689600,
+    "create_time": 1789689600
+  },
+  {
+    "id": 8101,
+    "username": "fixture <>&",
+    "image_url": "",
+    "parent_id": 8000,
+    "parent_username": "fixture parent",
+    "parent_name": "fixture parent",
+    "game_id": 6101,
+    "agent_id": 7101,
+    "game": {
+      "name": "fixture game 1"
+    },
+    "agent": {
+      "name": "fixture agent 1"
+    },
+    "name": "fixture name 1",
+    "coin_user": 101,
+    "coin_user_month": 11,
+    "coin_user_day": 1,
+    "coin": 11.5,
+    "freeze_coin": 0,
+    "is_white": 1,
+    "status": 0,
+    "game_addiction_enable": 1,
+    "game_addiction_time": "2026-09-18 08:00:00",
+    "exchange_enable": 1,
+    "last_login_device_id": "fixture-device",
+    "last_login_ip": "192.0.2.1",
+    "last_login_time": 1789689600,
+    "create_time": 1789689600
+  },
+  {
+    "id": 8102,
+    "username": "fixture 003",
+    "image_url": "",
+    "parent_id": 8000,
+    "parent_username": "fixture parent",
+    "parent_name": "fixture parent",
+    "game_id": 6102,
+    "agent_id": 7102,
+    "game": {
+      "name": "fixture game 2"
+    },
+    "agent": {
+      "name": "fixture agent 2"
+    },
+    "name": "fixture name 2",
+    "coin_user": 102,
+    "coin_user_month": 12,
+    "coin_user_day": 2,
+    "coin": 12.5,
+    "freeze_coin": 0,
+    "is_white": 0,
+    "status": 1,
+    "game_addiction_enable": 0,
+    "game_addiction_time": "2026-09-18 08:00:00",
+    "exchange_enable": 1,
+    "last_login_device_id": "fixture-device",
+    "last_login_ip": "192.0.2.1",
+    "last_login_time": 1789689600,
+    "create_time": 1789689600
+  }
+]

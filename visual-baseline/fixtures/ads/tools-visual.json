@@ -1,0 +1,14 @@
+[
+  {
+    "state": "card",
+    "scope": "1690x1030 content area, three fixture records",
+    "mean_rgb": 0.03749851592271308,
+    "changed_pixel_ratio": 0.0008640202217498707
+  },
+  {
+    "state": "columns",
+    "scope": "1690x1030 content area, three fixture records",
+    "mean_rgb": 0.7200608950422245,
+    "changed_pixel_ratio": 0.008602286436491066
+  }
+]

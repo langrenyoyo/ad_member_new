@@ -1,0 +1,85 @@
+.book-view .topbar{display:none}
+.book-view .content{padding:15px}
+.book-view .tutorial-panel{padding:15px;border-radius:3px;color:#333;font:14px/22.001px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.tutorial-panel #tutorialFilters{grid-template-columns:repeat(4,minmax(0,1fr));gap:15px 0;margin:0 -15px;padding:0 0 15px}
+.tutorial-panel #tutorialFilters>label{display:grid;grid-template-columns:33.33333333% 66.66666667%;align-items:start;gap:0;padding:0 15px;margin:0;font-weight:400;min-width:0}
+.tutorial-panel #tutorialFilters>label>span{width:auto;padding:7px 15px 0;font:400 14px/22.001px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.tutorial-panel #tutorialFilters input,.tutorial-panel #tutorialFilters select{height:33px;width:calc(100% - 30px);margin:0 15px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.tutorial-panel #tutorialFilters input::placeholder{color:#999;opacity:1}
+.tutorial-panel #tutorialFilters .ads-filter-actions{grid-column:auto;padding-left:calc(33.333333% + 20px);gap:4px}
+.tutorial-panel #tutorialFilters .ads-filter-actions button{height:32.5625px;border-radius:3px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.tutorial-panel #tutorialFilters .ads-submit{background:#18bc9c!important;border-color:#18bc9c!important}
+.tutorial-panel .ads-toolbar{min-height:54px;gap:3.890625px}
+.tutorial-panel .ads-refresh .shell-icon{width:auto}
+.tutorial-panel .ads-refresh{border-radius:3px}
+.tutorial-panel .game-user-table-tools{gap:0;align-self:flex-start}
+.tutorial-panel .game-user-table-tools>button,.tutorial-panel .game-user-table-tools summary{height:32.5625px;padding:6px 12px;color:#444;background:#f4f4f4;border:1px solid #ddd;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.tutorial-panel .game-user-table-tools details{margin-left:-1px}
+.tutorial-panel .game-user-table-tools summary{border-radius:0}
+.tutorial-panel .game-user-table-tools [data-action=cards]{border-radius:3px 0 0 3px}
+.tutorial-panel .game-user-table-tools .game-user-export summary{border-radius:0 4px 4px 0}
+.tutorial-panel .game-user-table-tools .caret{display:inline-block;vertical-align:middle;margin-left:0;border-top:4px dashed;border-right:4px solid transparent;border-left:4px solid transparent}
+.tutorial-panel #tutorialList .ads-table th,.tutorial-panel #tutorialList .ads-table td{text-align:center;border-color:#f4f4f4}
+.tutorial-panel #tutorialList .ads-table td{height:47px}
+.tutorial-panel #tutorialList .ads-table th{color:#333;border-bottom-color:#ddd}
+.tutorial-panel #tutorialList .ads-table th button{padding:8px 15px}
+.tutorial-panel #tutorialList .ads-table th[aria-sort=ascending] button:before{border-bottom-color:#8080ff}
+.tutorial-panel #tutorialList .ads-table th[aria-sort=descending] button:after{border-top-color:#8080ff}
+.tutorial-panel #tutorialList .ads-table th[aria-sort] button:before,.tutorial-panel #tutorialList .ads-table th[aria-sort] button:after{display:none}
+.tutorial-panel #tutorialList .ads-table th[aria-sort] button{background:right center no-repeat url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAAkElEQVQoz7XQMQ5AQBCF4dWQSJxC5wwax1Cq1e7BAdxD5SL+Tq/QCM1oNiJidwox0355mXnG/DrEtIQ6azioNZQxI0ykPhTQIwhCR+BmBYtlK7kLJYwWCcJA9M4qdrZrd8pPjZWPtOqdRQy320YSV17OatFC4euts6z39GYMKRPCTKY9UnPQ6P+GtMRfGtPnBCiqhAeJPmkqAAAAAElFTkSuQmCC")}
+.tutorial-panel #tutorialList .ads-table th[aria-sort=ascending] button{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZ0lEQVQ4y2NgGLKgquEuFxBPAGI2ahhWCsS/gDibUoO0gPgxEP8H4ttArEyuQYxAPBdqEAxPBImTY5gjEL9DM+wTENuQahAvEO9DMwiGdwAxOymGJQLxTyD+jgWDxCMZRsEoGAVoAADeemwtPcZI2wAAAABJRU5ErkJggg==")}
+.tutorial-panel #tutorialList .ads-table th[aria-sort=descending] button{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZUlEQVQ4y2NgGAWjYBSggaqGu5FA/BOIv2PBIPFEUgxjB+IdQPwfC94HxLykus4GiD+hGfQOiB3J8SojEE9EM2wuSJzcsFMG4ttQgx4DsRalkZENxL+AuJQaMcsGxBOAmGvopk8AVz1sLZgg0bsAAAAASUVORK5CYII=")}
+.tutorial-panel #tutorialPagination{font:14px/34px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;margin:0;min-height:54px;padding:10px 0}
+.tutorial-panel #tutorialPagination[hidden]{display:none}
+.tutorial-panel #tutorialPagination .game-page-info{display:block;line-height:34px}
+.tutorial-panel #tutorialPagination .game-page-info>span:first-child{margin-right:5px}
+.tutorial-panel #tutorialPagination .game-page-size{display:inline}
+.tutorial-panel #tutorialPagination .game-page-size[hidden]{display:none}
+.tutorial-panel #tutorialPagination .game-page-size details{display:inline-block;vertical-align:middle;line-height:18.5714px}
+.tutorial-panel .game-user-cards{border:1px solid #f4f4f4}
+.tutorial-panel .game-user-cards article{padding:8px 15px;border:0;font:14px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.tutorial-panel .game-user-cards article+article{border-top:1px solid #f4f4f4}
+.tutorial-panel .game-user-cards article:nth-child(odd){background:#f9f9f9}
+.tutorial-panel .game-user-cards article>div{display:block;padding:0}
+.tutorial-panel .game-user-cards article>div[hidden]{display:none}
+.tutorial-panel .game-user-cards strong{display:inline-block;width:30%;vertical-align:middle}
+.tutorial-panel .game-user-cards article>div>span{display:inline;overflow-wrap:anywhere}
+.tutorial-panel #tutorialPagination nav{gap:0;align-items:baseline;line-height:20px}
+.tutorial-panel #tutorialPagination nav>button,.tutorial-panel #tutorialPagination .game-page-gap{height:34px;padding:6px 12px;border:1px solid #ddd;border-radius:0;background:#fafafa;color:#666;font:14px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.tutorial-panel #tutorialPagination nav>button:first-child{border-radius:3px 0 0 3px}
+.tutorial-panel #tutorialPagination nav>[aria-current=page]{position:relative;background:#444c69;border-color:#444c69;color:white}
+.tutorial-panel #tutorialPagination .game-page-gap{background:white;color:#777}
+.tutorial-panel #tutorialPagination .game-page-jump{display:inline-block;align-self:flex-start;margin:0;white-space:nowrap;line-height:22.001px}
+.tutorial-panel #tutorialPagination .game-page-jump input{display:inline-block;width:50px;height:33px;padding:6px 12px;margin:0 5px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.tutorial-panel #tutorialPagination .game-page-jump button{height:auto;vertical-align:middle;padding:6px 12px;border-radius:3px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.tutorial-panel #tutorialPagination .game-page-size summary{padding:6px 12px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.tutorial-panel #tutorialPagination .game-page-size .caret{border-top:0;border-bottom:4px dashed;margin-left:0}
+#tutorialError:not(:empty){padding:10px;color:#b33}
+@media(max-width:1199px){.tutorial-panel #tutorialFilters{grid-template-columns:repeat(3,minmax(0,1fr))}.tutorial-panel #tutorialFilters .ads-filter-actions{grid-column:auto}}
+@media(max-width:991px){.tutorial-panel #tutorialFilters{grid-template-columns:repeat(2,minmax(0,1fr))}.tutorial-panel #tutorialFilters .ads-filter-actions{grid-column:auto}.tutorial-panel .ads-toolbar{flex-wrap:wrap}}
+@media(max-width:767px){.tutorial-panel #tutorialFilters{grid-template-columns:minmax(0,1fr)}.tutorial-panel #tutorialFilters>label{grid-template-columns:105px minmax(0,1fr)}.tutorial-panel #tutorialFilters .ads-filter-actions{padding-left:135px}}
+
+.tutorial-panel #tutorialSearch{margin-left:5px;border-radius:3px}
+.tutorial-panel input[type=checkbox]{margin:0}
+.tutorial-panel #tutorialList .ads-table th:first-child{width:44px;box-sizing:border-box}
+.tutorial-panel #tutorialList .ads-table tr.selected td,.tutorial-panel .game-user-cards article.selected{background:#e4e9ed}
+.tutorial-panel .tutorial-detail{height:22px;padding:1px 5px;border:1px solid #1688f1;border-radius:3px;background:#1688f1;color:#fff;font:12px/18px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;white-space:nowrap;vertical-align:middle}
+.tutorial-detail .shell-icon{width:auto;font-size:12px;line-height:1}
+.book-view .tutorial-dialog{position:fixed;inset:0;margin:auto;z-index:100;width:800px;height:600px;max-width:calc(100vw - 30px);max-height:calc(100vh - 30px);padding:0;border:0;border-radius:2px;background:white;color:#333;box-shadow:1px 1px 50px #0005;font:14px/22.001px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;overflow:hidden}
+.book-view .tutorial-dialog::backdrop{background:transparent}
+.book-view .tutorial-dialog>header{height:45px;display:flex;align-items:center;padding:0 15px 0 20px;background:#2c3e50;color:white;cursor:move;touch-action:none;user-select:none}
+.book-view .tutorial-dialog>header span{margin-right:auto}
+.book-view .tutorial-dialog>header button{position:relative;flex:0 0 16px;width:16px;height:45px;margin-left:10px;padding:0;border:0;background:none;color:white;cursor:pointer}
+.book-view .tutorial-dialog>header button:after{position:absolute;left:0;top:0;font:18px/45px MemberWindowIcons;content:'\e626'}
+.book-view .tutorial-dialog [data-tutorial-minimize]:after{content:'\e625'}
+.book-view .tutorial-dialog [data-tutorial-maximize]:after{content:'\e623'}
+.book-view .tutorial-dialog.expanded [data-tutorial-maximize]:after{content:'\e624'}
+.book-view .tutorial-dialog.expanded,.book-view .tutorial-dialog.minimized{transform:none!important}
+.book-view .tutorial-dialog.expanded{width:100vw;height:100vh;max-width:100vw;max-height:100vh}
+.book-view .tutorial-dialog.expanded>header,.book-view .tutorial-dialog.minimized>header{cursor:default}
+.book-view .tutorial-dialog.expanded [data-tutorial-minimize],.book-view .tutorial-dialog.minimized [data-tutorial-minimize],.book-view .tutorial-dialog.minimized>main{display:none}
+.book-view .tutorial-dialog.minimized{position:fixed;inset:auto auto var(--tutorial-dock-bottom,0px) var(--tutorial-dock-left,0px);margin:0;width:180px;height:45px;z-index:40}
+.book-view .tutorial-dialog>main{height:calc(100% - 45px);overflow:auto;background:white}
+.book-view .tutorial-frame{display:block;width:100%;height:100%;border:0}
+.book-view .tutorial-dialog .tutorial-loading{padding:10px}
+.book-view .tutorial-dialog [role=alert]{color:#b33}

@@ -1,0 +1,222 @@
+{
+  "reference": [
+    {
+      "selector": ".alert",
+      "rect": {
+        "x": 15,
+        "y": 15,
+        "width": 1660,
+        "height": 54,
+        "top": 15,
+        "right": 1675,
+        "bottom": 69,
+        "left": 15
+      },
+      "style": {
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "15px",
+        "margin": "0px 0px 10px"
+      }
+    },
+    {
+      "selector": ".alert + .alert",
+      "rect": {
+        "x": 15,
+        "y": 79,
+        "width": 1660,
+        "height": 64.5625,
+        "top": 79,
+        "right": 1675,
+        "bottom": 143.5625,
+        "left": 15
+      },
+      "style": {
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "15px",
+        "margin": "0px 0px 10px"
+      }
+    },
+    {
+      "selector": ".alert a",
+      "rect": {
+        "x": 31,
+        "y": 95,
+        "width": 94.625,
+        "height": 32.5625,
+        "top": 95,
+        "right": 125.625,
+        "bottom": 127.5625,
+        "left": 31
+      },
+      "style": {
+        "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "6px 12px",
+        "margin": "0px"
+      }
+    },
+    {
+      "selector": ".sm-st",
+      "rect": {
+        "x": 15,
+        "y": 153.5625,
+        "width": 392.5,
+        "height": 101.703125,
+        "top": 153.5625,
+        "right": 407.5,
+        "bottom": 255.265625,
+        "left": 15
+      },
+      "style": {
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "20px",
+        "margin": "0px 0px 20px"
+      }
+    },
+    {
+      "selector": ".sm-st-icon",
+      "rect": {
+        "x": 35,
+        "y": 173.5625,
+        "width": 60,
+        "height": 60,
+        "top": 173.5625,
+        "right": 95,
+        "bottom": 233.5625,
+        "left": 35
+      },
+      "style": {
+        "font": "30px / 60px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "margin": "0px 10px 0px 0px"
+      }
+    },
+    {
+      "selector": ".sm-st-info",
+      "rect": {
+        "x": 35,
+        "y": 173.5625,
+        "width": 352.5,
+        "height": 61.703125,
+        "top": 173.5625,
+        "right": 387.5,
+        "bottom": 235.265625,
+        "left": 35
+      },
+      "style": {
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "2px 0px 0px",
+        "margin": "0px"
+      }
+    },
+    {
+      "selector": "#echart",
+      "rect": {
+        "x": 31,
+        "y": 291.265625,
+        "width": 1628,
+        "height": 360,
+        "top": 291.265625,
+        "right": 1659,
+        "bottom": 651.265625,
+        "left": 31
+      },
+      "style": {
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "margin": "0px"
+      }
+    }
+  ],
+  "local": [
+    {
+      "selector": ".agent-dashboard-name",
+      "rect": {
+        "x": 245,
+        "y": 65,
+        "width": 1660,
+        "height": 54,
+        "top": 65,
+        "right": 1905,
+        "bottom": 119,
+        "left": 245
+      },
+      "style": {
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "15px",
+        "margin": "0px 0px 10px"
+      }
+    },
+    {
+      "selector": ".agent-dashboard-tools",
+      "rect": {
+        "x": 245,
+        "y": 129,
+        "width": 1660,
+        "height": 64.5625,
+        "top": 129,
+        "right": 1905,
+        "bottom": 193.5625,
+        "left": 245
+      },
+      "style": {
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "15px",
+        "margin": "0px"
+      }
+    },
+    {
+      "selector": ".agent-dashboard-tools a",
+      "rect": {
+        "x": 359,
+        "y": 145,
+        "width": 94.9375,
+        "height": 32.5625,
+        "top": 145,
+        "right": 453.9375,
+        "bottom": 177.5625,
+        "left": 359
+      },
+      "style": {
+        "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "6px 12px",
+        "margin": "0px"
+      }
+    },
+    {
+      "selector": ".agent-dashboard-cards article",
+      "rect": {
+        "x": 245,
+        "y": 203.5625,
+        "width": 392.5,
+        "height": 101.703125,
+        "top": 203.5625,
+        "right": 637.5,
+        "bottom": 305.265625,
+        "left": 245
+      },
+      "style": {
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "20px",
+        "margin": "0px"
+      }
+    },
+    {
+      "selector": "#agentChart",
+      "rect": {
+        "x": 261,
+        "y": 341.265625,
+        "width": 1628,
+        "height": 360,
+        "top": 341.265625,
+        "right": 1889,
+        "bottom": 701.265625,
+        "left": 261
+      },
+      "style": {
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "margin": "0px"
+      }
+    }
+  ]
+}

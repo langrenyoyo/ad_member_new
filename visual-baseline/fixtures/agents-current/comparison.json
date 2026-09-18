@@ -1,0 +1,403 @@
+{
+  "geometry": [
+    {
+      "field": null,
+      "width": 44
+    },
+    {
+      "field": "id",
+      "width": 198.65625
+    },
+    {
+      "field": "name",
+      "width": 360.25
+    },
+    {
+      "field": "buttons",
+      "width": 148.4375
+    },
+    {
+      "field": "status",
+      "width": 206.4375
+    },
+    {
+      "field": "created_at",
+      "width": 514.5625
+    },
+    {
+      "field": "agent_actions",
+      "width": 156.65625
+    }
+  ],
+  "styles": [
+    {
+      "tag": "SECTION",
+      "cls": "ads-panel game-user-panel agent-panel",
+      "height": 319.5625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px",
+      "align": "start",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "cls": "ads-toolbar",
+      "height": 52.5625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "10px 0px",
+      "align": "start",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "cls": "",
+      "height": 41,
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "align": "center",
+      "border": ""
+    },
+    {
+      "tag": "TH",
+      "cls": "",
+      "height": 41,
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "align": "center",
+      "border": ""
+    },
+    {
+      "tag": "TH",
+      "cls": "",
+      "height": 41,
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "align": "left",
+      "border": ""
+    },
+    {
+      "tag": "TH",
+      "cls": "",
+      "height": 41,
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "align": "center",
+      "border": ""
+    },
+    {
+      "tag": "TH",
+      "cls": "",
+      "height": 41,
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "align": "center",
+      "border": ""
+    },
+    {
+      "tag": "TH",
+      "cls": "",
+      "height": 41,
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "align": "center",
+      "border": ""
+    },
+    {
+      "tag": "TH",
+      "cls": "",
+      "height": 41,
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "align": "center",
+      "border": ""
+    },
+    {
+      "tag": "TD",
+      "cls": "agent-selection",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "left",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "agent-selection",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "left",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "agent-selection",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "left",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "cls": "",
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "align": "center",
+      "border": "1px solid rgb(244, 244, 244)"
+    }
+  ],
+  "exports": [
+    {
+      "format": "json",
+      "equal": true
+    },
+    {
+      "format": "xml",
+      "reference_parse_error": "not well-formed (invalid token): line 1, column 477",
+      "equal": false
+    },
+    {
+      "format": "csv",
+      "equal": true
+    },
+    {
+      "format": "txt",
+      "equal": true
+    },
+    {
+      "format": "doc",
+      "equal": true
+    },
+    {
+      "format": "excel",
+      "equal": true
+    },
+    {
+      "format": "selected-json",
+      "equal": true
+    },
+    {
+      "format": "selected-xml",
+      "equal": true
+    },
+    {
+      "format": "selected-csv",
+      "equal": true
+    },
+    {
+      "format": "selected-txt",
+      "equal": true
+    },
+    {
+      "format": "selected-doc",
+      "equal": true
+    },
+    {
+      "format": "selected-excel",
+      "equal": true
+    }
+  ],
+  "table": {
+    "reference_size": [
+      1690,
+      350
+    ],
+    "local_size": [
+      1690,
+      350
+    ],
+    "changed_pixels_percent": 0.0189
+  },
+  "filters-": {
+    "reference_size": [
+      1690,
+      446
+    ],
+    "local_size": [
+      1690,
+      446
+    ],
+    "changed_pixels_percent": 0.1079
+  },
+  "selection-": {
+    "reference_size": [
+      1690,
+      350
+    ],
+    "local_size": [
+      1690,
+      350
+    ],
+    "changed_pixels_percent": 0.0712
+  },
+  "cards-": {
+    "reference_size": [
+      1690,
+      603
+    ],
+    "local_size": [
+      1690,
+      603
+    ],
+    "changed_pixels_percent": 0.0326
+  },
+  "pagination-": {
+    "reference_size": [
+      1630,
+      56
+    ],
+    "local_size": [
+      1630,
+      56
+    ],
+    "changed_pixels_percent": 0.2596
+  },
+  "oss-": {
+    "reference_size": [
+      800,
+      600
+    ],
+    "local_size": [
+      800,
+      600
+    ],
+    "changed_pixels_percent": 0.1429
+  }
+}

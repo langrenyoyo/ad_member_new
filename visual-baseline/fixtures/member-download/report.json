@@ -1,0 +1,32 @@
+{
+  "changed_pixel_ratio": 0.00595625,
+  "mean_rgb": 0.11096875,
+  "threshold": 10,
+  "viewport": [
+    1920,
+    1080
+  ],
+  "crop_size": [
+    800,
+    600
+  ],
+  "scope": "Synthetic download tab only; no reference save or server-side business validation",
+  "geometry": {
+    "reference": {
+      "down_load": {
+        "x": 158.328125,
+        "y": 142,
+        "width": 483.328125,
+        "height": 33
+      }
+    },
+    "local": {
+      "down_load": {
+        "x": 158.328125,
+        "y": 142,
+        "width": 483.328125,
+        "height": 33
+      }
+    }
+  }
+}

@@ -1,0 +1,2 @@
+Id,账号,上级昵称,,累计金币收益,本月金币收益,今日金币收益,可用金币,冻结金币,白名单,状态,创建时间
+8100,"fixture 001","fixture parent","fixture game 0",100,10,0,10.5,0,"<i class=""fa fa-toggle-on text-success text-success fa-flip-horizontal text-gray fa-2x""></i>","<i class=""fa fa-toggle-on text-success text-success  fa-2x""></i>","2026-09-18 08:00:00"

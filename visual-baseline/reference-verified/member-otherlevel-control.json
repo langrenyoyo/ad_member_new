@@ -1,0 +1,20 @@
+{
+  "tag": "INPUT",
+  "type": "text",
+  "rows": null,
+  "maxLength": -1,
+  "placeholder": "",
+  "disabled": false,
+  "readOnly": false,
+  "label": "其它信息:",
+  "rect": {
+    "x": 158.328125,
+    "y": 1074,
+    "width": 483.328125,
+    "height": 33,
+    "top": 1074,
+    "right": 641.65625,
+    "bottom": 1107,
+    "left": 158.328125
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "/agent/add": {
+    "status": 200,
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/agent/add",
+    "title": "温馨提示",
+    "bodyTextLength": 13,
+    "bodyTextHead": "你没有权限访问\n\n返回首页",
+    "forms": [],
+    "controls": [
+      {
+        "tag": "A",
+        "type": "",
+        "name": "",
+        "id": "",
+        "href": "/",
+        "className": "btn btn-grey",
+        "text": "返回首页"
+      }
+    ],
+    "iframes": [],
+    "scripts": [],
+    "dialogs": []
+  },
+  "/agent/edit/ids/133": {
+    "status": 200,
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/agent/edit/ids/133",
+    "title": "温馨提示",
+    "bodyTextLength": 13,
+    "bodyTextHead": "你没有权限访问\n\n返回首页",
+    "forms": [],
+    "controls": [
+      {
+        "tag": "A",
+        "type": "",
+        "name": "",
+        "id": "",
+        "href": "/",
+        "className": "btn btn-grey",
+        "text": "返回首页"
+      }
+    ],
+    "iframes": [],
+    "scripts": [],
+    "dialogs": []
+  }
+}

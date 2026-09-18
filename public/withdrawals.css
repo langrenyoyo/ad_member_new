@@ -1,0 +1,39 @@
+.withdrawals-view .topbar{display:none}.withdrawal-panel{background:#fff;padding:15px;border-radius:3px}.withdrawal-tabs{display:flex;background:#e8edf1;margin:-15px -15px 15px;padding:15px;gap:5px}.withdrawal-tabs button{border:0;padding:10px 16px;background:#dce4ea;color:#777;cursor:pointer}.withdrawal-tabs button.active{background:#fff;color:#555}.withdrawal-toolbar{display:flex;gap:8px;align-items:center;margin-bottom:10px}.withdrawal-toolbar span{padding:8px 12px;border:1px solid #ddd;color:#168dff}.withdraw-approve,.withdraw-reject{border:0;padding:5px 8px;margin:2px;background:#18bc9c;color:#fff;border-radius:2px}.withdraw-reject{background:#e85b5b}
+.withdrawal-panel{font-size:13px;color:#111}
+.withdrawal-tabs{margin-bottom:0;padding-bottom:0}
+.withdrawal-panel #reviewFilters[data-review-kind="withdrawals"] .ads-filter-actions{grid-column:4}
+.withdrawal-panel .ads-filter-actions button,.withdrawal-toolbar button{height:34px;padding:6px 12px;border:1px solid #ddd;border-radius:3px;background:#f4f4f4;color:#333;cursor:pointer}
+.withdrawal-panel .ads-filter-actions button[type="submit"]{background:#18bc9c;border-color:#18bc9c;color:#fff}
+.withdrawal-toolbar #reviewRefresh{background:#444c69;color:#fff;border-color:#444c69}
+.withdrawal-panel button:disabled{opacity:.5;cursor:default}
+.withdrawal-panel #reviewError:empty{display:none}
+.withdrawal-panel #reviewError:not(:empty){color:#b33;padding:8px 0}
+.withdrawal-panel .pagination[hidden]{display:none}
+.withdrawal-panel .review-search-value{border:0;background:transparent;padding:0;color:#168bff;font:inherit;cursor:pointer}
+.withdrawal-panel .review-behavior{border:1px solid transparent;border-radius:2px;background:#18bc9c;color:white;padding:1px 5px;font:400 12px/1.5 "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;white-space:nowrap;cursor:pointer}
+.withdrawal-panel .review-badge{display:inline;padding:.2em .6em .3em;font-size:75%;font-weight:700;line-height:1;color:white;border-radius:.25em;white-space:nowrap}
+.withdrawal-panel .review-badge-success{background:#18bc9c}.withdrawal-panel .review-badge-warning{background:#f39c12}.withdrawal-panel .review-badge-danger{background:#ff5252}.withdrawal-panel .review-badge-info{background:#168bff}.withdrawal-panel .review-badge-primary{background:#444c69}
+.withdrawals-view .content{padding:15px}
+.withdrawals-view .withdrawal-panel #reviewFilters>label{margin-bottom:0}
+.withdrawals-view .withdrawal-panel{font:13px/1.42857143 "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;color:#000;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.withdrawals-view .withdrawal-tabs{padding-top:16px}
+.withdrawals-view .withdrawal-toolbar{height:54px;margin:15px 0 0;padding:10px 0;gap:4px}
+.withdrawals-view .withdrawal-panel .ads-table{border:1px solid #ddd}
+.withdrawals-view .withdrawal-panel .ads-table th{height:41px;padding:8px 10px;background:white;color:#333;font-size:14px;font-weight:700;line-height:24px;border-top:0;border-bottom:1px solid #ddd}
+.withdrawals-view .withdrawal-panel .ads-table th[aria-sort]{padding-left:15px;padding-right:15px}
+.withdrawals-view .withdrawal-sort{position:relative;display:inline-block;width:100%;height:24px;line-height:24px;vertical-align:top}
+.withdrawals-view .withdrawal-sort span{position:absolute;right:-13px;top:0;width:10px}
+.withdrawals-view .withdrawal-panel .ads-table td{height:47px;padding:8px 15px;font-size:14px;color:#333;line-height:20px}
+.withdrawals-view .withdrawal-panel [data-review-column="behavior"],.withdrawals-view .withdrawal-panel [data-review-cell="behavior"]{width:120px}
+.withdrawals-view .withdrawal-panel [data-review-column="review_actions"],.withdrawals-view .withdrawal-panel [data-review-cell="review_actions"]{width:93.1875px}
+.withdrawals-view .withdrawal-panel .ads-table tbody tr:nth-child(odd){background:#f9f9f9}
+.withdrawals-view .withdrawal-panel .ads-table tbody tr:nth-child(even){background:white}
+.withdrawals-view .withdraw-approve,.withdrawals-view .withdraw-reject{height:22px;padding:1px 5px;margin:0 2px;font-size:12px;line-height:18px}
+.withdrawals-view .withdraw-approve{background:#444c69}.withdrawals-view .withdraw-reject{background:#ff5252}
+.withdrawals-view .withdrawal-toolbar .fa{font:normal 13px/1 FontAwesome}
+.withdrawals-view .withdrawal-toolbar .fa-th:before{content:'\f00a'}.withdrawals-view .withdrawal-toolbar .fa-download:before{content:'\f019'}.withdrawals-view .withdrawal-toolbar .fa-search:before{content:'\f002'}
+.withdrawals-view #reviewViewToggle:before{font:normal 13px FontAwesome;content:'\f022'}
+.withdrawals-view #reviewRefresh{font-size:0}.withdrawals-view #reviewRefresh:before{font:normal 13px FontAwesome;content:'\f021'}
+.withdrawals-view .withdrawal-panel .pagination{padding:0;margin:10px 0 20px;min-height:24px;color:#000}
+.withdrawal-panel .pagination nav[hidden],.withdrawal-panel .review-page-info label[hidden]{display:none}
+@media(max-width:1000px){.withdrawal-panel #reviewFilters[data-review-kind="withdrawals"] .ads-filter-actions{grid-column:auto}}

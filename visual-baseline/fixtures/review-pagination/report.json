@@ -1,0 +1,234 @@
+[
+  {
+    "kind": "withdrawals",
+    "page": 1,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0,
+    "reference_jump": [
+      {
+        "tag": "INPUT",
+        "text": "",
+        "rect": {
+          "x": 1553,
+          "y": 663,
+          "width": 50,
+          "height": 33,
+          "top": 663,
+          "right": 1603,
+          "bottom": 696,
+          "left": 1553
+        },
+        "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "verticalAlign": "baseline"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "\u8df3\u8f6c",
+        "rect": {
+          "x": 1608,
+          "y": 664.09375,
+          "width": 52,
+          "height": 32.5625,
+          "top": 664.09375,
+          "right": 1660,
+          "bottom": 696.65625,
+          "left": 1608
+        },
+        "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "verticalAlign": "middle"
+      }
+    ],
+    "local_jump": [
+      {
+        "tag": "INPUT",
+        "text": "",
+        "rect": {
+          "x": 1783,
+          "y": 713,
+          "width": 50,
+          "height": 33,
+          "top": 713,
+          "right": 1833,
+          "bottom": 746,
+          "left": 1783
+        },
+        "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "verticalAlign": "baseline"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "\u8df3\u8f6c",
+        "rect": {
+          "x": 1838,
+          "y": 714.09375,
+          "width": 52,
+          "height": 32.5625,
+          "top": 714.09375,
+          "right": 1890,
+          "bottom": 746.65625,
+          "left": 1838
+        },
+        "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "verticalAlign": "middle"
+      }
+    ]
+  },
+  {
+    "kind": "withdrawals",
+    "page": 2,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "kind": "withdrawals",
+    "page": 4,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "kind": "withdrawals",
+    "page": 5,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "kind": "withdrawals",
+    "page": 10,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "kind": "withdrawals",
+    "page": 19,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "kind": "withdrawals",
+    "page": 20,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "kind": "withdrawals",
+    "page": 21,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "kind": "subsidies",
+    "page": 1,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0,
+    "reference_jump": [
+      {
+        "tag": "INPUT",
+        "text": "",
+        "rect": {
+          "x": 1553,
+          "y": 663,
+          "width": 50,
+          "height": 33,
+          "top": 663,
+          "right": 1603,
+          "bottom": 696,
+          "left": 1553
+        },
+        "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "verticalAlign": "baseline"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "\u8df3\u8f6c",
+        "rect": {
+          "x": 1608,
+          "y": 664.09375,
+          "width": 52,
+          "height": 32.5625,
+          "top": 664.09375,
+          "right": 1660,
+          "bottom": 696.65625,
+          "left": 1608
+        },
+        "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "verticalAlign": "middle"
+      }
+    ],
+    "local_jump": [
+      {
+        "tag": "INPUT",
+        "text": "",
+        "rect": {
+          "x": 1783,
+          "y": 713,
+          "width": 50,
+          "height": 33,
+          "top": 713,
+          "right": 1833,
+          "bottom": 746,
+          "left": 1783
+        },
+        "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "verticalAlign": "baseline"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "\u8df3\u8f6c",
+        "rect": {
+          "x": 1838,
+          "y": 714.09375,
+          "width": 52,
+          "height": 32.5625,
+          "top": 714.09375,
+          "right": 1890,
+          "bottom": 746.65625,
+          "left": 1838
+        },
+        "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "verticalAlign": "middle"
+      }
+    ]
+  },
+  {
+    "kind": "subsidies",
+    "page": 2,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "kind": "subsidies",
+    "page": 4,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "kind": "subsidies",
+    "page": 5,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "kind": "subsidies",
+    "page": 10,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "kind": "subsidies",
+    "page": 19,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "kind": "subsidies",
+    "page": 20,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "kind": "subsidies",
+    "page": 21,
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  }
+]

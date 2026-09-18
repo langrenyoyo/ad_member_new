@@ -1,0 +1,262 @@
+{
+  "geometry": [
+    {
+      "field": "id",
+      "width": 93.359375
+    },
+    {
+      "field": "title",
+      "width": 174.015625
+    },
+    {
+      "field": "path",
+      "width": 422.109375
+    },
+    {
+      "field": "ip",
+      "width": 134.28125
+    },
+    {
+      "field": "created_at",
+      "width": 241.890625
+    }
+  ],
+  "styles": {
+    "#content": {
+      "x": 0,
+      "y": 0,
+      "width": 1690,
+      "height": 630.65625,
+      "font": "14px / 21px Arial, Helvetica, sans-serif",
+      "padding": "15px",
+      "margin": "0px",
+      "border": "0px none rgb(23, 32, 51)",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    ".profile-card": {
+      "x": 15,
+      "y": 15,
+      "width": 533.328125,
+      "height": 580.65625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px 20px",
+      "border": "",
+      "background": "rgb(255, 255, 255)"
+    },
+    ".profile-card>header": {
+      "x": 15,
+      "y": 18,
+      "width": 533.328125,
+      "height": 43,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "10px 15px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    ".profile-card-body": {
+      "x": 15,
+      "y": 61,
+      "width": 533.328125,
+      "height": 534.65625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px 25px 40px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    ".profile-avatar": {
+      "x": 231.65625,
+      "y": 86,
+      "width": 100,
+      "height": 100,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "3px",
+      "margin": "0px",
+      "border": "3px solid rgb(210, 214, 222)",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    ".profile-avatar-container": {
+      "x": 231.65625,
+      "y": 86,
+      "width": 100,
+      "height": 100,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "10px 191.672px 0px 191.656px",
+      "border": "0px none rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "#profileName": {
+      "x": 40,
+      "y": 191,
+      "width": 483.328125,
+      "height": 23.09375,
+      "font": "500 21px / 23.1px \"Source Sans Pro\", sans-serif",
+      "padding": "0px",
+      "margin": "5px 0px 9px",
+      "border": "0px none rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "#profileForm": {
+      "x": 40,
+      "y": 86,
+      "width": 483.328125,
+      "height": 469.65625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "#profileForm label": {
+      "x": 40,
+      "y": 223.09375,
+      "width": 483.328125,
+      "height": 60,
+      "font": "700 14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px 15px",
+      "border": "0px none rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "#profileForm label>input": {
+      "x": 40,
+      "y": 250.09375,
+      "width": 483.328125,
+      "height": 33,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "6px 12px",
+      "margin": "5px 0px 0px",
+      "border": "1px solid rgb(210, 214, 222)",
+      "background": "rgb(238, 238, 238)"
+    },
+    "#profileForm button[type=submit]": {
+      "x": 40,
+      "y": 523.09375,
+      "width": 52,
+      "height": 32.5625,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "6px 12px",
+      "margin": "0px",
+      "border": "1px solid rgba(0, 0, 0, 0)",
+      "background": "rgb(68, 76, 105)"
+    },
+    ".profile-log-tab": {
+      "x": 578.328125,
+      "y": 15,
+      "width": 105.890625,
+      "height": 46,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "11px 15px 12px",
+      "margin": "0px",
+      "border": "1px solid rgba(0, 0, 0, 0)",
+      "background": "rgb(255, 255, 255)"
+    },
+    ".profile-log-panel": {
+      "x": 578.328125,
+      "y": 61,
+      "width": 1096.65625,
+      "height": 320,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)",
+      "background": "rgb(255, 255, 255)"
+    },
+    ".ads-toolbar": {
+      "x": 593.328125,
+      "y": 76,
+      "width": 1066.65625,
+      "height": 53,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "10px 0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "#profileLogPagination": {
+      "x": 593.328125,
+      "y": 312,
+      "width": 1066.65625,
+      "height": 54,
+      "font": "14px / 34px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "10px 0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)"
+    }
+  },
+  "exports": [
+    {
+      "format": "json",
+      "equal": true
+    },
+    {
+      "format": "xml",
+      "reference_parse_error": "not well-formed (invalid token): line 1, column 316",
+      "equal": false
+    },
+    {
+      "format": "csv",
+      "equal": true
+    },
+    {
+      "format": "txt",
+      "equal": true
+    },
+    {
+      "format": "doc",
+      "equal": true
+    },
+    {
+      "format": "excel",
+      "equal": true
+    }
+  ],
+  "table": {
+    "reference_size": [
+      1690,
+      631
+    ],
+    "local_size": [
+      1690,
+      631
+    ],
+    "changed_pixels_percent": 0.0018
+  },
+  "avatar-hover-": {
+    "reference_size": [
+      534,
+      581
+    ],
+    "local_size": [
+      534,
+      581
+    ],
+    "changed_pixels_percent": 0.0429
+  },
+  "cards-": {
+    "reference_size": [
+      1690,
+      676
+    ],
+    "local_size": [
+      1690,
+      676
+    ],
+    "changed_pixels_percent": 0.0209
+  },
+  "pagination-": {
+    "reference_size": [
+      1067,
+      55
+    ],
+    "local_size": [
+      1067,
+      55
+    ],
+    "changed_pixels_percent": 0.2471
+  }
+}

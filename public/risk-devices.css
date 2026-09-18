@@ -1,0 +1,4 @@
+.risk-devices-view .topbar{display:none}
+.risk-devices-view .content{padding:15px}
+.risk-devices-view .whitelist-panel{padding:15px;border-radius:3px;color:#333;font:14px/22.001px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.risk-devices-view .game-user-cards strong:empty{display:none}

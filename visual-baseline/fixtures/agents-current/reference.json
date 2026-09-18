@@ -1,0 +1,752 @@
+{
+  "table": {
+    "sortName": "id",
+    "sortOrder": "desc",
+    "pageSize": 10,
+    "pageList": [
+      10,
+      15,
+      20,
+      25,
+      50,
+      "All"
+    ],
+    "search": false,
+    "columns": [
+      [
+        {
+          "field": 0,
+          "title": null,
+          "visible": true,
+          "sortable": false,
+          "operate": null,
+          "formatter": null
+        },
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "formatter": null
+        },
+        {
+          "field": "name",
+          "title": "代理商名称",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "formatter": null
+        },
+        {
+          "field": "buttons",
+          "title": "游戏管理",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "formatter": "function (value, row, index) {\n\t\t\t\t\t\t\t\tvar that = $.extend({}, this);\n\t\t\t\t\t\t\t\tvar table = $(that.table).clone(true);\n\t\t\t\t\t\t\t\t$(table).data(\"operate-edit\", null);\n\t\t\t\t\t\t\t\t$(table).data(\"operate-del\", null);\n\t\t\t\t\t\t\t\tif (row.parent_id > 0) {\n\t\t\t\t\t\t\t\t\t$(table).data(\"operate-dash\", null);\n                                }\n\t\t\t\t\t\t\t\tthat.table = table;\n\t\t\t\t\t\t\t\treturn Table.api.formatter.operate.call(that, value, row, index);\n                            }"
+        },
+        {
+          "field": "user_id",
+          "title": "穿山甲user_id",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "formatter": null
+        },
+        {
+          "field": "role_id",
+          "title": "穿山甲role_id",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "formatter": null
+        },
+        {
+          "field": "security_key",
+          "title": "穿山甲security_key",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "formatter": null
+        },
+        {
+          "field": "status",
+          "title": "状态",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "create_time",
+          "title": "创建时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        },
+        {
+          "field": "update_time",
+          "title": "更新时间",
+          "visible": false,
+          "sortable": true,
+          "operate": "RANGE",
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        },
+        {
+          "field": "operate",
+          "title": "操作",
+          "visible": true,
+          "sortable": false,
+          "operate": null,
+          "formatter": "function (value, row, index) {\n                    var table = this.table;\n                    // 操作配置\n                    var options = table ? table.bootstrapTable('getOptions') : {};\n                    // 默认按钮组\n                    var buttons = $.extend([], this.buttons || []);\n                    // 所有按钮名称\n                    var names = [];\n                    buttons.forEach(function (item) {\n                        names.push(item.name);\n                    });\n                    if (options.extend.dragsort_url !== '' && names.indexOf('dragsort') === -1) {\n                        buttons.push(Table.button.dragsort);\n                    }\n                    if (options.extend.edit_url !== '' && names.indexOf('edit') === -1) {\n                        Table.button.edit.url = options.extend.edit_url;\n                        buttons.push(Table.button.edit);\n                    }\n                    if (options.extend.del_url !== '' && names.indexOf('del') === -1) {\n                        buttons.push(Table.button.del);\n                    }\n                    return Table.api.buttonlink(this, buttons, value, row, index, 'operate');\n                }"
+        }
+      ]
+    ]
+  },
+  "permissions": {
+    "operateEdit": "",
+    "operateDel": "",
+    "operateDash": "1"
+  },
+  "controls": [
+    {
+      "text": "提交",
+      "cls": "btn btn-success",
+      "href": null,
+      "title": "",
+      "visible": false,
+      "parent": "col-sm-8 col-xs-offset-4"
+    },
+    {
+      "text": "重置",
+      "cls": "btn btn-default",
+      "href": null,
+      "title": "",
+      "visible": false,
+      "parent": "col-sm-8 col-xs-offset-4"
+    },
+    {
+      "text": " ",
+      "cls": "btn btn-primary btn-refresh",
+      "href": "javascript:;",
+      "title": "刷新",
+      "visible": true,
+      "parent": "toolbar"
+    },
+    {
+      "text": " 更多",
+      "cls": "btn btn-primary btn-more dropdown-toggle btn-disabled disabled",
+      "href": null,
+      "title": "",
+      "visible": false,
+      "parent": "dropdown btn-group hide"
+    },
+    {
+      "text": " 启用",
+      "cls": "btn btn-link btn-multi btn-disabled disabled",
+      "href": "javascript:;",
+      "title": "",
+      "visible": false,
+      "parent": ""
+    },
+    {
+      "text": " 禁用",
+      "cls": "btn btn-link btn-multi btn-disabled disabled",
+      "href": "javascript:;",
+      "title": "",
+      "visible": false,
+      "parent": ""
+    },
+    {
+      "text": " 跨页选择模式，已选 0 项",
+      "cls": "btn btn-warning-light btn-selected-tips hide",
+      "href": "javascript:",
+      "title": "",
+      "visible": false,
+      "parent": "toolbar"
+    },
+    {
+      "text": "",
+      "cls": "btn btn-default",
+      "href": null,
+      "title": "普通搜索",
+      "visible": true,
+      "parent": "columns-right pull-right"
+    },
+    {
+      "text": "",
+      "cls": "btn btn-default",
+      "href": null,
+      "title": "切换",
+      "visible": true,
+      "parent": "columns columns-right btn-group pull-right"
+    },
+    {
+      "text": " ",
+      "cls": "btn btn-default dropdown-toggle",
+      "href": null,
+      "title": "",
+      "visible": true,
+      "parent": "keep-open btn-group"
+    },
+    {
+      "text": " ",
+      "cls": "btn btn-default dropdown-toggle",
+      "href": null,
+      "title": "导出数据",
+      "visible": true,
+      "parent": "export btn-group"
+    },
+    {
+      "text": " OSS配置",
+      "cls": "btn btn-success btn-xs btn-detail btn-dialog",
+      "href": "/DmvTqXBpfF.php/agent/ossedit/ids/9003",
+      "title": "OSS配置",
+      "visible": true,
+      "parent": ""
+    },
+    {
+      "text": " 进入",
+      "cls": "btn btn-xs btn-info btn-addtabs",
+      "href": "/DmvTqXBpfF.php/agents/dash/index/agent_id/9003",
+      "title": "游戏管理",
+      "visible": true,
+      "parent": ""
+    },
+    {
+      "text": " OSS配置",
+      "cls": "btn btn-success btn-xs btn-detail btn-dialog",
+      "href": "/DmvTqXBpfF.php/agent/ossedit/ids/9002",
+      "title": "OSS配置",
+      "visible": true,
+      "parent": ""
+    },
+    {
+      "text": " 进入",
+      "cls": "btn btn-xs btn-info btn-addtabs",
+      "href": "/DmvTqXBpfF.php/agents/dash/index/agent_id/9002",
+      "title": "游戏管理",
+      "visible": true,
+      "parent": ""
+    },
+    {
+      "text": " OSS配置",
+      "cls": "btn btn-success btn-xs btn-detail btn-dialog",
+      "href": "/DmvTqXBpfF.php/agent/ossedit/ids/9001",
+      "title": "OSS配置",
+      "visible": true,
+      "parent": ""
+    },
+    {
+      "text": "10 ",
+      "cls": "btn btn-default dropdown-toggle",
+      "href": null,
+      "title": "",
+      "visible": false,
+      "parent": "btn-group dropup"
+    },
+    {
+      "text": "跳转",
+      "cls": "btn btn-default",
+      "href": null,
+      "title": "跳转",
+      "visible": false,
+      "parent": "jumpto"
+    },
+    {
+      "text": "应用",
+      "cls": "applyBtn hide btn btn-sm btn-success",
+      "href": null,
+      "title": "",
+      "visible": false,
+      "parent": "range_inputs"
+    },
+    {
+      "text": "清空",
+      "cls": "cancelBtn hide btn btn-sm btn-default",
+      "href": null,
+      "title": "",
+      "visible": false,
+      "parent": "range_inputs"
+    },
+    {
+      "text": "应用",
+      "cls": "applyBtn hide btn btn-sm btn-success",
+      "href": null,
+      "title": "",
+      "visible": false,
+      "parent": "range_inputs"
+    },
+    {
+      "text": "清空",
+      "cls": "cancelBtn hide btn btn-sm btn-default",
+      "href": null,
+      "title": "",
+      "visible": false,
+      "parent": "range_inputs"
+    }
+  ],
+  "geometry": [
+    {
+      "field": "0",
+      "width": 44
+    },
+    {
+      "field": "id",
+      "width": 198.65625
+    },
+    {
+      "field": "name",
+      "width": 360.25
+    },
+    {
+      "field": "buttons",
+      "width": 148.4375
+    },
+    {
+      "field": "status",
+      "width": 206.4375
+    },
+    {
+      "field": "create_time",
+      "width": 514.5625
+    },
+    {
+      "field": "operate",
+      "width": 156.65625
+    }
+  ],
+  "cells": [
+    {
+      "text": "",
+      "html": "<input data-index=\"0\" name=\"btSelectItem\" type=\"checkbox\">"
+    },
+    {
+      "text": "9003",
+      "html": "9003"
+    },
+    {
+      "text": "Fixture agent",
+      "html": "Fixture agent"
+    },
+    {
+      "text": " OSS配置  进入",
+      "html": "<a href=\"/DmvTqXBpfF.php/agent/ossedit/ids/9003\" class=\"btn btn-success btn-xs btn-detail btn-dialog\" title=\"OSS配置\" data-table-id=\"table\" data-field-index=\"3\" data-row-index=\"0\" data-button-index=\"0\"><i class=\"\"></i> OSS配置</a> <a href=\"/DmvTqXBpfF.php/agents/dash/index/agent_id/9003\" class=\"btn btn-xs btn-info btn-addtabs\" title=\"游戏管理\" data-table-id=\"table\" data-field-index=\"3\" data-row-index=\"0\" data-button-index=\"1\"><i class=\"fa fa-gamepad\"></i> 进入</a>"
+    },
+    {
+      "text": "启用",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 启用\" data-field=\"status\" data-value=\"1\"><span class=\"label label-warning\">启用</span></a>"
+    },
+    {
+      "text": "2026-09-18 08:00:00",
+      "html": "2026-09-18 08:00:00"
+    },
+    {
+      "text": "",
+      "html": ""
+    }
+  ],
+  "filters": [
+    {
+      "name": "name-operate",
+      "placeholder": "",
+      "type": "hidden",
+      "html": "<input type=\"hidden\" class=\"form-control operate\" name=\"name-operate\" data-name=\"name\" value=\"LIKE\" readonly=\"\" style=\"\">"
+    },
+    {
+      "name": "name",
+      "placeholder": "代理商名称",
+      "type": "text",
+      "html": "<input type=\"text\" class=\"form-control\" name=\"name\" value=\"\" placeholder=\"代理商名称\" id=\"name\" data-index=\"2\" style=\"\">"
+    },
+    {
+      "name": "status-operate",
+      "placeholder": "",
+      "type": "hidden",
+      "html": "<input type=\"hidden\" class=\"form-control operate\" name=\"status-operate\" data-name=\"status\" value=\"=\" readonly=\"\" style=\"\">"
+    },
+    {
+      "name": "status",
+      "placeholder": null,
+      "type": "select-one",
+      "html": "<select class=\"form-control\" name=\"status\"><option value=\"\">选择</option><option value=\"0\">禁用</option><option value=\"1\">启用</option></select>"
+    },
+    {
+      "name": "create_time-operate",
+      "placeholder": "",
+      "type": "hidden",
+      "html": "<input type=\"hidden\" class=\"form-control operate\" name=\"create_time-operate\" data-name=\"create_time\" value=\"RANGE\" readonly=\"\" style=\"\">"
+    },
+    {
+      "name": "create_time",
+      "placeholder": "创建时间",
+      "type": "text",
+      "html": "<input type=\"text\" class=\"form-control datetimerange\" name=\"create_time\" value=\"\" placeholder=\"创建时间\" id=\"create_time\" data-index=\"8\" style=\"\">"
+    },
+    {
+      "name": "update_time-operate",
+      "placeholder": "",
+      "type": "hidden",
+      "html": "<input type=\"hidden\" class=\"form-control operate\" name=\"update_time-operate\" data-name=\"update_time\" value=\"RANGE\" readonly=\"\" style=\"\">"
+    },
+    {
+      "name": "update_time",
+      "placeholder": "更新时间",
+      "type": "text",
+      "html": "<input type=\"text\" class=\"form-control datetimerange\" name=\"update_time\" value=\"\" placeholder=\"更新时间\" id=\"update_time\" data-index=\"9\" style=\"\">"
+    }
+  ],
+  "oss_window": {
+    "x": 445,
+    "y": 215,
+    "width": 800,
+    "height": 600,
+    "header": "<div class=\"layui-layer-title\" style=\"cursor: move;\">OSS配置</div>",
+    "buttons": "<a class=\"layui-layer-min\" href=\"javascript:;\"><cite></cite></a><a class=\"layui-layer-ico layui-layer-max\" href=\"javascript:;\"></a><a class=\"layui-layer-ico layui-layer-close layui-layer-close1\" href=\"javascript:;\"></a>",
+    "shade": false
+  },
+  "oss_styles": [
+    {
+      "tag": "BODY",
+      "cls": "inside-header inside-aside is-dialog",
+      "name": null,
+      "type": null,
+      "text": null,
+      "x": 0,
+      "y": 0,
+      "width": 800,
+      "height": 502,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "background": "rgb(255, 255, 255)",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "text": null,
+      "x": 0,
+      "y": 0,
+      "width": 800,
+      "height": 250,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "background": "rgb(255, 255, 255)",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "FORM",
+      "cls": "form-horizontal nice-validator n-default n-bootstrap",
+      "name": "",
+      "type": null,
+      "text": null,
+      "x": 15,
+      "y": 15,
+      "width": 770,
+      "height": 177,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "INPUT",
+      "cls": "",
+      "name": "__token__",
+      "type": "hidden",
+      "text": null,
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "cls": "form-group",
+      "name": null,
+      "type": null,
+      "text": null,
+      "x": 0,
+      "y": 15,
+      "width": 800,
+      "height": 33,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)",
+      "padding": "0px",
+      "margin": "0px -15px 15px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "LABEL",
+      "cls": "control-label col-xs-12 col-sm-2",
+      "name": null,
+      "type": null,
+      "text": "ossKey:",
+      "x": 0,
+      "y": 15,
+      "width": 133.328125,
+      "height": 29,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)",
+      "padding": "7px 15px 0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "INPUT",
+      "cls": "form-control",
+      "name": "row[ossKey]",
+      "type": "text",
+      "text": null,
+      "x": 148.328125,
+      "y": 15,
+      "width": 503.328125,
+      "height": 33,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(85, 85, 85)",
+      "background": "rgb(255, 255, 255)",
+      "padding": "6px 12px",
+      "margin": "0px",
+      "border": "1px solid rgb(210, 214, 222)"
+    },
+    {
+      "tag": "DIV",
+      "cls": "form-group",
+      "name": null,
+      "type": null,
+      "text": null,
+      "x": 0,
+      "y": 63,
+      "width": 800,
+      "height": 33,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)",
+      "padding": "0px",
+      "margin": "0px -15px 15px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "LABEL",
+      "cls": "control-label col-xs-12 col-sm-2",
+      "name": null,
+      "type": null,
+      "text": "ossKeySecret:",
+      "x": 0,
+      "y": 63,
+      "width": 133.328125,
+      "height": 29,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)",
+      "padding": "7px 15px 0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "INPUT",
+      "cls": "form-control",
+      "name": "row[ossKeySecret]",
+      "type": "text",
+      "text": null,
+      "x": 148.328125,
+      "y": 63,
+      "width": 503.328125,
+      "height": 33,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(85, 85, 85)",
+      "background": "rgb(255, 255, 255)",
+      "padding": "6px 12px",
+      "margin": "0px",
+      "border": "1px solid rgb(210, 214, 222)"
+    },
+    {
+      "tag": "DIV",
+      "cls": "form-group",
+      "name": null,
+      "type": null,
+      "text": null,
+      "x": 0,
+      "y": 111,
+      "width": 800,
+      "height": 33,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)",
+      "padding": "0px",
+      "margin": "0px -15px 15px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "LABEL",
+      "cls": "control-label col-xs-12 col-sm-2",
+      "name": null,
+      "type": null,
+      "text": "endPoint:",
+      "x": 0,
+      "y": 111,
+      "width": 133.328125,
+      "height": 29,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)",
+      "padding": "7px 15px 0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "INPUT",
+      "cls": "form-control",
+      "name": "row[endPoint]",
+      "type": "text",
+      "text": null,
+      "x": 148.328125,
+      "y": 111,
+      "width": 503.328125,
+      "height": 33,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(85, 85, 85)",
+      "background": "rgb(255, 255, 255)",
+      "padding": "6px 12px",
+      "margin": "0px",
+      "border": "1px solid rgb(210, 214, 222)"
+    },
+    {
+      "tag": "DIV",
+      "cls": "form-group",
+      "name": null,
+      "type": null,
+      "text": null,
+      "x": 0,
+      "y": 159,
+      "width": 800,
+      "height": 33,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)",
+      "padding": "0px",
+      "margin": "0px -15px 15px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "LABEL",
+      "cls": "control-label col-xs-12 col-sm-2",
+      "name": null,
+      "type": null,
+      "text": "bucket:",
+      "x": 0,
+      "y": 159,
+      "width": 133.328125,
+      "height": 29,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)",
+      "padding": "7px 15px 0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "INPUT",
+      "cls": "form-control",
+      "name": "row[bucket]",
+      "type": "text",
+      "text": null,
+      "x": 148.328125,
+      "y": 159,
+      "width": 503.328125,
+      "height": 33,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(85, 85, 85)",
+      "background": "rgb(255, 255, 255)",
+      "padding": "6px 12px",
+      "margin": "0px",
+      "border": "1px solid rgb(210, 214, 222)"
+    },
+    {
+      "tag": "DIV",
+      "cls": "form-group layer-footer",
+      "name": null,
+      "type": null,
+      "text": null,
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)",
+      "padding": "0px",
+      "margin": "0px -15px 15px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "LABEL",
+      "cls": "control-label col-xs-12 col-sm-2",
+      "name": null,
+      "type": null,
+      "text": "",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "background": "rgba(0, 0, 0, 0)",
+      "padding": "7px 15px 0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "btn btn-primary btn-embossed",
+      "name": "",
+      "type": "submit",
+      "text": "确定",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(68, 76, 105)",
+      "padding": "6px 12px",
+      "margin": "0px",
+      "border": "1px solid rgba(0, 0, 0, 0)"
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "btn btn-default btn-embossed",
+      "name": "",
+      "type": "reset",
+      "text": "重置",
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(68, 68, 68)",
+      "background": "rgb(244, 244, 244)",
+      "padding": "6px 12px",
+      "margin": "0px",
+      "border": "1px solid rgb(221, 221, 221)"
+    }
+  ]
+}

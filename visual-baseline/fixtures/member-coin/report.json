@@ -1,0 +1,6 @@
+{
+  "scope": "coin dialog only at 800x600, same two synthetic values; reference form read-only; no submission parity certification",
+  "mean_rgb": 0.28124513888888886,
+  "changed_pixel_ratio": 0.0046479166666666665,
+  "minimized_changed_pixel_ratio": 0.054814814814814816
+}

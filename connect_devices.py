@@ -1,0 +1,3 @@
+from pathlib import Path
+p=Path('public/app.js');d=p.read_bytes();old=b"if(state.view==='risk-history'){await renderRiskHistory();return}";assert d.count(old)==1;d=d.replace(old,old+b"if(state.view==='risk-devices'){await renderRiskDevices();return}");old=b"document.body.classList.toggle('risk-history-view',state.view==='risk-history');";assert d.count(old)==1;d=d.replace(old,old+b"document.body.classList.toggle('risk-devices-view',state.view==='risk-devices');");p.write_bytes(d)
+p=Path('public/index.html');d=p.read_bytes().replace(b'</head>',b'<link rel="stylesheet" href="/risk-devices.css"></head>').replace(b'<script src="/app.js">',b'<script src="/risk-devices.js"></script><script src="/app.js">');p.write_bytes(d)

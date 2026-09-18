@@ -1,0 +1,171 @@
+[
+  {
+    "route": "dash",
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/dash?ref=baseline",
+    "status": 200,
+    "title": "",
+    "final_url": "https://ad.leadink.cn/DmvTqXBpfF.php/dash?ref=baseline",
+    "screenshot": "dash.png",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "frames": 1
+  },
+  {
+    "route": "gameuser",
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/gameuser?ref=baseline",
+    "status": 200,
+    "title": "",
+    "final_url": "https://ad.leadink.cn/DmvTqXBpfF.php/gameuser?ref=baseline",
+    "screenshot": "gameuser.png",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "frames": 1
+  },
+  {
+    "route": "agent",
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/agent?ref=baseline",
+    "status": 200,
+    "title": "",
+    "final_url": "https://ad.leadink.cn/DmvTqXBpfF.php/agent?ref=baseline",
+    "screenshot": "agent.png",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "frames": 1
+  },
+  {
+    "route": "game",
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/game?ref=baseline",
+    "status": 200,
+    "title": "",
+    "final_url": "https://ad.leadink.cn/DmvTqXBpfF.php/game?ref=baseline",
+    "screenshot": "game.png",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "frames": 1
+  },
+  {
+    "route": "ad",
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/ad?ref=baseline",
+    "status": 200,
+    "title": "",
+    "final_url": "https://ad.leadink.cn/DmvTqXBpfF.php/ad?ref=baseline",
+    "screenshot": "ad.png",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "frames": 1
+  },
+  {
+    "route": "tixian",
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/tixian?ref=baseline",
+    "status": 200,
+    "title": "",
+    "final_url": "https://ad.leadink.cn/DmvTqXBpfF.php/tixian?ref=baseline",
+    "screenshot": "tixian.png",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "frames": 1
+  },
+  {
+    "route": "butie",
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/butie?ref=baseline",
+    "status": 200,
+    "title": "",
+    "final_url": "https://ad.leadink.cn/DmvTqXBpfF.php/butie?ref=baseline",
+    "screenshot": "butie.png",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "frames": 1
+  },
+  {
+    "route": "profit/coinlog",
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/profit/coinlog?ref=baseline",
+    "status": 200,
+    "title": "",
+    "final_url": "https://ad.leadink.cn/DmvTqXBpfF.php/profit/coinlog?ref=baseline",
+    "screenshot": "profit-coinlog.png",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "frames": 1
+  },
+  {
+    "route": "risk/userw",
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/risk/userw?ref=baseline",
+    "status": 200,
+    "title": "",
+    "final_url": "https://ad.leadink.cn/DmvTqXBpfF.php/risk/userw?ref=baseline",
+    "screenshot": "risk-userw.png",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "frames": 1
+  },
+  {
+    "route": "risk/risk",
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/risk/risk?ref=baseline",
+    "status": 200,
+    "title": "",
+    "final_url": "https://ad.leadink.cn/DmvTqXBpfF.php/risk/risk?ref=baseline",
+    "screenshot": "risk-risk.png",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "frames": 1
+  },
+  {
+    "route": "risk/userd",
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/risk/userd?ref=baseline",
+    "status": 200,
+    "title": "",
+    "final_url": "https://ad.leadink.cn/DmvTqXBpfF.php/risk/userd?ref=baseline",
+    "screenshot": "risk-userd.png",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "frames": 1
+  },
+  {
+    "route": "general/profile",
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/general/profile?ref=baseline",
+    "status": 200,
+    "title": "",
+    "final_url": "https://ad.leadink.cn/DmvTqXBpfF.php/general/profile?ref=baseline",
+    "screenshot": "general-profile.png",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "frames": 1
+  },
+  {
+    "route": "book",
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/book?ref=baseline",
+    "status": 200,
+    "title": "",
+    "final_url": "https://ad.leadink.cn/DmvTqXBpfF.php/book?ref=baseline",
+    "screenshot": "book.png",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "frames": 1
+  }
+]

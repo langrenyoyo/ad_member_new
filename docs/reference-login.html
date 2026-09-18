@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<title>登录</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="renderer" content="webkit">
+<meta name="referrer" content="never">
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="shortcut icon" href="/assets/img/favicon.ico" />
+<!-- Loading Bootstrap -->
+<link href="/assets/css/backend.min.css?v=1.0.661" rel="stylesheet">
+
+
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+<!--[if lt IE 9]>
+  <script src="/assets/js/html5shiv.js"></script>
+  <script src="/assets/js/respond.min.js"></script>
+<![endif]-->
+<script type="text/javascript">
+    var require = {
+        config:  {"site":{"name":"\u7ba1\u7406\u7cfb\u7edf","cdnurl":"","version":"1.0.661","timezone":"Asia\/Shanghai","languages":{"frontend":"zh-cn","backend":"zh-cn"}},"upload":{"cdnurl":"","uploadurl":"\/DmvTqXBpfF.php\/ajax\/upload","bucket":"local","maxsize":"256mb","mimetype":"jpg,png,bmp,jpeg,gif,webp,zip,rar,wav,mp4,mp3,webm,apk,xls,xlsx,crt,p8","chunking":false,"chunksize":2097152,"savekey":"\/uploads\/{year}{mon}{day}\/{filemd5}{.suffix}","multipart":[],"multiple":false,"fullmode":false,"thumbstyle":"","storage":"local"},"modulename":"admin","controllername":"index","actionname":"login","jsname":"backend\/index","moduleurl":"\/DmvTqXBpfF.php","language":"zh-cn","referer":null,"__PUBLIC__":"\/","__ROOT__":"\/","__CDN__":""}    };
+</script>
+
+
+    <style type="text/css">
+        body {
+            color: #999;
+            background-color: #f1f4fd;
+            background-size: cover;
+        }
+
+        a {
+            color: #444;
+        }
+
+
+        .login-screen {
+            max-width: 430px;
+            padding: 0;
+            margin: 100px auto 0 auto;
+
+        }
+
+        .login-screen .well {
+            border-radius: 3px;
+            -webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 1);
+            border: none;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        @media (max-width: 767px) {
+            .login-screen {
+                padding: 0 20px;
+            }
+        }
+
+        .profile-img-card {
+            width: 100px;
+            height: 100px;
+            display: block;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+            border-radius: 50%;
+            margin: -93px auto 30px;
+            border: 5px solid #fff;
+        }
+
+        .profile-name-card {
+            text-align: center;
+        }
+
+        .login-head {
+            background: #899fe1;
+        }
+
+        .login-form {
+            padding: 40px 30px;
+            position: relative;
+            z-index: 99;
+        }
+
+        #login-form {
+            margin-top: 20px;
+        }
+
+        #login-form .input-group {
+            margin-bottom: 15px;
+        }
+
+        #login-form .form-control {
+            font-size: 13px;
+        }
+
+    </style>
+    <!--@formatter:off-->
+        <!--@formatter:on-->
+</head>
+<body>
+<div class="container">
+    <div class="login-wrapper">
+        <div class="login-screen">
+            <div class="well">
+                <div class="login-head">
+                    <img src="/assets/img/login-head.png" style="width:100%;"/>
+                </div>
+                <div class="login-form">
+                    <img id="profile-img" class="profile-img-card" src="/assets/img/avatar.png"/>
+                    <p id="profile-name" class="profile-name-card"></p>
+
+                    <form action="" method="post" id="login-form">
+                        <!--@AdminLoginFormBegin-->
+                        <div id="errtips" class="hide"></div>
+                        <input type="hidden" name="__token__" value="d8d735d1fa536fcdb22434477a8134d3" />                        <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></div>
+                            <input type="text" class="form-control" id="pd-form-username" placeholder="用户名" name="username" autocomplete="off" value="" data-rule="用户名:required;username"/>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-group-addon"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></div>
+                            <input type="password" class="form-control" id="pd-form-password" placeholder="密码" name="password" autocomplete="off" value="" data-rule="密码:required;password"/>
+                        </div>
+                        <!--@CaptchaBegin-->
+                                                <!--@CaptchaEnd-->
+                        <div class="form-group checkbox">
+                            <label class="inline" for="keeplogin">
+                                <input type="checkbox" name="keeplogin" id="keeplogin" value="1"/>
+                                保持会话                            </label>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success btn-lg btn-block" style="background:#708eea;">登 录</button>
+                        </div>
+                        <!--@AdminLoginFormEnd-->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/assets/js/require.min.js" data-main="/assets/js/require-backend.min.js?v=1.0.661"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser=p.chromium.launch(headless=True,args=['--disable-gpu','--no-sandbox'])
+    page=browser.new_page(viewport={'width':1920,'height':1080})
+    page.set_default_timeout(8000)
+    page.route('**/api/v1/ads?*',lambda route:route.fulfill(json={'total':1,'items':[{'id':901,'parent_id':77,'user_account':'fixture <>&','coin':0}],'summary':{}}))
+    page.goto('http://127.0.0.1:3000/#ads',wait_until='domcontentloaded')
+    page.fill('#loginForm [name=username]','18532306918')
+    page.fill('#loginForm [name=password]','123456')
+    page.locator('#loginForm').evaluate('(f)=>f.requestSubmit()')
+    page.locator('#adsSearchToggle').wait_for()
+    page.locator('#adsSearchToggle').click()
+    assert page.locator('#adsFilters').is_hidden()
+    page.locator('#adsSearchToggle').click()
+    assert page.locator('#adsFilters').is_visible()
+    page.locator('#adsColumnsToggle').click()
+    page.locator('[data-ads-column="parent_id"]').uncheck()
+    assert page.locator('th[data-ads-field="parent_id"]').is_hidden()
+    with page.expect_response(lambda response:'/api/v1/ads?' in response.url):
+        page.locator('#adsRefresh').click()
+    assert page.locator('th[data-ads-field="parent_id"]').is_hidden()
+    page.locator('#adsViewToggle').click()
+    assert page.locator('#adsTable thead').is_hidden()
+    account=page.locator('td[data-ads-field="user_account"]')
+    assert account.locator('.ads-card-title').is_visible()
+    assert account.locator('.ads-card-value').inner_text()=='fixture <>&'
+    assert page.locator('td[data-ads-field="parent_id"]').is_hidden()
+    with page.expect_response(lambda response:'/api/v1/ads?' in response.url):
+        page.locator('#adsRefresh').click()
+    page.locator('td[data-ads-field="user_account"] .ads-card-title').wait_for(state='visible')
+    page.locator('#adsColumnsToggle').click()
+    assert page.locator('.ads-column-menu').count()==1
+    page.locator('[data-ads-column="parent_id"]').check()
+    assert page.locator('td[data-ads-field="parent_id"]').is_visible()
+    page.locator('#adsColumnsToggle').click()
+    page.locator('#adsViewToggle').click()
+    assert page.locator('#adsTable thead').is_visible()
+    assert account.locator('.ads-card-title').is_hidden()
+    browser.close()
+    print('Ads tools passed: search, columns, card labels/values, refresh persistence, menu lifecycle and table restoration.')

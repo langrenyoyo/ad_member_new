@@ -1,0 +1,272 @@
+{
+  "reference": {
+    "rect": {
+      "x": 588.328125,
+      "y": 116,
+      "width": 300,
+      "height": 92.84375,
+      "top": 116,
+      "right": 888.328125,
+      "bottom": 208.84375,
+      "left": 588.328125
+    },
+    "text": "对照代理商 10\n对照代理商 11\n第 2 页(共2页)",
+    "styles": [
+      {
+        "tag": "DIV",
+        "cls": "sp_result_area sp_result_area_open shadowDown",
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 92.84375,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "UL",
+        "cls": "sp_results",
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "3px 0px",
+        "height": 66.84375,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "LI",
+        "cls": "",
+        "font": "13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "5px 8px",
+        "height": 30.421875,
+        "color": "rgb(0, 0, 0)"
+      },
+      {
+        "tag": "LI",
+        "cls": "",
+        "font": "13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "5px 8px",
+        "height": 30.421875,
+        "color": "rgb(0, 0, 0)"
+      },
+      {
+        "tag": "UL",
+        "cls": "",
+        "font": "14px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 26,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "LI",
+        "cls": "csFirstPage",
+        "font": "14px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 0,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "A",
+        "cls": "",
+        "font": "13px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 26,
+        "color": "rgb(171, 171, 171)"
+      },
+      {
+        "tag": "LI",
+        "cls": "csPreviousPage",
+        "font": "14px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 0,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "A",
+        "cls": "",
+        "font": "13px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 26,
+        "color": "rgb(171, 171, 171)"
+      },
+      {
+        "tag": "LI",
+        "cls": "pageInfoBox",
+        "font": "14px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 0,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "A",
+        "cls": "",
+        "font": "13px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 26,
+        "color": "rgb(102, 102, 102)"
+      },
+      {
+        "tag": "LI",
+        "cls": "csNextPage disabled",
+        "font": "14px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 0,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "A",
+        "cls": "",
+        "font": "13px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 26,
+        "color": "rgb(152, 152, 152)"
+      },
+      {
+        "tag": "LI",
+        "cls": "csLastPage disabled",
+        "font": "14px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 0,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "A",
+        "cls": "",
+        "font": "13px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 26,
+        "color": "rgb(152, 152, 152)"
+      }
+    ]
+  },
+  "local": {
+    "rect": {
+      "x": 818.328125,
+      "y": 166,
+      "width": 300,
+      "height": 92.84375,
+      "top": 166,
+      "right": 1118.328125,
+      "bottom": 258.84375,
+      "left": 818.328125
+    },
+    "text": "对照代理商 10\n对照代理商 11\n第 2 页(共2页)",
+    "styles": [
+      {
+        "tag": "DIV",
+        "cls": "sp_result_area member-lookup-results member-lookup-results-agents sp_result_area_open shadowDown",
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 92.84375,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "UL",
+        "cls": "sp_results",
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "3px 0px",
+        "height": 66.84375,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "LI",
+        "cls": "",
+        "font": "13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "5px 8px",
+        "height": 30.421875,
+        "color": "rgb(0, 0, 0)"
+      },
+      {
+        "tag": "LI",
+        "cls": "",
+        "font": "13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "5px 8px",
+        "height": 30.421875,
+        "color": "rgb(0, 0, 0)"
+      },
+      {
+        "tag": "UL",
+        "cls": "",
+        "font": "14px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 26,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "LI",
+        "cls": "csFirstPage",
+        "font": "14px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 0,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "A",
+        "cls": "",
+        "font": "13px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 26,
+        "color": "rgb(128, 128, 128)"
+      },
+      {
+        "tag": "LI",
+        "cls": "csPreviousPage",
+        "font": "14px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 0,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "A",
+        "cls": "",
+        "font": "13px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 26,
+        "color": "rgb(128, 128, 128)"
+      },
+      {
+        "tag": "LI",
+        "cls": "pageInfoBox",
+        "font": "14px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 0,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "A",
+        "cls": "",
+        "font": "13px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 26,
+        "color": "rgb(102, 102, 102)"
+      },
+      {
+        "tag": "LI",
+        "cls": "csNextPage disabled",
+        "font": "14px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 0,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "A",
+        "cls": "",
+        "font": "13px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 26,
+        "color": "rgb(195, 195, 195)"
+      },
+      {
+        "tag": "LI",
+        "cls": "csLastPage disabled",
+        "font": "14px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 0,
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "tag": "A",
+        "cls": "",
+        "font": "13px / 26px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "height": 26,
+        "color": "rgb(195, 195, 195)"
+      }
+    ]
+  }
+}

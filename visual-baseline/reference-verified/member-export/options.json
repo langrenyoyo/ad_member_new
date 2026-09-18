@@ -1,0 +1,22 @@
+{
+  "exportDataType": "all",
+  "exportTypes": [
+    "json",
+    "xml",
+    "csv",
+    "txt",
+    "doc",
+    "excel"
+  ],
+  "exportOptions": {
+    "fileName": "export_2026-09-17",
+    "preventInjection": false,
+    "mso": {
+      "onMsoNumberFormat": null
+    },
+    "ignoreColumn": [
+      0,
+      "operate"
+    ]
+  }
+}

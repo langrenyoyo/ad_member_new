@@ -1,0 +1,2283 @@
+[
+  {
+    "page": "ads",
+    "scope": "3 same ad records, collapsed filters, content area only",
+    "comparison_valid": true,
+    "mean_rgb": 0.26583883878133313,
+    "changed_pixel_ratio": 0.004626874245992991
+  },
+  {
+    "page": "ads-lookup-first",
+    "scope": "Lookup panel only, first; white padding for unequal image sizes; server scope unverified",
+    "reference_size": [
+      301,
+      337
+    ],
+    "local_size": [
+      301,
+      337
+    ],
+    "mean_rgb": 0.0009464002287133886,
+    "changed_pixel_ratio": 3.943334286305786e-05
+  },
+  {
+    "page": "ads-lookup-last",
+    "scope": "Lookup panel only, last; white padding for unequal image sizes; server scope unverified",
+    "reference_size": [
+      301,
+      93
+    ],
+    "local_size": [
+      301,
+      93
+    ],
+    "mean_rgb": 0.03925981495373843,
+    "changed_pixel_ratio": 0.0011074197120708748
+  },
+  {
+    "page": "ads-lookup-empty",
+    "scope": "Lookup panel only, empty; white padding for unequal image sizes; server scope unverified",
+    "reference_size": [
+      301,
+      47
+    ],
+    "local_size": [
+      301,
+      47
+    ],
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "page": "ads-lookup-agent-first",
+    "scope": "Lookup panel only, first; white padding for unequal image sizes; server scope unverified",
+    "reference_size": [
+      301,
+      337
+    ],
+    "local_size": [
+      301,
+      337
+    ],
+    "mean_rgb": 0.00033518341433599175,
+    "changed_pixel_ratio": 1.971667143152893e-05
+  },
+  {
+    "page": "ads-lookup-agent-last",
+    "scope": "Lookup panel only, last; white padding for unequal image sizes; server scope unverified",
+    "reference_size": [
+      301,
+      93
+    ],
+    "local_size": [
+      301,
+      93
+    ],
+    "mean_rgb": 0.04436823491587182,
+    "changed_pixel_ratio": 0.0015003750937734434
+  },
+  {
+    "page": "ads-lookup-agent-empty",
+    "scope": "Lookup panel only, empty; white padding for unequal image sizes; server scope unverified",
+    "reference_size": [
+      301,
+      47
+    ],
+    "local_size": [
+      301,
+      47
+    ],
+    "mean_rgb": 0.00014137272920053723,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "page": "subsidies",
+    "scope": "Three identical subsidy records, loaded images, collapsed filters; content area only",
+    "comparison_valid": true,
+    "browser_capture": true,
+    "rows": 3,
+    "reference_live": true,
+    "mean_rgb": 2.3460075448574327,
+    "changed_pixel_ratio": 0.0326558281151261,
+    "blocked_requests": []
+  },
+  {
+    "page": "member-lookup-agent-first",
+    "scope": "Lookup panel only, first; white padding for unequal image sizes; server scope unverified",
+    "reference_size": [
+      301,
+      337
+    ],
+    "local_size": [
+      301,
+      337
+    ],
+    "mean_rgb": 0.010449835858710331,
+    "changed_pixel_ratio": 0.00018730837859952482
+  },
+  {
+    "page": "member-lookup-agent-last",
+    "scope": "Lookup panel only, last; white padding for unequal image sizes; server scope unverified",
+    "reference_size": [
+      301,
+      93
+    ],
+    "local_size": [
+      301,
+      93
+    ],
+    "mean_rgb": 0.03925981495373843,
+    "changed_pixel_ratio": 0.0011074197120708748
+  },
+  {
+    "page": "member-lookup-agent-empty",
+    "scope": "Lookup panel only, empty; white padding for unequal image sizes; server scope unverified",
+    "reference_size": [
+      301,
+      47
+    ],
+    "local_size": [
+      301,
+      47
+    ],
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "page": "member-lookup-first",
+    "scope": "Lookup panel only, first; white padding for unequal image sizes; server scope unverified",
+    "reference_size": [
+      301,
+      337
+    ],
+    "local_size": [
+      300,
+      337
+    ],
+    "mean_rgb": 2.8448232236100566,
+    "changed_pixel_ratio": 0.056202371915573215
+  },
+  {
+    "page": "member-lookup-last",
+    "scope": "Lookup panel only, last; white padding for unequal image sizes; server scope unverified",
+    "reference_size": [
+      301,
+      93
+    ],
+    "local_size": [
+      300,
+      93
+    ],
+    "mean_rgb": 2.396170471189226,
+    "changed_pixel_ratio": 0.05454935162362019
+  },
+  {
+    "page": "member-lookup-empty",
+    "scope": "Lookup panel only, empty; white padding for unequal image sizes; server scope unverified",
+    "reference_size": [
+      301,
+      47
+    ],
+    "local_size": [
+      300,
+      47
+    ],
+    "mean_rgb": 1.854527461652647,
+    "changed_pixel_ratio": 0.034848377747932424
+  },
+  {
+    "page": "member-rebind",
+    "scope": "Relation editor with identical browser fixtures; server relation side effects unverified",
+    "mean_rgb": 0.2892805555555556,
+    "changed_pixel_ratio": 0.004975
+  },
+  {
+    "page": "member-basic-bottom",
+    "scope": "Synthetic basic tab only; no reference save or server-side business validation",
+    "changed_pixel_ratio": 0.012379166666666667,
+    "mean_rgb": 0.5545506944444445,
+    "threshold": 10,
+    "viewport": [
+      1920,
+      1080
+    ],
+    "crop_size": [
+      800,
+      600
+    ],
+    "geometry": {
+      "reference": {
+        "image_url": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 343.375,
+          "height": 33
+        },
+        "username": {
+          "x": 158.328125,
+          "y": 190,
+          "width": 483.328125,
+          "height": 33
+        },
+        "password": {
+          "x": 158.328125,
+          "y": 238,
+          "width": 483.328125,
+          "height": 33
+        },
+        "pay_password": {
+          "x": 158.328125,
+          "y": 286,
+          "width": 483.328125,
+          "height": 33
+        },
+        "name": {
+          "x": 158.328125,
+          "y": 334,
+          "width": 483.328125,
+          "height": 33
+        },
+        "device_id": {
+          "x": 158.328125,
+          "y": 382,
+          "width": 483.328125,
+          "height": 33
+        },
+        "sex": {
+          "x": 158.328125,
+          "y": 430,
+          "width": 483.328125,
+          "height": 33
+        },
+        "real_name": {
+          "x": 158.328125,
+          "y": 478,
+          "width": 483.328125,
+          "height": 33
+        },
+        "card_no": {
+          "x": 158.328125,
+          "y": 526,
+          "width": 483.328125,
+          "height": 33
+        },
+        "address": {
+          "x": 158.328125,
+          "y": 574,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_true": {
+          "x": 158.328125,
+          "y": 629,
+          "width": 34,
+          "height": 22
+        },
+        "realname_enable": {
+          "x": 158.328125,
+          "y": 673,
+          "width": 34,
+          "height": 22
+        },
+        "exchange_enable": {
+          "x": 158.328125,
+          "y": 717,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_enable": {
+          "x": 158.328125,
+          "y": 761,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_time": {
+          "x": 158.328125,
+          "y": 798,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_white": {
+          "x": 158.328125,
+          "y": 853,
+          "width": 34,
+          "height": 22
+        },
+        "status": {
+          "x": 158.328125,
+          "y": 897,
+          "width": 48,
+          "height": 22
+        },
+        "vip": {
+          "x": 158.328125,
+          "y": 934,
+          "width": 483.328125,
+          "height": 33
+        },
+        "otherlevel": {
+          "x": 158.328125,
+          "y": 982,
+          "width": 483.328125,
+          "height": 33
+        },
+        "bottom_field": {
+          "x": 718.328125,
+          "y": 709,
+          "width": 483.328125,
+          "height": 33
+        }
+      },
+      "local": {
+        "image_url": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 410.25,
+          "height": 33
+        },
+        "username": {
+          "x": 158.328125,
+          "y": 190,
+          "width": 483.328125,
+          "height": 33
+        },
+        "password": {
+          "x": 158.328125,
+          "y": 238,
+          "width": 483.328125,
+          "height": 33
+        },
+        "pay_password": {
+          "x": 158.328125,
+          "y": 286,
+          "width": 483.328125,
+          "height": 33
+        },
+        "name": {
+          "x": 158.328125,
+          "y": 334,
+          "width": 483.328125,
+          "height": 33
+        },
+        "device_id": {
+          "x": 158.328125,
+          "y": 382,
+          "width": 483.328125,
+          "height": 33
+        },
+        "sex": {
+          "x": 158.328125,
+          "y": 430,
+          "width": 483.328125,
+          "height": 33
+        },
+        "real_name": {
+          "x": 158.328125,
+          "y": 478,
+          "width": 483.328125,
+          "height": 33
+        },
+        "card_no": {
+          "x": 158.328125,
+          "y": 526,
+          "width": 483.328125,
+          "height": 33
+        },
+        "address": {
+          "x": 158.328125,
+          "y": 574,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_true": {
+          "x": 158.328125,
+          "y": 677,
+          "width": 34,
+          "height": 22
+        },
+        "realname_enable": {
+          "x": 158.328125,
+          "y": 721,
+          "width": 34,
+          "height": 22
+        },
+        "exchange_enable": {
+          "x": 158.328125,
+          "y": 765,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_enable": {
+          "x": 158.328125,
+          "y": 809,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_time": {
+          "x": 158.328125,
+          "y": 846,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_white": {
+          "x": 158.328125,
+          "y": 901,
+          "width": 34,
+          "height": 22
+        },
+        "status": {
+          "x": 158.328125,
+          "y": 945,
+          "width": 48,
+          "height": 22
+        },
+        "vip": {
+          "x": 158.328125,
+          "y": 982,
+          "width": 483.328125,
+          "height": 33
+        },
+        "otherlevel": {
+          "x": 158.328125,
+          "y": 1030,
+          "width": 483.328125,
+          "height": 33
+        },
+        "bottom_field": {
+          "x": 718.328125,
+          "y": 709,
+          "width": 483.328125,
+          "height": 33
+        }
+      }
+    }
+  },
+  {
+    "page": "member-time-time",
+    "scope": "Date picker crop at 2026-09-17 12:34:56; position within editor not certified",
+    "changed_pixel_ratio": 0.009904049917588887,
+    "mean_rgb": 0.6755062396986108,
+    "threshold": 10,
+    "viewport": [
+      1920,
+      1080
+    ],
+    "crop_size": [
+      248,
+      274
+    ],
+    "geometry": {
+      "reference": {
+        "image_url": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 343.375,
+          "height": 33
+        },
+        "username": {
+          "x": 158.328125,
+          "y": 190,
+          "width": 483.328125,
+          "height": 33
+        },
+        "password": {
+          "x": 158.328125,
+          "y": 238,
+          "width": 483.328125,
+          "height": 33
+        },
+        "pay_password": {
+          "x": 158.328125,
+          "y": 286,
+          "width": 483.328125,
+          "height": 33
+        },
+        "name": {
+          "x": 158.328125,
+          "y": 334,
+          "width": 483.328125,
+          "height": 33
+        },
+        "device_id": {
+          "x": 158.328125,
+          "y": 382,
+          "width": 483.328125,
+          "height": 33
+        },
+        "sex": {
+          "x": 158.328125,
+          "y": 430,
+          "width": 483.328125,
+          "height": 33
+        },
+        "real_name": {
+          "x": 158.328125,
+          "y": 478,
+          "width": 483.328125,
+          "height": 33
+        },
+        "card_no": {
+          "x": 158.328125,
+          "y": 526,
+          "width": 483.328125,
+          "height": 33
+        },
+        "address": {
+          "x": 158.328125,
+          "y": 574,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_true": {
+          "x": 158.328125,
+          "y": 629,
+          "width": 34,
+          "height": 22
+        },
+        "realname_enable": {
+          "x": 158.328125,
+          "y": 673,
+          "width": 34,
+          "height": 22
+        },
+        "exchange_enable": {
+          "x": 158.328125,
+          "y": 717,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_enable": {
+          "x": 158.328125,
+          "y": 761,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_time": {
+          "x": 158.328125,
+          "y": 798,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_white": {
+          "x": 158.328125,
+          "y": 853,
+          "width": 34,
+          "height": 22
+        },
+        "status": {
+          "x": 158.328125,
+          "y": 897,
+          "width": 48,
+          "height": 22
+        },
+        "vip": {
+          "x": 158.328125,
+          "y": 934,
+          "width": 483.328125,
+          "height": 33
+        },
+        "otherlevel": {
+          "x": 158.328125,
+          "y": 982,
+          "width": 483.328125,
+          "height": 33
+        },
+        "widget": {
+          "x": 718.328125,
+          "y": 478.5,
+          "width": 247,
+          "height": 273.5
+        }
+      },
+      "local": {
+        "image_url": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 410.25,
+          "height": 33
+        },
+        "username": {
+          "x": 158.328125,
+          "y": 190,
+          "width": 483.328125,
+          "height": 33
+        },
+        "password": {
+          "x": 158.328125,
+          "y": 238,
+          "width": 483.328125,
+          "height": 33
+        },
+        "pay_password": {
+          "x": 158.328125,
+          "y": 286,
+          "width": 483.328125,
+          "height": 33
+        },
+        "name": {
+          "x": 158.328125,
+          "y": 334,
+          "width": 483.328125,
+          "height": 33
+        },
+        "device_id": {
+          "x": 158.328125,
+          "y": 382,
+          "width": 483.328125,
+          "height": 33
+        },
+        "sex": {
+          "x": 158.328125,
+          "y": 430,
+          "width": 483.328125,
+          "height": 33
+        },
+        "real_name": {
+          "x": 158.328125,
+          "y": 478,
+          "width": 483.328125,
+          "height": 33
+        },
+        "card_no": {
+          "x": 158.328125,
+          "y": 526,
+          "width": 483.328125,
+          "height": 33
+        },
+        "address": {
+          "x": 158.328125,
+          "y": 574,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_true": {
+          "x": 158.328125,
+          "y": 677,
+          "width": 34,
+          "height": 22
+        },
+        "realname_enable": {
+          "x": 158.328125,
+          "y": 721,
+          "width": 34,
+          "height": 22
+        },
+        "exchange_enable": {
+          "x": 158.328125,
+          "y": 765,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_enable": {
+          "x": 158.328125,
+          "y": 809,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_time": {
+          "x": 158.328125,
+          "y": 846,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_white": {
+          "x": 158.328125,
+          "y": 901,
+          "width": 34,
+          "height": 22
+        },
+        "status": {
+          "x": 158.328125,
+          "y": 945,
+          "width": 48,
+          "height": 22
+        },
+        "vip": {
+          "x": 158.328125,
+          "y": 982,
+          "width": 483.328125,
+          "height": 33
+        },
+        "otherlevel": {
+          "x": 158.328125,
+          "y": 1030,
+          "width": 483.328125,
+          "height": 33
+        },
+        "widget": {
+          "x": 718.328125,
+          "y": 478.5,
+          "width": 247,
+          "height": 273.5
+        }
+      }
+    }
+  },
+  {
+    "page": "member-time-hours",
+    "scope": "Date picker crop at 2026-09-17 12:34:56; position within editor not certified",
+    "changed_pixel_ratio": 0.005119608553823849,
+    "mean_rgb": 0.29868913857677903,
+    "threshold": 10,
+    "viewport": [
+      1920,
+      1080
+    ],
+    "crop_size": [
+      248,
+      267
+    ],
+    "geometry": {
+      "reference": {
+        "image_url": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 343.375,
+          "height": 33
+        },
+        "username": {
+          "x": 158.328125,
+          "y": 190,
+          "width": 483.328125,
+          "height": 33
+        },
+        "password": {
+          "x": 158.328125,
+          "y": 238,
+          "width": 483.328125,
+          "height": 33
+        },
+        "pay_password": {
+          "x": 158.328125,
+          "y": 286,
+          "width": 483.328125,
+          "height": 33
+        },
+        "name": {
+          "x": 158.328125,
+          "y": 334,
+          "width": 483.328125,
+          "height": 33
+        },
+        "device_id": {
+          "x": 158.328125,
+          "y": 382,
+          "width": 483.328125,
+          "height": 33
+        },
+        "sex": {
+          "x": 158.328125,
+          "y": 430,
+          "width": 483.328125,
+          "height": 33
+        },
+        "real_name": {
+          "x": 158.328125,
+          "y": 478,
+          "width": 483.328125,
+          "height": 33
+        },
+        "card_no": {
+          "x": 158.328125,
+          "y": 526,
+          "width": 483.328125,
+          "height": 33
+        },
+        "address": {
+          "x": 158.328125,
+          "y": 574,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_true": {
+          "x": 158.328125,
+          "y": 629,
+          "width": 34,
+          "height": 22
+        },
+        "realname_enable": {
+          "x": 158.328125,
+          "y": 673,
+          "width": 34,
+          "height": 22
+        },
+        "exchange_enable": {
+          "x": 158.328125,
+          "y": 717,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_enable": {
+          "x": 158.328125,
+          "y": 761,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_time": {
+          "x": 158.328125,
+          "y": 798,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_white": {
+          "x": 158.328125,
+          "y": 853,
+          "width": 34,
+          "height": 22
+        },
+        "status": {
+          "x": 158.328125,
+          "y": 897,
+          "width": 48,
+          "height": 22
+        },
+        "vip": {
+          "x": 158.328125,
+          "y": 934,
+          "width": 483.328125,
+          "height": 33
+        },
+        "otherlevel": {
+          "x": 158.328125,
+          "y": 982,
+          "width": 483.328125,
+          "height": 33
+        },
+        "widget": {
+          "x": 718.328125,
+          "y": 485.5,
+          "width": 247,
+          "height": 266.5
+        }
+      },
+      "local": {
+        "image_url": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 410.25,
+          "height": 33
+        },
+        "username": {
+          "x": 158.328125,
+          "y": 190,
+          "width": 483.328125,
+          "height": 33
+        },
+        "password": {
+          "x": 158.328125,
+          "y": 238,
+          "width": 483.328125,
+          "height": 33
+        },
+        "pay_password": {
+          "x": 158.328125,
+          "y": 286,
+          "width": 483.328125,
+          "height": 33
+        },
+        "name": {
+          "x": 158.328125,
+          "y": 334,
+          "width": 483.328125,
+          "height": 33
+        },
+        "device_id": {
+          "x": 158.328125,
+          "y": 382,
+          "width": 483.328125,
+          "height": 33
+        },
+        "sex": {
+          "x": 158.328125,
+          "y": 430,
+          "width": 483.328125,
+          "height": 33
+        },
+        "real_name": {
+          "x": 158.328125,
+          "y": 478,
+          "width": 483.328125,
+          "height": 33
+        },
+        "card_no": {
+          "x": 158.328125,
+          "y": 526,
+          "width": 483.328125,
+          "height": 33
+        },
+        "address": {
+          "x": 158.328125,
+          "y": 574,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_true": {
+          "x": 158.328125,
+          "y": 677,
+          "width": 34,
+          "height": 22
+        },
+        "realname_enable": {
+          "x": 158.328125,
+          "y": 721,
+          "width": 34,
+          "height": 22
+        },
+        "exchange_enable": {
+          "x": 158.328125,
+          "y": 765,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_enable": {
+          "x": 158.328125,
+          "y": 809,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_time": {
+          "x": 158.328125,
+          "y": 846,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_white": {
+          "x": 158.328125,
+          "y": 901,
+          "width": 34,
+          "height": 22
+        },
+        "status": {
+          "x": 158.328125,
+          "y": 945,
+          "width": 48,
+          "height": 22
+        },
+        "vip": {
+          "x": 158.328125,
+          "y": 982,
+          "width": 483.328125,
+          "height": 33
+        },
+        "otherlevel": {
+          "x": 158.328125,
+          "y": 1030,
+          "width": 483.328125,
+          "height": 33
+        },
+        "widget": {
+          "x": 718.328125,
+          "y": 485.5,
+          "width": 247,
+          "height": 266.5
+        }
+      }
+    }
+  },
+  {
+    "page": "member-time-minutes",
+    "scope": "Date picker crop at 2026-09-17 12:34:56; position within editor not certified",
+    "changed_pixel_ratio": 0.005750646522390091,
+    "mean_rgb": 0.33617462910031304,
+    "threshold": 10,
+    "viewport": [
+      1920,
+      1080
+    ],
+    "crop_size": [
+      248,
+      237
+    ],
+    "geometry": {
+      "reference": {
+        "image_url": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 343.375,
+          "height": 33
+        },
+        "username": {
+          "x": 158.328125,
+          "y": 190,
+          "width": 483.328125,
+          "height": 33
+        },
+        "password": {
+          "x": 158.328125,
+          "y": 238,
+          "width": 483.328125,
+          "height": 33
+        },
+        "pay_password": {
+          "x": 158.328125,
+          "y": 286,
+          "width": 483.328125,
+          "height": 33
+        },
+        "name": {
+          "x": 158.328125,
+          "y": 334,
+          "width": 483.328125,
+          "height": 33
+        },
+        "device_id": {
+          "x": 158.328125,
+          "y": 382,
+          "width": 483.328125,
+          "height": 33
+        },
+        "sex": {
+          "x": 158.328125,
+          "y": 430,
+          "width": 483.328125,
+          "height": 33
+        },
+        "real_name": {
+          "x": 158.328125,
+          "y": 478,
+          "width": 483.328125,
+          "height": 33
+        },
+        "card_no": {
+          "x": 158.328125,
+          "y": 526,
+          "width": 483.328125,
+          "height": 33
+        },
+        "address": {
+          "x": 158.328125,
+          "y": 574,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_true": {
+          "x": 158.328125,
+          "y": 629,
+          "width": 34,
+          "height": 22
+        },
+        "realname_enable": {
+          "x": 158.328125,
+          "y": 673,
+          "width": 34,
+          "height": 22
+        },
+        "exchange_enable": {
+          "x": 158.328125,
+          "y": 717,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_enable": {
+          "x": 158.328125,
+          "y": 761,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_time": {
+          "x": 158.328125,
+          "y": 798,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_white": {
+          "x": 158.328125,
+          "y": 853,
+          "width": 34,
+          "height": 22
+        },
+        "status": {
+          "x": 158.328125,
+          "y": 897,
+          "width": 48,
+          "height": 22
+        },
+        "vip": {
+          "x": 158.328125,
+          "y": 934,
+          "width": 483.328125,
+          "height": 33
+        },
+        "otherlevel": {
+          "x": 158.328125,
+          "y": 982,
+          "width": 483.328125,
+          "height": 33
+        },
+        "widget": {
+          "x": 718.328125,
+          "y": 515.5,
+          "width": 247,
+          "height": 236.5
+        }
+      },
+      "local": {
+        "image_url": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 410.25,
+          "height": 33
+        },
+        "username": {
+          "x": 158.328125,
+          "y": 190,
+          "width": 483.328125,
+          "height": 33
+        },
+        "password": {
+          "x": 158.328125,
+          "y": 238,
+          "width": 483.328125,
+          "height": 33
+        },
+        "pay_password": {
+          "x": 158.328125,
+          "y": 286,
+          "width": 483.328125,
+          "height": 33
+        },
+        "name": {
+          "x": 158.328125,
+          "y": 334,
+          "width": 483.328125,
+          "height": 33
+        },
+        "device_id": {
+          "x": 158.328125,
+          "y": 382,
+          "width": 483.328125,
+          "height": 33
+        },
+        "sex": {
+          "x": 158.328125,
+          "y": 430,
+          "width": 483.328125,
+          "height": 33
+        },
+        "real_name": {
+          "x": 158.328125,
+          "y": 478,
+          "width": 483.328125,
+          "height": 33
+        },
+        "card_no": {
+          "x": 158.328125,
+          "y": 526,
+          "width": 483.328125,
+          "height": 33
+        },
+        "address": {
+          "x": 158.328125,
+          "y": 574,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_true": {
+          "x": 158.328125,
+          "y": 677,
+          "width": 34,
+          "height": 22
+        },
+        "realname_enable": {
+          "x": 158.328125,
+          "y": 721,
+          "width": 34,
+          "height": 22
+        },
+        "exchange_enable": {
+          "x": 158.328125,
+          "y": 765,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_enable": {
+          "x": 158.328125,
+          "y": 809,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_time": {
+          "x": 158.328125,
+          "y": 846,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_white": {
+          "x": 158.328125,
+          "y": 901,
+          "width": 34,
+          "height": 22
+        },
+        "status": {
+          "x": 158.328125,
+          "y": 945,
+          "width": 48,
+          "height": 22
+        },
+        "vip": {
+          "x": 158.328125,
+          "y": 982,
+          "width": 483.328125,
+          "height": 33
+        },
+        "otherlevel": {
+          "x": 158.328125,
+          "y": 1030,
+          "width": 483.328125,
+          "height": 33
+        },
+        "widget": {
+          "x": 718.328125,
+          "y": 515.5,
+          "width": 247,
+          "height": 236.5
+        }
+      }
+    }
+  },
+  {
+    "page": "member-time-seconds",
+    "scope": "Date picker crop at 2026-09-17 12:34:56; position within editor not certified",
+    "changed_pixel_ratio": 0.005750646522390091,
+    "mean_rgb": 0.33617462910031304,
+    "threshold": 10,
+    "viewport": [
+      1920,
+      1080
+    ],
+    "crop_size": [
+      248,
+      237
+    ],
+    "geometry": {
+      "reference": {
+        "image_url": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 343.375,
+          "height": 33
+        },
+        "username": {
+          "x": 158.328125,
+          "y": 190,
+          "width": 483.328125,
+          "height": 33
+        },
+        "password": {
+          "x": 158.328125,
+          "y": 238,
+          "width": 483.328125,
+          "height": 33
+        },
+        "pay_password": {
+          "x": 158.328125,
+          "y": 286,
+          "width": 483.328125,
+          "height": 33
+        },
+        "name": {
+          "x": 158.328125,
+          "y": 334,
+          "width": 483.328125,
+          "height": 33
+        },
+        "device_id": {
+          "x": 158.328125,
+          "y": 382,
+          "width": 483.328125,
+          "height": 33
+        },
+        "sex": {
+          "x": 158.328125,
+          "y": 430,
+          "width": 483.328125,
+          "height": 33
+        },
+        "real_name": {
+          "x": 158.328125,
+          "y": 478,
+          "width": 483.328125,
+          "height": 33
+        },
+        "card_no": {
+          "x": 158.328125,
+          "y": 526,
+          "width": 483.328125,
+          "height": 33
+        },
+        "address": {
+          "x": 158.328125,
+          "y": 574,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_true": {
+          "x": 158.328125,
+          "y": 629,
+          "width": 34,
+          "height": 22
+        },
+        "realname_enable": {
+          "x": 158.328125,
+          "y": 673,
+          "width": 34,
+          "height": 22
+        },
+        "exchange_enable": {
+          "x": 158.328125,
+          "y": 717,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_enable": {
+          "x": 158.328125,
+          "y": 761,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_time": {
+          "x": 158.328125,
+          "y": 798,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_white": {
+          "x": 158.328125,
+          "y": 853,
+          "width": 34,
+          "height": 22
+        },
+        "status": {
+          "x": 158.328125,
+          "y": 897,
+          "width": 48,
+          "height": 22
+        },
+        "vip": {
+          "x": 158.328125,
+          "y": 934,
+          "width": 483.328125,
+          "height": 33
+        },
+        "otherlevel": {
+          "x": 158.328125,
+          "y": 982,
+          "width": 483.328125,
+          "height": 33
+        },
+        "widget": {
+          "x": 718.328125,
+          "y": 515.5,
+          "width": 247,
+          "height": 236.5
+        }
+      },
+      "local": {
+        "image_url": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 410.25,
+          "height": 33
+        },
+        "username": {
+          "x": 158.328125,
+          "y": 190,
+          "width": 483.328125,
+          "height": 33
+        },
+        "password": {
+          "x": 158.328125,
+          "y": 238,
+          "width": 483.328125,
+          "height": 33
+        },
+        "pay_password": {
+          "x": 158.328125,
+          "y": 286,
+          "width": 483.328125,
+          "height": 33
+        },
+        "name": {
+          "x": 158.328125,
+          "y": 334,
+          "width": 483.328125,
+          "height": 33
+        },
+        "device_id": {
+          "x": 158.328125,
+          "y": 382,
+          "width": 483.328125,
+          "height": 33
+        },
+        "sex": {
+          "x": 158.328125,
+          "y": 430,
+          "width": 483.328125,
+          "height": 33
+        },
+        "real_name": {
+          "x": 158.328125,
+          "y": 478,
+          "width": 483.328125,
+          "height": 33
+        },
+        "card_no": {
+          "x": 158.328125,
+          "y": 526,
+          "width": 483.328125,
+          "height": 33
+        },
+        "address": {
+          "x": 158.328125,
+          "y": 574,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_true": {
+          "x": 158.328125,
+          "y": 677,
+          "width": 34,
+          "height": 22
+        },
+        "realname_enable": {
+          "x": 158.328125,
+          "y": 721,
+          "width": 34,
+          "height": 22
+        },
+        "exchange_enable": {
+          "x": 158.328125,
+          "y": 765,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_enable": {
+          "x": 158.328125,
+          "y": 809,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_time": {
+          "x": 158.328125,
+          "y": 846,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_white": {
+          "x": 158.328125,
+          "y": 901,
+          "width": 34,
+          "height": 22
+        },
+        "status": {
+          "x": 158.328125,
+          "y": 945,
+          "width": 48,
+          "height": 22
+        },
+        "vip": {
+          "x": 158.328125,
+          "y": 982,
+          "width": 483.328125,
+          "height": 33
+        },
+        "otherlevel": {
+          "x": 158.328125,
+          "y": 1030,
+          "width": 483.328125,
+          "height": 33
+        },
+        "widget": {
+          "x": 718.328125,
+          "y": 515.5,
+          "width": 247,
+          "height": 236.5
+        }
+      }
+    }
+  },
+  {
+    "page": "member-date-picker",
+    "scope": "Date picker crop at 2026-09-17 12:34:56; position within editor not certified",
+    "changed_pixel_ratio": 0.0053197509903791735,
+    "mean_rgb": 0.4516553480475382,
+    "threshold": 10,
+    "viewport": [
+      1920,
+      1080
+    ],
+    "crop_size": [
+      248,
+      285
+    ],
+    "geometry": {
+      "reference": {
+        "image_url": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 343.375,
+          "height": 33
+        },
+        "username": {
+          "x": 158.328125,
+          "y": 190,
+          "width": 483.328125,
+          "height": 33
+        },
+        "password": {
+          "x": 158.328125,
+          "y": 238,
+          "width": 483.328125,
+          "height": 33
+        },
+        "pay_password": {
+          "x": 158.328125,
+          "y": 286,
+          "width": 483.328125,
+          "height": 33
+        },
+        "name": {
+          "x": 158.328125,
+          "y": 334,
+          "width": 483.328125,
+          "height": 33
+        },
+        "device_id": {
+          "x": 158.328125,
+          "y": 382,
+          "width": 483.328125,
+          "height": 33
+        },
+        "sex": {
+          "x": 158.328125,
+          "y": 430,
+          "width": 483.328125,
+          "height": 33
+        },
+        "real_name": {
+          "x": 158.328125,
+          "y": 478,
+          "width": 483.328125,
+          "height": 33
+        },
+        "card_no": {
+          "x": 158.328125,
+          "y": 526,
+          "width": 483.328125,
+          "height": 33
+        },
+        "address": {
+          "x": 158.328125,
+          "y": 574,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_true": {
+          "x": 158.328125,
+          "y": 629,
+          "width": 34,
+          "height": 22
+        },
+        "realname_enable": {
+          "x": 158.328125,
+          "y": 673,
+          "width": 34,
+          "height": 22
+        },
+        "exchange_enable": {
+          "x": 158.328125,
+          "y": 717,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_enable": {
+          "x": 158.328125,
+          "y": 761,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_time": {
+          "x": 158.328125,
+          "y": 798,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_white": {
+          "x": 158.328125,
+          "y": 853,
+          "width": 34,
+          "height": 22
+        },
+        "status": {
+          "x": 158.328125,
+          "y": 897,
+          "width": 48,
+          "height": 22
+        },
+        "vip": {
+          "x": 158.328125,
+          "y": 934,
+          "width": 483.328125,
+          "height": 33
+        },
+        "otherlevel": {
+          "x": 158.328125,
+          "y": 982,
+          "width": 483.328125,
+          "height": 33
+        },
+        "widget": {
+          "x": 718.328125,
+          "y": 467.5,
+          "width": 247,
+          "height": 284.5
+        }
+      },
+      "local": {
+        "image_url": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 410.25,
+          "height": 33
+        },
+        "username": {
+          "x": 158.328125,
+          "y": 190,
+          "width": 483.328125,
+          "height": 33
+        },
+        "password": {
+          "x": 158.328125,
+          "y": 238,
+          "width": 483.328125,
+          "height": 33
+        },
+        "pay_password": {
+          "x": 158.328125,
+          "y": 286,
+          "width": 483.328125,
+          "height": 33
+        },
+        "name": {
+          "x": 158.328125,
+          "y": 334,
+          "width": 483.328125,
+          "height": 33
+        },
+        "device_id": {
+          "x": 158.328125,
+          "y": 382,
+          "width": 483.328125,
+          "height": 33
+        },
+        "sex": {
+          "x": 158.328125,
+          "y": 430,
+          "width": 483.328125,
+          "height": 33
+        },
+        "real_name": {
+          "x": 158.328125,
+          "y": 478,
+          "width": 483.328125,
+          "height": 33
+        },
+        "card_no": {
+          "x": 158.328125,
+          "y": 526,
+          "width": 483.328125,
+          "height": 33
+        },
+        "address": {
+          "x": 158.328125,
+          "y": 574,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_true": {
+          "x": 158.328125,
+          "y": 677,
+          "width": 34,
+          "height": 22
+        },
+        "realname_enable": {
+          "x": 158.328125,
+          "y": 721,
+          "width": 34,
+          "height": 22
+        },
+        "exchange_enable": {
+          "x": 158.328125,
+          "y": 765,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_enable": {
+          "x": 158.328125,
+          "y": 809,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_time": {
+          "x": 158.328125,
+          "y": 846,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_white": {
+          "x": 158.328125,
+          "y": 901,
+          "width": 34,
+          "height": 22
+        },
+        "status": {
+          "x": 158.328125,
+          "y": 945,
+          "width": 48,
+          "height": 22
+        },
+        "vip": {
+          "x": 158.328125,
+          "y": 982,
+          "width": 483.328125,
+          "height": 33
+        },
+        "otherlevel": {
+          "x": 158.328125,
+          "y": 1030,
+          "width": 483.328125,
+          "height": 33
+        },
+        "widget": {
+          "x": 718.328125,
+          "y": 467.5,
+          "width": 247,
+          "height": 284.5
+        }
+      }
+    }
+  },
+  {
+    "page": "member-basic",
+    "scope": "Synthetic basic tab only; no reference save or server-side business validation",
+    "changed_pixel_ratio": 0.024025,
+    "mean_rgb": 1.3550638888888888,
+    "threshold": 10,
+    "viewport": [
+      1920,
+      1080
+    ],
+    "crop_size": [
+      800,
+      600
+    ],
+    "geometry": {
+      "reference": {
+        "image_url": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 343.375,
+          "height": 33
+        },
+        "username": {
+          "x": 158.328125,
+          "y": 190,
+          "width": 483.328125,
+          "height": 33
+        },
+        "password": {
+          "x": 158.328125,
+          "y": 238,
+          "width": 483.328125,
+          "height": 33
+        },
+        "pay_password": {
+          "x": 158.328125,
+          "y": 286,
+          "width": 483.328125,
+          "height": 33
+        },
+        "name": {
+          "x": 158.328125,
+          "y": 334,
+          "width": 483.328125,
+          "height": 33
+        },
+        "device_id": {
+          "x": 158.328125,
+          "y": 382,
+          "width": 483.328125,
+          "height": 33
+        },
+        "sex": {
+          "x": 158.328125,
+          "y": 430,
+          "width": 483.328125,
+          "height": 33
+        },
+        "real_name": {
+          "x": 158.328125,
+          "y": 478,
+          "width": 483.328125,
+          "height": 33
+        },
+        "card_no": {
+          "x": 158.328125,
+          "y": 526,
+          "width": 483.328125,
+          "height": 33
+        },
+        "address": {
+          "x": 158.328125,
+          "y": 574,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_true": {
+          "x": 158.328125,
+          "y": 629,
+          "width": 34,
+          "height": 22
+        },
+        "realname_enable": {
+          "x": 158.328125,
+          "y": 673,
+          "width": 34,
+          "height": 22
+        },
+        "exchange_enable": {
+          "x": 158.328125,
+          "y": 717,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_enable": {
+          "x": 158.328125,
+          "y": 761,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_time": {
+          "x": 158.328125,
+          "y": 798,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_white": {
+          "x": 158.328125,
+          "y": 853,
+          "width": 34,
+          "height": 22
+        },
+        "status": {
+          "x": 158.328125,
+          "y": 897,
+          "width": 48,
+          "height": 22
+        },
+        "vip": {
+          "x": 158.328125,
+          "y": 934,
+          "width": 483.328125,
+          "height": 33
+        },
+        "otherlevel": {
+          "x": 158.328125,
+          "y": 982,
+          "width": 483.328125,
+          "height": 33
+        }
+      },
+      "local": {
+        "image_url": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 410.25,
+          "height": 33
+        },
+        "username": {
+          "x": 158.328125,
+          "y": 190,
+          "width": 483.328125,
+          "height": 33
+        },
+        "password": {
+          "x": 158.328125,
+          "y": 238,
+          "width": 483.328125,
+          "height": 33
+        },
+        "pay_password": {
+          "x": 158.328125,
+          "y": 286,
+          "width": 483.328125,
+          "height": 33
+        },
+        "name": {
+          "x": 158.328125,
+          "y": 334,
+          "width": 483.328125,
+          "height": 33
+        },
+        "device_id": {
+          "x": 158.328125,
+          "y": 382,
+          "width": 483.328125,
+          "height": 33
+        },
+        "sex": {
+          "x": 158.328125,
+          "y": 430,
+          "width": 483.328125,
+          "height": 33
+        },
+        "real_name": {
+          "x": 158.328125,
+          "y": 478,
+          "width": 483.328125,
+          "height": 33
+        },
+        "card_no": {
+          "x": 158.328125,
+          "y": 526,
+          "width": 483.328125,
+          "height": 33
+        },
+        "address": {
+          "x": 158.328125,
+          "y": 574,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_true": {
+          "x": 158.328125,
+          "y": 677,
+          "width": 34,
+          "height": 22
+        },
+        "realname_enable": {
+          "x": 158.328125,
+          "y": 721,
+          "width": 34,
+          "height": 22
+        },
+        "exchange_enable": {
+          "x": 158.328125,
+          "y": 765,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_enable": {
+          "x": 158.328125,
+          "y": 809,
+          "width": 34,
+          "height": 22
+        },
+        "game_addiction_time": {
+          "x": 158.328125,
+          "y": 846,
+          "width": 483.328125,
+          "height": 33
+        },
+        "is_white": {
+          "x": 158.328125,
+          "y": 901,
+          "width": 34,
+          "height": 22
+        },
+        "status": {
+          "x": 158.328125,
+          "y": 945,
+          "width": 48,
+          "height": 22
+        },
+        "vip": {
+          "x": 158.328125,
+          "y": 982,
+          "width": 483.328125,
+          "height": 33
+        },
+        "otherlevel": {
+          "x": 158.328125,
+          "y": 1030,
+          "width": 483.328125,
+          "height": 33
+        }
+      }
+    }
+  },
+  {
+    "page": "member-agent",
+    "scope": "Synthetic agent tab only; no reference save or server-side business validation",
+    "changed_pixel_ratio": 0.00596875,
+    "mean_rgb": 0.11278333333333333,
+    "threshold": 10,
+    "viewport": [
+      1920,
+      1080
+    ],
+    "crop_size": [
+      800,
+      600
+    ],
+    "geometry": {
+      "reference": {
+        "ht_status": {
+          "x": 158.328125,
+          "y": 149,
+          "width": 34,
+          "height": 22
+        },
+        "percent_zhi": {
+          "x": 158.328125,
+          "y": 186,
+          "width": 483.328125,
+          "height": 33
+        },
+        "percent_jian": {
+          "x": 158.328125,
+          "y": 252,
+          "width": 483.328125,
+          "height": 33
+        },
+        "percent_dai": {
+          "x": 158.328125,
+          "y": 318,
+          "width": 483.328125,
+          "height": 33
+        },
+        "percent_dai_two": {
+          "x": 158.328125,
+          "y": 384,
+          "width": 483.328125,
+          "height": 33
+        }
+      },
+      "local": {
+        "ht_status": {
+          "x": 158.328125,
+          "y": 149,
+          "width": 34,
+          "height": 22
+        },
+        "percent_zhi": {
+          "x": 158.328125,
+          "y": 186,
+          "width": 483.328125,
+          "height": 33
+        },
+        "percent_jian": {
+          "x": 158.328125,
+          "y": 252,
+          "width": 483.328125,
+          "height": 33
+        },
+        "percent_dai": {
+          "x": 158.328125,
+          "y": 318,
+          "width": 483.328125,
+          "height": 33
+        },
+        "percent_dai_two": {
+          "x": 158.328125,
+          "y": 384,
+          "width": 483.328125,
+          "height": 33
+        }
+      }
+    }
+  },
+  {
+    "page": "member-download",
+    "scope": "Synthetic download tab only; no reference save or server-side business validation",
+    "changed_pixel_ratio": 0.00595625,
+    "mean_rgb": 0.11096875,
+    "threshold": 10,
+    "viewport": [
+      1920,
+      1080
+    ],
+    "crop_size": [
+      800,
+      600
+    ],
+    "geometry": {
+      "reference": {
+        "down_load": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 483.328125,
+          "height": 33
+        }
+      },
+      "local": {
+        "down_load": {
+          "x": 158.328125,
+          "y": 142,
+          "width": 483.328125,
+          "height": 33
+        }
+      }
+    }
+  },
+  {
+    "page": "member-lottery",
+    "scope": "Synthetic lottery tab only; no reference save or server-side business validation",
+    "changed_pixel_ratio": 0.008122916666666667,
+    "mean_rgb": 0.2005,
+    "threshold": 10,
+    "viewport": [
+      1920,
+      1080
+    ],
+    "crop_size": [
+      800,
+      600
+    ],
+    "geometry": {
+      "reference": {
+        "raffle_open": {
+          "x": 158.328125,
+          "y": 149,
+          "width": 48,
+          "height": 22
+        },
+        "raffle_num": {
+          "x": 158.328125,
+          "y": 208,
+          "width": 445.328125,
+          "height": 33
+        },
+        "star_countdown": {
+          "x": 158.328125,
+          "y": 274,
+          "width": 47.328125,
+          "height": 33
+        },
+        "over_countdown": {
+          "x": 321.328125,
+          "y": 274,
+          "width": 47.328125,
+          "height": 33
+        },
+        "raffle_num2": {
+          "x": 158.328125,
+          "y": 322,
+          "width": 445.328125,
+          "height": 33
+        },
+        "star_countdown2": {
+          "x": 158.328125,
+          "y": 370,
+          "width": 47.328125,
+          "height": 33
+        },
+        "over_countdown2": {
+          "x": 321.328125,
+          "y": 370,
+          "width": 47.328125,
+          "height": 33
+        }
+      },
+      "local": {
+        "raffle_open": {
+          "x": 158.328125,
+          "y": 149,
+          "width": 48,
+          "height": 22
+        },
+        "raffle_num": {
+          "x": 158.328125,
+          "y": 208,
+          "width": 445.328125,
+          "height": 33
+        },
+        "star_countdown": {
+          "x": 158.328125,
+          "y": 274,
+          "width": 47.328125,
+          "height": 33
+        },
+        "over_countdown": {
+          "x": 321.328125,
+          "y": 274,
+          "width": 47.328125,
+          "height": 33
+        },
+        "raffle_num2": {
+          "x": 158.328125,
+          "y": 322,
+          "width": 445.328125,
+          "height": 33
+        },
+        "star_countdown2": {
+          "x": 158.328125,
+          "y": 370,
+          "width": 47.328125,
+          "height": 33
+        },
+        "over_countdown2": {
+          "x": 321.328125,
+          "y": 370,
+          "width": 47.328125,
+          "height": 33
+        }
+      }
+    }
+  },
+  {
+    "page": "member-coin",
+    "scope": "coin dialog only at 800x600, same two synthetic values; reference form read-only; no submission parity certification",
+    "mean_rgb": 0.28124513888888886,
+    "changed_pixel_ratio": 0.0046479166666666665,
+    "minimized_changed_pixel_ratio": 0.054814814814814816
+  },
+  {
+    "page": "member-calendar",
+    "scope": "member calendar open with identical explicit September 2026 range and 3 rows; no backend or permissions certification",
+    "mean_rgb": 3.142816874437487,
+    "changed_pixel_ratio": 0.04196645027862354
+  },
+  {
+    "page": "member-card",
+    "scope": "member card view with 3 identical browser fixtures, fixed viewport clips lower rows; no backend or permissions certification",
+    "mean_rgb": 3.0936000842572913,
+    "changed_pixel_ratio": 0.03443557189636353
+  },
+  {
+    "page": "dashboard",
+    "scope": "dashboard content only, identical browser fixture; does not certify backend parity",
+    "mean_rgb": 0.11194098159744165,
+    "changed_pixel_ratio": 0.0010909404262652955
+  },
+  {
+    "page": "agent-dashboard",
+    "scope": "agent dashboard content with identical 31-day fixture; backend and destination pages not certified",
+    "mean_rgb": 0.30631412650083295,
+    "changed_pixel_ratio": 0.003280289538691331
+  },
+  {
+    "page": "agents",
+    "scope": "agent list with identical fixture; backend not certified",
+    "mean_rgb": 2.058194787537581,
+    "changed_pixel_ratio": 0.0208588498879761
+  },
+  {
+    "page": "login",
+    "scope": "login empty state at 1920x1080, no submission",
+    "mean_rgb": 0.0,
+    "changed_pixel_ratio": 0.0
+  },
+  {
+    "page": "withdrawals",
+    "scope": "withdrawal list, 3 identical records with filters collapsed; backend not certified",
+    "mean_rgb": 2.938163574041095,
+    "changed_pixel_ratio": 0.03793933475038778
+  },
+  {
+    "page": "members",
+    "scope": "member list with 3 identical browser fixtures; no backend or permissions certification",
+    "mean_rgb": 2.418974741962046,
+    "changed_pixel_ratio": 0.0294283908772333
+  }
+]

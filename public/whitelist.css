@@ -1,0 +1,75 @@
+.whitelist-view .topbar{display:none}
+.whitelist-view .content{padding:15px}
+.whitelist-view .whitelist-panel{padding:15px;border-radius:3px;color:#333;font:14px/22.001px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.whitelist-panel #whitelistFilters{grid-template-columns:repeat(4,minmax(0,1fr));gap:15px 0;margin:0 -15px;padding:0 0 15px}
+.whitelist-panel #whitelistFilters[hidden]{display:none}
+.whitelist-panel #whitelistFilters>label{display:grid;grid-template-columns:33.33333333% 66.66666667%;align-items:start;gap:0;padding:0 15px;margin:0;min-width:0;font-weight:400}
+.whitelist-panel #whitelistFilters>label>span{width:auto;padding:7px 15px 0;font:400 14px/22.001px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.whitelist-panel #whitelistFilters input,.whitelist-panel #whitelistFilters select{height:33px;width:calc(100% - 30px);margin:0 15px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.whitelist-panel #whitelistFilters input::placeholder{color:#999;opacity:1}
+.whitelist-panel #whitelistFilters .sp_container{min-width:0;width:calc(100% - 30px);margin:0 15px}
+.whitelist-panel #whitelistFilters .sp_container input{width:100%;margin:0;padding:4px 25px 4px 12px;border-color:#ccc}
+.whitelist-panel #whitelistFilters .sp_container input.sp_hidden{display:none}
+.whitelist-panel #whitelistFilters .sp_clear_btn{padding:0}
+.whitelist-panel #whitelistFilters .ads-filter-actions{grid-column:auto;padding-left:calc(33.333333% + 20px);gap:4px}
+.whitelist-panel #whitelistFilters .ads-filter-actions button{height:32.5625px;border-radius:3px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.whitelist-panel #whitelistFilters .ads-submit{background:#18bc9c!important;border-color:#18bc9c!important}
+.whitelist-panel #whitelistFilters>label:has(select){position:relative}
+.whitelist-panel #whitelistFilters select{appearance:none;padding-right:25px}
+.whitelist-panel #whitelistFilters>label:has(select):after{content:'';position:absolute;right:38px;top:15px;border-top:4px solid #000;border-right:3px solid transparent;border-left:3px solid transparent;pointer-events:none}
+.whitelist-panel .ads-refresh{border-radius:3px}
+.whitelist-panel .ads-refresh .shell-icon{width:auto}
+.whitelist-panel .game-user-table-tools{gap:0;align-self:flex-start}
+.whitelist-panel .game-user-table-tools>button,.whitelist-panel .game-user-table-tools summary{height:32.5625px;padding:6px 12px;color:#444;background:#f4f4f4;border:1px solid #ddd;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.whitelist-panel .game-user-table-tools details{margin-left:-1px}
+.whitelist-panel .game-user-table-tools summary{border-radius:0}
+.whitelist-panel .game-user-table-tools [data-action=cards]{border-radius:3px 0 0 3px}
+.whitelist-panel .game-user-table-tools .game-user-export summary{border-radius:0 4px 4px 0}
+.whitelist-panel .game-user-table-tools .caret{display:inline-block;vertical-align:middle;margin-left:0;border-top:4px dashed;border-right:4px solid transparent;border-left:4px solid transparent}
+.whitelist-panel #whitelistTable .ads-table th,.whitelist-panel #whitelistTable .ads-table td{text-align:center;border-color:#f4f4f4}
+.whitelist-panel #whitelistTable .ads-table td{height:47px}
+.whitelist-panel #whitelistTable .ads-table th{color:#333;border-bottom-color:#ddd}
+.whitelist-panel #whitelistTable .ads-table th button{padding:8px 15px}
+.whitelist-panel #whitelistTable .ads-table [data-field=game_name],.whitelist-panel #whitelistTable .ads-table [data-field=agent_name],.whitelist-panel #whitelistTable .ads-table [data-field=name]{text-align:left}
+.whitelist-panel #whitelistTable .ads-table [data-field=member_actions]{white-space:nowrap}
+.whitelist-panel #whitelistTable .ads-table th[aria-sort] button:before,.whitelist-panel #whitelistTable .ads-table th[aria-sort] button:after{display:none}
+.whitelist-panel #whitelistTable .ads-table th[aria-sort] button{background:right center no-repeat url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAAkElEQVQoz7XQMQ5AQBCF4dWQSJxC5wwax1Cq1e7BAdxD5SL+Tq/QCM1oNiJidwox0355mXnG/DrEtIQ6azioNZQxI0ykPhTQIwhCR+BmBYtlK7kLJYwWCcJA9M4qdrZrd8pPjZWPtOqdRQy320YSV17OatFC4euts6z39GYMKRPCTKY9UnPQ6P+GtMRfGtPnBCiqhAeJPmkqAAAAAElFTkSuQmCC")}
+.whitelist-panel #whitelistTable .ads-table th[aria-sort=ascending] button{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZ0lEQVQ4y2NgGLKgquEuFxBPAGI2ahhWCsS/gDibUoO0gPgxEP8H4ttArEyuQYxAPBdqEAxPBImTY5gjEL9DM+wTENuQahAvEO9DMwiGdwAxOymGJQLxTyD+jgWDxCMZRsEoGAVoAADeemwtPcZI2wAAAABJRU5ErkJggg==")}
+.whitelist-panel #whitelistTable .ads-table th[aria-sort=descending] button{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZUlEQVQ4y2NgGAWjYBSggaqGu5FA/BOIv2PBIPFEUgxjB+IdQPwfC94HxLykus4GiD+hGfQOiB3J8SojEE9EM2wuSJzcsFMG4ttQgx4DsRalkZENxL+AuJQaMcsGxBOAmGvopk8AVz1sLZgg0bsAAAAASUVORK5CYII=")}
+.whitelist-panel .white-toggle{display:inline;width:auto;height:auto;border:0;padding:0;background:transparent;color:#d2d6de;font:inherit;vertical-align:baseline}
+.whitelist-panel .white-toggle .shell-icon{width:auto;font-size:26.04px;line-height:26.04px}
+.whitelist-panel input[type=checkbox]{margin:0}
+.whitelist-panel .white-toggle[aria-checked=true]{color:#18bc9c}
+.whitelist-panel .white-toggle[aria-checked=false] .shell-icon{transform:scaleX(-1)}
+.white-label{padding:.2em .6em .3em;border-radius:.25em;color:#fff;font-size:75%;font-weight:700;line-height:1;white-space:nowrap;vertical-align:baseline;background:#1688f1}
+.white-label.success{background:#18bc9c}
+.whitelist-panel #whitelistTable .game-member-behavior{margin:0 3.890625px 0 0}
+.whitelist-panel #whitelistTable .game-member-coins,.whitelist-panel #whitelistTable .game-member-edit{margin:0}
+.whitelist-panel #whitelistPagination{font:14px/34px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;margin:0;min-height:54px;padding:10px 0}
+.whitelist-panel #whitelistPagination[hidden]{display:none}
+.whitelist-panel #whitelistPagination .game-page-info{display:block;line-height:34px}
+.whitelist-panel #whitelistPagination .game-page-info>span:first-child{margin-right:5px}
+.whitelist-panel #whitelistPagination .game-page-size{display:inline}
+.whitelist-panel #whitelistPagination .game-page-size[hidden]{display:none}
+.whitelist-panel #whitelistPagination .game-page-size details{display:inline-block;vertical-align:middle;line-height:18.5714px}
+.whitelist-panel #whitelistPagination .game-page-size summary{font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.whitelist-panel #whitelistPagination .game-page-size .caret{border-top:0;border-bottom:4px dashed;margin-left:0}
+.whitelist-panel #whitelistPagination nav{gap:0;align-items:baseline;line-height:20px}
+.whitelist-panel #whitelistPagination nav>button,.whitelist-panel #whitelistPagination .game-page-gap{height:34px;padding:6px 12px;border:1px solid #ddd;border-radius:0;background:#fafafa;color:#666;font:14px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.whitelist-panel #whitelistPagination nav>button:first-child{border-radius:3px 0 0 3px}
+.whitelist-panel #whitelistPagination nav>[aria-current=page]{position:relative;background:#444c69;border-color:#444c69;color:white}
+.whitelist-panel #whitelistPagination .game-page-jump{display:inline-block;align-self:flex-start;margin:0;white-space:nowrap;line-height:22.001px}
+.whitelist-panel #whitelistPagination .game-page-jump input{display:inline-block;width:50px;height:33px;padding:6px 12px;margin:0 5px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.whitelist-panel #whitelistPagination .game-page-jump button{height:auto;vertical-align:middle;padding:6px 12px;border-radius:3px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.whitelist-panel .game-user-cards{border:1px solid #f4f4f4}
+.whitelist-panel .game-user-cards article{padding:8px 15px;border:0;font:14px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.whitelist-panel .game-user-cards article+article{border-top:1px solid #f4f4f4}
+.whitelist-panel .game-user-cards article:nth-child(odd){background:#f9f9f9}
+.whitelist-panel .game-user-cards article>div{display:block;padding:0}
+.whitelist-panel .game-user-cards article>div[hidden]{display:none}
+.whitelist-panel .game-user-cards strong{display:inline-block;width:30%;vertical-align:middle}
+.whitelist-panel .game-user-cards article>div>span{display:inline;overflow-wrap:anywhere}
+#whitelistError:not(:empty){padding:10px;color:#b33}
+@media(max-width:1199px){.whitelist-panel #whitelistFilters{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:991px){.whitelist-panel #whitelistFilters{grid-template-columns:repeat(2,minmax(0,1fr))}.whitelist-panel .ads-toolbar{flex-wrap:wrap}}
+@media(max-width:767px){.whitelist-panel #whitelistFilters{grid-template-columns:minmax(0,1fr)}.whitelist-panel #whitelistFilters>label{grid-template-columns:105px minmax(0,1fr)}.whitelist-panel #whitelistFilters .ads-filter-actions{padding-left:135px}}

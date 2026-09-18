@@ -1,0 +1,1276 @@
+{
+  "withdrawals-game": {
+    "mean_rgb": 0.20733394455014773,
+    "changed_pixel_ratio": 0.001951950471721364
+  },
+  "withdrawals-agent": {
+    "mean_rgb": 0.02311122502965716,
+    "changed_pixel_ratio": 0.0002563167286098761
+  },
+  "withdrawals": {
+    "transfer": {
+      "reference": [
+        {
+          "text": "批量支付宝转账(实时)",
+          "rect": {
+            "x": 241.171875,
+            "y": 97.71875,
+            "width": 169.21875,
+            "height": 32.5625,
+            "top": 97.71875,
+            "right": 410.390625,
+            "bottom": 130.28125,
+            "left": 241.171875
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgba(0, 0, 0, 0)"
+          ],
+          "radius": "3px",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(68, 76, 105)",
+          "display": "inline-block",
+          "gap": "normal"
+        }
+      ],
+      "local": [
+        {
+          "text": " 批量支付宝转账(实时)",
+          "rect": {
+            "x": 475.34375,
+            "y": 147.71875,
+            "width": 169.21875,
+            "height": 32.5625,
+            "top": 147.71875,
+            "right": 644.5625,
+            "bottom": 180.28125,
+            "left": 475.34375
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgba(0, 0, 0, 0)"
+          ],
+          "radius": "3px",
+          "color": "rgb(255, 255, 255)",
+          "background": "rgb(68, 76, 105)",
+          "display": "block",
+          "gap": "normal"
+        }
+      ]
+    },
+    "summary": {
+      "reference": [
+        {
+          "text": "已提现：123.4元",
+          "rect": {
+            "x": 496.09375,
+            "y": 97,
+            "width": 131.046875,
+            "height": 34,
+            "top": 97,
+            "right": 627.140625,
+            "bottom": 131,
+            "left": 496.09375
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)"
+          ],
+          "radius": "3px",
+          "color": "rgb(30, 144, 255)",
+          "background": "rgb(244, 244, 244)",
+          "display": "inline-block",
+          "gap": "normal"
+        }
+      ],
+      "local": [
+        {
+          "text": "已提现：123.4元",
+          "rect": {
+            "x": 738.1875,
+            "y": 147,
+            "width": 131.046875,
+            "height": 34,
+            "top": 147,
+            "right": 869.234375,
+            "bottom": 181,
+            "left": 738.1875
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)"
+          ],
+          "radius": "3px",
+          "color": "rgb(30, 144, 255)",
+          "background": "rgb(244, 244, 244)",
+          "display": "flex",
+          "gap": "normal"
+        }
+      ]
+    },
+    "tabs": {
+      "reference": [
+        {
+          "text": "全部",
+          "rect": {
+            "x": 30,
+            "y": 30,
+            "width": 60,
+            "height": 42,
+            "top": 30,
+            "right": 90,
+            "bottom": 72,
+            "left": 30
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px 4px 0px 0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(123, 138, 139)",
+          "background": "rgb(255, 255, 255)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "申请中",
+          "rect": {
+            "x": 94,
+            "y": 30,
+            "width": 74,
+            "height": 42,
+            "top": 30,
+            "right": 168,
+            "bottom": 72,
+            "left": 94
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px 4px 0px 0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(149, 165, 166)",
+          "background": "rgb(216, 224, 230)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "审核通过",
+          "rect": {
+            "x": 172,
+            "y": 30,
+            "width": 88,
+            "height": 42,
+            "top": 30,
+            "right": 260,
+            "bottom": 72,
+            "left": 172
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px 4px 0px 0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(149, 165, 166)",
+          "background": "rgb(216, 224, 230)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "审核失败",
+          "rect": {
+            "x": 264,
+            "y": 30,
+            "width": 88,
+            "height": 42,
+            "top": 30,
+            "right": 352,
+            "bottom": 72,
+            "left": 264
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px 4px 0px 0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(149, 165, 166)",
+          "background": "rgb(216, 224, 230)",
+          "display": "block",
+          "gap": "normal"
+        }
+      ],
+      "local": [
+        {
+          "text": "全部",
+          "rect": {
+            "x": 260,
+            "y": 80,
+            "width": 60,
+            "height": 42,
+            "top": 80,
+            "right": 320,
+            "bottom": 122,
+            "left": 260
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(123, 138, 139)",
+          "background": "rgb(255, 255, 255)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "申请中",
+          "rect": {
+            "x": 324,
+            "y": 80,
+            "width": 74,
+            "height": 42,
+            "top": 80,
+            "right": 398,
+            "bottom": 122,
+            "left": 324
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(149, 165, 166)",
+          "background": "rgb(216, 224, 230)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "审核通过",
+          "rect": {
+            "x": 402,
+            "y": 80,
+            "width": 88,
+            "height": 42,
+            "top": 80,
+            "right": 490,
+            "bottom": 122,
+            "left": 402
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(149, 165, 166)",
+          "background": "rgb(216, 224, 230)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "审核失败",
+          "rect": {
+            "x": 494,
+            "y": 80,
+            "width": 88,
+            "height": 42,
+            "top": 80,
+            "right": 582,
+            "bottom": 122,
+            "left": 494
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(149, 165, 166)",
+          "background": "rgb(216, 224, 230)",
+          "display": "block",
+          "gap": "normal"
+        }
+      ],
+      "changed_pixel_ratio": 0.0
+    },
+    "tools": {
+      "reference": [
+        {
+          "text": "",
+          "rect": {
+            "x": 1621,
+            "y": 97,
+            "width": 39,
+            "height": 32.5625,
+            "top": 97,
+            "right": 1660,
+            "bottom": 129.5625,
+            "left": 1621
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(140, 140, 140)",
+            "1px solid rgb(140, 140, 140)",
+            "1px solid rgb(140, 140, 140)",
+            "1px solid rgb(140, 140, 140)"
+          ],
+          "radius": "3px",
+          "color": "rgb(51, 51, 51)",
+          "background": "rgb(230, 230, 230)",
+          "display": "inline-block",
+          "gap": "normal"
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 1477.75,
+            "y": 97,
+            "width": 39,
+            "height": 32.5625,
+            "top": 97,
+            "right": 1516.75,
+            "bottom": 129.5625,
+            "left": 1477.75
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)"
+          ],
+          "radius": "3px 0px 0px 3px",
+          "color": "rgb(68, 68, 68)",
+          "background": "rgb(244, 244, 244)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 1515.75,
+            "y": 97,
+            "width": 50.625,
+            "height": 32.5625,
+            "top": 97,
+            "right": 1566.375,
+            "bottom": 129.5625,
+            "left": 1515.75
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)"
+          ],
+          "radius": "0px",
+          "color": "rgb(68, 68, 68)",
+          "background": "rgb(244, 244, 244)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 1565.375,
+            "y": 97,
+            "width": 50.625,
+            "height": 32.5625,
+            "top": 97,
+            "right": 1616,
+            "bottom": 129.5625,
+            "left": 1565.375
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)"
+          ],
+          "radius": "0px 4px 4px 0px",
+          "color": "rgb(68, 68, 68)",
+          "background": "rgb(244, 244, 244)",
+          "display": "block",
+          "gap": "normal"
+        }
+      ],
+      "local": [
+        {
+          "text": "",
+          "rect": {
+            "x": 1851,
+            "y": 147,
+            "width": 39,
+            "height": 32.5625,
+            "top": 147,
+            "right": 1890,
+            "bottom": 179.5625,
+            "left": 1851
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px 0px 0px 1px",
+          "border": [
+            "1px solid rgb(140, 140, 140)",
+            "1px solid rgb(140, 140, 140)",
+            "1px solid rgb(140, 140, 140)",
+            "1px solid rgb(140, 140, 140)"
+          ],
+          "radius": "3px",
+          "color": "rgb(51, 51, 51)",
+          "background": "rgb(231, 231, 231)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 1707.75,
+            "y": 147,
+            "width": 39,
+            "height": 32.5625,
+            "top": 147,
+            "right": 1746.75,
+            "bottom": 179.5625,
+            "left": 1707.75
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px 0px 0px 583.141px",
+          "border": [
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)"
+          ],
+          "radius": "3px 0px 0px 3px",
+          "color": "rgb(68, 68, 68)",
+          "background": "rgb(244, 244, 244)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 1745.75,
+            "y": 147,
+            "width": 50.625,
+            "height": 32.5625,
+            "top": 147,
+            "right": 1796.375,
+            "bottom": 179.5625,
+            "left": 1745.75
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)"
+          ],
+          "radius": "0px",
+          "color": "rgb(68, 68, 68)",
+          "background": "rgb(244, 244, 244)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 1795.375,
+            "y": 147,
+            "width": 50.625,
+            "height": 32.5625,
+            "top": 147,
+            "right": 1846,
+            "bottom": 179.5625,
+            "left": 1795.375
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)"
+          ],
+          "radius": "0px 4px 4px 0px",
+          "color": "rgb(68, 68, 68)",
+          "background": "rgb(244, 244, 244)",
+          "display": "block",
+          "gap": "normal"
+        }
+      ],
+      "changed_pixel_ratio": 0.0
+    },
+    "pagination": {
+      "reference": [
+        {
+          "text": "显示第 1 到第 3 条记录，总共 3 条记录每页显示 10 10 条记录上一页1下一页跳转",
+          "rect": {
+            "x": 30,
+            "y": 324,
+            "width": 1630,
+            "height": 54,
+            "top": 324,
+            "right": 1660,
+            "bottom": 378,
+            "left": 30
+          },
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "margin": "0px",
+          "border": [
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)"
+          ],
+          "radius": "0px",
+          "color": "rgb(51, 51, 51)",
+          "background": "rgba(0, 0, 0, 0)",
+          "display": "block",
+          "gap": "normal"
+        }
+      ],
+      "local": [
+        {
+          "text": "显示第 1 到第 3 条记录，总共 3 条记录每页显示 10 1015202550All 条记录上一页1下一页跳转",
+          "rect": {
+            "x": 260,
+            "y": 374,
+            "width": 1630,
+            "height": 54,
+            "top": 374,
+            "right": 1890,
+            "bottom": 428,
+            "left": 260
+          },
+          "font": "14px / 34px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 0px",
+          "margin": "0px",
+          "border": [
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)"
+          ],
+          "radius": "4px",
+          "color": "rgb(51, 51, 51)",
+          "background": "rgba(0, 0, 0, 0)",
+          "display": "flex",
+          "gap": "15px"
+        }
+      ],
+      "changed_pixel_ratio": 0.0
+    },
+    "panel": {
+      "reference": [
+        {
+          "text": "全部\n                        申请中\n                        审核通过\n                        审核失败\n                    \n    \n\t\n    \n        \n            \n                \n                    \n                    会员ID账号VIP选择V0V1V2上级Id游戏名称代理商名称昵称商品名称收件人联系方式提现方式选择默认支付宝微信状态选择申请中审核通过审核失败定时选择默认转账中已转账申请时间更新时间提交 重置 \n                           编辑                         导出\n\t\t\t\t\t\t 批量同意\n\t\t\t\t\t\t 批量拒绝\n\t\t\t\t\t\t 批量支付宝转账(实时)\n\t\t\t\t\t\t 批量支付宝转账(定时)\n\t\t\t\t\t\t 黑名单\n\t\t\t\t\t\t\n                            \n                                已提现：123.4元\n                            \n                        \n                        \n                            \n                                提现中：0元\n                            \n                        \n                        \n                            \n                                拉黑已提现：25元\n                            \n                        \n\t\t\t\t\t 跨页选择模式，已选 0 项  Id 会员ID 账号 VIP 上级Id 上级账号 上级昵称 用户行为 游戏名称 代理商名称 昵称 商品名称 金额 手机型号 收件人 联系方式 收货地址 快递名称 快递单号 备注 提现方式 内部号 状态 定时 失败原因 拒绝原因 操作 作弊审查 申请时间 更新时间 JSONXMLCSVTXTMS-WordMS-Excel正在努力地加载数据中，请稍候……\n                    Id会员ID账号VIP上级昵称用户行为游戏名称商品名称金额手机型号收件人联系方式提现方式状态定时失败原因操作作弊审查申请时间  9100 8100 对照账号0 V0 上级甲  单APP行为 对照游戏 测试商品 12.5元 测试机型 测试收件人 13800000000 默认 申请中 默认   拉黑  正常 2026-09-16 08:00:00   9101 8101 对照账号1 V1 上级甲  单APP行为 对照游戏 测试商品 0元 测试机型 测试收件人 13800000000 支付宝 审核通过 转账中   拉黑 正常 2026-09-16 08:00:00   9102 8102 对照账号2 V2 上级甲  单APP行为 对照游戏 测试商品 100元 测试机型 测试收件人 13800000000 微信 审核失败 已转账 原因 <>&  拉黑 正常 2026-09-16 08:00:00 显示第 1 到第 3 条记录，总共 3 条记录每页显示 10 10 条记录上一页1下一页跳转",
+          "rect": {
+            "x": 15,
+            "y": 15,
+            "width": 1660,
+            "height": 378,
+            "top": 15,
+            "right": 1675,
+            "bottom": 393,
+            "left": 15
+          },
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "margin": "0px",
+          "border": [
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)"
+          ],
+          "radius": "3px",
+          "color": "rgb(51, 51, 51)",
+          "background": "rgb(255, 255, 255)",
+          "display": "block",
+          "gap": "normal"
+        }
+      ],
+      "local": [
+        {
+          "text": "全部申请中审核通过审核失败会员ID账号VIP选择V0V1V2上级Id游戏名称代理商名称昵称商品名称收件人联系方式提现方式选择默认支付宝微信状态选择申请中审核通过审核失败定时选择默认转账中已转账申请时间更新时间提交重置⟳ 编辑 批量拒绝 批量支付宝转账(实时) 黑名单已提现：123.4元提现中：0元拉黑已提现：25元  Id 会员ID 账号 VIP 上级Id 上级账号 上级昵称 用户行为 游戏名称 代理商名称 昵称 商品名称 金额 手机型号 收件人 联系方式 收货地址 快递名称 快递单号 备注 提现方式 内部号 状态 定时 失败原因 拒绝原因 操作 作弊审查 申请时间 更新时间 JSONXMLCSVTXTMS-WordMS-ExcelId▼会员ID账号VIP上级Id上级账号上级昵称用户行为游戏名称代理商名称昵称商品名称金额▴▾手机型号收件人联系方式收货地址快递名称快递单号备注提现方式内部号状态定时失败原因拒绝原因操作作弊审查申请时间▴▾更新时间▴▾Id9100会员ID8100账号对照账号0VIPV0上级Id上级账号上级昵称上级甲用户行为单APP行为游戏名称对照游戏代理商名称对照主体昵称测试会员商品名称测试商品金额12.5元手机型号测试机型收件人测试收件人联系方式13800000000收货地址快递名称快递单号备注提现方式默认内部号状态申请中定时默认失败原因拒绝原因操作拉黑作弊审查正常申请时间2026-09-16 08:00:00更新时间2026-09-16 08:00:00Id9101会员ID8101账号对照账号1VIPV1上级Id上级账号上级昵称上级甲用户行为单APP行为游戏名称对照游戏代理商名称对照主体昵称测试会员商品名称测试商品金额0元手机型号测试机型收件人测试收件人联系方式13800000000收货地址快递名称快递单号备注提现方式支付宝内部号状态审核通过定时转账中失败原因拒绝原因操作拉黑作弊审查正常申请时间2026-09-16 08:00:00更新时间2026-09-16 08:00:00Id9102会员ID8102账号对照账号2VIPV2上级Id上级账号上级昵称上级甲用户行为单APP行为游戏名称对照游戏代理商名称对照主体昵称测试会员商品名称测试商品金额100元手机型号测试机型收件人测试收件人联系方式13800000000收货地址快递名称快递单号备注提现方式微信内部号状态审核失败定时已转账失败原因原因 <>&拒绝原因操作拉黑作弊审查正常申请时间2026-09-16 08:00:00更新时间2026-09-16 08:00:00显示第 1 到第 3 条记录，总共 3 条记录每页显示 10 1015202550All 条记录上一页1下一页跳转",
+          "rect": {
+            "x": 245,
+            "y": 65,
+            "width": 1660,
+            "height": 378,
+            "top": 65,
+            "right": 1905,
+            "bottom": 443,
+            "left": 245
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "15px",
+          "margin": "0px",
+          "border": [
+            "0px none rgb(0, 0, 0)",
+            "0px none rgb(0, 0, 0)",
+            "0px none rgb(0, 0, 0)",
+            "0px none rgb(0, 0, 0)"
+          ],
+          "radius": "3px",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(255, 255, 255)",
+          "display": "block",
+          "gap": "normal"
+        }
+      ]
+    }
+  },
+  "subsidies-game": {
+    "mean_rgb": 0.046679219614144736,
+    "changed_pixel_ratio": 0.0006013584786616323
+  },
+  "subsidies-agent": {
+    "mean_rgb": 0.005842706967543073,
+    "changed_pixel_ratio": 6.900835001035126e-05
+  },
+  "subsidies": {
+    "tabs": {
+      "reference": [
+        {
+          "text": "全部",
+          "rect": {
+            "x": 30,
+            "y": 30,
+            "width": 60,
+            "height": 42,
+            "top": 30,
+            "right": 90,
+            "bottom": 72,
+            "left": 30
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px 4px 0px 0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(123, 138, 139)",
+          "background": "rgb(255, 255, 255)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "申请中",
+          "rect": {
+            "x": 94,
+            "y": 30,
+            "width": 74,
+            "height": 42,
+            "top": 30,
+            "right": 168,
+            "bottom": 72,
+            "left": 94
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px 4px 0px 0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(149, 165, 166)",
+          "background": "rgb(216, 224, 230)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "审核通过",
+          "rect": {
+            "x": 172,
+            "y": 30,
+            "width": 88,
+            "height": 42,
+            "top": 30,
+            "right": 260,
+            "bottom": 72,
+            "left": 172
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px 4px 0px 0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(149, 165, 166)",
+          "background": "rgb(216, 224, 230)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "审核失败",
+          "rect": {
+            "x": 264,
+            "y": 30,
+            "width": 88,
+            "height": 42,
+            "top": 30,
+            "right": 352,
+            "bottom": 72,
+            "left": 264
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px 4px 0px 0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(149, 165, 166)",
+          "background": "rgb(216, 224, 230)",
+          "display": "block",
+          "gap": "normal"
+        }
+      ],
+      "local": [
+        {
+          "text": "全部",
+          "rect": {
+            "x": 260,
+            "y": 80,
+            "width": 60,
+            "height": 42,
+            "top": 80,
+            "right": 320,
+            "bottom": 122,
+            "left": 260
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(123, 138, 139)",
+          "background": "rgb(255, 255, 255)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "申请中",
+          "rect": {
+            "x": 324,
+            "y": 80,
+            "width": 74,
+            "height": 42,
+            "top": 80,
+            "right": 398,
+            "bottom": 122,
+            "left": 324
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(149, 165, 166)",
+          "background": "rgb(216, 224, 230)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "审核通过",
+          "rect": {
+            "x": 402,
+            "y": 80,
+            "width": 88,
+            "height": 42,
+            "top": 80,
+            "right": 490,
+            "bottom": 122,
+            "left": 402
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(149, 165, 166)",
+          "background": "rgb(216, 224, 230)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "审核失败",
+          "rect": {
+            "x": 494,
+            "y": 80,
+            "width": 88,
+            "height": 42,
+            "top": 80,
+            "right": 582,
+            "bottom": 122,
+            "left": 494
+          },
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 15px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgb(232, 237, 240)",
+            "1px solid rgba(0, 0, 0, 0)",
+            "1px solid rgb(232, 237, 240)"
+          ],
+          "radius": "3px 3px 0px 0px",
+          "color": "rgb(149, 165, 166)",
+          "background": "rgb(216, 224, 230)",
+          "display": "block",
+          "gap": "normal"
+        }
+      ],
+      "changed_pixel_ratio": 0.0
+    },
+    "tools": {
+      "reference": [
+        {
+          "text": "",
+          "rect": {
+            "x": 1621,
+            "y": 97,
+            "width": 39,
+            "height": 32.5625,
+            "top": 97,
+            "right": 1660,
+            "bottom": 129.5625,
+            "left": 1621
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(140, 140, 140)",
+            "1px solid rgb(140, 140, 140)",
+            "1px solid rgb(140, 140, 140)",
+            "1px solid rgb(140, 140, 140)"
+          ],
+          "radius": "3px",
+          "color": "rgb(51, 51, 51)",
+          "background": "rgb(230, 230, 230)",
+          "display": "inline-block",
+          "gap": "normal"
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 1477.75,
+            "y": 97,
+            "width": 39,
+            "height": 32.5625,
+            "top": 97,
+            "right": 1516.75,
+            "bottom": 129.5625,
+            "left": 1477.75
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)"
+          ],
+          "radius": "3px 0px 0px 3px",
+          "color": "rgb(68, 68, 68)",
+          "background": "rgb(244, 244, 244)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 1515.75,
+            "y": 97,
+            "width": 50.625,
+            "height": 32.5625,
+            "top": 97,
+            "right": 1566.375,
+            "bottom": 129.5625,
+            "left": 1515.75
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)"
+          ],
+          "radius": "0px",
+          "color": "rgb(68, 68, 68)",
+          "background": "rgb(244, 244, 244)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 1565.375,
+            "y": 97,
+            "width": 50.625,
+            "height": 32.5625,
+            "top": 97,
+            "right": 1616,
+            "bottom": 129.5625,
+            "left": 1565.375
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)"
+          ],
+          "radius": "0px 4px 4px 0px",
+          "color": "rgb(68, 68, 68)",
+          "background": "rgb(244, 244, 244)",
+          "display": "block",
+          "gap": "normal"
+        }
+      ],
+      "local": [
+        {
+          "text": "",
+          "rect": {
+            "x": 1851,
+            "y": 147,
+            "width": 39,
+            "height": 32.5625,
+            "top": 147,
+            "right": 1890,
+            "bottom": 179.5625,
+            "left": 1851
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px 0px 0px 1px",
+          "border": [
+            "1px solid rgb(140, 140, 140)",
+            "1px solid rgb(140, 140, 140)",
+            "1px solid rgb(140, 140, 140)",
+            "1px solid rgb(140, 140, 140)"
+          ],
+          "radius": "3px",
+          "color": "rgb(51, 51, 51)",
+          "background": "rgb(231, 231, 231)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 1707.75,
+            "y": 147,
+            "width": 39,
+            "height": 32.5625,
+            "top": 147,
+            "right": 1746.75,
+            "bottom": 179.5625,
+            "left": 1707.75
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px 0px 0px 867.562px",
+          "border": [
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)"
+          ],
+          "radius": "3px 0px 0px 3px",
+          "color": "rgb(68, 68, 68)",
+          "background": "rgb(244, 244, 244)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 1745.75,
+            "y": 147,
+            "width": 50.625,
+            "height": 32.5625,
+            "top": 147,
+            "right": 1796.375,
+            "bottom": 179.5625,
+            "left": 1745.75
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)"
+          ],
+          "radius": "0px",
+          "color": "rgb(68, 68, 68)",
+          "background": "rgb(244, 244, 244)",
+          "display": "block",
+          "gap": "normal"
+        },
+        {
+          "text": "",
+          "rect": {
+            "x": 1795.375,
+            "y": 147,
+            "width": 50.625,
+            "height": 32.5625,
+            "top": 147,
+            "right": 1846,
+            "bottom": 179.5625,
+            "left": 1795.375
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "6px 12px",
+          "margin": "0px",
+          "border": [
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)",
+            "1px solid rgb(221, 221, 221)"
+          ],
+          "radius": "0px 4px 4px 0px",
+          "color": "rgb(68, 68, 68)",
+          "background": "rgb(244, 244, 244)",
+          "display": "block",
+          "gap": "normal"
+        }
+      ],
+      "changed_pixel_ratio": 0.0
+    },
+    "pagination": {
+      "reference": [
+        {
+          "text": "显示第 1 到第 3 条记录，总共 3 条记录每页显示 10 10 条记录上一页1下一页跳转",
+          "rect": {
+            "x": 30,
+            "y": 324,
+            "width": 1630,
+            "height": 54,
+            "top": 324,
+            "right": 1660,
+            "bottom": 378,
+            "left": 30
+          },
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "margin": "0px",
+          "border": [
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)"
+          ],
+          "radius": "0px",
+          "color": "rgb(51, 51, 51)",
+          "background": "rgba(0, 0, 0, 0)",
+          "display": "block",
+          "gap": "normal"
+        }
+      ],
+      "local": [
+        {
+          "text": "显示第 1 到第 3 条记录，总共 3 条记录每页显示 10 1015202550All 条记录上一页1下一页跳转",
+          "rect": {
+            "x": 260,
+            "y": 374,
+            "width": 1630,
+            "height": 54,
+            "top": 374,
+            "right": 1890,
+            "bottom": 428,
+            "left": 260
+          },
+          "font": "14px / 34px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "10px 0px",
+          "margin": "0px",
+          "border": [
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)"
+          ],
+          "radius": "4px",
+          "color": "rgb(51, 51, 51)",
+          "background": "rgba(0, 0, 0, 0)",
+          "display": "flex",
+          "gap": "15px"
+        }
+      ],
+      "changed_pixel_ratio": 0.0
+    },
+    "panel": {
+      "reference": [
+        {
+          "text": "全部\n                        申请中\n                        审核通过\n                        审核失败\n                    \n    \n\t\n    \n        \n            \n                \n                    \n                    会员ID账号VIP选择V0V1V2上级Id游戏名称代理商名称昵称申请图片收件人联系方式状态选择申请中审核通过审核失败申请时间更新时间提交 重置 \n                           编辑  删除\t\t\t\t\t\t 批量同意\n\t\t\t\t\t\t 批量拒绝\n\t\t\t\t\t\t\n                            \n                                已补贴：123.4元\n                            \n                        \n                        \n                            \n                                申请中：0元\n                            \n                        \n\t\t\t\t\t 跨页选择模式，已选 0 项  Id 会员ID 账号 VIP 上级Id 上级账号 上级昵称 游戏名称 代理商名称 昵称 提现金额条件(元) 申请图片 收件人 联系方式 到账金额(元) 用户行为 状态 失败原因 操作 申请时间 更新时间 JSONXMLCSVTXTMS-WordMS-Excel正在努力地加载数据中，请稍候……\n                    Id会员ID账号VIP上级昵称游戏名称提现金额条件(元)申请图片收件人联系方式到账金额(元)用户行为状态失败原因操作申请时间  9300 8300 对比账号0 V0 上级昵称 对比游戏 0.01   收件人<&> 13800000000 0.01  单APP行为 申请中    2026-09-16 08:00:00   9301 8301 对比账号1 V1 上级昵称 对比游戏 12.5  收件人<&> 13800000000 12  单APP行为 审核通过    2026-09-16 08:00:00   9302 8302 对比账号2 V2 上级昵称 对比游戏 9999.99  收件人<&> 13800000000 9999  单APP行为 审核失败 拒绝原因 <>&   2026-09-16 08:00:00 显示第 1 到第 3 条记录，总共 3 条记录每页显示 10 10 条记录上一页1下一页跳转",
+          "rect": {
+            "x": 15,
+            "y": 15,
+            "width": 1660,
+            "height": 378,
+            "top": 15,
+            "right": 1675,
+            "bottom": 393,
+            "left": 15
+          },
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "margin": "0px",
+          "border": [
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)",
+            "0px none rgb(51, 51, 51)"
+          ],
+          "radius": "3px",
+          "color": "rgb(51, 51, 51)",
+          "background": "rgb(255, 255, 255)",
+          "display": "block",
+          "gap": "normal"
+        }
+      ],
+      "local": [
+        {
+          "text": "全部申请中审核通过审核失败会员ID账号VIP选择V0V1V2上级Id游戏名称代理商名称昵称申请图片收件人联系方式状态选择申请中审核通过审核失败申请时间更新时间提交重置⟳ 编辑 删除批量同意批量拒绝已补贴：12元申请中：0.01元  Id 会员ID 账号 VIP 上级Id 上级账号 上级昵称 游戏名称 代理商名称 昵称 提现金额条件(元) 申请图片 收件人 联系方式 到账金额(元) 用户行为 状态 失败原因 操作 申请时间 更新时间 JSONXMLCSVTXTMS-WordMS-ExcelId▼会员ID账号VIP上级Id上级账号上级昵称游戏名称代理商名称昵称提现金额条件(元)▴▾申请图片收件人联系方式到账金额(元)▴▾用户行为状态失败原因操作申请时间▴▾更新时间▴▾Id9300会员ID8300账号对比账号0VIPV0上级Id0上级账号上级昵称上级昵称游戏名称对比游戏代理商名称对比主体昵称测试会员提现金额条件(元)0.01申请图片收件人收件人<&>联系方式13800000000到账金额(元)0.01用户行为单APP行为状态申请中失败原因操作 申请时间2026-09-16 08:00:00更新时间2026-09-16 08:00:00Id9301会员ID8301账号对比账号1VIPV1上级Id0上级账号上级昵称上级昵称游戏名称对比游戏代理商名称对比主体昵称测试会员提现金额条件(元)12.5申请图片收件人收件人<&>联系方式13800000000到账金额(元)12用户行为单APP行为状态审核通过失败原因操作 申请时间2026-09-16 08:00:00更新时间2026-09-16 08:00:00Id9302会员ID8302账号对比账号2VIPV2上级Id0上级账号上级昵称上级昵称游戏名称对比游戏代理商名称对比主体昵称测试会员提现金额条件(元)9999.99申请图片收件人收件人<&>联系方式13800000000到账金额(元)9999用户行为单APP行为状态审核失败失败原因拒绝原因 <>&操作 申请时间2026-09-16 08:00:00更新时间2026-09-16 08:00:00显示第 1 到第 3 条记录，总共 3 条记录每页显示 10 1015202550All 条记录上一页1下一页跳转",
+          "rect": {
+            "x": 245,
+            "y": 65,
+            "width": 1660,
+            "height": 378,
+            "top": 65,
+            "right": 1905,
+            "bottom": 443,
+            "left": 245
+          },
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "15px",
+          "margin": "0px",
+          "border": [
+            "0px none rgb(0, 0, 0)",
+            "0px none rgb(0, 0, 0)",
+            "0px none rgb(0, 0, 0)",
+            "0px none rgb(0, 0, 0)"
+          ],
+          "radius": "3px",
+          "color": "rgb(0, 0, 0)",
+          "background": "rgb(255, 255, 255)",
+          "display": "block",
+          "gap": "normal"
+        }
+      ]
+    }
+  }
+}

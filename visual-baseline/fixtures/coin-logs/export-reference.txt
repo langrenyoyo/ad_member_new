@@ -1,0 +1,4 @@
+会员ID,用户账号,游戏名称,代理商名称,金币变动前,金币变动,金币变动后,类型,备注,创建时间
+8100,"fixture 001","fixture game 0","fixture agent 0",12.5,-2.5,10,"<span class=""label label-warning"">兑换</span>","fixture exchange","2026-09-18 08:00:00"
+8101,"fixture &lt;&gt;&amp;","fixture game 1","fixture agent 1",100,20,120,"<span class=""label label-info"">后台</span>","fixture <>&","2026-09-18 08:01:00"
+8102,"fixture 003","fixture game 2","fixture agent 2",0,0,0,"<span class=""label label-primary"">其它</span>",,"2026-09-18 08:02:00"

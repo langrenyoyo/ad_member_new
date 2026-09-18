@@ -1,0 +1,15 @@
+{
+  "window": {
+    "x": 560,
+    "y": 240,
+    "width": 800,
+    "height": 600
+  },
+  "footer": {
+    "x": 560,
+    "y": 787,
+    "width": 800,
+    "height": 53
+  },
+  "scope": "local supported editor fields; reference window/header/footer sizes verified; full form parity remains incomplete"
+}

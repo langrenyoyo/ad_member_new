@@ -1,0 +1,10 @@
+{
+  "tag": "INPUT",
+  "type": "text",
+  "placeholder": "",
+  "cls": "form-control datetimepicker",
+  "attributes": {
+    "data-date-use-current": "true"
+  },
+  "parentButtons": []
+}

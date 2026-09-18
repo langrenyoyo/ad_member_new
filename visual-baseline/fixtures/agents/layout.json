@@ -1,0 +1,463 @@
+{
+  "reference": [
+    {
+      "selector": "#table",
+      "rect": {
+        "x": 30,
+        "y": 82.5625,
+        "width": 1630,
+        "height": 183,
+        "top": 82.5625,
+        "right": 1660,
+        "bottom": 265.5625,
+        "left": 30
+      }
+    },
+    {
+      "selector": "tbody tr",
+      "rect": {
+        "x": 30.5,
+        "y": 124.0625,
+        "width": 1629,
+        "height": 47,
+        "top": 124.0625,
+        "right": 1659.5,
+        "bottom": 171.0625,
+        "left": 30.5
+      }
+    },
+    {
+      "selector": ".panel",
+      "rect": {
+        "x": 15,
+        "y": 15,
+        "width": 1660,
+        "height": 319.5625,
+        "top": 15,
+        "right": 1675,
+        "bottom": 334.5625,
+        "left": 15
+      }
+    },
+    {
+      "selector": ".fixed-table-toolbar",
+      "rect": {
+        "x": 30,
+        "y": 30,
+        "width": 1630,
+        "height": 52.5625,
+        "top": 30,
+        "right": 1660,
+        "bottom": 82.5625,
+        "left": 30
+      }
+    }
+  ],
+  "referenceHeaders": [
+    {
+      "text": "",
+      "styles": [
+        {
+          "tag": "TH",
+          "height": 41,
+          "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "1px solid rgb(221, 221, 221)",
+          "verticalAlign": "middle"
+        },
+        {
+          "tag": "DIV",
+          "height": 40,
+          "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "8px 0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "top"
+        },
+        {
+          "tag": "DIV",
+          "height": 0,
+          "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "baseline"
+        }
+      ]
+    },
+    {
+      "text": "Id",
+      "styles": [
+        {
+          "tag": "TH",
+          "height": 41,
+          "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "1px solid rgb(221, 221, 221)",
+          "verticalAlign": "middle"
+        },
+        {
+          "tag": "DIV",
+          "height": 40,
+          "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "8px 15px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "top"
+        },
+        {
+          "tag": "DIV",
+          "height": 0,
+          "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "baseline"
+        }
+      ]
+    },
+    {
+      "text": "\u4ee3\u7406\u5546\u540d\u79f0",
+      "styles": [
+        {
+          "tag": "TH",
+          "height": 41,
+          "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "1px solid rgb(221, 221, 221)",
+          "verticalAlign": "middle"
+        },
+        {
+          "tag": "DIV",
+          "height": 40,
+          "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "8px 10px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "top"
+        },
+        {
+          "tag": "DIV",
+          "height": 0,
+          "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "baseline"
+        }
+      ]
+    },
+    {
+      "text": "\u6e38\u620f\u7ba1\u7406",
+      "styles": [
+        {
+          "tag": "TH",
+          "height": 41,
+          "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "1px solid rgb(221, 221, 221)",
+          "verticalAlign": "middle"
+        },
+        {
+          "tag": "DIV",
+          "height": 40,
+          "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "8px 10px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "top"
+        },
+        {
+          "tag": "DIV",
+          "height": 0,
+          "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "baseline"
+        }
+      ]
+    },
+    {
+      "text": "\u72b6\u6001",
+      "styles": [
+        {
+          "tag": "TH",
+          "height": 41,
+          "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "1px solid rgb(221, 221, 221)",
+          "verticalAlign": "middle"
+        },
+        {
+          "tag": "DIV",
+          "height": 40,
+          "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "8px 10px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "top"
+        },
+        {
+          "tag": "DIV",
+          "height": 0,
+          "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "baseline"
+        }
+      ]
+    },
+    {
+      "text": "\u521b\u5efa\u65f6\u95f4",
+      "styles": [
+        {
+          "tag": "TH",
+          "height": 41,
+          "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "1px solid rgb(221, 221, 221)",
+          "verticalAlign": "middle"
+        },
+        {
+          "tag": "DIV",
+          "height": 40,
+          "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "8px 15px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "top"
+        },
+        {
+          "tag": "DIV",
+          "height": 0,
+          "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "baseline"
+        }
+      ]
+    },
+    {
+      "text": "\u64cd\u4f5c",
+      "styles": [
+        {
+          "tag": "TH",
+          "height": 41,
+          "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "1px solid rgb(221, 221, 221)",
+          "verticalAlign": "middle"
+        },
+        {
+          "tag": "DIV",
+          "height": 40,
+          "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "8px 10px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "top"
+        },
+        {
+          "tag": "DIV",
+          "height": 0,
+          "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "baseline"
+        }
+      ]
+    }
+  ],
+  "local": [
+    {
+      "selector": ".agent-panel table",
+      "rect": {
+        "x": 260,
+        "y": 132.5625,
+        "width": 1630,
+        "height": 183,
+        "top": 132.5625,
+        "right": 1890,
+        "bottom": 315.5625,
+        "left": 260
+      }
+    },
+    {
+      "selector": "tbody tr",
+      "rect": {
+        "x": 260.5,
+        "y": 174.0625,
+        "width": 1629,
+        "height": 47,
+        "top": 174.0625,
+        "right": 1889.5,
+        "bottom": 221.0625,
+        "left": 260.5
+      }
+    },
+    {
+      "selector": ".agent-panel",
+      "rect": {
+        "x": 245,
+        "y": 65,
+        "width": 1660,
+        "height": 319.5625,
+        "top": 65,
+        "right": 1905,
+        "bottom": 384.5625,
+        "left": 245
+      }
+    },
+    {
+      "selector": ".ads-toolbar",
+      "rect": {
+        "x": 260,
+        "y": 80,
+        "width": 1630,
+        "height": 52.5625,
+        "top": 80,
+        "right": 1890,
+        "bottom": 132.5625,
+        "left": 260
+      }
+    }
+  ],
+  "localHeaders": [
+    {
+      "text": "",
+      "styles": [
+        {
+          "tag": "TH",
+          "height": 41,
+          "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "8px 10px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "1px solid rgb(221, 221, 221)",
+          "verticalAlign": "middle"
+        },
+        {
+          "tag": "INPUT",
+          "height": 13,
+          "font": "700 14px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "baseline"
+        }
+      ]
+    },
+    {
+      "text": "Id \u25bc",
+      "styles": [
+        {
+          "tag": "TH",
+          "height": 41,
+          "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "8px 10px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "1px solid rgb(221, 221, 221)",
+          "verticalAlign": "middle"
+        },
+        {
+          "tag": "BUTTON",
+          "height": 24,
+          "font": "700 13px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "top"
+        }
+      ]
+    },
+    {
+      "text": "\u4ee3\u7406\u5546\u540d\u79f0",
+      "styles": [
+        {
+          "tag": "TH",
+          "height": 41,
+          "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "8px 10px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "1px solid rgb(221, 221, 221)",
+          "verticalAlign": "middle"
+        }
+      ]
+    },
+    {
+      "text": "\u6e38\u620f\u7ba1\u7406",
+      "styles": [
+        {
+          "tag": "TH",
+          "height": 41,
+          "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "8px 10px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "1px solid rgb(221, 221, 221)",
+          "verticalAlign": "middle"
+        }
+      ]
+    },
+    {
+      "text": "\u72b6\u6001",
+      "styles": [
+        {
+          "tag": "TH",
+          "height": 41,
+          "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "8px 10px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "1px solid rgb(221, 221, 221)",
+          "verticalAlign": "middle"
+        }
+      ]
+    },
+    {
+      "text": "\u521b\u5efa\u65f6\u95f4 ",
+      "styles": [
+        {
+          "tag": "TH",
+          "height": 41,
+          "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "8px 10px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "1px solid rgb(221, 221, 221)",
+          "verticalAlign": "middle"
+        },
+        {
+          "tag": "BUTTON",
+          "height": 24,
+          "font": "700 13px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "0px none rgb(51, 51, 51)",
+          "verticalAlign": "top"
+        }
+      ]
+    },
+    {
+      "text": "\u64cd\u4f5c",
+      "styles": [
+        {
+          "tag": "TH",
+          "height": 41,
+          "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "8px 10px",
+          "borderTop": "0px none rgb(51, 51, 51)",
+          "borderBottom": "1px solid rgb(221, 221, 221)",
+          "verticalAlign": "middle"
+        }
+      ]
+    }
+  ]
+}

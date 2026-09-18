@@ -1,0 +1,930 @@
+{
+  "username": {
+    "queries": [
+      {
+        "sort": [
+          "id"
+        ],
+        "order": [
+          "desc"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "10"
+        ],
+        "filter": [
+          "{\"username\":\"对照会员0\"}"
+        ],
+        "op": [
+          "{\"username\":\"LIKE\"}"
+        ],
+        "_": [
+          "1789589690647"
+        ]
+      }
+    ],
+    "form": [
+      [
+        {
+          "name": "id-operate",
+          "value": "="
+        },
+        {
+          "name": "id",
+          "value": ""
+        },
+        {
+          "name": "username-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "username",
+          "value": "对照会员0"
+        },
+        {
+          "name": "parent_id-operate",
+          "value": "="
+        },
+        {
+          "name": "parent_id",
+          "value": ""
+        },
+        {
+          "name": "game.name-operate",
+          "value": "="
+        },
+        {
+          "name": "game.name_text",
+          "value": ""
+        },
+        {
+          "name": "game.name",
+          "value": ""
+        },
+        {
+          "name": "vip-operate",
+          "value": "="
+        },
+        {
+          "name": "vip",
+          "value": ""
+        },
+        {
+          "name": "agent.name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "agent.name_text",
+          "value": ""
+        },
+        {
+          "name": "agent.name",
+          "value": ""
+        },
+        {
+          "name": "name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "name",
+          "value": ""
+        },
+        {
+          "name": "status-operate",
+          "value": "="
+        },
+        {
+          "name": "status",
+          "value": ""
+        },
+        {
+          "name": "ip_check-operate",
+          "value": "="
+        },
+        {
+          "name": "ip_check",
+          "value": ""
+        },
+        {
+          "name": "create_time-operate",
+          "value": "RANGE"
+        },
+        {
+          "name": "create_time",
+          "value": ""
+        }
+      ]
+    ]
+  },
+  "parent_id": {
+    "queries": [
+      {
+        "sort": [
+          "id"
+        ],
+        "order": [
+          "desc"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "10"
+        ],
+        "filter": [
+          "{\"username\":\"对照会员0\",\"parent_id\":\"0\"}"
+        ],
+        "op": [
+          "{\"username\":\"LIKE\",\"parent_id\":\"=\"}"
+        ],
+        "_": [
+          "1789589690648"
+        ]
+      }
+    ],
+    "form": [
+      [
+        {
+          "name": "id-operate",
+          "value": "="
+        },
+        {
+          "name": "id",
+          "value": ""
+        },
+        {
+          "name": "username-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "username",
+          "value": "对照会员0"
+        },
+        {
+          "name": "parent_id-operate",
+          "value": "="
+        },
+        {
+          "name": "parent_id",
+          "value": "0"
+        },
+        {
+          "name": "game.name-operate",
+          "value": "="
+        },
+        {
+          "name": "game.name_text",
+          "value": ""
+        },
+        {
+          "name": "game.name",
+          "value": ""
+        },
+        {
+          "name": "vip-operate",
+          "value": "="
+        },
+        {
+          "name": "vip",
+          "value": ""
+        },
+        {
+          "name": "agent.name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "agent.name_text",
+          "value": ""
+        },
+        {
+          "name": "agent.name",
+          "value": ""
+        },
+        {
+          "name": "name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "name",
+          "value": ""
+        },
+        {
+          "name": "status-operate",
+          "value": "="
+        },
+        {
+          "name": "status",
+          "value": ""
+        },
+        {
+          "name": "ip_check-operate",
+          "value": "="
+        },
+        {
+          "name": "ip_check",
+          "value": ""
+        },
+        {
+          "name": "create_time-operate",
+          "value": "RANGE"
+        },
+        {
+          "name": "create_time",
+          "value": ""
+        }
+      ]
+    ]
+  },
+  "game.name": {
+    "queries": [
+      {
+        "sort": [
+          "id"
+        ],
+        "order": [
+          "desc"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "10"
+        ],
+        "filter": [
+          "{\"username\":\"对照会员0\",\"parent_id\":\"0\",\"game.name\":\"对照游戏\"}"
+        ],
+        "op": [
+          "{\"username\":\"LIKE\",\"parent_id\":\"=\",\"game.name\":\"=\"}"
+        ],
+        "_": [
+          "1789589690649"
+        ]
+      }
+    ],
+    "form": [
+      [
+        {
+          "name": "id-operate",
+          "value": "="
+        },
+        {
+          "name": "id",
+          "value": ""
+        },
+        {
+          "name": "username-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "username",
+          "value": "对照会员0"
+        },
+        {
+          "name": "parent_id-operate",
+          "value": "="
+        },
+        {
+          "name": "parent_id",
+          "value": "0"
+        },
+        {
+          "name": "game.name-operate",
+          "value": "="
+        },
+        {
+          "name": "game.name_text",
+          "value": ""
+        },
+        {
+          "name": "game.name",
+          "value": "对照游戏"
+        },
+        {
+          "name": "vip-operate",
+          "value": "="
+        },
+        {
+          "name": "vip",
+          "value": ""
+        },
+        {
+          "name": "agent.name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "agent.name_text",
+          "value": ""
+        },
+        {
+          "name": "agent.name",
+          "value": ""
+        },
+        {
+          "name": "name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "name",
+          "value": ""
+        },
+        {
+          "name": "status-operate",
+          "value": "="
+        },
+        {
+          "name": "status",
+          "value": ""
+        },
+        {
+          "name": "ip_check-operate",
+          "value": "="
+        },
+        {
+          "name": "ip_check",
+          "value": ""
+        },
+        {
+          "name": "create_time-operate",
+          "value": "RANGE"
+        },
+        {
+          "name": "create_time",
+          "value": ""
+        }
+      ]
+    ]
+  },
+  "agent.name": {
+    "queries": [
+      {
+        "sort": [
+          "id"
+        ],
+        "order": [
+          "desc"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "10"
+        ],
+        "filter": [
+          "{\"username\":\"对照会员0\",\"parent_id\":\"0\",\"game.name\":\"对照游戏\",\"agent.name\":\"对照主体\"}"
+        ],
+        "op": [
+          "{\"username\":\"LIKE\",\"parent_id\":\"=\",\"game.name\":\"=\",\"agent.name\":\"LIKE\"}"
+        ],
+        "_": [
+          "1789589690650"
+        ]
+      }
+    ],
+    "form": [
+      [
+        {
+          "name": "id-operate",
+          "value": "="
+        },
+        {
+          "name": "id",
+          "value": ""
+        },
+        {
+          "name": "username-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "username",
+          "value": "对照会员0"
+        },
+        {
+          "name": "parent_id-operate",
+          "value": "="
+        },
+        {
+          "name": "parent_id",
+          "value": "0"
+        },
+        {
+          "name": "game.name-operate",
+          "value": "="
+        },
+        {
+          "name": "game.name_text",
+          "value": ""
+        },
+        {
+          "name": "game.name",
+          "value": "对照游戏"
+        },
+        {
+          "name": "vip-operate",
+          "value": "="
+        },
+        {
+          "name": "vip",
+          "value": ""
+        },
+        {
+          "name": "agent.name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "agent.name_text",
+          "value": ""
+        },
+        {
+          "name": "agent.name",
+          "value": "对照主体"
+        },
+        {
+          "name": "name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "name",
+          "value": ""
+        },
+        {
+          "name": "status-operate",
+          "value": "="
+        },
+        {
+          "name": "status",
+          "value": ""
+        },
+        {
+          "name": "ip_check-operate",
+          "value": "="
+        },
+        {
+          "name": "ip_check",
+          "value": ""
+        },
+        {
+          "name": "create_time-operate",
+          "value": "RANGE"
+        },
+        {
+          "name": "create_time",
+          "value": ""
+        }
+      ]
+    ]
+  },
+  "name": {
+    "queries": [
+      {
+        "sort": [
+          "id"
+        ],
+        "order": [
+          "desc"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "10"
+        ],
+        "filter": [
+          "{\"username\":\"对照会员0\",\"parent_id\":\"0\",\"game.name\":\"对照游戏\",\"agent.name\":\"对照主体\",\"name\":\"隐藏昵称\"}"
+        ],
+        "op": [
+          "{\"username\":\"LIKE\",\"parent_id\":\"=\",\"game.name\":\"=\",\"agent.name\":\"LIKE\",\"name\":\"LIKE\"}"
+        ],
+        "_": [
+          "1789589690651"
+        ]
+      }
+    ],
+    "form": [
+      [
+        {
+          "name": "id-operate",
+          "value": "="
+        },
+        {
+          "name": "id",
+          "value": ""
+        },
+        {
+          "name": "username-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "username",
+          "value": "对照会员0"
+        },
+        {
+          "name": "parent_id-operate",
+          "value": "="
+        },
+        {
+          "name": "parent_id",
+          "value": "0"
+        },
+        {
+          "name": "game.name-operate",
+          "value": "="
+        },
+        {
+          "name": "game.name_text",
+          "value": ""
+        },
+        {
+          "name": "game.name",
+          "value": "对照游戏"
+        },
+        {
+          "name": "vip-operate",
+          "value": "="
+        },
+        {
+          "name": "vip",
+          "value": ""
+        },
+        {
+          "name": "agent.name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "agent.name_text",
+          "value": ""
+        },
+        {
+          "name": "agent.name",
+          "value": "对照主体"
+        },
+        {
+          "name": "name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "name",
+          "value": "隐藏昵称"
+        },
+        {
+          "name": "status-operate",
+          "value": "="
+        },
+        {
+          "name": "status",
+          "value": ""
+        },
+        {
+          "name": "ip_check-operate",
+          "value": "="
+        },
+        {
+          "name": "ip_check",
+          "value": ""
+        },
+        {
+          "name": "create_time-operate",
+          "value": "RANGE"
+        },
+        {
+          "name": "create_time",
+          "value": ""
+        }
+      ]
+    ]
+  },
+  "ip_check": {
+    "queries": [
+      {
+        "sort": [
+          "id"
+        ],
+        "order": [
+          "desc"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "10"
+        ],
+        "filter": [
+          "{\"username\":\"对照会员0\",\"parent_id\":\"0\",\"game.name\":\"对照游戏\",\"agent.name\":\"对照主体\",\"name\":\"隐藏昵称\",\"ip_check\":\"192.0.2.1\"}"
+        ],
+        "op": [
+          "{\"username\":\"LIKE\",\"parent_id\":\"=\",\"game.name\":\"=\",\"agent.name\":\"LIKE\",\"name\":\"LIKE\",\"ip_check\":\"=\"}"
+        ],
+        "_": [
+          "1789589690652"
+        ]
+      }
+    ],
+    "form": [
+      [
+        {
+          "name": "id-operate",
+          "value": "="
+        },
+        {
+          "name": "id",
+          "value": ""
+        },
+        {
+          "name": "username-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "username",
+          "value": "对照会员0"
+        },
+        {
+          "name": "parent_id-operate",
+          "value": "="
+        },
+        {
+          "name": "parent_id",
+          "value": "0"
+        },
+        {
+          "name": "game.name-operate",
+          "value": "="
+        },
+        {
+          "name": "game.name_text",
+          "value": ""
+        },
+        {
+          "name": "game.name",
+          "value": "对照游戏"
+        },
+        {
+          "name": "vip-operate",
+          "value": "="
+        },
+        {
+          "name": "vip",
+          "value": ""
+        },
+        {
+          "name": "agent.name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "agent.name_text",
+          "value": ""
+        },
+        {
+          "name": "agent.name",
+          "value": "对照主体"
+        },
+        {
+          "name": "name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "name",
+          "value": "隐藏昵称"
+        },
+        {
+          "name": "status-operate",
+          "value": "="
+        },
+        {
+          "name": "status",
+          "value": ""
+        },
+        {
+          "name": "ip_check-operate",
+          "value": "="
+        },
+        {
+          "name": "ip_check",
+          "value": "192.0.2.1"
+        },
+        {
+          "name": "create_time-operate",
+          "value": "RANGE"
+        },
+        {
+          "name": "create_time",
+          "value": ""
+        }
+      ]
+    ]
+  },
+  "vip": {
+    "queries": [
+      {
+        "sort": [
+          "id"
+        ],
+        "order": [
+          "desc"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "10"
+        ],
+        "filter": [
+          "{\"username\":\"对照会员0\",\"parent_id\":\"0\",\"game.name\":\"对照游戏\",\"vip\":\"0\",\"agent.name\":\"对照主体\",\"name\":\"隐藏昵称\",\"ip_check\":\"192.0.2.1\"}"
+        ],
+        "op": [
+          "{\"username\":\"LIKE\",\"parent_id\":\"=\",\"game.name\":\"=\",\"vip\":\"=\",\"agent.name\":\"LIKE\",\"name\":\"LIKE\",\"ip_check\":\"=\"}"
+        ],
+        "_": [
+          "1789589690653"
+        ]
+      }
+    ],
+    "form": [
+      [
+        {
+          "name": "id-operate",
+          "value": "="
+        },
+        {
+          "name": "id",
+          "value": ""
+        },
+        {
+          "name": "username-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "username",
+          "value": "对照会员0"
+        },
+        {
+          "name": "parent_id-operate",
+          "value": "="
+        },
+        {
+          "name": "parent_id",
+          "value": "0"
+        },
+        {
+          "name": "game.name-operate",
+          "value": "="
+        },
+        {
+          "name": "game.name_text",
+          "value": ""
+        },
+        {
+          "name": "game.name",
+          "value": "对照游戏"
+        },
+        {
+          "name": "vip-operate",
+          "value": "="
+        },
+        {
+          "name": "vip",
+          "value": "0"
+        },
+        {
+          "name": "agent.name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "agent.name_text",
+          "value": ""
+        },
+        {
+          "name": "agent.name",
+          "value": "对照主体"
+        },
+        {
+          "name": "name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "name",
+          "value": "隐藏昵称"
+        },
+        {
+          "name": "status-operate",
+          "value": "="
+        },
+        {
+          "name": "status",
+          "value": ""
+        },
+        {
+          "name": "ip_check-operate",
+          "value": "="
+        },
+        {
+          "name": "ip_check",
+          "value": "192.0.2.1"
+        },
+        {
+          "name": "create_time-operate",
+          "value": "RANGE"
+        },
+        {
+          "name": "create_time",
+          "value": ""
+        }
+      ]
+    ]
+  },
+  "last_login_ip": {
+    "queries": [],
+    "form": [
+      [
+        {
+          "name": "id-operate",
+          "value": "="
+        },
+        {
+          "name": "id",
+          "value": ""
+        },
+        {
+          "name": "username-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "username",
+          "value": "对照会员0"
+        },
+        {
+          "name": "parent_id-operate",
+          "value": "="
+        },
+        {
+          "name": "parent_id",
+          "value": "0"
+        },
+        {
+          "name": "game.name-operate",
+          "value": "="
+        },
+        {
+          "name": "game.name_text",
+          "value": ""
+        },
+        {
+          "name": "game.name",
+          "value": "对照游戏"
+        },
+        {
+          "name": "vip-operate",
+          "value": "="
+        },
+        {
+          "name": "vip",
+          "value": "0"
+        },
+        {
+          "name": "agent.name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "agent.name_text",
+          "value": ""
+        },
+        {
+          "name": "agent.name",
+          "value": "对照主体"
+        },
+        {
+          "name": "name-operate",
+          "value": "LIKE"
+        },
+        {
+          "name": "name",
+          "value": "隐藏昵称"
+        },
+        {
+          "name": "status-operate",
+          "value": "="
+        },
+        {
+          "name": "status",
+          "value": ""
+        },
+        {
+          "name": "ip_check-operate",
+          "value": "="
+        },
+        {
+          "name": "ip_check",
+          "value": "192.0.2.1"
+        },
+        {
+          "name": "create_time-operate",
+          "value": "RANGE"
+        },
+        {
+          "name": "create_time",
+          "value": ""
+        }
+      ]
+    ]
+  }
+}

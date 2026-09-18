@@ -1,0 +1,156 @@
+{
+  "outer": {
+    "rect": {
+      "x": 560,
+      "y": 240,
+      "width": 800,
+      "height": 600,
+      "top": 240,
+      "right": 1360,
+      "bottom": 840,
+      "left": 560
+    },
+    "html": "<div class=\"layui-layer layui-layer-iframe layui-layer-border layui-layer-fast\" id=\"layui-layer1\" type=\"iframe\" times=\"1\" showtime=\"0\" contype=\"string\" style=\"z-index: 19891015; width: 800px; height: 600px; position: fixed; top: 240px; left: 560px;\"><div class=\"layui-layer-title\" style=\"cursor: move;\">修改金币</div><div id=\"\" class=\"layui-layer-content\"><iframe scrolling=\"auto\" allowtransparency=\"true\" id=\"layui-layer-iframe1\" name=\"layui-layer-iframe1\" onload=\"this.className='';\" class=\"\" frameborder=\"0\" src=\"/DmvTqXBpfF.php/gameuser/coinedit/ids/697991?dialog=1\" style=\"height: 502px;\"></iframe></div><div class=\"layui-layer-btn layui-layer-footer\">\n        <div class=\"row\"><label class=\"control-label col-xs-12 col-sm-2\"></label><div class=\"col-xs-12 col-sm-8\">\n            <button type=\"submit\" class=\"btn btn-primary btn-embossed\">确定</button>\n            <button type=\"reset\" class=\"btn btn-default btn-embossed\">重置</button>\n        </div></div>\n        \n    </div><span class=\"layui-layer-setwin\"><a class=\"layui-layer-min\" href=\"javascript:;\"><cite></cite></a><a class=\"layui-layer-ico layui-layer-max\" href=\"javascript:;\"></a><a class=\"layui-layer-ico layui-layer-close layui-layer-close1\" href=\"javascript:;\"></a></span><span class=\"layui-layer-resize\"></span></div>"
+  },
+  "form": {
+    "html": "<form id=\"edit-form\" class=\"form-horizontal nice-validator n-default n-bootstrap\" role=\"form\" data-toggle=\"validator\" method=\"POST\" action=\"\" novalidate=\"novalidate\">\n    \t<div class=\"form-group\">\n        <label for=\"c-coin\" class=\"control-label col-xs-12 col-sm-2\">可用金币:</label>\n        <div class=\"col-xs-12 col-sm-8\">\n            <input id=\"c-coin\" class=\"form-control\" name=\"row[coin]\" type=\"text\" value=\"0\" style=\"\">\n        </div>\n    </div>\n\t<div class=\"form-group\">\n        <label for=\"c-freeze_coin\" class=\"control-label col-xs-12 col-sm-2\">冻结金币:</label>\n        <div class=\"col-xs-12 col-sm-8\">\n            <input id=\"c-freeze_coin\" class=\"form-control\" name=\"row[freeze_coin]\" type=\"text\" value=\"0\" style=\"\">\n        </div>\n    </div>\n    <div class=\"form-group layer-footer\">\n        <label class=\"control-label col-xs-12 col-sm-2\"></label>\n        <div class=\"col-xs-12 col-sm-8\">\n            <button type=\"submit\" class=\"btn btn-primary btn-embossed\">确定</button>\n            <button type=\"reset\" class=\"btn btn-default btn-embossed\">重置</button>\n        </div>\n    </div>\n</form>",
+    "rect": {
+      "x": 15,
+      "y": 15,
+      "width": 770,
+      "height": 81,
+      "top": 15,
+      "right": 785,
+      "bottom": 96,
+      "left": 15
+    },
+    "elements": [
+      {
+        "tag": "LABEL",
+        "name": null,
+        "text": "可用金币:",
+        "rect": {
+          "x": 0,
+          "y": 15,
+          "width": 133.328125,
+          "height": 29,
+          "top": 15,
+          "right": 133.328125,
+          "bottom": 44,
+          "left": 0
+        },
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "7px 15px 0px",
+        "margin": "0px"
+      },
+      {
+        "tag": "INPUT",
+        "name": "row[coin]",
+        "text": "",
+        "rect": {
+          "x": 148.328125,
+          "y": 15,
+          "width": 503.328125,
+          "height": 33,
+          "top": 15,
+          "right": 651.65625,
+          "bottom": 48,
+          "left": 148.328125
+        },
+        "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "6px 12px",
+        "margin": "0px"
+      },
+      {
+        "tag": "LABEL",
+        "name": null,
+        "text": "冻结金币:",
+        "rect": {
+          "x": 0,
+          "y": 63,
+          "width": 133.328125,
+          "height": 29,
+          "top": 63,
+          "right": 133.328125,
+          "bottom": 92,
+          "left": 0
+        },
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "7px 15px 0px",
+        "margin": "0px"
+      },
+      {
+        "tag": "INPUT",
+        "name": "row[freeze_coin]",
+        "text": "",
+        "rect": {
+          "x": 148.328125,
+          "y": 63,
+          "width": 503.328125,
+          "height": 33,
+          "top": 63,
+          "right": 651.65625,
+          "bottom": 96,
+          "left": 148.328125
+        },
+        "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "6px 12px",
+        "margin": "0px"
+      },
+      {
+        "tag": "LABEL",
+        "name": null,
+        "text": "",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "7px 15px 0px",
+        "margin": "0px"
+      },
+      {
+        "tag": "BUTTON",
+        "name": "",
+        "text": "确定",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "6px 12px",
+        "margin": "0px"
+      },
+      {
+        "tag": "BUTTON",
+        "name": "",
+        "text": "重置",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "6px 12px",
+        "margin": "0px"
+      }
+    ]
+  }
+}

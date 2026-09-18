@@ -1,0 +1,29 @@
+[
+  {
+    "id": 9000,
+    "name": "对照主体甲",
+    "parent_id": 0,
+    "status": 0,
+    "create_time": 1789516800,
+    "update_time": 1789516800,
+    "created_at": "2026-09-16T00:00:00Z"
+  },
+  {
+    "id": 9001,
+    "name": "测试主体乙：长名称与字符 <>&",
+    "parent_id": 0,
+    "status": 1,
+    "create_time": 1789516800,
+    "update_time": 1789516800,
+    "created_at": "2026-09-16T00:00:00Z"
+  },
+  {
+    "id": 9002,
+    "name": "下级主体丙",
+    "parent_id": 9000,
+    "status": 0,
+    "create_time": 1789516800,
+    "update_time": 1789516800,
+    "created_at": "2026-09-16T00:00:00Z"
+  }
+]

@@ -1,0 +1,172 @@
+[
+  {
+    "field": "user_id",
+    "value": "8300",
+    "reference_filter": {
+      "user_id": "8300",
+      "create_time": "2026-09-16 00:00:00 - 2026-09-18 23:59:59"
+    },
+    "reference_operate": {
+      "user_id": "=",
+      "create_time": "RANGE"
+    },
+    "local_query": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "created_from": [
+        "2026-09-15T16:00:00.000Z"
+      ],
+      "created_to": [
+        "2026-09-18T15:59:59.000Z"
+      ],
+      "user_id": [
+        "8300"
+      ]
+    }
+  },
+  {
+    "field": "username",
+    "value": "对比账号0",
+    "reference_filter": {
+      "user_id": "8300",
+      "user.username": "对比账号0",
+      "create_time": "2026-09-16 00:00:00 - 2026-09-18 23:59:59"
+    },
+    "reference_operate": {
+      "user_id": "=",
+      "user.username": "LIKE",
+      "create_time": "RANGE"
+    },
+    "local_query": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "created_from": [
+        "2026-09-15T16:00:00.000Z"
+      ],
+      "created_to": [
+        "2026-09-18T15:59:59.000Z"
+      ],
+      "user_id": [
+        "8300"
+      ],
+      "username": [
+        "对比账号0"
+      ]
+    }
+  },
+  {
+    "field": "receive_name",
+    "value": "收件人<&>",
+    "reference_filter": {
+      "user_id": "8300",
+      "user.username": "对比账号0",
+      "receive_name": "收件人<&>",
+      "create_time": "2026-09-16 00:00:00 - 2026-09-18 23:59:59"
+    },
+    "reference_operate": {
+      "user_id": "=",
+      "user.username": "LIKE",
+      "receive_name": "=",
+      "create_time": "RANGE"
+    },
+    "local_query": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "created_from": [
+        "2026-09-15T16:00:00.000Z"
+      ],
+      "created_to": [
+        "2026-09-18T15:59:59.000Z"
+      ],
+      "user_id": [
+        "8300"
+      ],
+      "username": [
+        "对比账号0"
+      ],
+      "receive_name": [
+        "收件人<&>"
+      ]
+    }
+  },
+  {
+    "field": "receive_tel",
+    "value": "13800000000",
+    "reference_filter": {
+      "user_id": "8300",
+      "user.username": "对比账号0",
+      "receive_name": "收件人<&>",
+      "receive_tel": "13800000000",
+      "create_time": "2026-09-16 00:00:00 - 2026-09-18 23:59:59"
+    },
+    "reference_operate": {
+      "user_id": "=",
+      "user.username": "LIKE",
+      "receive_name": "=",
+      "receive_tel": "=",
+      "create_time": "RANGE"
+    },
+    "local_query": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "created_from": [
+        "2026-09-15T16:00:00.000Z"
+      ],
+      "created_to": [
+        "2026-09-18T15:59:59.000Z"
+      ],
+      "user_id": [
+        "8300"
+      ],
+      "username": [
+        "对比账号0"
+      ],
+      "receive_name": [
+        "收件人<&>"
+      ],
+      "receive_tel": [
+        "13800000000"
+      ]
+    }
+  }
+]

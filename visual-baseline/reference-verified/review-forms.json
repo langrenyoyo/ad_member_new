@@ -1,0 +1,305 @@
+{
+  "tixian": {
+    "probes": [
+      {
+        "wide_date": false,
+        "status": 200,
+        "total": 0,
+        "keys": [
+          "total",
+          "rows",
+          "extend"
+        ]
+      },
+      {
+        "wide_date": true,
+        "status": 200,
+        "total": 0,
+        "keys": [
+          "total",
+          "rows",
+          "extend"
+        ]
+      }
+    ],
+    "forms": {},
+    "permissions": {
+      "operateEdit": "1",
+      "operateAgree": "",
+      "operateRefuse": "",
+      "operateReason": "",
+      "operateYige": "1",
+      "operateLahei": "1",
+      "operateDel": ""
+    },
+    "toolbar": [
+      {
+        "text": "",
+        "classes": "btn btn-primary btn-refresh",
+        "title": "刷新",
+        "href": "javascript:;",
+        "icons": [
+          "fa fa-refresh"
+        ]
+      },
+      {
+        "text": "编辑",
+        "classes": "btn btn-success btn-edit btn-disabled disabled",
+        "title": "编辑",
+        "href": "javascript:;",
+        "icons": [
+          "fa fa-pencil"
+        ]
+      },
+      {
+        "text": "导出",
+        "classes": "btn btn-info btn-export hide",
+        "title": "",
+        "href": "javascript:;",
+        "icons": [
+          "fa fa-download"
+        ]
+      },
+      {
+        "text": "批量同意",
+        "classes": "btn btn-primary btn-agree dropdown-toggle btn-disabled disabled hide",
+        "title": "",
+        "href": null,
+        "icons": [
+          "fa fa-money"
+        ]
+      },
+      {
+        "text": "批量拒绝",
+        "classes": "btn btn-danger btn-refuse dropdown-toggle btn-disabled disabled",
+        "title": "",
+        "href": null,
+        "icons": [
+          "fa fa-money"
+        ]
+      },
+      {
+        "text": "批量支付宝转账(实时)",
+        "classes": "btn btn-primary btn-alipay dropdown-toggle btn-disabled disabled",
+        "title": "",
+        "href": null,
+        "icons": [
+          "fa fa-money"
+        ]
+      },
+      {
+        "text": "批量支付宝转账(定时)",
+        "classes": "btn btn-primary btn-alipay-plan dropdown-toggle btn-disabled disabled hide",
+        "title": "",
+        "href": null,
+        "icons": [
+          "fa fa-money"
+        ]
+      },
+      {
+        "text": "黑名单",
+        "classes": "btn btn-success btn-dialog ",
+        "title": "黑名单",
+        "href": "exchangehei/index",
+        "icons": [
+          "fa fa-user"
+        ]
+      },
+      {
+        "text": "已提现：0元",
+        "classes": "btn btn-default",
+        "title": "",
+        "href": "javascript:;",
+        "icons": []
+      },
+      {
+        "text": "提现中：0元",
+        "classes": "btn btn-default",
+        "title": "",
+        "href": "javascript:;",
+        "icons": []
+      },
+      {
+        "text": "拉黑已提现：0元",
+        "classes": "btn btn-default",
+        "title": "",
+        "href": "javascript:;",
+        "icons": []
+      },
+      {
+        "text": "跨页选择模式，已选 0 项",
+        "classes": "btn btn-warning-light btn-selected-tips hide",
+        "title": "",
+        "href": "javascript:",
+        "icons": [
+          "fa fa-info-circle"
+        ]
+      }
+    ],
+    "actions": [
+      [
+        {
+          "title": "拉黑",
+          "text": "拉黑",
+          "classes": "btn btn-warning btn-xs btn-detail btn-ajax"
+        },
+        {
+          "title": "编辑",
+          "text": "",
+          "classes": "btn btn-xs btn-success btn-editone"
+        }
+      ],
+      [
+        {
+          "title": "拉黑",
+          "text": "拉黑",
+          "classes": "btn btn-warning btn-xs btn-detail btn-ajax"
+        }
+      ],
+      [
+        {
+          "title": "拉黑",
+          "text": "拉黑",
+          "classes": "btn btn-warning btn-xs btn-detail btn-ajax"
+        }
+      ]
+    ]
+  },
+  "butie": {
+    "probes": [
+      {
+        "wide_date": false,
+        "status": 200,
+        "total": 0,
+        "keys": [
+          "total",
+          "rows",
+          "extend"
+        ]
+      },
+      {
+        "wide_date": true,
+        "status": 200,
+        "total": 0,
+        "keys": [
+          "total",
+          "rows",
+          "extend"
+        ]
+      }
+    ],
+    "forms": {},
+    "permissions": {
+      "operateEdit": "1",
+      "operateDel": "1"
+    },
+    "toolbar": [
+      {
+        "text": "",
+        "classes": "btn btn-primary btn-refresh",
+        "title": "刷新",
+        "href": "javascript:;",
+        "icons": [
+          "fa fa-refresh"
+        ]
+      },
+      {
+        "text": "编辑",
+        "classes": "btn btn-success btn-edit btn-disabled disabled",
+        "title": "编辑",
+        "href": "javascript:;",
+        "icons": [
+          "fa fa-pencil"
+        ]
+      },
+      {
+        "text": "删除",
+        "classes": "btn btn-danger btn-del btn-disabled disabled",
+        "title": "删除",
+        "href": "javascript:;",
+        "icons": [
+          "fa fa-trash"
+        ]
+      },
+      {
+        "text": "批量同意",
+        "classes": "btn btn-primary btn-agree dropdown-toggle btn-disabled disabled",
+        "title": "",
+        "href": null,
+        "icons": [
+          "fa fa-money"
+        ]
+      },
+      {
+        "text": "批量拒绝",
+        "classes": "btn btn-danger btn-refuse dropdown-toggle btn-disabled disabled",
+        "title": "",
+        "href": null,
+        "icons": [
+          "fa fa-money"
+        ]
+      },
+      {
+        "text": "已补贴：0元",
+        "classes": "btn btn-default",
+        "title": "",
+        "href": "javascript:;",
+        "icons": []
+      },
+      {
+        "text": "申请中：0元",
+        "classes": "btn btn-default",
+        "title": "",
+        "href": "javascript:;",
+        "icons": []
+      },
+      {
+        "text": "跨页选择模式，已选 0 项",
+        "classes": "btn btn-warning-light btn-selected-tips hide",
+        "title": "",
+        "href": "javascript:",
+        "icons": [
+          "fa fa-info-circle"
+        ]
+      }
+    ],
+    "actions": [
+      [
+        {
+          "title": "编辑",
+          "text": "",
+          "classes": "btn btn-xs btn-success btn-editone"
+        },
+        {
+          "title": "删除",
+          "text": "",
+          "classes": "btn btn-xs btn-danger btn-delone"
+        }
+      ],
+      [
+        {
+          "title": "编辑",
+          "text": "",
+          "classes": "btn btn-xs btn-success btn-editone"
+        },
+        {
+          "title": "删除",
+          "text": "",
+          "classes": "btn btn-xs btn-danger btn-delone"
+        }
+      ],
+      [
+        {
+          "title": "编辑",
+          "text": "",
+          "classes": "btn btn-xs btn-success btn-editone"
+        },
+        {
+          "title": "删除",
+          "text": "",
+          "classes": "btn btn-xs btn-danger btn-delone"
+        }
+      ]
+    ]
+  }
+}

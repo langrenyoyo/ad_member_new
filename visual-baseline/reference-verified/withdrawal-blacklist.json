@@ -1,0 +1,313 @@
+{
+  "total": 1569,
+  "fields": [
+    "id",
+    "rid",
+    "receive_name",
+    "receive_tel",
+    "status",
+    "create_time",
+    "update_time"
+  ],
+  "dialog": {
+    "x": 560,
+    "y": 240,
+    "width": 800,
+    "height": 600
+  },
+  "window_controls": [
+    {
+      "classes": "layui-layer-min",
+      "title": ""
+    },
+    {
+      "classes": "layui-layer-ico layui-layer-max",
+      "title": ""
+    },
+    {
+      "classes": "layui-layer-ico layui-layer-close layui-layer-close1",
+      "title": ""
+    }
+  ],
+  "table": {
+    "sortName": "id",
+    "sortOrder": "desc",
+    "pageSize": 10,
+    "pageList": [
+      10,
+      15,
+      20,
+      25,
+      50,
+      "All"
+    ],
+    "columns": [
+      [
+        {
+          "field": 0,
+          "title": null,
+          "visible": true,
+          "sortable": false,
+          "operate": null,
+          "searchList": null
+        },
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "searchList": null
+        },
+        {
+          "field": "receive_name",
+          "title": "收件人",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "searchList": null
+        },
+        {
+          "field": "receive_tel",
+          "title": "联系方式",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "searchList": null
+        },
+        {
+          "field": "status",
+          "title": "状态",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "searchList": {
+            "0": "禁用",
+            "1": "启用"
+          }
+        },
+        {
+          "field": "create_time",
+          "title": "拉黑时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "searchList": null
+        },
+        {
+          "field": "update_time",
+          "title": "更新时间",
+          "visible": false,
+          "sortable": true,
+          "operate": "RANGE",
+          "searchList": null
+        }
+      ]
+    ]
+  },
+  "permissions": {
+    "operateEdit": "",
+    "operateDel": ""
+  },
+  "toolbar": [
+    {
+      "text": "",
+      "classes": "btn btn-primary btn-refresh",
+      "title": "刷新",
+      "icons": [
+        "fa fa-refresh"
+      ]
+    },
+    {
+      "text": "跨页选择模式，已选 0 项",
+      "classes": "btn btn-warning-light btn-selected-tips hide",
+      "title": "",
+      "icons": [
+        "fa fa-info-circle"
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "name": "receive_name",
+      "placeholder": "收件人",
+      "value": "",
+      "options": null
+    },
+    {
+      "name": "receive_tel",
+      "placeholder": "联系方式",
+      "value": "",
+      "options": null
+    },
+    {
+      "name": "status",
+      "placeholder": null,
+      "value": "",
+      "options": [
+        {
+          "value": "",
+          "text": "选择"
+        },
+        {
+          "value": "0",
+          "text": "禁用"
+        },
+        {
+          "value": "1",
+          "text": "启用"
+        }
+      ]
+    },
+    {
+      "name": "create_time",
+      "placeholder": "拉黑时间",
+      "value": "",
+      "options": null
+    },
+    {
+      "name": "update_time",
+      "placeholder": "更新时间",
+      "value": "",
+      "options": null
+    }
+  ],
+  "cells": [
+    {
+      "text": "",
+      "html": "<input data-index=\"0\" name=\"btSelectItem\" type=\"checkbox\">"
+    },
+    {
+      "text": "9000",
+      "html": "9000"
+    },
+    {
+      "text": "fixture 0",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 fixture 0\" data-field=\"receive_name\" data-value=\"fixture 0\">fixture 0</a>"
+    },
+    {
+      "text": "0012340",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 0012340\" data-field=\"receive_tel\" data-value=\"0012340\">0012340</a>"
+    },
+    {
+      "text": "",
+      "html": "<a href=\"javascript:;\" data-toggle=\"tooltip\" title=\"点击切换\" class=\"btn-change \" data-index=\"0\" data-id=\"9000\" data-params=\"status=0\"><i class=\"fa fa-toggle-on text-success text-success  fa-2x\"></i></a>"
+    },
+    {
+      "text": "2026-09-18 08:00:00",
+      "html": "2026-09-18 08:00:00"
+    }
+  ],
+  "styles": {
+    "body": {
+      "x": 0,
+      "y": 0,
+      "width": 800,
+      "height": 555,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "padding": "0px",
+      "border": "0px none rgb(51, 51, 51)",
+      "html": "<body class=\"inside-header inside-aside is-dialog\">\n        <div id=\"main\" role=\"main\">\n            <div class=\"tab-content tab-addtabs\">\n                <div id=\"content\">\n                    <div class=\"row\">\n                        <div class=\"col-xs-12 col-sm-12 col-md-12 col-lg-12\">\n                            <section class=\"content-header hide\">\n                                <h1>\n                                    控制台                                    <small>Control panel</small>\n                                </h1>\n                            </section>\n                           "
+    },
+    ".form-commonsearch label": {
+      "x": 30,
+      "y": 30,
+      "width": 118.328125,
+      "height": 29,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "padding": "7px 15px 0px",
+      "border": "0px none rgb(51, 51, 51)",
+      "html": "<label for=\"receive_name\" class=\"control-label col-xs-4\">收件人</label>"
+    },
+    ".form-commonsearch select": {
+      "x": 163.328125,
+      "y": 78,
+      "width": 206.65625,
+      "height": 33,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(85, 85, 85)",
+      "padding": "6px 25px 6px 12px",
+      "border": "1px solid rgb(210, 214, 222)",
+      "html": "<select class=\"form-control\" name=\"status\"><option value=\"\">选择</option><option value=\"0\">禁用</option><option value=\"1\">启用</option></select>"
+    },
+    ".form-commonsearch button": {
+      "x": 548.328125,
+      "y": 126,
+      "width": 52,
+      "height": 32.5625,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(255, 255, 255)",
+      "padding": "6px 12px",
+      "border": "1px solid rgba(0, 0, 0, 0)",
+      "html": "<button type=\"submit\" class=\"btn btn-success\" formnovalidate=\"\">提交</button>"
+    },
+    ".fixed-table-toolbar button": {
+      "x": 731,
+      "y": 184,
+      "width": 39,
+      "height": 32.5625,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(68, 68, 68)",
+      "padding": "6px 12px",
+      "border": "1px solid rgb(221, 221, 221)",
+      "html": "<button class=\"btn btn-default\" type=\"button\" name=\"commonSearch\" title=\"普通搜索\"><i class=\"glyphicon glyphicon-search\"></i></button>"
+    },
+    ".fixed-table-toolbar .btn-group": {
+      "x": 587.75,
+      "y": 184,
+      "width": 138.25,
+      "height": 32.5625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "padding": "0px",
+      "border": "0px none rgb(51, 51, 51)",
+      "html": "<div class=\"columns columns-right btn-group pull-right\"><button class=\"btn btn-default\" type=\"button\" name=\"toggle\" aria-label=\"toggle\" title=\"切换\"><i class=\"glyphicon glyphicon-list-alt icon-list-alt\"></i></button><div class=\"keep-open btn-group\" title=\"列\"><button type=\"button\" aria-label=\"columns\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\"><i class=\"glyphicon glyphicon-th icon-th\"></i> <span class=\"caret\"></span></button><ul class=\"dropdown-menu\" role=\"menu\"><li role=\"menuitem\"><label><input type=\"checkbox\" data-field=\"id\" value=\"1\" checked=\"checked\"> Id</label></li><li ro"
+    },
+    "#table th": {
+      "x": 30.5,
+      "y": 227.0625,
+      "width": 44,
+      "height": 41,
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "padding": "0px",
+      "border": "",
+      "html": "<th class=\"bs-checkbox \" style=\"text-align: center; vertical-align: middle; width: 36px; \" data-field=\"0\"><div class=\"th-inner \"><input name=\"btSelectAll\" type=\"checkbox\"></div><div class=\"fht-cell\"></div></th>"
+    },
+    "#table td": {
+      "x": 30.5,
+      "y": 268.0625,
+      "width": 44,
+      "height": 47,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "padding": "8px 15px",
+      "border": "",
+      "html": "<td class=\"bs-checkbox \"><input data-index=\"0\" name=\"btSelectItem\" type=\"checkbox\"></td>"
+    },
+    "#table .fa-toggle-on": {
+      "x": 459.1875,
+      "y": 278.0625,
+      "width": 29.765625,
+      "height": 26.046875,
+      "font": "26.04px / 26.04px FontAwesome",
+      "color": "rgb(24, 188, 156)",
+      "padding": "0px",
+      "border": "0px none rgb(24, 188, 156)",
+      "html": "<i class=\"fa fa-toggle-on text-success text-success  fa-2x\"></i>"
+    },
+    ".pagination-info": {
+      "x": 30,
+      "y": 381.5625,
+      "width": 242.703125,
+      "height": 16,
+      "font": "14px / 34px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "padding": "0px",
+      "border": "0px none rgb(51, 51, 51)",
+      "html": "<span class=\"pagination-info\">显示第 1 到第 2 条记录，总共 2 条记录</span>"
+    }
+  }
+}

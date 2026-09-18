@@ -1,0 +1,298 @@
+{
+  "configs": [
+    {
+      "name": "game.name_text",
+      "options": {
+        "lang": "cn",
+        "multiple": false,
+        "pagination": true,
+        "dropButton": true,
+        "listSize": 10,
+        "multipleControlbar": true,
+        "maxSelectLimit": 0,
+        "selectToCloseList": false,
+        "dbTable": "tbl",
+        "keyField": "id",
+        "showField": "name",
+        "andOr": "OR",
+        "separator": ",",
+        "pageSize": 10,
+        "autoFillResult": false,
+        "autoSelectFirst": false,
+        "noResultClean": true,
+        "selectOnly": false,
+        "inputDelay": 0.5,
+        "index": 7,
+        "eAjaxSuccess": "function (data) {\n                                data.list = typeof data.rows !== 'undefined' ? data.rows : (typeof data.list !== 'undefined' ? data.list : []);\n                                data.totalRow = typeof data.total !== 'undefined' ? data.total : (typeof data.totalRow !== 'undefined' ? data.totalRow : data.list.length);\n                                return data;\n                            }",
+        "data": "ajax/gameList_source/agent_ids/133",
+        "searchField": [
+          "name"
+        ],
+        "orderBy": [
+          [
+            "name",
+            "ASC"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "agent.name_text",
+      "options": {
+        "lang": "cn",
+        "multiple": false,
+        "pagination": true,
+        "dropButton": true,
+        "listSize": 10,
+        "multipleControlbar": true,
+        "maxSelectLimit": 0,
+        "selectToCloseList": false,
+        "dbTable": "tbl",
+        "keyField": "id",
+        "showField": "name",
+        "andOr": "OR",
+        "separator": ",",
+        "pageSize": 10,
+        "autoFillResult": false,
+        "autoSelectFirst": false,
+        "noResultClean": true,
+        "selectOnly": false,
+        "inputDelay": 0.5,
+        "index": 10,
+        "eAjaxSuccess": "function (data) {\n                                data.list = typeof data.rows !== 'undefined' ? data.rows : (typeof data.list !== 'undefined' ? data.list : []);\n                                data.totalRow = typeof data.total !== 'undefined' ? data.total : (typeof data.totalRow !== 'undefined' ? data.totalRow : data.list.length);\n                                return data;\n                            }",
+        "data": "ajax/agentList_source/agent_ids/133",
+        "searchField": [
+          "name"
+        ],
+        "orderBy": [
+          [
+            "name",
+            "ASC"
+          ]
+        ]
+      }
+    }
+  ],
+  "requests": [
+    {
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/ajax/gameList_source/agent_ids/133",
+      "method": "POST",
+      "body": "q_word%5B%5D=&pageNumber=1&pageSize=10&andOr=OR&orderBy%5B0%5D%5B%5D=name&orderBy%5B0%5D%5B%5D=ASC&searchTable=tbl&showField=name&keyField=id&searchField%5B%5D=name&name="
+    },
+    {
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/ajax/agentList_source/agent_ids/133",
+      "method": "POST",
+      "body": "q_word%5B%5D=&pageNumber=1&pageSize=10&andOr=OR&orderBy%5B0%5D%5B%5D=name&orderBy%5B0%5D%5B%5D=ASC&searchTable=tbl&showField=name&keyField=id&searchField%5B%5D=name&name="
+    },
+    {
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/gameuser/index?sort=id&order=desc&offset=0&limit=10&filter=%7B%22game.name%22%3A%227200%22%2C%22agent.name%22%3A%226200%22%7D&op=%7B%22game.name%22%3A%22%3D%22%2C%22agent.name%22%3A%22LIKE%22%7D&_=1789611926173",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/ajax/gameList_source/agent_ids/133",
+      "method": "POST",
+      "body": "q_word%5B%5D=&pageNumber=1&pageSize=10&andOr=OR&orderBy%5B0%5D%5B%5D=name&orderBy%5B0%5D%5B%5D=ASC&searchTable=tbl&showField=name&keyField=id&searchField%5B%5D=name&name="
+    },
+    {
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/ajax/agentList_source/agent_ids/133",
+      "method": "POST",
+      "body": "q_word%5B%5D=&pageNumber=1&pageSize=10&andOr=OR&orderBy%5B0%5D%5B%5D=name&orderBy%5B0%5D%5B%5D=ASC&searchTable=tbl&showField=name&keyField=id&searchField%5B%5D=name&name="
+    },
+    {
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/gameuser/index?sort=id&order=desc&offset=0&limit=10&filter=%7B%22game.name%22%3A%227200%22%2C%22agent.name%22%3A%226200%22%7D&op=%7B%22game.name%22%3A%22%3D%22%2C%22agent.name%22%3A%22LIKE%22%7D&_=1789611926174",
+      "method": "GET",
+      "body": null
+    }
+  ],
+  "selected": [
+    {
+      "name": "id-operate",
+      "value": "="
+    },
+    {
+      "name": "id",
+      "value": ""
+    },
+    {
+      "name": "username-operate",
+      "value": "LIKE"
+    },
+    {
+      "name": "username",
+      "value": ""
+    },
+    {
+      "name": "parent_id-operate",
+      "value": "="
+    },
+    {
+      "name": "parent_id",
+      "value": ""
+    },
+    {
+      "name": "game.name-operate",
+      "value": "="
+    },
+    {
+      "name": "game.name_text",
+      "value": "fixture-game"
+    },
+    {
+      "name": "game.name",
+      "value": "7200"
+    },
+    {
+      "name": "vip-operate",
+      "value": "="
+    },
+    {
+      "name": "vip",
+      "value": ""
+    },
+    {
+      "name": "agent.name-operate",
+      "value": "LIKE"
+    },
+    {
+      "name": "agent.name_text",
+      "value": "fixture-agent"
+    },
+    {
+      "name": "agent.name",
+      "value": "6200"
+    },
+    {
+      "name": "name-operate",
+      "value": "LIKE"
+    },
+    {
+      "name": "name",
+      "value": ""
+    },
+    {
+      "name": "status-operate",
+      "value": "="
+    },
+    {
+      "name": "status",
+      "value": ""
+    },
+    {
+      "name": "ip_check-operate",
+      "value": "="
+    },
+    {
+      "name": "ip_check",
+      "value": ""
+    },
+    {
+      "name": "create_time-operate",
+      "value": "RANGE"
+    },
+    {
+      "name": "create_time",
+      "value": ""
+    }
+  ],
+  "selected_request": {
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/gameuser/index?sort=id&order=desc&offset=0&limit=10&filter=%7B%22game.name%22%3A%227200%22%2C%22agent.name%22%3A%226200%22%7D&op=%7B%22game.name%22%3A%22%3D%22%2C%22agent.name%22%3A%22LIKE%22%7D&_=1789611926173",
+    "method": "GET",
+    "body": null
+  },
+  "typed": [
+    {
+      "name": "id-operate",
+      "value": "="
+    },
+    {
+      "name": "id",
+      "value": ""
+    },
+    {
+      "name": "username-operate",
+      "value": "LIKE"
+    },
+    {
+      "name": "username",
+      "value": ""
+    },
+    {
+      "name": "parent_id-operate",
+      "value": "="
+    },
+    {
+      "name": "parent_id",
+      "value": ""
+    },
+    {
+      "name": "game.name-operate",
+      "value": "="
+    },
+    {
+      "name": "game.name_text",
+      "value": "unselected-name"
+    },
+    {
+      "name": "game.name",
+      "value": "7200"
+    },
+    {
+      "name": "vip-operate",
+      "value": "="
+    },
+    {
+      "name": "vip",
+      "value": ""
+    },
+    {
+      "name": "agent.name-operate",
+      "value": "LIKE"
+    },
+    {
+      "name": "agent.name_text",
+      "value": "unselected-name"
+    },
+    {
+      "name": "agent.name",
+      "value": "6200"
+    },
+    {
+      "name": "name-operate",
+      "value": "LIKE"
+    },
+    {
+      "name": "name",
+      "value": ""
+    },
+    {
+      "name": "status-operate",
+      "value": "="
+    },
+    {
+      "name": "status",
+      "value": ""
+    },
+    {
+      "name": "ip_check-operate",
+      "value": "="
+    },
+    {
+      "name": "ip_check",
+      "value": ""
+    },
+    {
+      "name": "create_time-operate",
+      "value": "RANGE"
+    },
+    {
+      "name": "create_time",
+      "value": ""
+    }
+  ],
+  "typed_request": {
+    "url": "https://ad.leadink.cn/DmvTqXBpfF.php/gameuser/index?sort=id&order=desc&offset=0&limit=10&filter=%7B%22game.name%22%3A%227200%22%2C%22agent.name%22%3A%226200%22%7D&op=%7B%22game.name%22%3A%22%3D%22%2C%22agent.name%22%3A%22LIKE%22%7D&_=1789611926174",
+    "method": "GET",
+    "body": null
+  }
+}

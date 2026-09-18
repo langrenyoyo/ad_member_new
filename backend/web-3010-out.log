@@ -1,0 +1,2 @@
+Admin shell running at http://localhost:3010
+Proxying /api requests to http://127.0.0.1:8000

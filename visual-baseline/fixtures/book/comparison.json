@@ -1,0 +1,241 @@
+{
+  "geometry": [
+    {
+      "field": null,
+      "width": 44
+    },
+    {
+      "field": "id",
+      "width": 138.28125
+    },
+    {
+      "field": "name",
+      "width": 579.28125
+    },
+    {
+      "field": "created_at",
+      "width": 573.890625
+    },
+    {
+      "field": "tutorial_actions",
+      "width": 293.546875
+    }
+  ],
+  "exports": [
+    {
+      "format": "json",
+      "equal": true
+    },
+    {
+      "format": "xml",
+      "reference_parse_error": "not well-formed (invalid token): line 1, column 295",
+      "equal": false
+    },
+    {
+      "format": "csv",
+      "equal": true
+    },
+    {
+      "format": "txt",
+      "equal": true
+    },
+    {
+      "format": "doc",
+      "equal": true
+    },
+    {
+      "format": "excel",
+      "equal": true
+    },
+    {
+      "format": "selected-json",
+      "equal": true
+    },
+    {
+      "format": "selected-xml",
+      "equal": true
+    },
+    {
+      "format": "selected-csv",
+      "equal": true
+    },
+    {
+      "format": "selected-txt",
+      "equal": true
+    },
+    {
+      "format": "selected-doc",
+      "equal": true
+    },
+    {
+      "format": "selected-excel",
+      "equal": true
+    }
+  ],
+  "detail_styles": [
+    {
+      "tag": "ARTICLE",
+      "cls": "tutorial-content",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 0,
+      "y": 15,
+      "width": 800,
+      "height": 268.703125
+    },
+    {
+      "tag": "P",
+      "cls": "",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "24px / 37.716px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 10,
+      "y": 25,
+      "width": 780,
+      "height": 37.703125
+    },
+    {
+      "tag": "P",
+      "cls": "",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 10,
+      "y": 71.703125,
+      "width": 780,
+      "height": 22
+    },
+    {
+      "tag": "P",
+      "cls": "",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 10,
+      "y": 102.703125,
+      "width": 780,
+      "height": 22
+    },
+    {
+      "tag": "P",
+      "cls": "",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 10,
+      "y": 133.703125,
+      "width": 780,
+      "height": 100
+    },
+    {
+      "tag": "P",
+      "cls": "",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 10,
+      "y": 242.703125,
+      "width": 780,
+      "height": 22
+    },
+    {
+      "tag": "A",
+      "cls": "",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(60, 141, 255)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 10,
+      "y": 245.703125,
+      "width": 67.6875,
+      "height": 16
+    }
+  ],
+  "table": {
+    "reference_size": [
+      1690,
+      350
+    ],
+    "local_size": [
+      1690,
+      350
+    ],
+    "changed_pixels_percent": 0.0122
+  },
+  "filters-": {
+    "reference_size": [
+      1690,
+      398
+    ],
+    "local_size": [
+      1690,
+      398
+    ],
+    "changed_pixels_percent": 0.0638
+  },
+  "selection-": {
+    "reference_size": [
+      1690,
+      350
+    ],
+    "local_size": [
+      1690,
+      350
+    ],
+    "changed_pixels_percent": 0.0396
+  },
+  "cards-": {
+    "reference_size": [
+      1690,
+      539
+    ],
+    "local_size": [
+      1690,
+      539
+    ],
+    "changed_pixels_percent": 0.0321
+  },
+  "pagination-": {
+    "reference_size": [
+      1630,
+      56
+    ],
+    "local_size": [
+      1630,
+      56
+    ],
+    "changed_pixels_percent": 0.2596
+  },
+  "detail-": {
+    "reference_size": [
+      800,
+      600
+    ],
+    "local_size": [
+      800,
+      600
+    ],
+    "changed_pixels_percent": 0.0583
+  }
+}

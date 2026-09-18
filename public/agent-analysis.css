@@ -1,0 +1,79 @@
+.main:has(.agent-analysis)>.topbar{display:none}
+.content:has(.agent-analysis){padding:15px}
+.agent-analysis{font:14px/22.001px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;color:#333}
+.agent-analysis .agent-dashboard-name{height:54px;box-sizing:border-box}
+.agent-analysis .agent-dashboard-tools{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap}
+.agent-analysis .agent-dashboard-tools a{margin:0;padding:6px 12px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;border:1px solid transparent}
+.agent-analysis .agent-dashboard-tools [aria-current=page]{background:#f39c12}
+.agent-analysis-panel{padding:15px;border-radius:3px}
+.agent-analysis .fa,.agent-analysis-settings .fa{font-family:FontAwesome;font-style:normal;line-height:1}
+.agent-analysis .fa-gamepad:before{content:'\f11b'}.agent-analysis .fa-tachometer:before{content:'\f0e4'}.agent-analysis .fa-user:before{content:'\f007'}.agent-analysis .fa-money:before{content:'\f0d6'}.agent-analysis .fa-cog:before{content:'\f013'}.agent-analysis-settings .fa-plus:before{content:'\f067'}.agent-analysis-settings .fa-trash:before{content:'\f1f8'}
+.agent-analysis-panel .ads-toolbar{display:none}
+.agent-analysis-panel #agentAnalysisFilters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px 0;margin:0 -15px;padding:0 0 15px}
+.agent-analysis-panel #agentAnalysisFilters>label{display:grid;grid-template-columns:33.3333333% 66.6666667%;gap:0;padding:0 15px;margin:0;font-weight:400;min-width:0;align-items:start}
+.agent-analysis-panel #agentAnalysisFilters>label>span{width:auto;padding:7px 15px 0;font:14px/22.001px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;white-space:nowrap}
+.agent-analysis-panel #agentAnalysisFilters input{width:calc(100% - 30px);margin:0 15px;height:33px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-analysis-panel #agentAnalysisFilters input::placeholder{color:#999;opacity:1}
+.analysis-range{display:grid;grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr);padding:0 15px;align-items:center;min-width:0}
+.agent-analysis-panel #agentAnalysisFilters .analysis-range input{margin:0;width:100%;min-width:0}
+.analysis-range>span{text-align:center}
+.agent-analysis-panel #agentAnalysisFilters .ads-filter-actions{padding-left:calc(33.3333333% + 20px);grid-column:auto;gap:4px}
+.agent-analysis-panel #agentAnalysisFilters button{font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;height:32.5625px;border-radius:3px}
+.agent-analysis-panel #agentAnalysisFilters .ads-submit{background:#18bc9c!important;border-color:#18bc9c!important}
+.agent-analysis-charts{padding:10px 0}
+.analysis-pies{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0 -15px}
+.analysis-pies>div,.analysis-large>div{padding:15px 30px;min-width:0;text-align:center}
+.analysis-pies [data-analysis-chart]{height:200px;width:100%}
+.agent-analysis-panel .analysis-pies button{background:#1688f1;border-color:#1688f1;color:#fff;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;padding:6px 12px;height:32.5625px;border-radius:3px}
+.analysis-large{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0 -15px}
+.analysis-large [data-analysis-chart]{height:500px;width:100%}
+.agent-analysis-panel #agentAnalysisTable .ads-table th,.agent-analysis-panel #agentAnalysisTable .ads-table td{text-align:center;border-color:#f4f4f4}
+.agent-analysis-panel #agentAnalysisTable .ads-table th{color:#333;border-bottom-color:#ddd}
+.agent-analysis-panel #agentAnalysisTable .ads-table td{height:47px;white-space:nowrap}
+.agent-analysis-panel #agentAnalysisTable .ads-table [data-field=game_name],.agent-analysis-panel #agentAnalysisTable .ads-table [data-field=agent_name]{text-align:left}
+.agent-analysis-panel #agentAnalysisTable .ads-table th button{padding:8px 15px}
+.agent-analysis-panel #agentAnalysisTable [data-field=member_actions]{white-space:nowrap}
+.agent-analysis-panel button.analysis-switch{padding:0;height:auto;border:0;background:none;color:#d2d6de;font-size:26.04px;vertical-align:baseline;line-height:1}
+.agent-analysis-panel button.game-member-behavior{margin-right:0}
+.analysis-switch .shell-icon{width:auto}.agent-analysis-panel button.analysis-switch.enabled{color:#18bc9c}.analysis-switch:not(.enabled) .shell-icon{transform:scaleX(-1)}
+.agent-analysis-panel #agentAnalysisPagination{font:14px/34px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;margin:0;min-height:54px;padding:10px 0}
+.agent-analysis-panel #agentAnalysisPagination[hidden]{display:none}
+#agentAnalysisError:not(:empty){padding:10px}
+.agent-analysis-panel #agentAnalysisTable .ads-table th[aria-sort=ascending] button:before{border-bottom-color:#8080ff}
+.agent-analysis-panel #agentAnalysisTable .ads-table th[aria-sort=descending] button:after{border-top-color:#8080ff}
+.agent-analysis-panel #agentAnalysisTable .ads-table th[aria-sort] button:before,.agent-analysis-panel #agentAnalysisTable .ads-table th[aria-sort] button:after{display:none}
+.agent-analysis-panel #agentAnalysisTable .ads-table th[aria-sort] button{background:right center no-repeat url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAAkElEQVQoz7XQMQ5AQBCF4dWQSJxC5wwax1Cq1e7BAdxD5SL+Tq/QCM1oNiJidwox0355mXnG/DrEtIQ6azioNZQxI0ykPhTQIwhCR+BmBYtlK7kLJYwWCcJA9M4qdrZrd8pPjZWPtOqdRQy320YSV17OatFC4euts6z39GYMKRPCTKY9UnPQ6P+GtMRfGtPnBCiqhAeJPmkqAAAAAElFTkSuQmCC")}
+.agent-analysis-panel #agentAnalysisTable .ads-table th[aria-sort=ascending] button{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZ0lEQVQ4y2NgGLKgquEuFxBPAGI2ahhWCsS/gDibUoO0gPgxEP8H4ttArEyuQYxAPBdqEAxPBImTY5gjEL9DM+wTENuQahAvEO9DMwiGdwAxOymGJQLxTyD+jgWDxCMZRsEoGAVoAADeemwtPcZI2wAAAABJRU5ErkJggg==")}
+.agent-analysis-panel #agentAnalysisTable .ads-table th[aria-sort=descending] button{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZUlEQVQ4y2NgGAWjYBSggaqGu5FA/BOIv2PBIPFEUgxjB+IdQPwfC94HxLykus4GiD+hGfQOiB3J8SojEE9EM2wuSJzcsFMG4ttQgx4DsRalkZENxL+AuJQaMcsGxBOAmGvopk8AVz1sLZgg0bsAAAAASUVORK5CYII=")}
+.agent-analysis-panel #agentAnalysisPagination{font:14px/34px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;margin:0;min-height:54px;padding:10px 0}
+.agent-analysis-panel #agentAnalysisPagination[hidden]{display:none}
+.agent-analysis-panel #agentAnalysisPagination .game-page-info{display:block;line-height:34px}
+.agent-analysis-panel #agentAnalysisPagination .game-page-info>span:first-child{margin-right:5px}
+.agent-analysis-panel #agentAnalysisPagination .game-page-size{display:inline}
+.agent-analysis-panel #agentAnalysisPagination .game-page-size[hidden]{display:none}
+.agent-analysis-panel #agentAnalysisPagination .game-page-size details{display:inline-block;vertical-align:middle;line-height:18.5714px}
+.agent-analysis-panel #agentAnalysisPagination nav{gap:0;align-items:baseline;line-height:20px}
+.agent-analysis-panel #agentAnalysisPagination nav>button,.agent-analysis-panel #agentAnalysisPagination .game-page-gap{height:34px;padding:6px 12px;border:1px solid #ddd;border-radius:0;background:#fafafa;color:#666;font:14px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-analysis-panel #agentAnalysisPagination nav>button:first-child{border-radius:3px 0 0 3px}
+.agent-analysis-panel #agentAnalysisPagination nav>[aria-current=page]{position:relative;background:#444c69;border-color:#444c69;color:white}
+.agent-analysis-panel #agentAnalysisPagination .game-page-gap{background:white;color:#777}
+.agent-analysis-panel #agentAnalysisPagination .game-page-jump{display:inline-block;align-self:flex-start;margin:0;white-space:nowrap;line-height:22.001px}
+.agent-analysis-panel #agentAnalysisPagination .game-page-jump input{display:inline-block;width:50px;height:33px;padding:6px 12px;margin:0 5px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-analysis-panel #agentAnalysisPagination .game-page-jump button{height:auto;vertical-align:middle;padding:6px 12px;border-radius:3px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-analysis-panel #agentAnalysisPagination .game-page-size summary{padding:6px 12px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-analysis-panel #agentAnalysisPagination .game-page-size .caret{border-top:0;border-bottom:4px dashed;margin-left:0}
+.agent-analysis-settings::backdrop{background:transparent}
+.agent-analysis-settings .agent-oss-body form{display:grid;grid-template-columns:16.6666667% minmax(0,1fr)}
+.analysis-setting-label{text-align:right;padding:7px 15px 0}
+.analysis-setting-rows{padding:8px 15px 0;min-width:0}
+.analysis-setting-head,.analysis-setting-row{display:grid;grid-template-columns:repeat(3,110px) 31px 34px;gap:3.890625px;margin-bottom:8px;align-items:center;font:14px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-analysis-settings .analysis-setting-row input{width:100%;margin:0;min-width:0}
+.agent-analysis-settings .analysis-setting-row button{height:30px;padding:5px 10px;border:1px solid #ff4949;border-radius:3px;background:#ff4949;color:white;font:12px/18px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-analysis-settings .analysis-setting-row [data-bucket-move]{border-color:#444c69;background:#444c69;cursor:move}
+.agent-analysis-settings .fa-times:before{content:'\f00d'}.agent-analysis-settings .fa-arrows:before{content:'\f047'}
+.agent-analysis-settings [data-bucket-add]{border:1px solid #18bc9c;background:#18bc9c;color:white;padding:5px 10px;border-radius:3px;font:12px/18px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-analysis-settings .agent-oss-body footer [type=submit]{background:#18bc9c;border-color:#18bc9c}
+.agent-analysis-settings [role=alert]{grid-column:1/-1}
+@media(max-width:1199px){.agent-analysis-panel #agentAnalysisFilters{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:991px){.agent-analysis-panel #agentAnalysisFilters{grid-template-columns:repeat(2,minmax(0,1fr))}.analysis-pies{grid-template-columns:repeat(2,minmax(0,1fr))}.analysis-large{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:767px){.agent-analysis-panel #agentAnalysisFilters{grid-template-columns:minmax(0,1fr)}.agent-analysis-panel #agentAnalysisFilters>label{grid-template-columns:130px minmax(0,1fr)}.agent-analysis-panel #agentAnalysisFilters .ads-filter-actions{padding-left:160px}.analysis-pies{grid-template-columns:minmax(0,1fr)}.agent-analysis .agent-dashboard-name{height:auto;overflow-wrap:anywhere}.agent-analysis-settings .agent-oss-body form{grid-template-columns:minmax(0,1fr);padding-right:0}.analysis-setting-label{text-align:left;padding:0 15px 10px}.analysis-setting-head,.analysis-setting-row{grid-template-columns:repeat(3,minmax(0,1fr)) 31px 34px}}

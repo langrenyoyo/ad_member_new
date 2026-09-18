@@ -1,0 +1,62 @@
+{
+  "top": {
+    "reference_size": [
+      1536,
+      822
+    ],
+    "local_size": [
+      1536,
+      822
+    ],
+    "changed_pixel_ratio": 0.01843746831914031,
+    "mean_rgb": 0.8663482212253312
+  },
+  "metrics": {
+    "reference_size": [
+      1444,
+      361
+    ],
+    "local_size": [
+      1444,
+      361
+    ],
+    "changed_pixel_ratio": 0.0,
+    "mean_rgb": 0.0
+  },
+  "region-map": {
+    "reference_size": [
+      942,
+      601
+    ],
+    "local_size": [
+      942,
+      601
+    ],
+    "changed_pixel_ratio": 0.0,
+    "mean_rgb": 0.0
+  },
+  "region-bars": {
+    "reference_size": [
+      440,
+      601
+    ],
+    "local_size": [
+      440,
+      601
+    ],
+    "changed_pixel_ratio": 0.0,
+    "mean_rgb": 0.0
+  },
+  "registrations": {
+    "reference_size": [
+      1444,
+      361
+    ],
+    "local_size": [
+      1444,
+      361
+    ],
+    "changed_pixel_ratio": 0.0,
+    "mean_rgb": 0.0
+  }
+}

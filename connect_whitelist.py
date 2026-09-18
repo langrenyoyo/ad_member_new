@@ -1,0 +1,3 @@
+from pathlib import Path
+p=Path('public/app.js');data=p.read_bytes();old=b"if(state.view==='ads'){await renderAds();return}";assert data.count(old)==1;data=data.replace(old,old+b"if(state.view==='risk-whitelist'){await renderWhitelist();return}");old=b"document.body.classList.toggle('book-view',state.view==='book');";assert data.count(old)==1;data=data.replace(old,old+b"document.body.classList.toggle('whitelist-view',state.view==='risk-whitelist');");p.write_bytes(data)
+p=Path('public/index.html');data=p.read_bytes();data=data.replace(b'</head>',b'<link rel="stylesheet" href="/whitelist.css"></head>');data=data.replace(b'<script src="/app.js">',b'<script src="/whitelist.js"></script><script src="/app.js">');p.write_bytes(data)

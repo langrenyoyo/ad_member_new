@@ -1,0 +1,1 @@
+﻿const fs=require('fs');const p='public/agents.js';let s=fs.readFileSync(p,'utf8');const needle='</section>`;\n}\n\nfunction appendAgentRegions';const i=s.indexOf(needle);if(i>=0)s=s.slice(0,i+needle.length-3)+'\n appendAgentRegions(data);'+s.slice(i+needle.length-3);fs.writeFileSync(p,s)

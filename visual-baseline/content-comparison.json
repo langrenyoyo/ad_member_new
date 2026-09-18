@@ -1,0 +1,67 @@
+[
+  {
+    "page": "dashboard",
+    "mean_rgb": 9.12,
+    "diff_ratio": 0.2538
+  },
+  {
+    "page": "members",
+    "mean_rgb": 10.41,
+    "diff_ratio": 0.2377
+  },
+  {
+    "page": "agents",
+    "mean_rgb": 6.21,
+    "diff_ratio": 0.1586
+  },
+  {
+    "page": "games",
+    "mean_rgb": 6.83,
+    "diff_ratio": 0.1941
+  },
+  {
+    "page": "ads",
+    "mean_rgb": 6.46,
+    "diff_ratio": 0.1217
+  },
+  {
+    "page": "withdrawals",
+    "mean_rgb": 7.42,
+    "diff_ratio": 0.1212
+  },
+  {
+    "page": "subsidies",
+    "mean_rgb": 6.98,
+    "diff_ratio": 0.1161
+  },
+  {
+    "page": "coin-logs",
+    "mean_rgb": 6.04,
+    "diff_ratio": 0.1272
+  },
+  {
+    "page": "risk-whitelist",
+    "mean_rgb": 5.0,
+    "diff_ratio": 0.0642
+  },
+  {
+    "page": "risk-history",
+    "mean_rgb": 6.1,
+    "diff_ratio": 0.1274
+  },
+  {
+    "page": "risk-devices",
+    "mean_rgb": 4.91,
+    "diff_ratio": 0.0634
+  },
+  {
+    "page": "profile",
+    "mean_rgb": 9.56,
+    "diff_ratio": 0.2446
+  },
+  {
+    "page": "book",
+    "mean_rgb": 5.06,
+    "diff_ratio": 0.0993
+  }
+]

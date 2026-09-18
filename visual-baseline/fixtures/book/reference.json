@@ -1,0 +1,1174 @@
+{
+  "table": {
+    "sortName": "id",
+    "sortOrder": "desc",
+    "pageSize": 10,
+    "pageList": [
+      10,
+      15,
+      20,
+      25,
+      50,
+      "All"
+    ],
+    "search": false,
+    "showToggle": true,
+    "showColumns": true,
+    "showExport": true,
+    "showRefresh": false,
+    "commonSearch": true,
+    "columns": [
+      [
+        {
+          "field": 0,
+          "title": null,
+          "visible": true,
+          "sortable": false,
+          "operate": null,
+          "formatter": null
+        },
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "formatter": null
+        },
+        {
+          "field": "name",
+          "title": "标题",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "formatter": null
+        },
+        {
+          "field": "create_time",
+          "title": "创建时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        },
+        {
+          "field": "update_time",
+          "title": "更新时间",
+          "visible": false,
+          "sortable": true,
+          "operate": "RANGE",
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        },
+        {
+          "field": "operate",
+          "title": "操作",
+          "visible": true,
+          "sortable": false,
+          "operate": null,
+          "formatter": "function (value, row, index) {\n                    var table = this.table;\n                    // 操作配置\n                    var options = table ? table.bootstrapTable('getOptions') : {};\n                    // 默认按钮组\n                    var buttons = $.extend([], this.buttons || []);\n                    // 所有按钮名称\n                    var names = [];\n                    buttons.forEach(function (item) {\n                        names.push(item.name);\n                    });\n                    if (options.extend.dragsort_url !== '' && names.indexOf('dragsort') === -1) {\n                        buttons.push(Table.button.dragsort);\n                    }\n                    if (options.extend.edit_url !== '' && names.indexOf('edit') === -1) {\n                        Table.button.edit.url = options.extend.edit_url;\n                        buttons.push(Table.button.edit);\n                    }\n                    if (options.extend.del_url !== '' && names.indexOf('del') === -1) {\n                        buttons.push(Table.button.del);\n                    }\n                    return Table.api.buttonlink(this, buttons, value, row, index, 'operate');\n                }"
+        }
+      ]
+    ]
+  },
+  "controls": [
+    {
+      "text": "提交",
+      "cls": "btn btn-success",
+      "href": null,
+      "title": ""
+    },
+    {
+      "text": "重置",
+      "cls": "btn btn-default",
+      "href": null,
+      "title": ""
+    },
+    {
+      "text": " ",
+      "cls": "btn btn-primary btn-refresh",
+      "href": "javascript:;",
+      "title": "刷新"
+    },
+    {
+      "text": " 跨页选择模式，已选 0 项",
+      "cls": "btn btn-warning-light btn-selected-tips hide",
+      "href": "javascript:",
+      "title": ""
+    },
+    {
+      "text": "",
+      "cls": "btn btn-default",
+      "href": null,
+      "title": "普通搜索"
+    },
+    {
+      "text": "",
+      "cls": "btn btn-default",
+      "href": null,
+      "title": "切换"
+    },
+    {
+      "text": " ",
+      "cls": "btn btn-default dropdown-toggle",
+      "href": null,
+      "title": ""
+    },
+    {
+      "text": " ",
+      "cls": "btn btn-default dropdown-toggle",
+      "href": null,
+      "title": "导出数据"
+    },
+    {
+      "text": " 详情",
+      "cls": "btn btn-info btn-xs btn-detail btn-dialog btn-click",
+      "href": "/DmvTqXBpfF.php/book/detail/ids/3",
+      "title": "详情"
+    },
+    {
+      "text": " 详情",
+      "cls": "btn btn-info btn-xs btn-detail btn-dialog btn-click",
+      "href": "/DmvTqXBpfF.php/book/detail/ids/2",
+      "title": "详情"
+    },
+    {
+      "text": " 详情",
+      "cls": "btn btn-info btn-xs btn-detail btn-dialog btn-click",
+      "href": "/DmvTqXBpfF.php/book/detail/ids/1",
+      "title": "详情"
+    },
+    {
+      "text": "10 ",
+      "cls": "btn btn-default dropdown-toggle",
+      "href": null,
+      "title": ""
+    },
+    {
+      "text": "跳转",
+      "cls": "btn btn-default",
+      "href": null,
+      "title": "跳转"
+    },
+    {
+      "text": "应用",
+      "cls": "applyBtn hide btn btn-sm btn-success",
+      "href": null,
+      "title": ""
+    },
+    {
+      "text": "清空",
+      "cls": "cancelBtn hide btn btn-sm btn-default",
+      "href": null,
+      "title": ""
+    },
+    {
+      "text": "应用",
+      "cls": "applyBtn hide btn btn-sm btn-success",
+      "href": null,
+      "title": ""
+    },
+    {
+      "text": "清空",
+      "cls": "cancelBtn hide btn btn-sm btn-default",
+      "href": null,
+      "title": ""
+    }
+  ],
+  "geometry": [
+    {
+      "field": "0",
+      "width": 44
+    },
+    {
+      "field": "id",
+      "width": 138.28125
+    },
+    {
+      "field": "name",
+      "width": 579.28125
+    },
+    {
+      "field": "create_time",
+      "width": 573.890625
+    },
+    {
+      "field": "operate",
+      "width": 293.546875
+    }
+  ],
+  "cells": [
+    {
+      "text": "",
+      "html": "<input data-index=\"0\" name=\"btSelectItem\" type=\"checkbox\">"
+    },
+    {
+      "text": "3",
+      "html": "3"
+    },
+    {
+      "text": "Fixture tutorial",
+      "html": "Fixture tutorial"
+    },
+    {
+      "text": "2026-09-18 08:00:00",
+      "html": "2026-09-18 08:00:00"
+    },
+    {
+      "text": " 详情",
+      "html": "<a href=\"/DmvTqXBpfF.php/book/detail/ids/3\" class=\"btn btn-info btn-xs btn-detail btn-dialog btn-click\" title=\"详情\" data-table-id=\"table\" data-field-index=\"5\" data-row-index=\"0\" data-button-index=\"0\"><i class=\"fa fa-list\"></i> 详情</a>"
+    }
+  ],
+  "filters": [
+    {
+      "name": "create_time-operate",
+      "placeholder": "",
+      "type": "hidden"
+    },
+    {
+      "name": "create_time",
+      "placeholder": "创建时间",
+      "type": "text"
+    },
+    {
+      "name": "update_time-operate",
+      "placeholder": "",
+      "type": "hidden"
+    },
+    {
+      "name": "update_time",
+      "placeholder": "更新时间",
+      "type": "text"
+    }
+  ],
+  "links": [
+    {
+      "text": "养机教程",
+      "href": "/DmvTqXBpfF.php/book?ref=addtabs",
+      "url": null
+    }
+  ],
+  "requests": [
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789692691069"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789692691070"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789692691071"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789692691072"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789692691073"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789692691074"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789692691075"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789692691076"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789692691077"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789692691078"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789692691079"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789692691080"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789692691081"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789692691082"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789692691083"
+      ]
+    }
+  ],
+  "source_snapshot": {
+    "reference_count": 2,
+    "local_count": 2,
+    "rows_equal": true
+  },
+  "frames": [
+    {
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/book",
+      "structure": [
+        {
+          "tag": "DIV",
+          "id": "main",
+          "cls": ""
+        },
+        {
+          "tag": "SCRIPT",
+          "id": "",
+          "cls": ""
+        },
+        {
+          "tag": "DIV",
+          "id": "",
+          "cls": "daterangepicker dropdown-menu ltr opensright"
+        },
+        {
+          "tag": "DIV",
+          "id": "",
+          "cls": "daterangepicker dropdown-menu ltr opensright"
+        },
+        {
+          "tag": "DIV",
+          "id": "layui-layer1",
+          "cls": "layui-layer layui-layer-iframe layui-layer-border layui-layer-fast"
+        },
+        {
+          "tag": "DIV",
+          "id": "layui-layer-move",
+          "cls": "layui-layer-move"
+        }
+      ]
+    },
+    {
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/book/detail/ids/3?dialog=1",
+      "structure": [
+        {
+          "tag": "DIV",
+          "id": "main",
+          "cls": ""
+        },
+        {
+          "tag": "SCRIPT",
+          "id": "",
+          "cls": ""
+        }
+      ]
+    }
+  ],
+  "detail_structure": [
+    {
+      "tag": "DIV",
+      "id": "main",
+      "cls": "",
+      "children": 1,
+      "x": 0,
+      "y": 0,
+      "width": 800,
+      "height": 1070.15625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "tab-content tab-addtabs",
+      "children": 1,
+      "x": 0,
+      "y": 0,
+      "width": 800,
+      "height": 1070.15625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "id": "content",
+      "cls": "",
+      "children": 1,
+      "x": 0,
+      "y": 0,
+      "width": 800,
+      "height": 1070.15625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row",
+      "children": 1,
+      "x": -15,
+      "y": 0,
+      "width": 830,
+      "height": 1070.15625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px -15px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+      "children": 2,
+      "x": -15,
+      "y": 0,
+      "width": 830,
+      "height": 1070.15625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px 15px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "SECTION",
+      "id": "",
+      "cls": "content-header hide",
+      "children": 1,
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px 15px 0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "H1",
+      "id": "",
+      "cls": "",
+      "children": 1,
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "font": "500 24px / 26.4px \"Source Sans Pro\", sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "SMALL",
+      "id": "",
+      "cls": "",
+      "children": 0,
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "font": "300 15px / 15px \"Source Sans Pro\", sans-serif",
+      "padding": "0px 0px 0px 4px",
+      "margin": "0px",
+      "border": "0px none rgb(119, 119, 119)"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "content",
+      "children": 1,
+      "x": 0,
+      "y": 0,
+      "width": 800,
+      "height": 1070.15625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "FORM",
+      "id": "edit-form",
+      "cls": "form-horizontal",
+      "children": 1,
+      "x": 15,
+      "y": 15,
+      "width": 770,
+      "height": 1025.15625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "form-group",
+      "children": 18,
+      "x": 0,
+      "y": 15,
+      "width": 800,
+      "height": 1025.15625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "10px",
+      "margin": "0px -15px 15px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "P",
+      "id": "",
+      "cls": "MsoNormal",
+      "children": 2,
+      "x": 10,
+      "y": 25,
+      "width": 780,
+      "height": 50.28125,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px 9px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "cls": "",
+      "children": 0,
+      "x": 304,
+      "y": 33,
+      "width": 192,
+      "height": 33,
+      "font": "32px / 50.288px 宋体",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "cls": "",
+      "children": 1,
+      "x": 496,
+      "y": 33,
+      "width": 0,
+      "height": 33,
+      "font": "32px / 50.288px 宋体",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "O:P",
+      "id": "",
+      "cls": "",
+      "children": 0,
+      "x": 496,
+      "y": 33,
+      "width": 0,
+      "height": 33,
+      "font": "32px / 50.288px 宋体",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "P",
+      "id": "",
+      "cls": "MsoNormal",
+      "children": 5,
+      "x": 10,
+      "y": 84.28125,
+      "width": 780,
+      "height": 87.984375,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px 9px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "cls": "",
+      "children": 0,
+      "x": 10,
+      "y": 89.28125,
+      "width": 37.6875,
+      "height": 19,
+      "font": "18.6667px / 29.3347px 宋体",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "cls": "",
+      "children": 5,
+      "x": 10,
+      "y": 89.28125,
+      "width": 780,
+      "height": 48.328125,
+      "font": "18.6667px / 29.3347px 宋体",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "FONT",
+      "id": "",
+      "cls": "",
+      "children": 0,
+      "x": 47.6875,
+      "y": 89.28125,
+      "width": 209.296875,
+      "height": 19,
+      "font": "18.6667px / 29.3347px 宋体",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "FONT",
+      "id": "",
+      "cls": "",
+      "children": 0,
+      "x": 256.984375,
+      "y": 87.28125,
+      "width": 9.46875,
+      "height": 23,
+      "font": "18.6667px / 29.3347px Calibri",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "FONT",
+      "id": "",
+      "cls": "",
+      "children": 0,
+      "x": 266.453125,
+      "y": 89.28125,
+      "width": 95.5,
+      "height": 19,
+      "font": "18.6667px / 29.3347px 宋体",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "FONT",
+      "id": "",
+      "cls": "",
+      "children": 0,
+      "x": 361.953125,
+      "y": 87.28125,
+      "width": 9.46875,
+      "height": 23,
+      "font": "18.6667px / 29.3347px Calibri",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "FONT",
+      "id": "",
+      "cls": "",
+      "children": 0,
+      "x": 10,
+      "y": 89.28125,
+      "width": 780,
+      "height": 48.328125,
+      "font": "18.6667px / 29.3347px 宋体",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "cls": "",
+      "children": 0,
+      "x": 85.40625,
+      "y": 118.609375,
+      "width": 56.546875,
+      "height": 19,
+      "font": "18.6667px / 29.3347px 宋体",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(255, 0, 0)"
+    },
+    {
+      "tag": "SPAN",
+      "id": "",
+      "cls": "",
+      "children": 7,
+      "x": 10,
+      "y": 118.609375,
+      "width": 780.015625,
+      "height": 48.328125,
+      "font": "18.6667px / 29.3347px 宋体",
+      "padding": "0px",
+      "margin": "0px",
+      "border": "0px none rgb(51, 51, 51)"
+    }
+  ],
+  "window": {
+    "x": 445,
+    "y": 215,
+    "width": 800,
+    "height": 600,
+    "html": "<div class=\"layui-layer-title\" style=\"cursor: move;\">详情</div>",
+    "buttons": "<a class=\"layui-layer-min\" href=\"javascript:;\"><cite></cite></a><a class=\"layui-layer-ico layui-layer-max\" href=\"javascript:;\"></a><a class=\"layui-layer-ico layui-layer-close layui-layer-close1\" href=\"javascript:;\"></a>"
+  },
+  "detail_styles": [
+    {
+      "tag": "BODY",
+      "cls": "inside-header inside-aside is-dialog",
+      "background": "rgb(255, 255, 255)",
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 0,
+      "y": 0,
+      "width": 800,
+      "height": 555
+    },
+    {
+      "tag": "DIV",
+      "cls": "content",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 0,
+      "y": 0,
+      "width": 800,
+      "height": 313.703125
+    },
+    {
+      "tag": "FORM",
+      "cls": "form-horizontal",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 15,
+      "y": 15,
+      "width": 770,
+      "height": 268.703125
+    },
+    {
+      "tag": "DIV",
+      "cls": "form-group",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 0,
+      "y": 15,
+      "width": 800,
+      "height": 268.703125
+    },
+    {
+      "tag": "P",
+      "cls": "",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "24px / 37.716px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 10,
+      "y": 25,
+      "width": 780,
+      "height": 37.703125
+    },
+    {
+      "tag": "P",
+      "cls": "",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 10,
+      "y": 71.703125,
+      "width": 780,
+      "height": 22
+    },
+    {
+      "tag": "P",
+      "cls": "",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 10,
+      "y": 102.703125,
+      "width": 780,
+      "height": 22
+    },
+    {
+      "tag": "P",
+      "cls": "",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 10,
+      "y": 133.703125,
+      "width": 780,
+      "height": 100
+    },
+    {
+      "tag": "P",
+      "cls": "",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 10,
+      "y": 242.703125,
+      "width": 780,
+      "height": 22
+    },
+    {
+      "tag": "A",
+      "cls": "",
+      "background": "rgba(0, 0, 0, 0)",
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(67, 151, 253)",
+      "smoothing": "antialiased",
+      "rendering": "auto",
+      "weight": "400",
+      "x": 10,
+      "y": 245.703125,
+      "width": 67.6875,
+      "height": 16
+    }
+  ],
+  "simultaneous_windows": 2,
+  "window_stack": [
+    {
+      "id": "layui-layer1",
+      "cls": "layui-layer layui-layer-iframe layui-layer-border layui-layer-fast",
+      "display": "block",
+      "visibility": "visible",
+      "width": 800,
+      "height": 600,
+      "minDisplay": "inline-block"
+    },
+    {
+      "id": "layui-layer2",
+      "cls": "layui-layer layui-layer-iframe layui-layer-border layui-layer-fast",
+      "display": "block",
+      "visibility": "visible",
+      "width": 800,
+      "height": 600,
+      "minDisplay": "inline-block"
+    }
+  ],
+  "windows_after_escape": 1,
+  "minimized_windows": [
+    {
+      "left": 0,
+      "top": 985,
+      "width": 180,
+      "height": 45,
+      "display": "block",
+      "minDisplay": "none"
+    }
+  ],
+  "two_minimized": [
+    {
+      "left": 0,
+      "top": 985,
+      "width": 180,
+      "height": 45
+    },
+    {
+      "left": 181,
+      "top": 985,
+      "width": 180,
+      "height": 45
+    }
+  ],
+  "restored_stack": [
+    {
+      "id": "layui-layer1",
+      "display": "block",
+      "width": 180,
+      "height": 45
+    }
+  ]
+}

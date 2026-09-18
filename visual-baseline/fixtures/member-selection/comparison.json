@@ -1,0 +1,16 @@
+{
+  "reference": {
+    "row_click_toggles": true,
+    "next_page_clears": true,
+    "return_page_stays_clear": true
+  },
+  "local": {
+    "row_click_toggles": true,
+    "next_page_clears": true,
+    "return_page_stays_clear": true
+  },
+  "export_after_page_return": {
+    "equal": true,
+    "rows": 25
+  }
+}

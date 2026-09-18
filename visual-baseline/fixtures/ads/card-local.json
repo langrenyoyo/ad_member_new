@@ -1,0 +1,254 @@
+{
+  "rect": {
+    "x": 260,
+    "y": 134,
+    "width": 1630,
+    "height": 1334.5,
+    "top": 134,
+    "right": 1890,
+    "bottom": 1468.5,
+    "left": 260
+  },
+  "cells": [
+    {
+      "text": "Id9200\n上级Id8100\n上级支付宝姓名上级姓名\n会员ID8200\n用户账号对照账号0\n支付宝姓名测试姓名\n游戏名称对照游戏\nECPM0\n金币0\n广告平台测试平台\n抽奖否\n任务是\n奖励类型提升\n广告类型激励\n副广类型开屏\n状态失败\n观看时间2026-09-16 08:00:00\n广告代码位code\n广告request_idREQ-0\n交易trans_idTRANS-0",
+      "rect": {
+        "x": 260,
+        "y": 134,
+        "width": 1630,
+        "height": 444.5,
+        "top": 134,
+        "right": 1890,
+        "bottom": 578.5,
+        "left": 260
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "margin": "0px",
+      "display": "block",
+      "width": "1630px",
+      "minWidth": "0px",
+      "verticalAlign": "middle"
+    },
+    {
+      "text": "Id9200",
+      "rect": {
+        "x": 276,
+        "y": 143,
+        "width": 1598,
+        "height": 21.375,
+        "top": 143,
+        "right": 1874,
+        "bottom": 164.375,
+        "left": 276
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "block",
+      "width": "1598px",
+      "minWidth": "0px",
+      "verticalAlign": "middle"
+    },
+    {
+      "text": "Id",
+      "rect": {
+        "x": 276,
+        "y": 144.375,
+        "width": 479.390625,
+        "height": 20,
+        "top": 144.375,
+        "right": 755.390625,
+        "bottom": 164.375,
+        "left": 276
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "inline-block",
+      "width": "479.391px",
+      "minWidth": "30%",
+      "verticalAlign": "middle"
+    },
+    {
+      "text": "9200",
+      "rect": {
+        "x": 755.390625,
+        "y": 145,
+        "width": 31.15625,
+        "height": 16,
+        "top": 145,
+        "right": 786.546875,
+        "bottom": 161,
+        "left": 755.390625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "inline",
+      "width": "auto",
+      "minWidth": "0px",
+      "verticalAlign": "baseline"
+    },
+    {
+      "text": "上级Id8100",
+      "rect": {
+        "x": 276,
+        "y": 164.375,
+        "width": 1598,
+        "height": 21.375,
+        "top": 164.375,
+        "right": 1874,
+        "bottom": 185.75,
+        "left": 276
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "block",
+      "width": "1598px",
+      "minWidth": "0px",
+      "verticalAlign": "middle"
+    },
+    {
+      "text": "上级Id",
+      "rect": {
+        "x": 276,
+        "y": 165.75,
+        "width": 479.390625,
+        "height": 20,
+        "top": 165.75,
+        "right": 755.390625,
+        "bottom": 185.75,
+        "left": 276
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "inline-block",
+      "width": "479.391px",
+      "minWidth": "30%",
+      "verticalAlign": "middle"
+    },
+    {
+      "text": "8100",
+      "rect": {
+        "x": 755.390625,
+        "y": 166.375,
+        "width": 31.15625,
+        "height": 16,
+        "top": 166.375,
+        "right": 786.546875,
+        "bottom": 182.375,
+        "left": 755.390625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "inline",
+      "width": "auto",
+      "minWidth": "0px",
+      "verticalAlign": "baseline"
+    },
+    {
+      "text": "上级支付宝姓名上级姓名",
+      "rect": {
+        "x": 276,
+        "y": 185.75,
+        "width": 1598,
+        "height": 21.375,
+        "top": 185.75,
+        "right": 1874,
+        "bottom": 207.125,
+        "left": 276
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "block",
+      "width": "1598px",
+      "minWidth": "0px",
+      "verticalAlign": "middle"
+    },
+    {
+      "text": "上级支付宝姓名",
+      "rect": {
+        "x": 276,
+        "y": 187.125,
+        "width": 479.390625,
+        "height": 20,
+        "top": 187.125,
+        "right": 755.390625,
+        "bottom": 207.125,
+        "left": 276
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "inline-block",
+      "width": "479.391px",
+      "minWidth": "30%",
+      "verticalAlign": "middle"
+    },
+    {
+      "text": "上级姓名",
+      "rect": {
+        "x": 755.390625,
+        "y": 187.75,
+        "width": 56,
+        "height": 16,
+        "top": 187.75,
+        "right": 811.390625,
+        "bottom": 203.75,
+        "left": 755.390625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "inline",
+      "width": "auto",
+      "minWidth": "0px",
+      "verticalAlign": "baseline"
+    },
+    {
+      "text": "会员ID8200",
+      "rect": {
+        "x": 276,
+        "y": 207.125,
+        "width": 1598,
+        "height": 21.375,
+        "top": 207.125,
+        "right": 1874,
+        "bottom": 228.5,
+        "left": 276
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "block",
+      "width": "1598px",
+      "minWidth": "0px",
+      "verticalAlign": "middle"
+    },
+    {
+      "text": "会员ID",
+      "rect": {
+        "x": 276,
+        "y": 208.5,
+        "width": 479.390625,
+        "height": 20,
+        "top": 208.5,
+        "right": 755.390625,
+        "bottom": 228.5,
+        "left": 276
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "inline-block",
+      "width": "479.391px",
+      "minWidth": "30%",
+      "verticalAlign": "middle"
+    }
+  ]
+}

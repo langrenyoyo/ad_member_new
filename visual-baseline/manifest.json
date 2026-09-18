@@ -1,0 +1,20 @@
+{
+  "viewport": {"width": 1920, "height": 1080, "deviceScaleFactor": 1},
+  "routes": [
+    {"name":"login","path":"/DmvTqXBpfF.php/index/login","reference":"reference-verified/landing.png","local":"local/login.png"},
+    {"name":"dashboard","path":"/DmvTqXBpfF.php/index/index","reference":"reference/dashboard.png","local":"local/dashboard.png"},
+    {"name":"members","path":"#members","reference":"reference-verified/members.png","local":"local/page-1.png"},
+    {"name":"agents","path":"#agents","reference":"reference-verified/agents.png","local":"local/page-2.png"},
+    {"name":"games","path":"#games","reference":"reference-verified/games.png","local":"local/page-3.png"},
+    {"name":"ads","path":"#ads","reference":"reference-verified/ads.png","local":"local/page-4.png"},
+    {"name":"withdrawals","path":"#withdrawals","reference":"reference-verified/withdrawals.png","local":"local/page-5.png"}
+    ,{"name":"subsidies","path":"#subsidies","reference":"reference-verified/subsidies.png","local":"local/page-6.png"}
+    ,{"name":"coin-logs","path":"#coin-logs","reference":"reference-verified/coin-logs.png","local":"local/page-7.png"}
+    ,{"name":"risk-whitelist","path":"#risk-whitelist","reference":"reference-verified/risk-whitelist.png","local":"local/page-8.png"}
+    ,{"name":"risk-history","path":"#risk-history","reference":"reference-verified/risk-history.png","local":"local/page-9.png"}
+    ,{"name":"risk-devices","path":"#risk-devices","reference":"reference-verified/risk-devices.png","local":"local/page-10.png"}
+    ,{"name":"profile","path":"#profile","reference":"reference-verified/profile.png","local":"local/page-11.png"}
+    ,{"name":"book","path":"#book","reference":"reference-verified/book.png","local":"local/page-12.png"}
+  ],
+  "thresholds": {"mean_rgb": 20, "diff_ratio": 0.15}
+}

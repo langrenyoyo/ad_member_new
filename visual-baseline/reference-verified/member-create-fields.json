@@ -1,0 +1,41 @@
+{
+  "toolbar": [
+    {
+      "text": "",
+      "cls": "btn btn-primary btn-refresh"
+    },
+    {
+      "text": "编辑",
+      "cls": "btn btn-success btn-edit btn-disabled disabled"
+    },
+    {
+      "text": "更多",
+      "cls": "btn btn-primary btn-more dropdown-toggle btn-disabled disabled"
+    },
+    {
+      "text": "启用",
+      "cls": "btn btn-link btn-multi btn-disabled disabled"
+    },
+    {
+      "text": "禁用",
+      "cls": "btn btn-link btn-multi btn-disabled disabled"
+    },
+    {
+      "text": "清空金币",
+      "cls": "btn btn-info btn-coinclear dropdown-toggle btn-disabled disabled hide"
+    },
+    {
+      "text": "导入金币",
+      "cls": "btn btn-success btn-coinimport btn-dialog hide"
+    },
+    {
+      "text": "跨页选择模式，已选 0 项",
+      "cls": "btn btn-warning-light btn-selected-tips hide"
+    }
+  ],
+  "add_button_present": false,
+  "title": "温馨提示",
+  "notice": "你没有权限访问\n\n返回首页",
+  "tabs": [],
+  "fields": []
+}

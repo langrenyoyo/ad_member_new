@@ -1,0 +1,7 @@
+{
+  "scope": "browser-only scoped withdrawals; no business writes",
+  "agent_id": 9000,
+  "csv_records": 25,
+  "selected_xml_records": 1,
+  "special_character_roundtrip": true
+}

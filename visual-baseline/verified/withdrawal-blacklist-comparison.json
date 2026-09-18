@@ -1,0 +1,63 @@
+{
+  "header": {
+    "x": 0,
+    "y": 0,
+    "width": 800,
+    "height": 45
+  },
+  "main": {
+    "x": 0,
+    "y": 45,
+    "width": 800,
+    "height": 555
+  },
+  ".ads-filters": {
+    "x": 15,
+    "y": 75,
+    "width": 770,
+    "height": 144
+  },
+  ".ads-toolbar": {
+    "x": 30,
+    "y": 219,
+    "width": 740,
+    "height": 52.5625
+  },
+  ".ads-table": {
+    "x": 30,
+    "y": 271.5625,
+    "width": 740,
+    "height": 136
+  },
+  ".game-user-pagination": {
+    "x": 30,
+    "y": 417.5625,
+    "width": 740,
+    "height": 34
+  },
+  "[data-action=cards]": {
+    "x": 587.75,
+    "y": 229,
+    "width": 39,
+    "height": 32.5625
+  },
+  ".game-user-columns summary": {
+    "x": 625.75,
+    "y": 229,
+    "width": 50.625,
+    "height": 32.5625
+  },
+  ".game-user-export summary": {
+    "x": 675.375,
+    "y": 229,
+    "width": 50.625,
+    "height": 32.5625
+  },
+  ".blacklist-toggle .shell-icon": {
+    "x": 459.1875,
+    "y": 323.53125,
+    "width": 29.765625,
+    "height": 26.046875
+  },
+  "changed_pixels_percent": 2.0385
+}

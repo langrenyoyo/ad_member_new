@@ -1,0 +1,35 @@
+[
+  {
+    "id": 9100,
+    "admin_id": 8000,
+    "username": "fixture",
+    "title": "fixture login",
+    "url": "/fixture/login",
+    "ip": "192.0.2.1",
+    "createtime": 1789689600,
+    "content": "{}",
+    "useragent": "fixture"
+  },
+  {
+    "id": 9101,
+    "admin_id": 8000,
+    "username": "fixture",
+    "title": "fixture <>&",
+    "url": "/fixture/<>&",
+    "ip": "192.0.2.2",
+    "createtime": 1789689660,
+    "content": "{}",
+    "useragent": "fixture"
+  },
+  {
+    "id": 9102,
+    "admin_id": 8000,
+    "username": "fixture",
+    "title": "fixture update",
+    "url": "/fixture/profile",
+    "ip": "192.0.2.3",
+    "createtime": 1789689720,
+    "content": "{}",
+    "useragent": "fixture"
+  }
+]

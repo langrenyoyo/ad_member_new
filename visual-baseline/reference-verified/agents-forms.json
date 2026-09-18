@@ -1,0 +1,84 @@
+{
+  "list_status": 200,
+  "total": 1,
+  "forms": {
+    "ossedit": [
+      {
+        "action": "",
+        "controls": [
+          {
+            "tag": "INPUT",
+            "type": "hidden",
+            "name": "__token__",
+            "label": null,
+            "placeholder": "",
+            "required": false,
+            "options": null,
+            "text": null
+          },
+          {
+            "tag": "INPUT",
+            "type": "text",
+            "name": "row[ossKey]",
+            "label": "ossKey:",
+            "placeholder": "",
+            "required": false,
+            "options": null,
+            "text": null
+          },
+          {
+            "tag": "INPUT",
+            "type": "text",
+            "name": "row[ossKeySecret]",
+            "label": "ossKeySecret:",
+            "placeholder": "",
+            "required": false,
+            "options": null,
+            "text": null
+          },
+          {
+            "tag": "INPUT",
+            "type": "text",
+            "name": "row[endPoint]",
+            "label": "endPoint:",
+            "placeholder": "",
+            "required": false,
+            "options": null,
+            "text": null
+          },
+          {
+            "tag": "INPUT",
+            "type": "text",
+            "name": "row[bucket]",
+            "label": "bucket:",
+            "placeholder": "",
+            "required": false,
+            "options": null,
+            "text": null
+          },
+          {
+            "tag": "BUTTON",
+            "type": "submit",
+            "name": "",
+            "label": "",
+            "placeholder": null,
+            "required": null,
+            "options": null,
+            "text": "确定"
+          },
+          {
+            "tag": "BUTTON",
+            "type": "reset",
+            "name": "",
+            "label": "",
+            "placeholder": null,
+            "required": null,
+            "options": null,
+            "text": "重置"
+          }
+        ]
+      }
+    ],
+    "edit": []
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "reference": [
+    {
+      "selector": "[name=username]",
+      "rect": {
+        "x": 813,
+        "y": 333.265625,
+        "width": 332,
+        "height": 33,
+        "top": 333.265625,
+        "right": 1145,
+        "bottom": 366.265625,
+        "left": 813
+      },
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(85, 85, 85)",
+      "background": "rgb(255, 255, 255)",
+      "border": "1px solid rgb(210, 214, 222)",
+      "radius": "0px"
+    },
+    {
+      "selector": "[name=password]",
+      "rect": {
+        "x": 813,
+        "y": 381.265625,
+        "width": 332,
+        "height": 33,
+        "top": 381.265625,
+        "right": 1145,
+        "bottom": 414.265625,
+        "left": 813
+      },
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(85, 85, 85)",
+      "background": "rgb(255, 255, 255)",
+      "border": "1px solid rgb(210, 214, 222)",
+      "radius": "0px"
+    },
+    {
+      "selector": "button[type=submit],.login-submit",
+      "rect": {
+        "x": 775,
+        "y": 461.265625,
+        "width": 370,
+        "height": 43.328125,
+        "top": 461.265625,
+        "right": 1145,
+        "bottom": 504.59375,
+        "left": 775
+      },
+      "font": "16px / 21.3333px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(112, 142, 234)",
+      "border": "1px solid rgba(0, 0, 0, 0)",
+      "radius": "5px"
+    },
+    {
+      "selector": "[name=keeplogin]",
+      "rect": {
+        "x": 775,
+        "y": 434.265625,
+        "width": 13,
+        "height": 13,
+        "top": 434.265625,
+        "right": 788,
+        "bottom": 447.265625,
+        "left": 775
+      },
+      "font": "14px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(153, 153, 153)",
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px none rgb(153, 153, 153)",
+      "radius": "0px"
+    }
+  ],
+  "local": [
+    {
+      "selector": "[name=username]",
+      "rect": {
+        "x": 813,
+        "y": 333.265625,
+        "width": 332,
+        "height": 33,
+        "top": 333.265625,
+        "right": 1145,
+        "bottom": 366.265625,
+        "left": 813
+      },
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(85, 85, 85)",
+      "background": "rgb(255, 255, 255)",
+      "border": "1px solid rgb(210, 214, 222)",
+      "radius": "0px"
+    },
+    {
+      "selector": "[name=password]",
+      "rect": {
+        "x": 813,
+        "y": 381.265625,
+        "width": 332,
+        "height": 33,
+        "top": 381.265625,
+        "right": 1145,
+        "bottom": 414.265625,
+        "left": 813
+      },
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(85, 85, 85)",
+      "background": "rgb(255, 255, 255)",
+      "border": "1px solid rgb(210, 214, 222)",
+      "radius": "0px"
+    },
+    {
+      "selector": "button[type=submit],.login-submit",
+      "rect": {
+        "x": 775,
+        "y": 461.265625,
+        "width": 370,
+        "height": 43.328125,
+        "top": 461.265625,
+        "right": 1145,
+        "bottom": 504.59375,
+        "left": 775
+      },
+      "font": "16px / 21.3333px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(112, 142, 234)",
+      "border": "1px solid rgba(0, 0, 0, 0)",
+      "radius": "5px"
+    },
+    {
+      "selector": "[name=keeplogin]",
+      "rect": {
+        "x": 775,
+        "y": 434.265625,
+        "width": 13,
+        "height": 13,
+        "top": 434.265625,
+        "right": 788,
+        "bottom": 447.265625,
+        "left": 775
+      },
+      "font": "14px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(153, 153, 153)",
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px none rgb(153, 153, 153)",
+      "radius": "0px"
+    }
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "local": [
+    {
+      "id": 9300,
+      "user_id": 8300,
+      "username": "对比账号0",
+      "vip": 0,
+      "parent_id": 0,
+      "parent_username": "",
+      "parent_name": "上级昵称",
+      "game_id": 7300,
+      "game_name": "对比游戏",
+      "agent_id": 6300,
+      "agent_name": "对比主体",
+      "name": "测试会员",
+      "tx_price": 0.01,
+      "pics": [
+        "https://img.example.test/a.svg",
+        "https://img.example.test/b.svg"
+      ],
+      "receive_name": "收件人<&>",
+      "receive_tel": "13800000000",
+      "price": 0.01,
+      "status": 0,
+      "sub_msg": "",
+      "created_at": "2026-09-16T00:00:00Z",
+      "updated_at": "2026-09-16T00:00:00Z"
+    },
+    {
+      "id": 9301,
+      "user_id": 8301,
+      "username": "对比账号1",
+      "vip": 1,
+      "parent_id": 0,
+      "parent_username": "",
+      "parent_name": "上级昵称",
+      "game_id": 7300,
+      "game_name": "对比游戏",
+      "agent_id": 6300,
+      "agent_name": "对比主体",
+      "name": "测试会员",
+      "tx_price": 12.5,
+      "pics": [],
+      "receive_name": "收件人<&>",
+      "receive_tel": "13800000000",
+      "price": 12.0,
+      "status": 1,
+      "sub_msg": "",
+      "created_at": "2026-09-16T00:00:00Z",
+      "updated_at": "2026-09-16T00:00:00Z"
+    },
+    {
+      "id": 9302,
+      "user_id": 8302,
+      "username": "对比账号2",
+      "vip": 2,
+      "parent_id": 0,
+      "parent_username": "",
+      "parent_name": "上级昵称",
+      "game_id": 7300,
+      "game_name": "对比游戏",
+      "agent_id": 6300,
+      "agent_name": "对比主体",
+      "name": "测试会员",
+      "tx_price": 9999.99,
+      "pics": [],
+      "receive_name": "收件人<&>",
+      "receive_tel": "13800000000",
+      "price": 9999.0,
+      "status": 2,
+      "sub_msg": "拒绝原因 <>&",
+      "created_at": "2026-09-16T00:00:00Z",
+      "updated_at": "2026-09-16T00:00:00Z"
+    }
+  ],
+  "reference": [
+    {
+      "id": 9300,
+      "user_id": 8300,
+      "username": "对比账号0",
+      "vip": 0,
+      "parent_id": 0,
+      "parent_username": "",
+      "parent_name": "上级昵称",
+      "game_id": 7300,
+      "game_name": "对比游戏",
+      "agent_id": 6300,
+      "agent_name": "对比主体",
+      "name": "测试会员",
+      "tx_price": 0.01,
+      "pics": [
+        "https://img.example.test/a.svg",
+        "https://img.example.test/b.svg"
+      ],
+      "receive_name": "收件人<&>",
+      "receive_tel": "13800000000",
+      "price": 0.01,
+      "status": 0,
+      "sub_msg": "",
+      "created_at": "2026-09-16T00:00:00Z",
+      "updated_at": "2026-09-16T00:00:00Z",
+      "user": {
+        "id": 8300,
+        "username": "对比账号0",
+        "vip": 0,
+        "parent_id": 0,
+        "parent_username": "",
+        "parent_name": "上级昵称",
+        "name": "测试会员"
+      },
+      "game": {
+        "name": "对比游戏"
+      },
+      "agent": {
+        "name": "对比主体"
+      },
+      "create_time": 1789516800,
+      "update_time": 1789516800
+    },
+    {
+      "id": 9301,
+      "user_id": 8301,
+      "username": "对比账号1",
+      "vip": 1,
+      "parent_id": 0,
+      "parent_username": "",
+      "parent_name": "上级昵称",
+      "game_id": 7300,
+      "game_name": "对比游戏",
+      "agent_id": 6300,
+      "agent_name": "对比主体",
+      "name": "测试会员",
+      "tx_price": 12.5,
+      "pics": [],
+      "receive_name": "收件人<&>",
+      "receive_tel": "13800000000",
+      "price": 12.0,
+      "status": 1,
+      "sub_msg": "",
+      "created_at": "2026-09-16T00:00:00Z",
+      "updated_at": "2026-09-16T00:00:00Z",
+      "user": {
+        "id": 8301,
+        "username": "对比账号1",
+        "vip": 1,
+        "parent_id": 0,
+        "parent_username": "",
+        "parent_name": "上级昵称",
+        "name": "测试会员"
+      },
+      "game": {
+        "name": "对比游戏"
+      },
+      "agent": {
+        "name": "对比主体"
+      },
+      "create_time": 1789516800,
+      "update_time": 1789516800
+    },
+    {
+      "id": 9302,
+      "user_id": 8302,
+      "username": "对比账号2",
+      "vip": 2,
+      "parent_id": 0,
+      "parent_username": "",
+      "parent_name": "上级昵称",
+      "game_id": 7300,
+      "game_name": "对比游戏",
+      "agent_id": 6300,
+      "agent_name": "对比主体",
+      "name": "测试会员",
+      "tx_price": 9999.99,
+      "pics": [],
+      "receive_name": "收件人<&>",
+      "receive_tel": "13800000000",
+      "price": 9999.0,
+      "status": 4,
+      "sub_msg": "拒绝原因 <>&",
+      "created_at": "2026-09-16T00:00:00Z",
+      "updated_at": "2026-09-16T00:00:00Z",
+      "user": {
+        "id": 8302,
+        "username": "对比账号2",
+        "vip": 2,
+        "parent_id": 0,
+        "parent_username": "",
+        "parent_name": "上级昵称",
+        "name": "测试会员"
+      },
+      "game": {
+        "name": "对比游戏"
+      },
+      "agent": {
+        "name": "对比主体"
+      },
+      "create_time": 1789516800,
+      "update_time": 1789516800
+    }
+  ]
+}

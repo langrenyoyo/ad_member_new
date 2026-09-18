@@ -1,0 +1,5286 @@
+{
+  "reference_region_names": [
+    "南海诸岛",
+    "北京",
+    "天津",
+    "上海",
+    "重庆",
+    "河北",
+    "河南",
+    "云南",
+    "辽宁",
+    "黑龙江",
+    "湖南",
+    "安徽",
+    "山东",
+    "新疆",
+    "江苏",
+    "浙江",
+    "江西",
+    "湖北",
+    "广西",
+    "甘肃",
+    "山西",
+    "内蒙古",
+    "陕西",
+    "吉林",
+    "福建",
+    "贵州",
+    "广东",
+    "青海",
+    "西藏",
+    "四川",
+    "宁夏",
+    "海南",
+    "台湾",
+    "香港",
+    "澳门"
+  ],
+  "reference": {
+    "charts": [
+      {
+        "selector": "#echart1",
+        "rect": {
+          "x": 46,
+          "y": 262.203125,
+          "width": 1444,
+          "height": 360,
+          "top": 262.203125,
+          "right": 1490,
+          "bottom": 622.203125,
+          "left": 46
+        },
+        "grid": [
+          {
+            "show": false,
+            "zlevel": 0,
+            "z": 0,
+            "left": "10%",
+            "top": 60,
+            "right": "10%",
+            "bottom": 60,
+            "containLabel": false,
+            "backgroundColor": "rgba(0,0,0,0)",
+            "borderWidth": 1,
+            "borderColor": "#ccc",
+            "width": null,
+            "height": null
+          }
+        ],
+        "title": [
+          {
+            "text": "金额统计",
+            "subtext": "",
+            "textStyle": {
+              "color": "#666666",
+              "fontSize": 18,
+              "fontWeight": "bolder"
+            },
+            "subtextStyle": {
+              "color": "#999999"
+            },
+            "zlevel": 0,
+            "z": 6,
+            "show": true,
+            "target": "blank",
+            "subtarget": "blank",
+            "left": 0,
+            "top": 0,
+            "backgroundColor": "rgba(0,0,0,0)",
+            "borderColor": "#ccc",
+            "borderWidth": 0,
+            "padding": 5,
+            "itemGap": 10,
+            "width": null,
+            "right": null,
+            "height": null,
+            "bottom": null
+          }
+        ],
+        "colors": [
+          "#3fb1e3",
+          "#6be6c1",
+          "#626c91",
+          "#a0a7e6",
+          "#c4ebad",
+          "#96dee8"
+        ],
+        "mapStyle": {
+          "normal": {
+            "borderWidth": "2"
+          }
+        },
+        "theme": {
+          "color": [
+            "#3fb1e3",
+            "#6be6c1",
+            "#626c91",
+            "#a0a7e6",
+            "#c4ebad",
+            "#96dee8"
+          ],
+          "backgroundColor": "rgba(252,252,252,0)",
+          "textStyle": {},
+          "title": {
+            "textStyle": {
+              "color": "#666666"
+            },
+            "subtextStyle": {
+              "color": "#999999"
+            }
+          },
+          "line": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": "2"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "3"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false
+          },
+          "radar": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": "2"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "3"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false
+          },
+          "bar": {
+            "itemStyle": {
+              "normal": {
+                "barBorderWidth": 0,
+                "barBorderColor": "#ccc"
+              },
+              "emphasis": {
+                "barBorderWidth": 0,
+                "barBorderColor": "#ccc"
+              }
+            }
+          },
+          "pie": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "scatter": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "boxplot": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "parallel": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "sankey": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "funnel": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "gauge": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "candlestick": {
+            "itemStyle": {
+              "normal": {
+                "color": "#e6a0d2",
+                "color0": "transparent",
+                "borderColor": "#e6a0d2",
+                "borderColor0": "#3fb1e3",
+                "borderWidth": "2"
+              }
+            }
+          },
+          "graph": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "1",
+                "color": "#cccccc"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false,
+            "color": [
+              "#3fb1e3",
+              "#6be6c1",
+              "#626c91",
+              "#a0a7e6",
+              "#c4ebad",
+              "#96dee8"
+            ],
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              }
+            }
+          },
+          "map": {
+            "itemStyle": {
+              "normal": {
+                "areaColor": "#eeeeee",
+                "borderColor": "#aaaaaa",
+                "borderWidth": 0.5
+              },
+              "emphasis": {
+                "areaColor": "rgba(63,177,227,0.25)",
+                "borderColor": "#3fb1e3",
+                "borderWidth": 1
+              }
+            },
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              },
+              "emphasis": {
+                "textStyle": {
+                  "color": "rgb(63,177,227)"
+                }
+              }
+            }
+          },
+          "geo": {
+            "itemStyle": {
+              "areaColor": "#eeeeee",
+              "borderColor": "#aaaaaa",
+              "borderWidth": 0.5
+            },
+            "label": {
+              "textStyle": {
+                "color": "#ffffff"
+              },
+              "color": "#ffffff"
+            },
+            "emphasis": {
+              "itemStyle": {
+                "areaColor": "rgba(63,177,227,0.25)",
+                "borderColor": "#3fb1e3",
+                "borderWidth": 1
+              },
+              "label": {
+                "textStyle": {
+                  "color": "rgb(63,177,227)"
+                },
+                "color": "rgb(63,177,227)"
+              }
+            }
+          },
+          "categoryAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "valueAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "logAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "timeAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "toolbox": {
+            "iconStyle": {
+              "borderColor": "#999999"
+            },
+            "emphasis": {
+              "iconStyle": {
+                "borderColor": "#666666"
+              }
+            }
+          },
+          "legend": {
+            "textStyle": {
+              "color": "#999999"
+            }
+          },
+          "tooltip": {
+            "axisPointer": {
+              "lineStyle": {
+                "color": "#cccccc",
+                "width": 1
+              },
+              "crossStyle": {
+                "color": "#cccccc",
+                "width": 1
+              }
+            }
+          },
+          "timeline": {
+            "lineStyle": {
+              "color": "#626c91",
+              "width": 1
+            },
+            "itemStyle": {
+              "color": "#626c91",
+              "borderWidth": 1
+            },
+            "controlStyle": {
+              "normal": null,
+              "emphasis": null,
+              "color": "#626c91",
+              "borderColor": "#626c91",
+              "borderWidth": 0.5
+            },
+            "checkpointStyle": {
+              "color": "#3fb1e3",
+              "borderColor": "rgba(63,177,227,0.15)"
+            },
+            "label": {
+              "textStyle": {
+                "color": "#626c91"
+              },
+              "color": "#626c91"
+            },
+            "emphasis": {
+              "itemStyle": {
+                "color": "#626c91"
+              },
+              "label": {
+                "textStyle": {
+                  "color": "#626c91"
+                },
+                "color": "#626c91"
+              },
+              "controlStyle": {
+                "color": "#626c91",
+                "borderColor": "#626c91",
+                "borderWidth": 0.5
+              }
+            }
+          },
+          "visualMap": {
+            "color": [
+              "#2a99c9",
+              "#afe8ff"
+            ]
+          },
+          "dataZoom": {
+            "backgroundColor": "rgba(255,255,255,0)",
+            "dataBackgroundColor": "rgba(222,222,222,1)",
+            "fillerColor": "rgba(114,230,212,0.25)",
+            "handleColor": "#cccccc",
+            "handleSize": "100%",
+            "textStyle": {
+              "color": "#999999"
+            }
+          },
+          "markPoint": {
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              },
+              "emphasis": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              }
+            }
+          },
+          "series": []
+        }
+      },
+      {
+        "selector": "#echart3",
+        "rect": {
+          "x": 46,
+          "y": 793.90625,
+          "width": 942,
+          "height": 600,
+          "top": 793.90625,
+          "right": 988,
+          "bottom": 1393.90625,
+          "left": 46
+        },
+        "grid": null,
+        "title": [
+          {
+            "text": "账号分布",
+            "left": "left",
+            "zlevel": 0,
+            "z": 6,
+            "show": true,
+            "target": "blank",
+            "subtext": "",
+            "subtarget": "blank",
+            "top": 0,
+            "backgroundColor": "rgba(0,0,0,0)",
+            "borderColor": "#ccc",
+            "borderWidth": 0,
+            "padding": 5,
+            "itemGap": 10,
+            "textStyle": {
+              "fontSize": 18,
+              "fontWeight": "bolder",
+              "color": "#333"
+            },
+            "subtextStyle": {
+              "color": "#aaa"
+            },
+            "width": null,
+            "right": null,
+            "height": null,
+            "bottom": null
+          }
+        ],
+        "colors": [
+          "#c23531",
+          "#2f4554",
+          "#61a0a8",
+          "#d48265",
+          "#91c7ae",
+          "#749f83",
+          "#ca8622",
+          "#bda29a",
+          "#6e7074",
+          "#546570",
+          "#c4ccd3"
+        ],
+        "mapStyle": {
+          "borderWidth": 0.5,
+          "borderColor": "#444",
+          "areaColor": "#eee"
+        },
+        "theme": null
+      },
+      {
+        "selector": "#echart4",
+        "rect": {
+          "x": 1050,
+          "y": 793.90625,
+          "width": 440,
+          "height": 600,
+          "top": 793.90625,
+          "right": 1490,
+          "bottom": 1393.90625,
+          "left": 1050
+        },
+        "grid": [
+          {
+            "left": "3%",
+            "right": "4%",
+            "bottom": "15%",
+            "show": false,
+            "zlevel": 0,
+            "z": 0,
+            "top": 60,
+            "containLabel": false,
+            "backgroundColor": "rgba(0,0,0,0)",
+            "borderWidth": 1,
+            "borderColor": "#ccc",
+            "width": null,
+            "height": null
+          }
+        ],
+        "title": [
+          {
+            "text": "账号分布",
+            "left": "center",
+            "bottom": "5%",
+            "textStyle": {
+              "fontSize": 14,
+              "color": "#666666",
+              "fontWeight": "bolder"
+            },
+            "subtextStyle": {
+              "color": "#999999"
+            },
+            "zlevel": 0,
+            "z": 6,
+            "show": true,
+            "target": "blank",
+            "subtext": "",
+            "subtarget": "blank",
+            "top": null,
+            "backgroundColor": "rgba(0,0,0,0)",
+            "borderColor": "#ccc",
+            "borderWidth": 0,
+            "padding": 5,
+            "itemGap": 10,
+            "width": null,
+            "right": null,
+            "height": null
+          }
+        ],
+        "colors": [
+          "#3fb1e3",
+          "#6be6c1",
+          "#626c91",
+          "#a0a7e6",
+          "#c4ebad",
+          "#96dee8"
+        ],
+        "mapStyle": {
+          "normal": {
+            "barBorderWidth": 0,
+            "barBorderColor": "#ccc"
+          },
+          "emphasis": {
+            "barBorderWidth": 0,
+            "barBorderColor": "#ccc"
+          }
+        },
+        "theme": {
+          "color": [
+            "#3fb1e3",
+            "#6be6c1",
+            "#626c91",
+            "#a0a7e6",
+            "#c4ebad",
+            "#96dee8"
+          ],
+          "backgroundColor": "rgba(252,252,252,0)",
+          "textStyle": {},
+          "title": {
+            "textStyle": {
+              "color": "#666666"
+            },
+            "subtextStyle": {
+              "color": "#999999"
+            }
+          },
+          "line": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": "2"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "3"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false
+          },
+          "radar": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": "2"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "3"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false
+          },
+          "bar": {
+            "itemStyle": {
+              "normal": {
+                "barBorderWidth": 0,
+                "barBorderColor": "#ccc"
+              },
+              "emphasis": {
+                "barBorderWidth": 0,
+                "barBorderColor": "#ccc"
+              }
+            }
+          },
+          "pie": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "scatter": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "boxplot": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "parallel": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "sankey": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "funnel": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "gauge": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "candlestick": {
+            "itemStyle": {
+              "normal": {
+                "color": "#e6a0d2",
+                "color0": "transparent",
+                "borderColor": "#e6a0d2",
+                "borderColor0": "#3fb1e3",
+                "borderWidth": "2"
+              }
+            }
+          },
+          "graph": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "1",
+                "color": "#cccccc"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false,
+            "color": [
+              "#3fb1e3",
+              "#6be6c1",
+              "#626c91",
+              "#a0a7e6",
+              "#c4ebad",
+              "#96dee8"
+            ],
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              }
+            }
+          },
+          "map": {
+            "itemStyle": {
+              "normal": {
+                "areaColor": "#eeeeee",
+                "borderColor": "#aaaaaa",
+                "borderWidth": 0.5
+              },
+              "emphasis": {
+                "areaColor": "rgba(63,177,227,0.25)",
+                "borderColor": "#3fb1e3",
+                "borderWidth": 1
+              }
+            },
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              },
+              "emphasis": {
+                "textStyle": {
+                  "color": "rgb(63,177,227)"
+                }
+              }
+            }
+          },
+          "geo": {
+            "itemStyle": {
+              "areaColor": "#eeeeee",
+              "borderColor": "#aaaaaa",
+              "borderWidth": 0.5
+            },
+            "label": {
+              "textStyle": {
+                "color": "#ffffff"
+              },
+              "color": "#ffffff"
+            },
+            "emphasis": {
+              "itemStyle": {
+                "areaColor": "rgba(63,177,227,0.25)",
+                "borderColor": "#3fb1e3",
+                "borderWidth": 1
+              },
+              "label": {
+                "textStyle": {
+                  "color": "rgb(63,177,227)"
+                },
+                "color": "rgb(63,177,227)"
+              }
+            }
+          },
+          "categoryAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "valueAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "logAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "timeAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "toolbox": {
+            "iconStyle": {
+              "borderColor": "#999999"
+            },
+            "emphasis": {
+              "iconStyle": {
+                "borderColor": "#666666"
+              }
+            }
+          },
+          "legend": {
+            "textStyle": {
+              "color": "#999999"
+            }
+          },
+          "tooltip": {
+            "axisPointer": {
+              "lineStyle": {
+                "color": "#cccccc",
+                "width": 1
+              },
+              "crossStyle": {
+                "color": "#cccccc",
+                "width": 1
+              }
+            }
+          },
+          "timeline": {
+            "lineStyle": {
+              "color": "#626c91",
+              "width": 1
+            },
+            "itemStyle": {
+              "color": "#626c91",
+              "borderWidth": 1
+            },
+            "controlStyle": {
+              "normal": null,
+              "emphasis": null,
+              "color": "#626c91",
+              "borderColor": "#626c91",
+              "borderWidth": 0.5
+            },
+            "checkpointStyle": {
+              "color": "#3fb1e3",
+              "borderColor": "rgba(63,177,227,0.15)"
+            },
+            "label": {
+              "textStyle": {
+                "color": "#626c91"
+              },
+              "color": "#626c91"
+            },
+            "emphasis": {
+              "itemStyle": {
+                "color": "#626c91"
+              },
+              "label": {
+                "textStyle": {
+                  "color": "#626c91"
+                },
+                "color": "#626c91"
+              },
+              "controlStyle": {
+                "color": "#626c91",
+                "borderColor": "#626c91",
+                "borderWidth": 0.5
+              }
+            }
+          },
+          "visualMap": {
+            "color": [
+              "#2a99c9",
+              "#afe8ff"
+            ]
+          },
+          "dataZoom": {
+            "backgroundColor": "rgba(255,255,255,0)",
+            "dataBackgroundColor": "rgba(222,222,222,1)",
+            "fillerColor": "rgba(114,230,212,0.25)",
+            "handleColor": "#cccccc",
+            "handleSize": "100%",
+            "textStyle": {
+              "color": "#999999"
+            }
+          },
+          "markPoint": {
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              },
+              "emphasis": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              }
+            }
+          },
+          "series": []
+        }
+      },
+      {
+        "selector": "#echart",
+        "rect": {
+          "x": 46,
+          "y": 1443.90625,
+          "width": 1444,
+          "height": 360,
+          "top": 1443.90625,
+          "right": 1490,
+          "bottom": 1803.90625,
+          "left": 46
+        },
+        "grid": [
+          {
+            "left": "left",
+            "top": "top",
+            "right": "10",
+            "bottom": 30,
+            "show": false,
+            "zlevel": 0,
+            "z": 0,
+            "containLabel": false,
+            "backgroundColor": "rgba(0,0,0,0)",
+            "borderWidth": 1,
+            "borderColor": "#ccc",
+            "width": null,
+            "height": null
+          }
+        ],
+        "title": [
+          {
+            "text": "",
+            "subtext": "",
+            "textStyle": {
+              "color": "#666666",
+              "fontSize": 18,
+              "fontWeight": "bolder"
+            },
+            "subtextStyle": {
+              "color": "#999999"
+            },
+            "zlevel": 0,
+            "z": 6,
+            "show": true,
+            "target": "blank",
+            "subtarget": "blank",
+            "left": 0,
+            "top": 0,
+            "backgroundColor": "rgba(0,0,0,0)",
+            "borderColor": "#ccc",
+            "borderWidth": 0,
+            "padding": 5,
+            "itemGap": 10,
+            "width": null,
+            "right": null,
+            "height": null,
+            "bottom": null
+          }
+        ],
+        "colors": [
+          "#18d1b1",
+          "#3fb1e3",
+          "#626c91",
+          "#a0a7e6",
+          "#c4ebad",
+          "#96dee8"
+        ],
+        "mapStyle": {
+          "normal": {
+            "borderWidth": "2"
+          }
+        },
+        "theme": {
+          "color": [
+            "#3fb1e3",
+            "#6be6c1",
+            "#626c91",
+            "#a0a7e6",
+            "#c4ebad",
+            "#96dee8"
+          ],
+          "backgroundColor": "rgba(252,252,252,0)",
+          "textStyle": {},
+          "title": {
+            "textStyle": {
+              "color": "#666666"
+            },
+            "subtextStyle": {
+              "color": "#999999"
+            }
+          },
+          "line": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": "2"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "3"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false
+          },
+          "radar": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": "2"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "3"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false
+          },
+          "bar": {
+            "itemStyle": {
+              "normal": {
+                "barBorderWidth": 0,
+                "barBorderColor": "#ccc"
+              },
+              "emphasis": {
+                "barBorderWidth": 0,
+                "barBorderColor": "#ccc"
+              }
+            }
+          },
+          "pie": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "scatter": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "boxplot": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "parallel": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "sankey": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "funnel": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "gauge": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "candlestick": {
+            "itemStyle": {
+              "normal": {
+                "color": "#e6a0d2",
+                "color0": "transparent",
+                "borderColor": "#e6a0d2",
+                "borderColor0": "#3fb1e3",
+                "borderWidth": "2"
+              }
+            }
+          },
+          "graph": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "1",
+                "color": "#cccccc"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false,
+            "color": [
+              "#3fb1e3",
+              "#6be6c1",
+              "#626c91",
+              "#a0a7e6",
+              "#c4ebad",
+              "#96dee8"
+            ],
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              }
+            }
+          },
+          "map": {
+            "itemStyle": {
+              "normal": {
+                "areaColor": "#eeeeee",
+                "borderColor": "#aaaaaa",
+                "borderWidth": 0.5
+              },
+              "emphasis": {
+                "areaColor": "rgba(63,177,227,0.25)",
+                "borderColor": "#3fb1e3",
+                "borderWidth": 1
+              }
+            },
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              },
+              "emphasis": {
+                "textStyle": {
+                  "color": "rgb(63,177,227)"
+                }
+              }
+            }
+          },
+          "geo": {
+            "itemStyle": {
+              "areaColor": "#eeeeee",
+              "borderColor": "#aaaaaa",
+              "borderWidth": 0.5
+            },
+            "label": {
+              "textStyle": {
+                "color": "#ffffff"
+              },
+              "color": "#ffffff"
+            },
+            "emphasis": {
+              "itemStyle": {
+                "areaColor": "rgba(63,177,227,0.25)",
+                "borderColor": "#3fb1e3",
+                "borderWidth": 1
+              },
+              "label": {
+                "textStyle": {
+                  "color": "rgb(63,177,227)"
+                },
+                "color": "rgb(63,177,227)"
+              }
+            }
+          },
+          "categoryAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "valueAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "logAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "timeAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "toolbox": {
+            "iconStyle": {
+              "borderColor": "#999999"
+            },
+            "emphasis": {
+              "iconStyle": {
+                "borderColor": "#666666"
+              }
+            }
+          },
+          "legend": {
+            "textStyle": {
+              "color": "#999999"
+            }
+          },
+          "tooltip": {
+            "axisPointer": {
+              "lineStyle": {
+                "color": "#cccccc",
+                "width": 1
+              },
+              "crossStyle": {
+                "color": "#cccccc",
+                "width": 1
+              }
+            }
+          },
+          "timeline": {
+            "lineStyle": {
+              "color": "#626c91",
+              "width": 1
+            },
+            "itemStyle": {
+              "color": "#626c91",
+              "borderWidth": 1
+            },
+            "controlStyle": {
+              "normal": null,
+              "emphasis": null,
+              "color": "#626c91",
+              "borderColor": "#626c91",
+              "borderWidth": 0.5
+            },
+            "checkpointStyle": {
+              "color": "#3fb1e3",
+              "borderColor": "rgba(63,177,227,0.15)"
+            },
+            "label": {
+              "textStyle": {
+                "color": "#626c91"
+              },
+              "color": "#626c91"
+            },
+            "emphasis": {
+              "itemStyle": {
+                "color": "#626c91"
+              },
+              "label": {
+                "textStyle": {
+                  "color": "#626c91"
+                },
+                "color": "#626c91"
+              },
+              "controlStyle": {
+                "color": "#626c91",
+                "borderColor": "#626c91",
+                "borderWidth": 0.5
+              }
+            }
+          },
+          "visualMap": {
+            "color": [
+              "#2a99c9",
+              "#afe8ff"
+            ]
+          },
+          "dataZoom": {
+            "backgroundColor": "rgba(255,255,255,0)",
+            "dataBackgroundColor": "rgba(222,222,222,1)",
+            "fillerColor": "rgba(114,230,212,0.25)",
+            "handleColor": "#cccccc",
+            "handleSize": "100%",
+            "textStyle": {
+              "color": "#999999"
+            }
+          },
+          "markPoint": {
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              },
+              "emphasis": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              }
+            }
+          },
+          "series": []
+        }
+      }
+    ],
+    "geometryShape": [
+      {
+        "name": "台湾",
+        "cp": [
+          121.509062,
+          24.044332
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "河北",
+        "cp": [
+          114.502461,
+          38.045474
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "山西",
+        "cp": [
+          111.849248,
+          36.857014
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "内蒙古",
+        "cp": [
+          111.670801,
+          41.818311
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "辽宁",
+        "cp": [
+          123.429096,
+          41.796767
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "吉林",
+        "cp": [
+          125.3245,
+          43.886841
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "黑龙江",
+        "cp": [
+          128.642464,
+          46.756967
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "江苏",
+        "cp": [
+          119.767413,
+          33.041544
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "浙江",
+        "cp": [
+          120.153576,
+          29.287459
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "安徽",
+        "cp": [
+          117.283042,
+          31.26119
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "福建",
+        "cp": [
+          118.306239,
+          26.075302
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "江西",
+        "cp": [
+          115.592151,
+          27.676493
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "山东",
+        "cp": [
+          118.000923,
+          36.275807
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "河南",
+        "cp": [
+          113.665412,
+          33.757975
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "湖北",
+        "cp": [
+          113.298572,
+          30.684355
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "湖南",
+        "cp": [
+          111.782279,
+          28.09409
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "广东",
+        "cp": [
+          113.280637,
+          23.125178
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "广西",
+        "cp": [
+          108.320004,
+          22.82402
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "海南",
+        "cp": [
+          109.83119,
+          19.031971
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "四川",
+        "cp": [
+          104.065735,
+          30.659462
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "贵州",
+        "cp": [
+          106.713478,
+          26.578343
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "云南",
+        "cp": [
+          101.512251,
+          24.740609
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "西藏",
+        "cp": [
+          89.132212,
+          30.860361
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "陕西",
+        "cp": [
+          108.948024,
+          34.263161
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "甘肃",
+        "cp": [
+          103.823557,
+          36.058039
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "青海",
+        "cp": [
+          96.778916,
+          35.623178
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "宁夏",
+        "cp": [
+          106.278179,
+          37.26637
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "新疆",
+        "cp": [
+          85.617733,
+          40.792818
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "北京",
+        "cp": [
+          116.405285,
+          39.904989
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "天津",
+        "cp": [
+          117.190182,
+          39.125596
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "上海",
+        "cp": [
+          121.472644,
+          31.231706
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "重庆",
+        "cp": [
+          107.304962,
+          29.533155
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "香港",
+        "cp": [
+          114.173355,
+          22.320048
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "澳门",
+        "cp": [
+          113.54909,
+          22.198951
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      }
+    ],
+    "assets": [
+      "https://ad.leadink.cn/assets/js/echarts.min.js?v=1.0.661",
+      "https://ad.leadink.cn/assets/js/echarts-theme.js?v=1.0.661",
+      "https://ad.leadink.cn/assets/js/china.js?v=1.0.661"
+    ],
+    "styles": [
+      {
+        "selector": "#seven",
+        "rect": {
+          "x": 30,
+          "y": 87,
+          "width": 1476,
+          "height": 1750.90625,
+          "top": 87,
+          "right": 1506,
+          "bottom": 1837.90625,
+          "left": 30
+        },
+        "padding": "0px",
+        "margin": "0px",
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(51, 51, 51)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": "#seven>.row",
+        "rect": {
+          "x": 15,
+          "y": 87,
+          "width": 1506,
+          "height": 159.203125,
+          "top": 87,
+          "right": 1521,
+          "bottom": 246.203125,
+          "left": 15
+        },
+        "padding": "0px",
+        "margin": "0px -15px",
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(51, 51, 51)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": ".panel-body",
+        "rect": {
+          "x": 30,
+          "y": 87,
+          "width": 271.1875,
+          "height": 141.203125,
+          "top": 87,
+          "right": 301.1875,
+          "bottom": 228.203125,
+          "left": 30
+        },
+        "padding": "15px",
+        "margin": "0px",
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": ".panel-title",
+        "rect": {
+          "x": 45,
+          "y": 111,
+          "width": 241.1875,
+          "height": 15.390625,
+          "top": 111,
+          "right": 286.1875,
+          "bottom": 126.390625,
+          "left": 45
+        },
+        "padding": "0px",
+        "margin": "0px",
+        "font": "15px / 23.5725px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": ".panel-title h5",
+        "rect": {
+          "x": 45,
+          "y": 111,
+          "width": 241.1875,
+          "height": 15.390625,
+          "top": 111,
+          "right": 286.1875,
+          "bottom": 126.390625,
+          "left": 45
+        },
+        "padding": "0px",
+        "margin": "9px 0px",
+        "font": "500 14px / 15.4px \"Source Sans Pro\", sans-serif",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": ".panel-content h1",
+        "rect": {
+          "x": 45,
+          "y": 153.390625,
+          "width": 241.1875,
+          "height": 28.59375,
+          "top": 153.390625,
+          "right": 286.1875,
+          "bottom": 181.984375,
+          "left": 45
+        },
+        "padding": "0px",
+        "margin": "18px 0px 9px",
+        "font": "500 26px / 28.6px \"Source Sans Pro\", sans-serif",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": ".font-bold small",
+        "rect": {
+          "x": 45,
+          "y": 194.984375,
+          "width": 72.28125,
+          "height": 15,
+          "top": 194.984375,
+          "right": 117.28125,
+          "bottom": 209.984375,
+          "left": 45
+        },
+        "padding": "0px",
+        "margin": "0px",
+        "font": "12.88px / 20.2409px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": ".sm-st",
+        "rect": {
+          "x": 30,
+          "y": 656.203125,
+          "width": 472,
+          "height": 101.703125,
+          "top": 656.203125,
+          "right": 502,
+          "bottom": 757.90625,
+          "left": 30
+        },
+        "padding": "20px",
+        "margin": "0px 0px 20px",
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(51, 51, 51)",
+        "borderRadius": "3px"
+      },
+      {
+        "selector": ".sm-st-icon",
+        "rect": {
+          "x": 50,
+          "y": 676.203125,
+          "width": 60,
+          "height": 60,
+          "top": 676.203125,
+          "right": 110,
+          "bottom": 736.203125,
+          "left": 50
+        },
+        "padding": "0px",
+        "margin": "0px 10px 0px 0px",
+        "font": "30px / 60px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgb(114, 102, 186) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "5px"
+      },
+      {
+        "selector": ".sm-st-info",
+        "rect": {
+          "x": 50,
+          "y": 676.203125,
+          "width": 432,
+          "height": 61.703125,
+          "top": 676.203125,
+          "right": 482,
+          "bottom": 737.90625,
+          "left": 50
+        },
+        "padding": "2px 0px 0px",
+        "margin": "0px",
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(51, 51, 51)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": ".sm-st-info span",
+        "rect": {
+          "x": 50,
+          "y": 678.203125,
+          "width": 432,
+          "height": 37.703125,
+          "top": 678.203125,
+          "right": 482,
+          "bottom": 715.90625,
+          "left": 50
+        },
+        "padding": "0px",
+        "margin": "0px",
+        "font": "600 24px / 37.716px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(51, 51, 51)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": ".st-violet",
+        "rect": {
+          "x": 50,
+          "y": 676.203125,
+          "width": 60,
+          "height": 60,
+          "top": 676.203125,
+          "right": 110,
+          "bottom": 736.203125,
+          "left": 50
+        },
+        "padding": "0px",
+        "margin": "0px 10px 0px 0px",
+        "font": "30px / 60px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgb(114, 102, 186) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "5px"
+      },
+      {
+        "selector": ".st-green",
+        "rect": {
+          "x": 552,
+          "y": 676.203125,
+          "width": 60,
+          "height": 60,
+          "top": 676.203125,
+          "right": 612,
+          "bottom": 736.203125,
+          "left": 552
+        },
+        "padding": "0px",
+        "margin": "0px 10px 0px 0px",
+        "font": "30px / 60px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgb(39, 194, 76) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "5px"
+      },
+      {
+        "selector": ".st-blue",
+        "rect": {
+          "x": 1054,
+          "y": 676.203125,
+          "width": 60,
+          "height": 60,
+          "top": 676.203125,
+          "right": 1114,
+          "bottom": 736.203125,
+          "left": 1054
+        },
+        "padding": "0px",
+        "margin": "0px 10px 0px 0px",
+        "font": "30px / 60px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgb(35, 183, 229) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "5px"
+      }
+    ]
+  },
+  "local": {
+    "charts": [
+      {
+        "selector": "[data-stat-chart=metrics]",
+        "rect": {
+          "x": 238,
+          "y": 412.203125,
+          "width": 1444,
+          "height": 360,
+          "top": 412.203125,
+          "right": 1682,
+          "bottom": 772.203125,
+          "left": 238
+        },
+        "grid": [
+          {
+            "left": "10%",
+            "right": "10%",
+            "top": 60,
+            "bottom": 60,
+            "show": false,
+            "zlevel": 0,
+            "z": 0,
+            "containLabel": false,
+            "backgroundColor": "rgba(0,0,0,0)",
+            "borderWidth": 1,
+            "borderColor": "#ccc",
+            "width": null,
+            "height": null
+          }
+        ],
+        "title": [
+          {
+            "text": "金额统计",
+            "textStyle": {
+              "color": "#666666",
+              "fontSize": 18,
+              "fontWeight": "bolder"
+            },
+            "subtextStyle": {
+              "color": "#999999"
+            },
+            "zlevel": 0,
+            "z": 6,
+            "show": true,
+            "target": "blank",
+            "subtext": "",
+            "subtarget": "blank",
+            "left": 0,
+            "top": 0,
+            "backgroundColor": "rgba(0,0,0,0)",
+            "borderColor": "#ccc",
+            "borderWidth": 0,
+            "padding": 5,
+            "itemGap": 10,
+            "width": null,
+            "right": null,
+            "height": null,
+            "bottom": null
+          }
+        ],
+        "colors": [
+          "#3fb1e3",
+          "#6be6c1",
+          "#626c91",
+          "#a0a7e6",
+          "#c4ebad",
+          "#96dee8"
+        ],
+        "mapStyle": {
+          "normal": {
+            "borderWidth": "2"
+          }
+        },
+        "theme": {
+          "color": [
+            "#3fb1e3",
+            "#6be6c1",
+            "#626c91",
+            "#a0a7e6",
+            "#c4ebad",
+            "#96dee8"
+          ],
+          "backgroundColor": "rgba(252,252,252,0)",
+          "textStyle": {},
+          "title": {
+            "textStyle": {
+              "color": "#666666"
+            },
+            "subtextStyle": {
+              "color": "#999999"
+            }
+          },
+          "line": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": "2"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "3"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false
+          },
+          "radar": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": "2"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "3"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false
+          },
+          "bar": {
+            "itemStyle": {
+              "normal": {
+                "barBorderWidth": 0,
+                "barBorderColor": "#ccc"
+              },
+              "emphasis": {
+                "barBorderWidth": 0,
+                "barBorderColor": "#ccc"
+              }
+            }
+          },
+          "pie": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "scatter": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "boxplot": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "parallel": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "sankey": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "funnel": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "gauge": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "candlestick": {
+            "itemStyle": {
+              "normal": {
+                "color": "#e6a0d2",
+                "color0": "transparent",
+                "borderColor": "#e6a0d2",
+                "borderColor0": "#3fb1e3",
+                "borderWidth": "2"
+              }
+            }
+          },
+          "graph": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "1",
+                "color": "#cccccc"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false,
+            "color": [
+              "#3fb1e3",
+              "#6be6c1",
+              "#626c91",
+              "#a0a7e6",
+              "#c4ebad",
+              "#96dee8"
+            ],
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              }
+            }
+          },
+          "map": {
+            "itemStyle": {
+              "normal": {
+                "areaColor": "#eeeeee",
+                "borderColor": "#aaaaaa",
+                "borderWidth": 0.5
+              },
+              "emphasis": {
+                "areaColor": "rgba(63,177,227,0.25)",
+                "borderColor": "#3fb1e3",
+                "borderWidth": 1
+              }
+            },
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              },
+              "emphasis": {
+                "textStyle": {
+                  "color": "rgb(63,177,227)"
+                }
+              }
+            }
+          },
+          "geo": {
+            "itemStyle": {
+              "areaColor": "#eeeeee",
+              "borderColor": "#aaaaaa",
+              "borderWidth": 0.5
+            },
+            "label": {
+              "textStyle": {
+                "color": "#ffffff"
+              },
+              "color": "#ffffff"
+            },
+            "emphasis": {
+              "itemStyle": {
+                "areaColor": "rgba(63,177,227,0.25)",
+                "borderColor": "#3fb1e3",
+                "borderWidth": 1
+              },
+              "label": {
+                "textStyle": {
+                  "color": "rgb(63,177,227)"
+                },
+                "color": "rgb(63,177,227)"
+              }
+            }
+          },
+          "categoryAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "valueAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "logAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "timeAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "toolbox": {
+            "iconStyle": {
+              "borderColor": "#999999"
+            },
+            "emphasis": {
+              "iconStyle": {
+                "borderColor": "#666666"
+              }
+            }
+          },
+          "legend": {
+            "textStyle": {
+              "color": "#999999"
+            }
+          },
+          "tooltip": {
+            "axisPointer": {
+              "lineStyle": {
+                "color": "#cccccc",
+                "width": 1
+              },
+              "crossStyle": {
+                "color": "#cccccc",
+                "width": 1
+              }
+            }
+          },
+          "timeline": {
+            "lineStyle": {
+              "color": "#626c91",
+              "width": 1
+            },
+            "itemStyle": {
+              "color": "#626c91",
+              "borderWidth": 1
+            },
+            "controlStyle": {
+              "normal": null,
+              "emphasis": null,
+              "color": "#626c91",
+              "borderColor": "#626c91",
+              "borderWidth": 0.5
+            },
+            "checkpointStyle": {
+              "color": "#3fb1e3",
+              "borderColor": "rgba(63,177,227,0.15)"
+            },
+            "label": {
+              "textStyle": {
+                "color": "#626c91"
+              },
+              "color": "#626c91"
+            },
+            "emphasis": {
+              "itemStyle": {
+                "color": "#626c91"
+              },
+              "label": {
+                "textStyle": {
+                  "color": "#626c91"
+                },
+                "color": "#626c91"
+              },
+              "controlStyle": {
+                "color": "#626c91",
+                "borderColor": "#626c91",
+                "borderWidth": 0.5
+              }
+            }
+          },
+          "visualMap": {
+            "color": [
+              "#2a99c9",
+              "#afe8ff"
+            ]
+          },
+          "dataZoom": {
+            "backgroundColor": "rgba(255,255,255,0)",
+            "dataBackgroundColor": "rgba(222,222,222,1)",
+            "fillerColor": "rgba(114,230,212,0.25)",
+            "handleColor": "#cccccc",
+            "handleSize": "100%",
+            "textStyle": {
+              "color": "#999999"
+            }
+          },
+          "markPoint": {
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              },
+              "emphasis": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              }
+            }
+          },
+          "series": []
+        }
+      },
+      {
+        "selector": "[data-stat-chart=region-map]",
+        "rect": {
+          "x": 238,
+          "y": 943.90625,
+          "width": 942,
+          "height": 600,
+          "top": 943.90625,
+          "right": 1180,
+          "bottom": 1543.90625,
+          "left": 238
+        },
+        "grid": null,
+        "title": [
+          {
+            "text": "账号分布",
+            "left": "left",
+            "zlevel": 0,
+            "z": 6,
+            "show": true,
+            "target": "blank",
+            "subtext": "",
+            "subtarget": "blank",
+            "top": 0,
+            "backgroundColor": "rgba(0,0,0,0)",
+            "borderColor": "#ccc",
+            "borderWidth": 0,
+            "padding": 5,
+            "itemGap": 10,
+            "textStyle": {
+              "fontSize": 18,
+              "fontWeight": "bolder",
+              "color": "#333"
+            },
+            "subtextStyle": {
+              "color": "#aaa"
+            },
+            "width": null,
+            "right": null,
+            "height": null,
+            "bottom": null
+          }
+        ],
+        "colors": [
+          "#c23531",
+          "#2f4554",
+          "#61a0a8",
+          "#d48265",
+          "#91c7ae",
+          "#749f83",
+          "#ca8622",
+          "#bda29a",
+          "#6e7074",
+          "#546570",
+          "#c4ccd3"
+        ],
+        "mapStyle": {
+          "borderWidth": 0.5,
+          "borderColor": "#444",
+          "areaColor": "#eee"
+        },
+        "theme": null
+      },
+      {
+        "selector": "[data-stat-chart=region-bars]",
+        "rect": {
+          "x": 1242,
+          "y": 943.90625,
+          "width": 440,
+          "height": 600,
+          "top": 943.90625,
+          "right": 1682,
+          "bottom": 1543.90625,
+          "left": 1242
+        },
+        "grid": [
+          {
+            "left": "3%",
+            "right": "4%",
+            "bottom": "15%",
+            "show": false,
+            "zlevel": 0,
+            "z": 0,
+            "top": 60,
+            "containLabel": false,
+            "backgroundColor": "rgba(0,0,0,0)",
+            "borderWidth": 1,
+            "borderColor": "#ccc",
+            "width": null,
+            "height": null
+          }
+        ],
+        "title": [
+          {
+            "text": "账号分布",
+            "left": "center",
+            "bottom": "5%",
+            "textStyle": {
+              "fontSize": 14,
+              "color": "#666666",
+              "fontWeight": "bolder"
+            },
+            "subtextStyle": {
+              "color": "#999999"
+            },
+            "zlevel": 0,
+            "z": 6,
+            "show": true,
+            "target": "blank",
+            "subtext": "",
+            "subtarget": "blank",
+            "top": null,
+            "backgroundColor": "rgba(0,0,0,0)",
+            "borderColor": "#ccc",
+            "borderWidth": 0,
+            "padding": 5,
+            "itemGap": 10,
+            "width": null,
+            "right": null,
+            "height": null
+          }
+        ],
+        "colors": [
+          "#3fb1e3",
+          "#6be6c1",
+          "#626c91",
+          "#a0a7e6",
+          "#c4ebad",
+          "#96dee8"
+        ],
+        "mapStyle": {
+          "normal": {
+            "barBorderWidth": 0,
+            "barBorderColor": "#ccc"
+          },
+          "emphasis": {
+            "barBorderWidth": 0,
+            "barBorderColor": "#ccc"
+          }
+        },
+        "theme": {
+          "color": [
+            "#3fb1e3",
+            "#6be6c1",
+            "#626c91",
+            "#a0a7e6",
+            "#c4ebad",
+            "#96dee8"
+          ],
+          "backgroundColor": "rgba(252,252,252,0)",
+          "textStyle": {},
+          "title": {
+            "textStyle": {
+              "color": "#666666"
+            },
+            "subtextStyle": {
+              "color": "#999999"
+            }
+          },
+          "line": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": "2"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "3"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false
+          },
+          "radar": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": "2"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "3"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false
+          },
+          "bar": {
+            "itemStyle": {
+              "normal": {
+                "barBorderWidth": 0,
+                "barBorderColor": "#ccc"
+              },
+              "emphasis": {
+                "barBorderWidth": 0,
+                "barBorderColor": "#ccc"
+              }
+            }
+          },
+          "pie": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "scatter": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "boxplot": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "parallel": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "sankey": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "funnel": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "gauge": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "candlestick": {
+            "itemStyle": {
+              "normal": {
+                "color": "#e6a0d2",
+                "color0": "transparent",
+                "borderColor": "#e6a0d2",
+                "borderColor0": "#3fb1e3",
+                "borderWidth": "2"
+              }
+            }
+          },
+          "graph": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "1",
+                "color": "#cccccc"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false,
+            "color": [
+              "#3fb1e3",
+              "#6be6c1",
+              "#626c91",
+              "#a0a7e6",
+              "#c4ebad",
+              "#96dee8"
+            ],
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              }
+            }
+          },
+          "map": {
+            "itemStyle": {
+              "normal": {
+                "areaColor": "#eeeeee",
+                "borderColor": "#aaaaaa",
+                "borderWidth": 0.5
+              },
+              "emphasis": {
+                "areaColor": "rgba(63,177,227,0.25)",
+                "borderColor": "#3fb1e3",
+                "borderWidth": 1
+              }
+            },
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              },
+              "emphasis": {
+                "textStyle": {
+                  "color": "rgb(63,177,227)"
+                }
+              }
+            }
+          },
+          "geo": {
+            "itemStyle": {
+              "areaColor": "#eeeeee",
+              "borderColor": "#aaaaaa",
+              "borderWidth": 0.5
+            },
+            "label": {
+              "textStyle": {
+                "color": "#ffffff"
+              },
+              "color": "#ffffff"
+            },
+            "emphasis": {
+              "itemStyle": {
+                "areaColor": "rgba(63,177,227,0.25)",
+                "borderColor": "#3fb1e3",
+                "borderWidth": 1
+              },
+              "label": {
+                "textStyle": {
+                  "color": "rgb(63,177,227)"
+                },
+                "color": "rgb(63,177,227)"
+              }
+            }
+          },
+          "categoryAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "valueAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "logAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "timeAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "toolbox": {
+            "iconStyle": {
+              "borderColor": "#999999"
+            },
+            "emphasis": {
+              "iconStyle": {
+                "borderColor": "#666666"
+              }
+            }
+          },
+          "legend": {
+            "textStyle": {
+              "color": "#999999"
+            }
+          },
+          "tooltip": {
+            "axisPointer": {
+              "lineStyle": {
+                "color": "#cccccc",
+                "width": 1
+              },
+              "crossStyle": {
+                "color": "#cccccc",
+                "width": 1
+              }
+            }
+          },
+          "timeline": {
+            "lineStyle": {
+              "color": "#626c91",
+              "width": 1
+            },
+            "itemStyle": {
+              "color": "#626c91",
+              "borderWidth": 1
+            },
+            "controlStyle": {
+              "normal": null,
+              "emphasis": null,
+              "color": "#626c91",
+              "borderColor": "#626c91",
+              "borderWidth": 0.5
+            },
+            "checkpointStyle": {
+              "color": "#3fb1e3",
+              "borderColor": "rgba(63,177,227,0.15)"
+            },
+            "label": {
+              "textStyle": {
+                "color": "#626c91"
+              },
+              "color": "#626c91"
+            },
+            "emphasis": {
+              "itemStyle": {
+                "color": "#626c91"
+              },
+              "label": {
+                "textStyle": {
+                  "color": "#626c91"
+                },
+                "color": "#626c91"
+              },
+              "controlStyle": {
+                "color": "#626c91",
+                "borderColor": "#626c91",
+                "borderWidth": 0.5
+              }
+            }
+          },
+          "visualMap": {
+            "color": [
+              "#2a99c9",
+              "#afe8ff"
+            ]
+          },
+          "dataZoom": {
+            "backgroundColor": "rgba(255,255,255,0)",
+            "dataBackgroundColor": "rgba(222,222,222,1)",
+            "fillerColor": "rgba(114,230,212,0.25)",
+            "handleColor": "#cccccc",
+            "handleSize": "100%",
+            "textStyle": {
+              "color": "#999999"
+            }
+          },
+          "markPoint": {
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              },
+              "emphasis": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              }
+            }
+          },
+          "series": []
+        }
+      },
+      {
+        "selector": "[data-stat-chart=registrations]",
+        "rect": {
+          "x": 238,
+          "y": 1593.90625,
+          "width": 1444,
+          "height": 360,
+          "top": 1593.90625,
+          "right": 1682,
+          "bottom": 1953.90625,
+          "left": 238
+        },
+        "grid": [
+          {
+            "left": "left",
+            "right": 10,
+            "top": "top",
+            "bottom": 30,
+            "show": false,
+            "zlevel": 0,
+            "z": 0,
+            "containLabel": false,
+            "backgroundColor": "rgba(0,0,0,0)",
+            "borderWidth": 1,
+            "borderColor": "#ccc",
+            "width": null,
+            "height": null
+          }
+        ],
+        "title": [
+          {
+            "text": "",
+            "textStyle": {
+              "color": "#666666",
+              "fontSize": 18,
+              "fontWeight": "bolder"
+            },
+            "subtextStyle": {
+              "color": "#999999"
+            },
+            "zlevel": 0,
+            "z": 6,
+            "show": true,
+            "target": "blank",
+            "subtext": "",
+            "subtarget": "blank",
+            "left": 0,
+            "top": 0,
+            "backgroundColor": "rgba(0,0,0,0)",
+            "borderColor": "#ccc",
+            "borderWidth": 0,
+            "padding": 5,
+            "itemGap": 10,
+            "width": null,
+            "right": null,
+            "height": null,
+            "bottom": null
+          }
+        ],
+        "colors": [
+          "#18d1b1",
+          "#3fb1e3",
+          "#626c91",
+          "#a0a7e6",
+          "#c4ebad",
+          "#96dee8"
+        ],
+        "mapStyle": {
+          "normal": {
+            "borderWidth": "2"
+          }
+        },
+        "theme": {
+          "color": [
+            "#3fb1e3",
+            "#6be6c1",
+            "#626c91",
+            "#a0a7e6",
+            "#c4ebad",
+            "#96dee8"
+          ],
+          "backgroundColor": "rgba(252,252,252,0)",
+          "textStyle": {},
+          "title": {
+            "textStyle": {
+              "color": "#666666"
+            },
+            "subtextStyle": {
+              "color": "#999999"
+            }
+          },
+          "line": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": "2"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "3"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false
+          },
+          "radar": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": "2"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "3"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false
+          },
+          "bar": {
+            "itemStyle": {
+              "normal": {
+                "barBorderWidth": 0,
+                "barBorderColor": "#ccc"
+              },
+              "emphasis": {
+                "barBorderWidth": 0,
+                "barBorderColor": "#ccc"
+              }
+            }
+          },
+          "pie": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "scatter": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "boxplot": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "parallel": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "sankey": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "funnel": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "gauge": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              },
+              "emphasis": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            }
+          },
+          "candlestick": {
+            "itemStyle": {
+              "normal": {
+                "color": "#e6a0d2",
+                "color0": "transparent",
+                "borderColor": "#e6a0d2",
+                "borderColor0": "#3fb1e3",
+                "borderWidth": "2"
+              }
+            }
+          },
+          "graph": {
+            "itemStyle": {
+              "normal": {
+                "borderWidth": 0,
+                "borderColor": "#ccc"
+              }
+            },
+            "lineStyle": {
+              "normal": {
+                "width": "1",
+                "color": "#cccccc"
+              }
+            },
+            "symbolSize": "8",
+            "symbol": "emptyCircle",
+            "smooth": false,
+            "color": [
+              "#3fb1e3",
+              "#6be6c1",
+              "#626c91",
+              "#a0a7e6",
+              "#c4ebad",
+              "#96dee8"
+            ],
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              }
+            }
+          },
+          "map": {
+            "itemStyle": {
+              "normal": {
+                "areaColor": "#eeeeee",
+                "borderColor": "#aaaaaa",
+                "borderWidth": 0.5
+              },
+              "emphasis": {
+                "areaColor": "rgba(63,177,227,0.25)",
+                "borderColor": "#3fb1e3",
+                "borderWidth": 1
+              }
+            },
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              },
+              "emphasis": {
+                "textStyle": {
+                  "color": "rgb(63,177,227)"
+                }
+              }
+            }
+          },
+          "geo": {
+            "itemStyle": {
+              "areaColor": "#eeeeee",
+              "borderColor": "#aaaaaa",
+              "borderWidth": 0.5
+            },
+            "label": {
+              "textStyle": {
+                "color": "#ffffff"
+              },
+              "color": "#ffffff"
+            },
+            "emphasis": {
+              "itemStyle": {
+                "areaColor": "rgba(63,177,227,0.25)",
+                "borderColor": "#3fb1e3",
+                "borderWidth": 1
+              },
+              "label": {
+                "textStyle": {
+                  "color": "rgb(63,177,227)"
+                },
+                "color": "rgb(63,177,227)"
+              }
+            }
+          },
+          "categoryAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "valueAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "logAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "timeAxis": {
+            "axisLine": {
+              "show": true,
+              "lineStyle": {
+                "color": "#cccccc"
+              }
+            },
+            "axisTick": {
+              "show": false,
+              "lineStyle": {
+                "color": "#333"
+              }
+            },
+            "axisLabel": {
+              "show": true,
+              "textStyle": {
+                "color": "#999999"
+              },
+              "color": "#999999"
+            },
+            "splitLine": {
+              "show": true,
+              "lineStyle": {
+                "color": [
+                  "#eeeeee"
+                ]
+              }
+            },
+            "splitArea": {
+              "show": false,
+              "areaStyle": {
+                "color": [
+                  "rgba(250,250,250,0.05)",
+                  "rgba(200,200,200,0.02)"
+                ]
+              }
+            }
+          },
+          "toolbox": {
+            "iconStyle": {
+              "borderColor": "#999999"
+            },
+            "emphasis": {
+              "iconStyle": {
+                "borderColor": "#666666"
+              }
+            }
+          },
+          "legend": {
+            "textStyle": {
+              "color": "#999999"
+            }
+          },
+          "tooltip": {
+            "axisPointer": {
+              "lineStyle": {
+                "color": "#cccccc",
+                "width": 1
+              },
+              "crossStyle": {
+                "color": "#cccccc",
+                "width": 1
+              }
+            }
+          },
+          "timeline": {
+            "lineStyle": {
+              "color": "#626c91",
+              "width": 1
+            },
+            "itemStyle": {
+              "color": "#626c91",
+              "borderWidth": 1
+            },
+            "controlStyle": {
+              "normal": null,
+              "emphasis": null,
+              "color": "#626c91",
+              "borderColor": "#626c91",
+              "borderWidth": 0.5
+            },
+            "checkpointStyle": {
+              "color": "#3fb1e3",
+              "borderColor": "rgba(63,177,227,0.15)"
+            },
+            "label": {
+              "textStyle": {
+                "color": "#626c91"
+              },
+              "color": "#626c91"
+            },
+            "emphasis": {
+              "itemStyle": {
+                "color": "#626c91"
+              },
+              "label": {
+                "textStyle": {
+                  "color": "#626c91"
+                },
+                "color": "#626c91"
+              },
+              "controlStyle": {
+                "color": "#626c91",
+                "borderColor": "#626c91",
+                "borderWidth": 0.5
+              }
+            }
+          },
+          "visualMap": {
+            "color": [
+              "#2a99c9",
+              "#afe8ff"
+            ]
+          },
+          "dataZoom": {
+            "backgroundColor": "rgba(255,255,255,0)",
+            "dataBackgroundColor": "rgba(222,222,222,1)",
+            "fillerColor": "rgba(114,230,212,0.25)",
+            "handleColor": "#cccccc",
+            "handleSize": "100%",
+            "textStyle": {
+              "color": "#999999"
+            }
+          },
+          "markPoint": {
+            "label": {
+              "normal": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              },
+              "emphasis": {
+                "textStyle": {
+                  "color": "#ffffff"
+                }
+              }
+            }
+          },
+          "series": []
+        }
+      }
+    ],
+    "geometryShape": [
+      {
+        "name": "台湾",
+        "cp": [
+          121.509062,
+          24.044332
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "河北",
+        "cp": [
+          114.502461,
+          38.045474
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "山西",
+        "cp": [
+          111.849248,
+          36.857014
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "内蒙古",
+        "cp": [
+          111.670801,
+          41.818311
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "辽宁",
+        "cp": [
+          123.429096,
+          41.796767
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "吉林",
+        "cp": [
+          125.3245,
+          43.886841
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "黑龙江",
+        "cp": [
+          128.642464,
+          46.756967
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "江苏",
+        "cp": [
+          119.767413,
+          33.041544
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "浙江",
+        "cp": [
+          120.153576,
+          29.287459
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "安徽",
+        "cp": [
+          117.283042,
+          31.26119
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "福建",
+        "cp": [
+          118.306239,
+          26.075302
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "江西",
+        "cp": [
+          115.592151,
+          27.676493
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "山东",
+        "cp": [
+          118.000923,
+          36.275807
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "河南",
+        "cp": [
+          113.665412,
+          33.757975
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "湖北",
+        "cp": [
+          113.298572,
+          30.684355
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "湖南",
+        "cp": [
+          111.782279,
+          28.09409
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "广东",
+        "cp": [
+          113.280637,
+          23.125178
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "广西",
+        "cp": [
+          108.320004,
+          22.82402
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "海南",
+        "cp": [
+          109.83119,
+          19.031971
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "四川",
+        "cp": [
+          104.065735,
+          30.659462
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "贵州",
+        "cp": [
+          106.713478,
+          26.578343
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "云南",
+        "cp": [
+          101.512251,
+          24.740609
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "西藏",
+        "cp": [
+          89.132212,
+          30.860361
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "陕西",
+        "cp": [
+          108.948024,
+          34.263161
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "甘肃",
+        "cp": [
+          103.823557,
+          36.058039
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "青海",
+        "cp": [
+          96.778916,
+          35.623178
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "宁夏",
+        "cp": [
+          106.278179,
+          37.26637
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "新疆",
+        "cp": [
+          85.617733,
+          40.792818
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "北京",
+        "cp": [
+          116.405285,
+          39.904989
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "天津",
+        "cp": [
+          117.190182,
+          39.125596
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "上海",
+        "cp": [
+          121.472644,
+          31.231706
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "重庆",
+        "cp": [
+          107.304962,
+          29.533155
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "香港",
+        "cp": [
+          114.173355,
+          22.320048
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      },
+      {
+        "name": "澳门",
+        "cp": [
+          113.54909,
+          22.198951
+        ],
+        "keys": [
+          "type",
+          "id",
+          "properties",
+          "geometry"
+        ],
+        "geometryKeys": [
+          "type",
+          "coordinates",
+          "encodeOffsets"
+        ]
+      }
+    ],
+    "assets": [
+      "http://127.0.0.1:3000/vendor/echarts.min.js",
+      "http://127.0.0.1:3000/vendor/echarts-walden.json",
+      "http://127.0.0.1:3000/vendor/china-map.js"
+    ],
+    "styles": [
+      {
+        "selector": ".game-user-stats",
+        "rect": {
+          "x": 207,
+          "y": 222,
+          "width": 1506,
+          "height": 1780.90625,
+          "top": 222,
+          "right": 1713,
+          "bottom": 2002.90625,
+          "left": 207
+        },
+        "padding": "15px",
+        "margin": "0px",
+        "font": "14px / 22px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(51, 51, 51)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": ".game-stat-cards",
+        "rect": {
+          "x": 222,
+          "y": 237,
+          "width": 1476,
+          "height": 141.203125,
+          "top": 237,
+          "right": 1698,
+          "bottom": 378.203125,
+          "left": 222
+        },
+        "padding": "0px",
+        "margin": "0px 0px 18px",
+        "font": "14px / 22px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(51, 51, 51)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": ".game-stat-cards article",
+        "rect": {
+          "x": 222,
+          "y": 237,
+          "width": 271.1875,
+          "height": 141.203125,
+          "top": 237,
+          "right": 493.1875,
+          "bottom": 378.203125,
+          "left": 222
+        },
+        "padding": "15px",
+        "margin": "0px",
+        "font": "14px / 22px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0) linear-gradient(to top, rgb(22, 136, 241), rgb(56, 153, 243)) repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "3px"
+      },
+      {
+        "selector": ".game-stat-cards article>div",
+        "rect": {
+          "x": 237,
+          "y": 261,
+          "width": 241.1875,
+          "height": 15.390625,
+          "top": 261,
+          "right": 478.1875,
+          "bottom": 276.390625,
+          "left": 237
+        },
+        "padding": "0px",
+        "margin": "9px 0px 27px",
+        "font": "500 14px / 15.4px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": ".game-stat-cards strong",
+        "rect": {
+          "x": 237,
+          "y": 303.390625,
+          "width": 241.1875,
+          "height": 28.59375,
+          "top": 303.390625,
+          "right": 478.1875,
+          "bottom": 331.984375,
+          "left": 237
+        },
+        "padding": "0px",
+        "margin": "0px 0px 9px",
+        "font": "500 26px / 28.6px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": ".game-stat-cards article>span",
+        "rect": {
+          "x": 237,
+          "y": 340.984375,
+          "width": 241.1875,
+          "height": 22.21875,
+          "top": 340.984375,
+          "right": 478.1875,
+          "bottom": 363.203125,
+          "left": 237
+        },
+        "padding": "0px",
+        "margin": "0px",
+        "font": "12.88px / 22.22px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": ".game-stat-counters article",
+        "rect": {
+          "x": 222,
+          "y": 806.203125,
+          "width": 472,
+          "height": 101.703125,
+          "top": 806.203125,
+          "right": 694,
+          "bottom": 907.90625,
+          "left": 222
+        },
+        "padding": "20px",
+        "margin": "0px",
+        "font": "14px / 22px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(51, 51, 51)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": ".game-stat-counters i",
+        "rect": {
+          "x": 242,
+          "y": 826.203125,
+          "width": 60,
+          "height": 60,
+          "top": 826.203125,
+          "right": 302,
+          "bottom": 886.203125,
+          "left": 242
+        },
+        "padding": "0px",
+        "margin": "0px",
+        "font": "30px / 47.1429px FontAwesome",
+        "background": "rgb(114, 102, 186) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(255, 255, 255)",
+        "borderRadius": "5px"
+      },
+      {
+        "selector": ".game-stat-counters article>div",
+        "rect": {
+          "x": 312,
+          "y": 826.203125,
+          "width": 56,
+          "height": 61.703125,
+          "top": 826.203125,
+          "right": 368,
+          "bottom": 887.90625,
+          "left": 312
+        },
+        "padding": "2px 0px 0px",
+        "margin": "0px",
+        "font": "14px / 22px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(51, 51, 51)",
+        "borderRadius": "0px"
+      },
+      {
+        "selector": ".game-stat-counters strong",
+        "rect": {
+          "x": 312,
+          "y": 828.203125,
+          "width": 56,
+          "height": 37.703125,
+          "top": 828.203125,
+          "right": 368,
+          "bottom": 865.90625,
+          "left": 312
+        },
+        "padding": "0px",
+        "margin": "0px",
+        "font": "600 24px / 37.7143px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "border": "0px none rgb(51, 51, 51)",
+        "borderRadius": "0px"
+      }
+    ]
+  },
+  "same_geometry": true,
+  "same_boundaries": true,
+  "boundary_differences": []
+}

@@ -1,0 +1,502 @@
+[
+  {
+    "label": "头像:",
+    "fields": [
+      {
+        "name": "row[image_url]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": "",
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "账号:",
+    "fields": [
+      {
+        "name": "row[username]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "密码:",
+    "fields": [
+      {
+        "name": "row[password]",
+        "type": "password",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "支付密码:",
+    "fields": [
+      {
+        "name": "row[pay_password]",
+        "type": "password",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "昵称:",
+    "fields": [
+      {
+        "name": "row[name]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "机器码id:",
+    "fields": [
+      {
+        "name": "row[device_id]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "性别:",
+    "fields": [
+      {
+        "name": "row[sex]",
+        "type": "select-one",
+        "readonly": null,
+        "disabled": false,
+        "rule": null,
+        "options": [
+          {
+            "value": "0",
+            "text": "未知"
+          },
+          {
+            "value": "1",
+            "text": "男"
+          },
+          {
+            "value": "2",
+            "text": "女"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "真实姓名:",
+    "fields": [
+      {
+        "name": "row[real_name]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "身份证号码:",
+    "fields": [
+      {
+        "name": "row[card_no]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "联系地址:",
+    "fields": [
+      {
+        "name": "row[address]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "内部号:",
+    "fields": [
+      {
+        "name": "row[is_true]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      },
+      {
+        "name": "row[is_true]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "实名状态:",
+    "fields": [
+      {
+        "name": "row[realname_enable]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      },
+      {
+        "name": "row[realname_enable]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "兑换状态:",
+    "fields": [
+      {
+        "name": "row[exchange_enable]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      },
+      {
+        "name": "row[exchange_enable]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "关键行为达标:",
+    "fields": [
+      {
+        "name": "row[game_addiction_enable]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      },
+      {
+        "name": "row[game_addiction_enable]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "达标时间:",
+    "fields": [
+      {
+        "name": "row[game_addiction_time]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "白名单:",
+    "fields": [
+      {
+        "name": "row[is_white]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      },
+      {
+        "name": "row[is_white]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "状态:",
+    "fields": [
+      {
+        "name": "row[status]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      },
+      {
+        "name": "row[status]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "vip:",
+    "fields": [
+      {
+        "name": "row[vip]",
+        "type": "select-one",
+        "readonly": null,
+        "disabled": false,
+        "rule": null,
+        "options": [
+          {
+            "value": "0",
+            "text": "0"
+          },
+          {
+            "value": "1",
+            "text": "1"
+          },
+          {
+            "value": "2",
+            "text": "2"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "其它信息:",
+    "fields": [
+      {
+        "name": "row[otherlevel]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "独立抽奖设置:",
+    "fields": [
+      {
+        "name": "row[raffle_open]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      },
+      {
+        "name": "row[raffle_open]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "抽奖次数(穿上甲):",
+    "fields": [
+      {
+        "name": "row[raffle_num]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "倒计时(穿上甲):",
+    "fields": [
+      {
+        "name": "row[star_countdown]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      },
+      {
+        "name": "row[over_countdown]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "抽奖次数(其它):",
+    "fields": [
+      {
+        "name": "row[raffle_num2]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "倒计时(其它):",
+    "fields": [
+      {
+        "name": "row[star_countdown2]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      },
+      {
+        "name": "row[over_countdown2]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "下载地址:",
+    "fields": [
+      {
+        "name": "row[down_load]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "代理:",
+    "fields": [
+      {
+        "name": "row[ht_status]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      },
+      {
+        "name": "row[ht_status]",
+        "type": "radio",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "直推比例（%）:",
+    "fields": [
+      {
+        "name": "row[percent_zhi]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "间推比例（%）:",
+    "fields": [
+      {
+        "name": "row[percent_jian]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "代理比例（%）:",
+    "fields": [
+      {
+        "name": "row[percent_dai]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "二级代理比例（%）:",
+    "fields": [
+      {
+        "name": "row[percent_dai_two]",
+        "type": "text",
+        "readonly": false,
+        "disabled": false,
+        "rule": null,
+        "options": null
+      }
+    ]
+  },
+  {
+    "label": "",
+    "fields": []
+  }
+]

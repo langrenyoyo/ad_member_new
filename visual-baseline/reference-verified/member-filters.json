@@ -1,0 +1,339 @@
+[
+  {
+    "html": "<form class=\"form-horizontal form-commonsearch nice-validator n-default n-bootstrap\" novalidate=\"\" method=\"post\" action=\"\"><fieldset><div class=\"row\"><div class=\"form-group col-xs-12 col-sm-6 col-md-4 col-lg-3\"><label for=\"id\" class=\"control-label col-xs-4\">Id</label><div class=\"col-xs-8\"><input type=\"hidden\" class=\"form-control operate\" name=\"id-operate\" data-name=\"id\" value=\"=\" readonly=\"\" style=\"\"><input type=\"text\" class=\"form-control\" name=\"id\" value=\"\" placeholder=\"Id\" id=\"id\" data-index=\"1\" style=\"\"></div></div><div class=\"form-group col-xs-12 col-sm-6 col-md-4 col-lg-3\"><label for=\"username\" class=\"control-label col-xs-4\">账号</label><div class=\"col-xs-8\"><input type=\"hidden\" class=\"form-control operate\" name=\"username-operate\" data-name=\"username\" value=\"LIKE\" readonly=\"\" style=\"\"><input type=\"text\" class=\"form-control\" name=\"username\" value=\"\" placeholder=\"账号\" id=\"username\" data-index=\"3\" style=\"\"></div></div><div class=\"form-group col-xs-12 col-sm-6 col-md-4 col-lg-3\"><label for=\"parent_id\" class=\"control-label col-xs-4\">上级Id</label><div class=\"col-xs-8\"><input type=\"hidden\" class=\"form-control operate\" name=\"parent_id-operate\" data-name=\"parent_id\" value=\"=\" readonly=\"\" style=\"\"><input type=\"text\" class=\"form-control\" name=\"parent_id\" value=\"\" placeholder=\"上级Id\" id=\"parent_id\" data-index=\"4\" style=\"\"></div></div><div class=\"form-group col-xs-12 col-sm-6 col-md-4 col-lg-3\"><label for=\"game.name\" class=\"control-label col-xs-4\">游戏名称</label><div class=\"col-xs-8\"><input type=\"hidden\" class=\"form-control operate\" name=\"game.name-operate\" data-name=\"game.name\" value=\"=\" readonly=\"\" style=\"\"><div class=\"sp_container\" style=\"width: 100%;\"><input type=\"text\" class=\"form-control selectpage sp_input\" name=\"game.name_text\" value=\"\" placeholder=\"游戏名称\" id=\"game.name_text\" data-index=\"7\" autocomplete=\"off\" novalidate=\"novalidate\" style=\"\"><input type=\"hidden\" class=\"sp_hidden\" name=\"game.name\" id=\"game.name\" value=\"\" data-rule=\"\" style=\"\"><div class=\"sp_button\" title=\"关闭 (Tab键)\"><span class=\"sp_caret\"></span></div></div></div></div><div class=\"form-group col-xs-12 col-sm-6 col-md-4 col-lg-3\"><label for=\"vip\" class=\"control-label col-xs-4\">VIP</label><div class=\"col-xs-8\"><input type=\"hidden\" class=\"form-control operate\" name=\"vip-operate\" data-name=\"vip\" value=\"=\" readonly=\"\" style=\"\"><select class=\"form-control\" name=\"vip\"><option value=\"\">选择</option><option value=\"0\">V0</option><option value=\"1\">V1</option><option value=\"2\">V2</option></select></div></div><div class=\"form-group col-xs-12 col-sm-6 col-md-4 col-lg-3\"><label for=\"agent.name\" class=\"control-label col-xs-4\">代理商名称</label><div class=\"col-xs-8\"><input type=\"hidden\" class=\"form-control operate\" name=\"agent.name-operate\" data-name=\"agent.name\" value=\"LIKE\" readonly=\"\" style=\"\"><div class=\"sp_container\" style=\"width: 100%;\"><input type=\"text\" class=\"form-control selectpage sp_input\" name=\"agent.name_text\" value=\"\" placeholder=\"代理商名称\" id=\"agent.name_text\" data-index=\"10\" autocomplete=\"off\" novalidate=\"novalidate\" style=\"\"><input type=\"hidden\" class=\"sp_hidden\" name=\"agent.name\" id=\"agent.name\" value=\"\" data-rule=\"\" style=\"\"><div class=\"sp_button\" title=\"关闭 (Tab键)\"><span class=\"sp_caret\"></span></div></div></div></div><div class=\"form-group col-xs-12 col-sm-6 col-md-4 col-lg-3\"><label for=\"name\" class=\"control-label col-xs-4\">昵称</label><div class=\"col-xs-8\"><input type=\"hidden\" class=\"form-control operate\" name=\"name-operate\" data-name=\"name\" value=\"LIKE\" readonly=\"\" style=\"\"><input type=\"text\" class=\"form-control\" name=\"name\" value=\"\" placeholder=\"昵称\" id=\"name\" data-index=\"11\" style=\"\"></div></div><div class=\"form-group col-xs-12 col-sm-6 col-md-4 col-lg-3\"><label for=\"status\" class=\"control-label col-xs-4\">状态</label><div class=\"col-xs-8\"><input type=\"hidden\" class=\"form-control operate\" name=\"status-operate\" data-name=\"status\" value=\"=\" readonly=\"\" style=\"\"><select class=\"form-control\" name=\"status\"><option value=\"\">选择</option><option value=\"0\">禁用</option><option value=\"1\">启用</option></select></div></div><div class=\"form-group col-xs-12 col-sm-6 col-md-4 col-lg-3\"><label for=\"ip_check\" class=\"control-label col-xs-4\">注册IP</label><div class=\"col-xs-8\"><input type=\"hidden\" class=\"form-control operate\" name=\"ip_check-operate\" data-name=\"ip_check\" value=\"=\" readonly=\"\" style=\"\"><input type=\"text\" class=\"form-control\" name=\"ip_check\" value=\"\" placeholder=\"注册IP\" id=\"ip_check\" data-index=\"23\" style=\"\"></div></div><div class=\"form-group col-xs-12 col-sm-6 col-md-4 col-lg-3\"><label for=\"create_time\" class=\"control-label col-xs-4\">创建时间</label><div class=\"col-xs-8\"><input type=\"hidden\" class=\"form-control operate\" name=\"create_time-operate\" data-name=\"create_time\" value=\"RANGE\" readonly=\"\" style=\"\"><input type=\"text\" class=\"form-control datetimerange\" name=\"create_time\" value=\"\" placeholder=\"创建时间\" id=\"create_time\" data-index=\"27\" style=\"\"></div></div><div class=\"form-group col-xs-12 col-sm-6 col-md-4 col-lg-3\"><div class=\"col-sm-8 col-xs-offset-4\"><button type=\"submit\" class=\"btn btn-success\" formnovalidate=\"\">提交</button> <button type=\"reset\" class=\"btn btn-default\">重置</button> </div></div></div></fieldset></form>",
+    "controls": [
+      {
+        "tag": "INPUT",
+        "name": "id-operate",
+        "cls": "form-control operate",
+        "placeholder": "",
+        "attrs": {
+          "type": "hidden",
+          "class": "form-control operate",
+          "name": "id-operate",
+          "data-name": "id",
+          "value": "=",
+          "readonly": "",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "id",
+        "cls": "form-control",
+        "placeholder": "Id",
+        "attrs": {
+          "type": "text",
+          "class": "form-control",
+          "name": "id",
+          "value": "",
+          "placeholder": "Id",
+          "id": "id",
+          "data-index": "1",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "username-operate",
+        "cls": "form-control operate",
+        "placeholder": "",
+        "attrs": {
+          "type": "hidden",
+          "class": "form-control operate",
+          "name": "username-operate",
+          "data-name": "username",
+          "value": "LIKE",
+          "readonly": "",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "username",
+        "cls": "form-control",
+        "placeholder": "账号",
+        "attrs": {
+          "type": "text",
+          "class": "form-control",
+          "name": "username",
+          "value": "",
+          "placeholder": "账号",
+          "id": "username",
+          "data-index": "3",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "parent_id-operate",
+        "cls": "form-control operate",
+        "placeholder": "",
+        "attrs": {
+          "type": "hidden",
+          "class": "form-control operate",
+          "name": "parent_id-operate",
+          "data-name": "parent_id",
+          "value": "=",
+          "readonly": "",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "parent_id",
+        "cls": "form-control",
+        "placeholder": "上级Id",
+        "attrs": {
+          "type": "text",
+          "class": "form-control",
+          "name": "parent_id",
+          "value": "",
+          "placeholder": "上级Id",
+          "id": "parent_id",
+          "data-index": "4",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "game.name-operate",
+        "cls": "form-control operate",
+        "placeholder": "",
+        "attrs": {
+          "type": "hidden",
+          "class": "form-control operate",
+          "name": "game.name-operate",
+          "data-name": "game.name",
+          "value": "=",
+          "readonly": "",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "game.name_text",
+        "cls": "form-control selectpage sp_input",
+        "placeholder": "游戏名称",
+        "attrs": {
+          "type": "text",
+          "class": "form-control selectpage sp_input",
+          "name": "game.name_text",
+          "value": "",
+          "placeholder": "游戏名称",
+          "id": "game.name_text",
+          "data-index": "7",
+          "autocomplete": "off",
+          "novalidate": "novalidate",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "game.name",
+        "cls": "sp_hidden",
+        "placeholder": "",
+        "attrs": {
+          "type": "hidden",
+          "class": "sp_hidden",
+          "name": "game.name",
+          "id": "game.name",
+          "value": "",
+          "data-rule": "",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "vip-operate",
+        "cls": "form-control operate",
+        "placeholder": "",
+        "attrs": {
+          "type": "hidden",
+          "class": "form-control operate",
+          "name": "vip-operate",
+          "data-name": "vip",
+          "value": "=",
+          "readonly": "",
+          "style": ""
+        }
+      },
+      {
+        "tag": "SELECT",
+        "name": "vip",
+        "cls": "form-control",
+        "placeholder": null,
+        "attrs": {
+          "class": "form-control",
+          "name": "vip"
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "agent.name-operate",
+        "cls": "form-control operate",
+        "placeholder": "",
+        "attrs": {
+          "type": "hidden",
+          "class": "form-control operate",
+          "name": "agent.name-operate",
+          "data-name": "agent.name",
+          "value": "LIKE",
+          "readonly": "",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "agent.name_text",
+        "cls": "form-control selectpage sp_input",
+        "placeholder": "代理商名称",
+        "attrs": {
+          "type": "text",
+          "class": "form-control selectpage sp_input",
+          "name": "agent.name_text",
+          "value": "",
+          "placeholder": "代理商名称",
+          "id": "agent.name_text",
+          "data-index": "10",
+          "autocomplete": "off",
+          "novalidate": "novalidate",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "agent.name",
+        "cls": "sp_hidden",
+        "placeholder": "",
+        "attrs": {
+          "type": "hidden",
+          "class": "sp_hidden",
+          "name": "agent.name",
+          "id": "agent.name",
+          "value": "",
+          "data-rule": "",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "name-operate",
+        "cls": "form-control operate",
+        "placeholder": "",
+        "attrs": {
+          "type": "hidden",
+          "class": "form-control operate",
+          "name": "name-operate",
+          "data-name": "name",
+          "value": "LIKE",
+          "readonly": "",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "name",
+        "cls": "form-control",
+        "placeholder": "昵称",
+        "attrs": {
+          "type": "text",
+          "class": "form-control",
+          "name": "name",
+          "value": "",
+          "placeholder": "昵称",
+          "id": "name",
+          "data-index": "11",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "status-operate",
+        "cls": "form-control operate",
+        "placeholder": "",
+        "attrs": {
+          "type": "hidden",
+          "class": "form-control operate",
+          "name": "status-operate",
+          "data-name": "status",
+          "value": "=",
+          "readonly": "",
+          "style": ""
+        }
+      },
+      {
+        "tag": "SELECT",
+        "name": "status",
+        "cls": "form-control",
+        "placeholder": null,
+        "attrs": {
+          "class": "form-control",
+          "name": "status"
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "ip_check-operate",
+        "cls": "form-control operate",
+        "placeholder": "",
+        "attrs": {
+          "type": "hidden",
+          "class": "form-control operate",
+          "name": "ip_check-operate",
+          "data-name": "ip_check",
+          "value": "=",
+          "readonly": "",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "ip_check",
+        "cls": "form-control",
+        "placeholder": "注册IP",
+        "attrs": {
+          "type": "text",
+          "class": "form-control",
+          "name": "ip_check",
+          "value": "",
+          "placeholder": "注册IP",
+          "id": "ip_check",
+          "data-index": "23",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "create_time-operate",
+        "cls": "form-control operate",
+        "placeholder": "",
+        "attrs": {
+          "type": "hidden",
+          "class": "form-control operate",
+          "name": "create_time-operate",
+          "data-name": "create_time",
+          "value": "RANGE",
+          "readonly": "",
+          "style": ""
+        }
+      },
+      {
+        "tag": "INPUT",
+        "name": "create_time",
+        "cls": "form-control datetimerange",
+        "placeholder": "创建时间",
+        "attrs": {
+          "type": "text",
+          "class": "form-control datetimerange",
+          "name": "create_time",
+          "value": "",
+          "placeholder": "创建时间",
+          "id": "create_time",
+          "data-index": "27",
+          "style": ""
+        }
+      }
+    ]
+  }
+]

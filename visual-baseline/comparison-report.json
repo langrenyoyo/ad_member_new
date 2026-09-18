@@ -1,0 +1,100 @@
+[
+  {
+    "name": "login",
+    "status": "review",
+    "mean_rgb": 28.514,
+    "diff_ratio": 0.3235,
+    "diff": "diff-login.png"
+  },
+  {
+    "name": "dashboard",
+    "status": "review",
+    "mean_rgb": 32.645,
+    "diff_ratio": 0.3306,
+    "diff": "diff-dashboard.png"
+  },
+  {
+    "name": "members",
+    "status": "review",
+    "mean_rgb": 9.826,
+    "diff_ratio": 0.2408,
+    "diff": "diff-members.png"
+  },
+  {
+    "name": "agents",
+    "status": "review",
+    "mean_rgb": 7.966,
+    "diff_ratio": 0.1718,
+    "diff": "diff-agents.png"
+  },
+  {
+    "name": "games",
+    "status": "review",
+    "mean_rgb": 8.029,
+    "diff_ratio": 0.1702,
+    "diff": "diff-games.png"
+  },
+  {
+    "name": "ads",
+    "status": "pass",
+    "mean_rgb": 6.845,
+    "diff_ratio": 0.1212,
+    "diff": "diff-ads.png"
+  },
+  {
+    "name": "withdrawals",
+    "status": "pass",
+    "mean_rgb": 8.05,
+    "diff_ratio": 0.0968,
+    "diff": "diff-withdrawals.png"
+  },
+  {
+    "name": "subsidies",
+    "status": "pass",
+    "mean_rgb": 7.737,
+    "diff_ratio": 0.0927,
+    "diff": "diff-subsidies.png"
+  },
+  {
+    "name": "coin-logs",
+    "status": "pass",
+    "mean_rgb": 7.563,
+    "diff_ratio": 0.1282,
+    "diff": "diff-coin-logs.png"
+  },
+  {
+    "name": "risk-whitelist",
+    "status": "pass",
+    "mean_rgb": 6.681,
+    "diff_ratio": 0.0866,
+    "diff": "diff-risk-whitelist.png"
+  },
+  {
+    "name": "risk-history",
+    "status": "pass",
+    "mean_rgb": 7.785,
+    "diff_ratio": 0.1374,
+    "diff": "diff-risk-history.png"
+  },
+  {
+    "name": "risk-devices",
+    "status": "pass",
+    "mean_rgb": 6.641,
+    "diff_ratio": 0.0859,
+    "diff": "diff-risk-devices.png"
+  },
+  {
+    "name": "profile",
+    "status": "pass",
+    "mean_rgb": 9.633,
+    "diff_ratio": 0.1497,
+    "diff": "diff-profile.png"
+  },
+  {
+    "name": "book",
+    "status": "pass",
+    "mean_rgb": 6.113,
+    "diff_ratio": 0.0664,
+    "diff": "diff-book.png"
+  }
+]

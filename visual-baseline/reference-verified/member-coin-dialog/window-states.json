@@ -1,0 +1,27 @@
+{
+  "minimized": {
+    "x": 0,
+    "y": 1035,
+    "width": 180,
+    "height": 45
+  },
+  "restored": {
+    "x": 660,
+    "y": 300,
+    "width": 800,
+    "height": 600
+  },
+  "maximized": {
+    "x": 0,
+    "y": 0,
+    "width": 1920,
+    "height": 1080
+  },
+  "minimize_visible_when_maximized": false,
+  "restored_from_maximized": {
+    "x": 660,
+    "y": 300,
+    "width": 800,
+    "height": 600
+  }
+}

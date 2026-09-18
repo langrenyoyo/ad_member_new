@@ -1,0 +1,502 @@
+[
+  {
+    "field": "pre_ecpm",
+    "direction": "desc",
+    "reference": {
+      "sort": [
+        "pre_ecpm"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"is_fu\":\"0\",\"create_time\":\"2026-09-17 00:00:00 - 2026-09-17 23:59:59\"}"
+      ],
+      "op": [
+        "{\"is_fu\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789660750832"
+      ]
+    },
+    "local": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "pre_ecpm"
+      ],
+      "order": [
+        "desc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  },
+  {
+    "field": "pre_ecpm",
+    "direction": "asc",
+    "reference": {
+      "sort": [
+        "pre_ecpm"
+      ],
+      "order": [
+        "asc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"is_fu\":\"0\",\"create_time\":\"2026-09-17 00:00:00 - 2026-09-17 23:59:59\"}"
+      ],
+      "op": [
+        "{\"is_fu\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789660750833"
+      ]
+    },
+    "local": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "pre_ecpm"
+      ],
+      "order": [
+        "asc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  },
+  {
+    "field": "estimate_income",
+    "direction": "desc",
+    "reference": {
+      "sort": [
+        "estimate_income"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"is_fu\":\"0\",\"create_time\":\"2026-09-17 00:00:00 - 2026-09-17 23:59:59\"}"
+      ],
+      "op": [
+        "{\"is_fu\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789660750834"
+      ]
+    },
+    "local": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "estimate_income"
+      ],
+      "order": [
+        "desc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  },
+  {
+    "field": "estimate_income",
+    "direction": "asc",
+    "reference": {
+      "sort": [
+        "estimate_income"
+      ],
+      "order": [
+        "asc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"is_fu\":\"0\",\"create_time\":\"2026-09-17 00:00:00 - 2026-09-17 23:59:59\"}"
+      ],
+      "op": [
+        "{\"is_fu\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789660750835"
+      ]
+    },
+    "local": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "estimate_income"
+      ],
+      "order": [
+        "asc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  },
+  {
+    "field": "ad_network_platform_name",
+    "direction": "desc",
+    "reference": {
+      "sort": [
+        "ad_network_platform_name"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"is_fu\":\"0\",\"create_time\":\"2026-09-17 00:00:00 - 2026-09-17 23:59:59\"}"
+      ],
+      "op": [
+        "{\"is_fu\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789660750836"
+      ]
+    },
+    "local": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "ad_network_platform_name"
+      ],
+      "order": [
+        "desc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  },
+  {
+    "field": "ad_network_platform_name",
+    "direction": "asc",
+    "reference": {
+      "sort": [
+        "ad_network_platform_name"
+      ],
+      "order": [
+        "asc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"is_fu\":\"0\",\"create_time\":\"2026-09-17 00:00:00 - 2026-09-17 23:59:59\"}"
+      ],
+      "op": [
+        "{\"is_fu\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789660750837"
+      ]
+    },
+    "local": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "ad_network_platform_name"
+      ],
+      "order": [
+        "asc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  },
+  {
+    "field": "create_time",
+    "direction": "desc",
+    "reference": {
+      "sort": [
+        "create_time"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"is_fu\":\"0\",\"create_time\":\"2026-09-17 00:00:00 - 2026-09-17 23:59:59\"}"
+      ],
+      "op": [
+        "{\"is_fu\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789660750838"
+      ]
+    },
+    "local": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "create_time"
+      ],
+      "order": [
+        "desc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  },
+  {
+    "field": "create_time",
+    "direction": "asc",
+    "reference": {
+      "sort": [
+        "create_time"
+      ],
+      "order": [
+        "asc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"is_fu\":\"0\",\"create_time\":\"2026-09-17 00:00:00 - 2026-09-17 23:59:59\"}"
+      ],
+      "op": [
+        "{\"is_fu\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789660750839"
+      ]
+    },
+    "local": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "create_time"
+      ],
+      "order": [
+        "asc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  },
+  {
+    "field": "request_id",
+    "direction": "desc",
+    "reference": {
+      "sort": [
+        "request_id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"is_fu\":\"0\",\"create_time\":\"2026-09-17 00:00:00 - 2026-09-17 23:59:59\"}"
+      ],
+      "op": [
+        "{\"is_fu\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789660750840"
+      ]
+    },
+    "local": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "request_id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  },
+  {
+    "field": "request_id",
+    "direction": "asc",
+    "reference": {
+      "sort": [
+        "request_id"
+      ],
+      "order": [
+        "asc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"is_fu\":\"0\",\"create_time\":\"2026-09-17 00:00:00 - 2026-09-17 23:59:59\"}"
+      ],
+      "op": [
+        "{\"is_fu\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789660750841"
+      ]
+    },
+    "local": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "request_id"
+      ],
+      "order": [
+        "asc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  }
+]

@@ -1,0 +1,374 @@
+{
+  "lottery": {
+    "reference": {
+      "width": 1476,
+      "headers": [
+        {
+          "text": "Id",
+          "width": 69.28125
+        },
+        {
+          "text": "会员ID",
+          "width": 70.21875
+        },
+        {
+          "text": "用户账号",
+          "width": 85.828125
+        },
+        {
+          "text": "游戏名称",
+          "width": 120.4375
+        },
+        {
+          "text": "金币",
+          "width": 65.765625
+        },
+        {
+          "text": "ECPM",
+          "width": 68.5
+        },
+        {
+          "text": "类型",
+          "width": 77.046875
+        },
+        {
+          "text": "公网IP",
+          "width": 99.640625
+        },
+        {
+          "text": "内网",
+          "width": 60.296875
+        },
+        {
+          "text": "是否风控",
+          "width": 85.828125
+        },
+        {
+          "text": "白名单",
+          "width": 70.21875
+        },
+        {
+          "text": "状态",
+          "width": 72
+        },
+        {
+          "text": "抽奖时间",
+          "width": 179.46875
+        },
+        {
+          "text": "广告代码位",
+          "width": 101.4375
+        },
+        {
+          "text": "广告request_id",
+          "width": 133.5625
+        },
+        {
+          "text": "交易trans_id",
+          "width": 115.46875
+        }
+      ],
+      "rows": [
+        47,
+        47,
+        47
+      ]
+    },
+    "local": {
+      "width": 1476,
+      "headers": [
+        {
+          "text": "Id",
+          "width": 69.28125
+        },
+        {
+          "text": "会员ID",
+          "width": 70.21875
+        },
+        {
+          "text": "用户账号",
+          "width": 85.828125
+        },
+        {
+          "text": "游戏名称",
+          "width": 120.4375
+        },
+        {
+          "text": "金币",
+          "width": 65.765625
+        },
+        {
+          "text": "ECPM",
+          "width": 68.5
+        },
+        {
+          "text": "类型",
+          "width": 77.046875
+        },
+        {
+          "text": "公网IP",
+          "width": 99.640625
+        },
+        {
+          "text": "内网",
+          "width": 60.296875
+        },
+        {
+          "text": "是否风控",
+          "width": 85.828125
+        },
+        {
+          "text": "白名单",
+          "width": 70.21875
+        },
+        {
+          "text": "状态",
+          "width": 72
+        },
+        {
+          "text": "抽奖时间",
+          "width": 179.46875
+        },
+        {
+          "text": "广告代码位",
+          "width": 101.4375
+        },
+        {
+          "text": "广告request_id",
+          "width": 133.5625
+        },
+        {
+          "text": "交易trans_id",
+          "width": 115.46875
+        }
+      ],
+      "rows": [
+        47,
+        47,
+        47
+      ]
+    }
+  },
+  "risk": {
+    "reference": {
+      "width": 1476,
+      "headers": [
+        {
+          "text": "Id",
+          "width": 147.671875
+        },
+        {
+          "text": "用户账号",
+          "width": 182.9375
+        },
+        {
+          "text": "游戏名称",
+          "width": 256.703125
+        },
+        {
+          "text": "ip",
+          "width": 212.375
+        },
+        {
+          "text": "内网",
+          "width": 128.515625
+        },
+        {
+          "text": "标签",
+          "width": 164.234375
+        },
+        {
+          "text": "创建时间",
+          "width": 382.5625
+        }
+      ],
+      "rows": [
+        47,
+        47,
+        47
+      ]
+    },
+    "local": {
+      "width": 1476,
+      "headers": [
+        {
+          "text": "Id",
+          "width": 147.671875
+        },
+        {
+          "text": "用户账号",
+          "width": 182.9375
+        },
+        {
+          "text": "游戏名称",
+          "width": 256.703125
+        },
+        {
+          "text": "ip",
+          "width": 212.375
+        },
+        {
+          "text": "内网",
+          "width": 128.515625
+        },
+        {
+          "text": "标签",
+          "width": 164.234375
+        },
+        {
+          "text": "创建时间",
+          "width": 382.5625
+        }
+      ],
+      "rows": [
+        47,
+        47,
+        47
+      ]
+    }
+  },
+  "coins": {
+    "reference": {
+      "width": 1476,
+      "headers": [
+        {
+          "text": "Id",
+          "width": 97.375
+        },
+        {
+          "text": "会员ID",
+          "width": 98.703125
+        },
+        {
+          "text": "用户账号",
+          "width": 120.640625
+        },
+        {
+          "text": "游戏名称",
+          "width": 169.28125
+        },
+        {
+          "text": "金币变动前",
+          "width": 158.25
+        },
+        {
+          "text": "金币变动",
+          "width": 136.3125
+        },
+        {
+          "text": "金币变动后",
+          "width": 158.25
+        },
+        {
+          "text": "类型",
+          "width": 101.203125
+        },
+        {
+          "text": "备注",
+          "width": 182.65625
+        },
+        {
+          "text": "创建时间",
+          "width": 252.328125
+        }
+      ],
+      "rows": [
+        47,
+        47,
+        47
+      ]
+    },
+    "local": {
+      "width": 1476,
+      "headers": [
+        {
+          "text": "Id",
+          "width": 97.375
+        },
+        {
+          "text": "会员ID",
+          "width": 98.703125
+        },
+        {
+          "text": "用户账号",
+          "width": 120.640625
+        },
+        {
+          "text": "游戏名称",
+          "width": 169.28125
+        },
+        {
+          "text": "金币变动前",
+          "width": 158.25
+        },
+        {
+          "text": "金币变动",
+          "width": 136.3125
+        },
+        {
+          "text": "金币变动后",
+          "width": 158.25
+        },
+        {
+          "text": "类型",
+          "width": 101.203125
+        },
+        {
+          "text": "备注",
+          "width": 182.65625
+        },
+        {
+          "text": "创建时间",
+          "width": 252.328125
+        }
+      ],
+      "rows": [
+        47,
+        47,
+        47
+      ]
+    },
+    "summary": {
+      "html": "<span class=\"extend\">\n\t\t\t\t\t\t\t金币变动：<span id=\"coin_toolbar4\">6</span>\n\t\t\t\t\t\t</span>",
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+    }
+  },
+  "app": {
+    "reference": {
+      "x": 383,
+      "y": 171,
+      "width": 770,
+      "height": 148
+    },
+    "local": {
+      "x": 575,
+      "y": 300,
+      "width": 770,
+      "height": 148
+    },
+    "referenceStyles": [
+      {
+        "selector": "body",
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box",
+        "lineHeight": "22.001px"
+      },
+      {
+        "selector": "th",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "lineHeight": "20px"
+      },
+      {
+        "selector": "td",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "lineHeight": "20px"
+      }
+    ],
+    "note": "Synthetic cell text on both sides; this comparison does not establish duration semantics."
+  }
+}

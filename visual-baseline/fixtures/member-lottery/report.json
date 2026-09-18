@@ -1,0 +1,104 @@
+{
+  "changed_pixel_ratio": 0.008122916666666667,
+  "mean_rgb": 0.2005,
+  "threshold": 10,
+  "viewport": [
+    1920,
+    1080
+  ],
+  "crop_size": [
+    800,
+    600
+  ],
+  "scope": "Synthetic lottery tab only; no reference save or server-side business validation",
+  "geometry": {
+    "reference": {
+      "raffle_open": {
+        "x": 158.328125,
+        "y": 149,
+        "width": 48,
+        "height": 22
+      },
+      "raffle_num": {
+        "x": 158.328125,
+        "y": 208,
+        "width": 445.328125,
+        "height": 33
+      },
+      "star_countdown": {
+        "x": 158.328125,
+        "y": 274,
+        "width": 47.328125,
+        "height": 33
+      },
+      "over_countdown": {
+        "x": 321.328125,
+        "y": 274,
+        "width": 47.328125,
+        "height": 33
+      },
+      "raffle_num2": {
+        "x": 158.328125,
+        "y": 322,
+        "width": 445.328125,
+        "height": 33
+      },
+      "star_countdown2": {
+        "x": 158.328125,
+        "y": 370,
+        "width": 47.328125,
+        "height": 33
+      },
+      "over_countdown2": {
+        "x": 321.328125,
+        "y": 370,
+        "width": 47.328125,
+        "height": 33
+      }
+    },
+    "local": {
+      "raffle_open": {
+        "x": 158.328125,
+        "y": 149,
+        "width": 48,
+        "height": 22
+      },
+      "raffle_num": {
+        "x": 158.328125,
+        "y": 208,
+        "width": 445.328125,
+        "height": 33
+      },
+      "star_countdown": {
+        "x": 158.328125,
+        "y": 274,
+        "width": 47.328125,
+        "height": 33
+      },
+      "over_countdown": {
+        "x": 321.328125,
+        "y": 274,
+        "width": 47.328125,
+        "height": 33
+      },
+      "raffle_num2": {
+        "x": 158.328125,
+        "y": 322,
+        "width": 445.328125,
+        "height": 33
+      },
+      "star_countdown2": {
+        "x": 158.328125,
+        "y": 370,
+        "width": 47.328125,
+        "height": 33
+      },
+      "over_countdown2": {
+        "x": 321.328125,
+        "y": 370,
+        "width": 47.328125,
+        "height": 33
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "normal": {
+    "x": 560,
+    "y": 240,
+    "width": 800,
+    "height": 600
+  },
+  "maximized": {
+    "x": 0,
+    "y": 0,
+    "width": 1920,
+    "height": 1080
+  },
+  "restored": {
+    "x": 560,
+    "y": 240,
+    "width": 800,
+    "height": 600
+  },
+  "minimized": {
+    "x": 0,
+    "y": 1035,
+    "width": 180,
+    "height": 45
+  },
+  "minimized_buttons": [
+    {
+      "cls": "layui-layer-min",
+      "visible": false
+    },
+    {
+      "cls": "layui-layer-ico layui-layer-max layui-layer-maxmin",
+      "visible": true
+    },
+    {
+      "cls": "layui-layer-ico layui-layer-close layui-layer-close1",
+      "visible": true
+    }
+  ],
+  "restored_from_minimized": {
+    "x": 560,
+    "y": 240,
+    "width": 800,
+    "height": 600
+  }
+}

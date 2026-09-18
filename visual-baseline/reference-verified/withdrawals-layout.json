@@ -1,0 +1,388 @@
+{
+  "buttons": [
+    {
+      "title": "普通搜索",
+      "text": "",
+      "class": "btn btn-default"
+    },
+    {
+      "title": "切换",
+      "text": "",
+      "class": "btn btn-default"
+    },
+    {
+      "title": "",
+      "text": "",
+      "class": "btn btn-default dropdown-toggle"
+    },
+    {
+      "title": "导出数据",
+      "text": "",
+      "class": "btn btn-default dropdown-toggle"
+    }
+  ],
+  "form": [
+    {
+      "text": "会员ID",
+      "rect": {
+        "x": 15,
+        "y": 87,
+        "width": 415,
+        "height": 33,
+        "top": 87,
+        "right": 430,
+        "bottom": 120,
+        "left": 15
+      },
+      "input": {
+        "x": 173.328125,
+        "y": 87,
+        "width": 226.65625,
+        "height": 33,
+        "top": 87,
+        "right": 399.984375,
+        "bottom": 120,
+        "left": 173.328125
+      }
+    },
+    {
+      "text": "账号",
+      "rect": {
+        "x": 430,
+        "y": 87,
+        "width": 415,
+        "height": 33,
+        "top": 87,
+        "right": 845,
+        "bottom": 120,
+        "left": 430
+      },
+      "input": {
+        "x": 588.328125,
+        "y": 87,
+        "width": 226.65625,
+        "height": 33,
+        "top": 87,
+        "right": 814.984375,
+        "bottom": 120,
+        "left": 588.328125
+      }
+    },
+    {
+      "text": "VIP",
+      "rect": {
+        "x": 845,
+        "y": 87,
+        "width": 415,
+        "height": 33,
+        "top": 87,
+        "right": 1260,
+        "bottom": 120,
+        "left": 845
+      },
+      "input": {
+        "x": 1003.328125,
+        "y": 87,
+        "width": 226.65625,
+        "height": 33,
+        "top": 87,
+        "right": 1229.984375,
+        "bottom": 120,
+        "left": 1003.328125
+      }
+    },
+    {
+      "text": "上级Id",
+      "rect": {
+        "x": 1260,
+        "y": 87,
+        "width": 415,
+        "height": 33,
+        "top": 87,
+        "right": 1675,
+        "bottom": 120,
+        "left": 1260
+      },
+      "input": {
+        "x": 1418.328125,
+        "y": 87,
+        "width": 226.65625,
+        "height": 33,
+        "top": 87,
+        "right": 1644.984375,
+        "bottom": 120,
+        "left": 1418.328125
+      }
+    },
+    {
+      "text": "游戏名称",
+      "rect": {
+        "x": 15,
+        "y": 135,
+        "width": 415,
+        "height": 33,
+        "top": 135,
+        "right": 430,
+        "bottom": 168,
+        "left": 15
+      },
+      "input": {
+        "x": 173.328125,
+        "y": 135,
+        "width": 226.65625,
+        "height": 33,
+        "top": 135,
+        "right": 399.984375,
+        "bottom": 168,
+        "left": 173.328125
+      }
+    },
+    {
+      "text": "代理商名称",
+      "rect": {
+        "x": 430,
+        "y": 135,
+        "width": 415,
+        "height": 33,
+        "top": 135,
+        "right": 845,
+        "bottom": 168,
+        "left": 430
+      },
+      "input": {
+        "x": 588.328125,
+        "y": 135,
+        "width": 226.65625,
+        "height": 33,
+        "top": 135,
+        "right": 814.984375,
+        "bottom": 168,
+        "left": 588.328125
+      }
+    },
+    {
+      "text": "昵称",
+      "rect": {
+        "x": 845,
+        "y": 135,
+        "width": 415,
+        "height": 33,
+        "top": 135,
+        "right": 1260,
+        "bottom": 168,
+        "left": 845
+      },
+      "input": {
+        "x": 1003.328125,
+        "y": 135,
+        "width": 226.65625,
+        "height": 33,
+        "top": 135,
+        "right": 1229.984375,
+        "bottom": 168,
+        "left": 1003.328125
+      }
+    },
+    {
+      "text": "商品名称",
+      "rect": {
+        "x": 1260,
+        "y": 135,
+        "width": 415,
+        "height": 33,
+        "top": 135,
+        "right": 1675,
+        "bottom": 168,
+        "left": 1260
+      },
+      "input": {
+        "x": 1418.328125,
+        "y": 135,
+        "width": 226.65625,
+        "height": 33,
+        "top": 135,
+        "right": 1644.984375,
+        "bottom": 168,
+        "left": 1418.328125
+      }
+    },
+    {
+      "text": "收件人",
+      "rect": {
+        "x": 15,
+        "y": 183,
+        "width": 415,
+        "height": 33,
+        "top": 183,
+        "right": 430,
+        "bottom": 216,
+        "left": 15
+      },
+      "input": {
+        "x": 173.328125,
+        "y": 183,
+        "width": 226.65625,
+        "height": 33,
+        "top": 183,
+        "right": 399.984375,
+        "bottom": 216,
+        "left": 173.328125
+      }
+    },
+    {
+      "text": "联系方式",
+      "rect": {
+        "x": 430,
+        "y": 183,
+        "width": 415,
+        "height": 33,
+        "top": 183,
+        "right": 845,
+        "bottom": 216,
+        "left": 430
+      },
+      "input": {
+        "x": 588.328125,
+        "y": 183,
+        "width": 226.65625,
+        "height": 33,
+        "top": 183,
+        "right": 814.984375,
+        "bottom": 216,
+        "left": 588.328125
+      }
+    },
+    {
+      "text": "提现方式",
+      "rect": {
+        "x": 845,
+        "y": 183,
+        "width": 415,
+        "height": 33,
+        "top": 183,
+        "right": 1260,
+        "bottom": 216,
+        "left": 845
+      },
+      "input": {
+        "x": 1003.328125,
+        "y": 183,
+        "width": 226.65625,
+        "height": 33,
+        "top": 183,
+        "right": 1229.984375,
+        "bottom": 216,
+        "left": 1003.328125
+      }
+    },
+    {
+      "text": "状态",
+      "rect": {
+        "x": 1260,
+        "y": 183,
+        "width": 415,
+        "height": 33,
+        "top": 183,
+        "right": 1675,
+        "bottom": 216,
+        "left": 1260
+      },
+      "input": {
+        "x": 1418.328125,
+        "y": 183,
+        "width": 226.65625,
+        "height": 33,
+        "top": 183,
+        "right": 1644.984375,
+        "bottom": 216,
+        "left": 1418.328125
+      }
+    },
+    {
+      "text": "定时",
+      "rect": {
+        "x": 15,
+        "y": 231,
+        "width": 415,
+        "height": 33,
+        "top": 231,
+        "right": 430,
+        "bottom": 264,
+        "left": 15
+      },
+      "input": {
+        "x": 173.328125,
+        "y": 231,
+        "width": 226.65625,
+        "height": 33,
+        "top": 231,
+        "right": 399.984375,
+        "bottom": 264,
+        "left": 173.328125
+      }
+    },
+    {
+      "text": "申请时间",
+      "rect": {
+        "x": 430,
+        "y": 231,
+        "width": 415,
+        "height": 33,
+        "top": 231,
+        "right": 845,
+        "bottom": 264,
+        "left": 430
+      },
+      "input": {
+        "x": 588.328125,
+        "y": 231,
+        "width": 226.65625,
+        "height": 33,
+        "top": 231,
+        "right": 814.984375,
+        "bottom": 264,
+        "left": 588.328125
+      }
+    },
+    {
+      "text": "更新时间",
+      "rect": {
+        "x": 845,
+        "y": 231,
+        "width": 415,
+        "height": 33,
+        "top": 231,
+        "right": 1260,
+        "bottom": 264,
+        "left": 845
+      },
+      "input": {
+        "x": 1003.328125,
+        "y": 231,
+        "width": 226.65625,
+        "height": 33,
+        "top": 231,
+        "right": 1229.984375,
+        "bottom": 264,
+        "left": 1003.328125
+      }
+    },
+    {
+      "text": null,
+      "rect": {
+        "x": 1260,
+        "y": 231,
+        "width": 415,
+        "height": 32.5625,
+        "top": 231,
+        "right": 1675,
+        "bottom": 263.5625,
+        "left": 1260
+      },
+      "input": null
+    }
+  ],
+  "toggle_found": true,
+  "collapsed": true,
+  "restored": true
+}

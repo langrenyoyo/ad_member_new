@@ -1,0 +1,35 @@
+.subsidies-view .topbar{display:none}
+.subsidies-view .content{padding:15px}
+.subsidies-view .withdrawal-panel #reviewFilters>label{margin-bottom:0}
+.subsidies-view .withdrawal-tabs{padding-top:16px}
+.subsidies-view .withdrawal-panel{font:13px/1.42857143 "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;color:#000}
+.subsidies-view .withdrawal-toolbar{height:54px;margin:15px 0 0;padding:10px 0;gap:4px}
+.subsidies-view .ads-table:not(.review-card-view) th{height:41px;padding:8px 10px;background:white;color:#333;font-size:14px;line-height:24px;font-weight:700}
+.subsidies-view .ads-table:not(.review-card-view) td{height:47px;padding:8px 15px;font-size:14px;line-height:20px;color:#333}
+.subsidies-view .withdrawal-panel .subsidy-picture img{width:30px;height:30px;border-radius:0}
+.subsidies-view .withdrawal-panel .subsidy-picture{margin:0 2px}
+.subsidies-view .withdraw-approve,.subsidies-view .withdraw-reject{height:22px;padding:1px 5px;margin:0 2px;font-size:12px;line-height:18px}
+.subsidies-view .withdrawal-panel .pagination{padding:0;margin:10px 0 20px;min-height:24px;color:#000}
+.subsidies-view .withdrawal-toolbar .fa{font:normal 13px/1 FontAwesome}
+.subsidies-view .withdrawal-toolbar .fa-th:before{content:'\f00a'}
+.subsidies-view .withdrawal-toolbar .fa-download:before{content:'\f019'}
+.subsidies-view .withdrawal-toolbar .fa-search:before{content:'\f002'}
+.subsidies-view #reviewViewToggle:before{font:normal 13px FontAwesome;content:'\f022'}
+.subsidies-view #reviewRefresh{font-size:0}
+.subsidies-view #reviewRefresh:before{font:normal 13px FontAwesome;content:'\f021'}
+.subsidies-view .review-edit,.subsidies-view .review-delete{width:22px;height:22px;margin:0 2px;padding:1px 0;border:0;border-radius:2px;color:#fff;font-size:13px;line-height:20px;cursor:pointer}
+.subsidies-view .review-edit{background:#18bc9c}.subsidies-view .review-delete{background:#f05050}
+.subsidies-view .withdrawal-toolbar #subsidyEdit,.subsidies-view .withdrawal-toolbar #subsidyDelete{height:34px;border:0;border-radius:2px;color:#fff;cursor:pointer}
+.subsidies-view .withdrawal-toolbar #subsidyEdit{background:#18bc9c}.subsidies-view .withdrawal-toolbar #subsidyDelete{background:#f05050}
+.subsidies-view .withdrawal-toolbar #subsidyEdit:disabled,.subsidies-view .withdrawal-toolbar #subsidyDelete:disabled{opacity:.5;cursor:default}
+.subsidy-form-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 18px;padding:20px 22px 8px}
+.subsidy-form-field{display:flex;flex-direction:column;gap:6px;color:#555;font-size:12px}
+.subsidy-form-field input,.subsidy-form-field select,.subsidy-form-field textarea{width:100%;box-sizing:border-box;padding:7px 10px;border:1px solid #d2d6de;border-radius:3px;background:#fff;color:#444;font:13px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.subsidy-form-field input,.subsidy-form-field select{height:36px}.subsidy-form-field textarea{resize:vertical}.subsidy-form-full{grid-column:1/-1}
+.subsidy-form-loading{padding:42px 22px;color:#777;text-align:center}.subsidy-form-error{min-height:20px;padding:0 22px 10px;color:#c0392b;font-size:12px}
+#modal:has(.subsidy-form-fields) .modal{width:min(680px,100%);max-height:calc(100vh - 40px);border-radius:3px}
+#modal:has(.subsidy-form-fields) .modal-head{padding:14px 18px;background:#2c3e50;color:#fff}
+#modal:has(.subsidy-form-fields) .modal-head h2{font-size:15px;font-weight:400}
+#modal:has(.subsidy-form-fields) .modal-actions{justify-content:flex-start;padding:12px 22px;border-top:1px solid #e5e7eb}
+#modal:has(.subsidy-form-fields) #cancelModal{display:none}
+@media(max-width:640px){.subsidy-form-fields{grid-template-columns:1fr;padding:16px}.subsidy-form-full{grid-column:auto}#modal:has(.subsidy-form-fields) .modal-actions{padding-left:16px}}

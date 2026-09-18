@@ -1,0 +1,1155 @@
+{
+  "table": {
+    "sortName": "id",
+    "sortOrder": "desc",
+    "pageSize": 10,
+    "pageList": [
+      10,
+      15,
+      20,
+      25,
+      50,
+      "All"
+    ],
+    "exportDataType": "all",
+    "maintainSelected": false,
+    "columns": [
+      [
+        {
+          "field": 0,
+          "title": null,
+          "visible": true,
+          "sortable": false,
+          "operate": null,
+          "searchList": null
+        },
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "searchList": null
+        },
+        {
+          "field": "image_url",
+          "title": "头像",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "searchList": null
+        },
+        {
+          "field": "username",
+          "title": "账号",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "searchList": null
+        },
+        {
+          "field": "parent_id",
+          "title": "上级Id",
+          "visible": false,
+          "sortable": false,
+          "operate": "=",
+          "searchList": null
+        },
+        {
+          "field": "parent_username",
+          "title": "上级账号",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "searchList": null
+        },
+        {
+          "field": "parent_name",
+          "title": "上级昵称",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "searchList": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "searchList": null
+        },
+        {
+          "field": "agent.name",
+          "title": "代理商名称",
+          "visible": false,
+          "sortable": false,
+          "operate": "LIKE",
+          "searchList": null
+        },
+        {
+          "field": "name",
+          "title": "昵称",
+          "visible": false,
+          "sortable": false,
+          "operate": "LIKE",
+          "searchList": null
+        },
+        {
+          "field": "coin_user",
+          "title": "累计金币收益",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "searchList": null
+        },
+        {
+          "field": "coin_user_month",
+          "title": "本月金币收益",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "searchList": null
+        },
+        {
+          "field": "coin_user_day",
+          "title": "今日金币收益",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "searchList": null
+        },
+        {
+          "field": "coin",
+          "title": "可用金币",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "searchList": null
+        },
+        {
+          "field": "freeze_coin",
+          "title": "冻结金币",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "searchList": null
+        },
+        {
+          "field": "game_addiction_enable",
+          "title": "达标",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "searchList": {
+            "0": "否",
+            "1": "是"
+          }
+        },
+        {
+          "field": "game_addiction_time",
+          "title": "达标时间",
+          "visible": false,
+          "sortable": true,
+          "operate": false,
+          "searchList": null
+        },
+        {
+          "field": "exchange_enable",
+          "title": "兑换",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "searchList": {
+            "0": "否",
+            "1": "是"
+          }
+        },
+        {
+          "field": "is_white",
+          "title": "白名单",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "searchList": {
+            "0": "否",
+            "1": "是"
+          }
+        },
+        {
+          "field": "status",
+          "title": "状态",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "searchList": {
+            "0": "禁用",
+            "1": "启用"
+          }
+        },
+        {
+          "field": "last_login_device_id",
+          "title": "最后登陆设备号",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "searchList": null
+        },
+        {
+          "field": "last_login_ip",
+          "title": "最后登陆IP",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "searchList": null
+        },
+        {
+          "field": "last_login_time",
+          "title": "最后登陆时间",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "searchList": null
+        },
+        {
+          "field": "create_time",
+          "title": "创建时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "searchList": null
+        },
+        {
+          "field": "operate",
+          "title": "操作",
+          "visible": true,
+          "sortable": false,
+          "operate": null,
+          "searchList": null
+        }
+      ]
+    ]
+  },
+  "permissions": {
+    "operateEdit": "1",
+    "operateDel": "",
+    "operateYige": "1",
+    "operateDuoge": "1",
+    "operateCoinedit": "1"
+  },
+  "toolbar": "\n                        <a href=\"javascript:;\" class=\"btn btn-primary btn-refresh\" title=\"刷新\"><i class=\"fa fa-refresh\"></i> </a>                        <div class=\"dropdown btn-group hide\">\n                            <a class=\"btn btn-primary btn-more dropdown-toggle btn-disabled disabled\" data-toggle=\"dropdown\"><i class=\"fa fa-cog\"></i> 更多</a>\n                            <ul class=\"dropdown-menu text-left\" role=\"menu\">\n                                <li><a class=\"btn btn-link btn-multi btn-disabled disabled\" href=\"javascript:;\" data-params=\"status=1\"><i class=\"fa fa-eye\"></i> 启用</a></li>\n                                <li><a class=\"btn btn-link btn-multi btn-disabled disabled\" href=\"javascript:;\" data-params=\"status=0\"><i class=\"fa fa-eye-slash\"></i> 禁用</a></li>\n                            </ul>\n                        </div>\n\t\t\t\t\t\t<a class=\"btn btn-info btn-coinclear dropdown-toggle btn-disabled disabled hide\"><i class=\"fa fa-money\"></i> 清空金币</a>\n                    <a href=\"javascript:\" class=\"btn btn-warning-light btn-selected-tips hide\" data-animation=\"false\" data-toggle=\"tooltip\" data-title=\"点击取消全部\"><i class=\"fa fa-info-circle\"></i> 跨页选择模式，已选 <b>0</b> 项</a>",
+  "filters": [
+    {
+      "name": "username",
+      "value": ""
+    },
+    {
+      "name": "parent_id",
+      "value": ""
+    },
+    {
+      "name": "game.name_text",
+      "value": ""
+    },
+    {
+      "name": "agent.name_text",
+      "value": ""
+    },
+    {
+      "name": "name",
+      "value": ""
+    },
+    {
+      "name": "status",
+      "value": ""
+    },
+    {
+      "name": "create_time",
+      "value": ""
+    }
+  ],
+  "cells": [
+    {
+      "text": "",
+      "html": "<input data-index=\"0\" name=\"btSelectItem\" type=\"checkbox\">"
+    },
+    {
+      "text": "8100",
+      "html": "8100"
+    },
+    {
+      "text": "fixture 001",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 fixture 001\" data-field=\"username\" data-value=\"fixture 001\">fixture 001</a>"
+    },
+    {
+      "text": "fixture parent",
+      "html": "fixture parent"
+    },
+    {
+      "text": "fixture game 0",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 fixture game 0\" data-field=\"game.name\" data-value=\"fixture game 0\">fixture game 0</a>"
+    },
+    {
+      "text": "100",
+      "html": "100"
+    },
+    {
+      "text": "10",
+      "html": "10"
+    },
+    {
+      "text": "0",
+      "html": "0"
+    },
+    {
+      "text": "10.5",
+      "html": "10.5"
+    },
+    {
+      "text": "0",
+      "html": "0"
+    },
+    {
+      "text": "",
+      "html": "<a href=\"javascript:;\" data-toggle=\"tooltip\" title=\"点击切换\" class=\"btn-change \" data-index=\"0\" data-id=\"8100\" data-params=\"is_white=0\"><i class=\"fa fa-toggle-on text-success text-success  fa-2x\"></i></a>"
+    },
+    {
+      "text": "",
+      "html": "<a href=\"javascript:;\" data-toggle=\"tooltip\" title=\"点击切换\" class=\"btn-change \" data-index=\"0\" data-id=\"8100\" data-params=\"status=0\"><i class=\"fa fa-toggle-on text-success text-success  fa-2x\"></i></a>"
+    },
+    {
+      "text": "2026-09-18 08:00:00",
+      "html": "2026-09-18 08:00:00"
+    },
+    {
+      "text": " 单APP行为  多APP行为  修改金币 ",
+      "html": "<a href=\"/DmvTqXBpfF.php/users/yige/index/user_id/8100\" class=\"btn btn-success btn-xs btn-detail btn-dialog\" data-area=\"[&quot;80%&quot;,&quot;80%&quot;]\" title=\"单APP行为\" data-table-id=\"table\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"0\"><i class=\"\"></i> 单APP行为</a> <a href=\"/DmvTqXBpfF.php/users/duoge/index/user_id/8100\" class=\"btn btn-info btn-xs btn-detail btn-dialog\" data-area=\"[&quot;80%&quot;,&quot;80%&quot;]\" title=\"多APP行为\" data-table-id=\"table\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"1\"><i class=\"\"></i> 多APP行为</a> <a href=\"/DmvTqXBpfF.php/gameuser/coinedit/ids/8100\" class=\"btn btn-warning btn-xs btn-detail btn-dialog\" title=\"修改金币\" data-table-id=\"table\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"2\"><i class=\"\"></i> 修改金币</a> <a href=\"/DmvTqXBpfF.php/gameuser/edit/ids/8100\" class=\"btn btn-xs btn-success btn-editone\" data-toggle=\"tooltip\" title=\"编辑\" data-table-id=\"table\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"4\"><i class=\"fa fa-pencil\"></i></a>"
+    }
+  ],
+  "buttons": [
+    {
+      "text": "fixture 001",
+      "classes": "searchit",
+      "title": "点击搜索 fixture 001",
+      "url": "javascript:;"
+    },
+    {
+      "text": "fixture game 0",
+      "classes": "searchit",
+      "title": "点击搜索 fixture game 0",
+      "url": "javascript:;"
+    },
+    {
+      "text": "",
+      "classes": "btn-change ",
+      "title": "点击切换",
+      "url": "javascript:;"
+    },
+    {
+      "text": "",
+      "classes": "btn-change ",
+      "title": "点击切换",
+      "url": "javascript:;"
+    },
+    {
+      "text": " 单APP行为",
+      "classes": "btn btn-success btn-xs btn-detail btn-dialog",
+      "title": "单APP行为",
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/users/yige/index/user_id/8100"
+    },
+    {
+      "text": " 多APP行为",
+      "classes": "btn btn-info btn-xs btn-detail btn-dialog",
+      "title": "多APP行为",
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/users/duoge/index/user_id/8100"
+    },
+    {
+      "text": " 修改金币",
+      "classes": "btn btn-warning btn-xs btn-detail btn-dialog",
+      "title": "修改金币",
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/gameuser/coinedit/ids/8100"
+    },
+    {
+      "text": "",
+      "classes": "btn btn-xs btn-success btn-editone",
+      "title": "编辑",
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/gameuser/edit/ids/8100"
+    }
+  ],
+  "geometry": [
+    [
+      {
+        "width": 44,
+        "height": 41
+      },
+      {
+        "width": 68.125,
+        "height": 41
+      },
+      {
+        "width": 108.171875,
+        "height": 41
+      },
+      {
+        "width": 123.546875,
+        "height": 41
+      },
+      {
+        "width": 131.21875,
+        "height": 41
+      },
+      {
+        "width": 126.046875,
+        "height": 41
+      },
+      {
+        "width": 115.078125,
+        "height": 41
+      },
+      {
+        "width": 115.078125,
+        "height": 41
+      },
+      {
+        "width": 95.34375,
+        "height": 41
+      },
+      {
+        "width": 95.34375,
+        "height": 41
+      },
+      {
+        "width": 69.046875,
+        "height": 41
+      },
+      {
+        "width": 66.59375,
+        "height": 41
+      },
+      {
+        "width": 176.46875,
+        "height": 41
+      },
+      {
+        "width": 294.9375,
+        "height": 41
+      }
+    ],
+    [
+      {
+        "width": 44,
+        "height": 47
+      },
+      {
+        "width": 68.125,
+        "height": 47
+      },
+      {
+        "width": 108.171875,
+        "height": 47
+      },
+      {
+        "width": 123.546875,
+        "height": 47
+      },
+      {
+        "width": 131.21875,
+        "height": 47
+      },
+      {
+        "width": 126.046875,
+        "height": 47
+      },
+      {
+        "width": 115.078125,
+        "height": 47
+      },
+      {
+        "width": 115.078125,
+        "height": 47
+      },
+      {
+        "width": 95.34375,
+        "height": 47
+      },
+      {
+        "width": 95.34375,
+        "height": 47
+      },
+      {
+        "width": 69.046875,
+        "height": 47
+      },
+      {
+        "width": 66.59375,
+        "height": 47
+      },
+      {
+        "width": 176.46875,
+        "height": 47
+      },
+      {
+        "width": 294.9375,
+        "height": 47
+      }
+    ],
+    [
+      {
+        "width": 44,
+        "height": 47
+      },
+      {
+        "width": 68.125,
+        "height": 47
+      },
+      {
+        "width": 108.171875,
+        "height": 47
+      },
+      {
+        "width": 123.546875,
+        "height": 47
+      },
+      {
+        "width": 131.21875,
+        "height": 47
+      },
+      {
+        "width": 126.046875,
+        "height": 47
+      },
+      {
+        "width": 115.078125,
+        "height": 47
+      },
+      {
+        "width": 115.078125,
+        "height": 47
+      },
+      {
+        "width": 95.34375,
+        "height": 47
+      },
+      {
+        "width": 95.34375,
+        "height": 47
+      },
+      {
+        "width": 69.046875,
+        "height": 47
+      },
+      {
+        "width": 66.59375,
+        "height": 47
+      },
+      {
+        "width": 176.46875,
+        "height": 47
+      },
+      {
+        "width": 294.9375,
+        "height": 47
+      }
+    ],
+    [
+      {
+        "width": 44,
+        "height": 47
+      },
+      {
+        "width": 68.125,
+        "height": 47
+      },
+      {
+        "width": 108.171875,
+        "height": 47
+      },
+      {
+        "width": 123.546875,
+        "height": 47
+      },
+      {
+        "width": 131.21875,
+        "height": 47
+      },
+      {
+        "width": 126.046875,
+        "height": 47
+      },
+      {
+        "width": 115.078125,
+        "height": 47
+      },
+      {
+        "width": 115.078125,
+        "height": 47
+      },
+      {
+        "width": 95.34375,
+        "height": 47
+      },
+      {
+        "width": 95.34375,
+        "height": 47
+      },
+      {
+        "width": 69.046875,
+        "height": 47
+      },
+      {
+        "width": 66.59375,
+        "height": 47
+      },
+      {
+        "width": 176.46875,
+        "height": 47
+      },
+      {
+        "width": 294.9375,
+        "height": 47
+      }
+    ]
+  ],
+  "control_styles": [
+    {
+      "html": "<input data-index=\"0\" name=\"btSelectItem\" type=\"checkbox\" style=\"\">",
+      "font": "14px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "display": "inline-block",
+      "verticalAlign": "baseline",
+      "margin": "0px",
+      "padding": "0px",
+      "width": 13,
+      "height": 13
+    },
+    {
+      "html": "<a href=\"javascript:;\" data-toggle=\"tooltip\" title=\"点击切换\" class=\"btn-change \" data-index=\"0\" data-id=\"8100\" data-params=\"is_white=0\"><i class=\"fa fa-toggle-on text-success text-success  fa-2x\"></i></a>",
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(67, 151, 253)",
+      "display": "inline",
+      "verticalAlign": "baseline",
+      "margin": "0px",
+      "padding": "0px",
+      "width": 29.765625,
+      "height": 16
+    },
+    {
+      "html": "<i class=\"fa fa-toggle-on text-success text-success  fa-2x\"></i>",
+      "font": "26.04px / 26.04px FontAwesome",
+      "color": "rgb(24, 188, 156)",
+      "display": "inline-block",
+      "verticalAlign": "baseline",
+      "margin": "0px",
+      "padding": "0px",
+      "width": 29.765625,
+      "height": 26.046875
+    },
+    {
+      "html": "<a href=\"javascript:;\" data-toggle=\"tooltip\" title=\"点击切换\" class=\"btn-change \" data-index=\"0\" data-id=\"8100\" data-params=\"status=0\"><i class=\"fa fa-toggle-on text-success text-success  fa-2x\"></i></a>",
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(67, 151, 253)",
+      "display": "inline",
+      "verticalAlign": "baseline",
+      "margin": "0px",
+      "padding": "0px",
+      "width": 29.765625,
+      "height": 16
+    },
+    {
+      "html": "<i class=\"fa fa-toggle-on text-success text-success  fa-2x\"></i>",
+      "font": "26.04px / 26.04px FontAwesome",
+      "color": "rgb(24, 188, 156)",
+      "display": "inline-block",
+      "verticalAlign": "baseline",
+      "margin": "0px",
+      "padding": "0px",
+      "width": 29.765625,
+      "height": 26.046875
+    },
+    {
+      "html": "<a href=\"/DmvTqXBpfF.php/users/yige/index/user_id/8100\" class=\"btn btn-success btn-xs btn-detail btn-dialog\" data-area=\"[&quot;80%&quot;,&quot;80%&quot;]\" title=\"单APP行为\" data-table-id=\"table\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"0\"><i class=\"\"></i> 单APP行为</a>",
+      "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(255, 255, 255)",
+      "display": "inline-block",
+      "verticalAlign": "middle",
+      "margin": "0px",
+      "padding": "1px 5px",
+      "width": 72.015625,
+      "height": 22
+    },
+    {
+      "html": "<a href=\"/DmvTqXBpfF.php/users/duoge/index/user_id/8100\" class=\"btn btn-info btn-xs btn-detail btn-dialog\" data-area=\"[&quot;80%&quot;,&quot;80%&quot;]\" title=\"多APP行为\" data-table-id=\"table\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"1\"><i class=\"\"></i> 多APP行为</a>",
+      "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(255, 255, 255)",
+      "display": "inline-block",
+      "verticalAlign": "middle",
+      "margin": "0px",
+      "padding": "1px 5px",
+      "width": 72.015625,
+      "height": 22
+    },
+    {
+      "html": "<a href=\"/DmvTqXBpfF.php/gameuser/coinedit/ids/8100\" class=\"btn btn-warning btn-xs btn-detail btn-dialog\" title=\"修改金币\" data-table-id=\"table\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"2\"><i class=\"\"></i> 修改金币</a>",
+      "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(255, 255, 255)",
+      "display": "inline-block",
+      "verticalAlign": "middle",
+      "margin": "0px",
+      "padding": "1px 5px",
+      "width": 60,
+      "height": 22
+    },
+    {
+      "html": "<a href=\"/DmvTqXBpfF.php/gameuser/edit/ids/8100\" class=\"btn btn-xs btn-success btn-editone\" data-toggle=\"tooltip\" title=\"编辑\" data-table-id=\"table\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"4\"><i class=\"fa fa-pencil\"></i></a>",
+      "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(255, 255, 255)",
+      "display": "inline-block",
+      "verticalAlign": "middle",
+      "margin": "0px",
+      "padding": "1px 5px",
+      "width": 22.296875,
+      "height": 22
+    }
+  ],
+  "card_geometry": [
+    {
+      "html": "<input data-index=\"0\" name=\"btSelectItem\" type=\"checkbox\" style=\"\">",
+      "height": 20,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">Id</span><span class=\"value\">8100</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">账号</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 fixture 001\" data-field=\"username\" data-value=\"fixture 001\">fixture 001</a></span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">上级昵称</span><span class=\"value\">fixture parent</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: left; vertical-align: middle; \">游戏名称</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 fixture game 0\" data-field=\"game.name\" data-value=\"fixture game 0\">fixture game 0</a></span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">累计金币收益</span><span class=\"value\">100</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">本月金币收益</span><span class=\"value\">10</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">今日金币收益</span><span class=\"value\">0</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">可用金币</span><span class=\"value\">10.5</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">冻结金币</span><span class=\"value\">0</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">白名单</span><span class=\"value\"><a href=\"javascript:;\" data-toggle=\"tooltip\" title=\"点击切换\" class=\"btn-change \" data-index=\"0\" data-id=\"8100\" data-params=\"is_white=0\"><i class=\"fa fa-toggle-on text-success text-success  fa-2x\"></i></a></span>",
+      "height": 28.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">状态</span><span class=\"value\"><a href=\"javascript:;\" data-toggle=\"tooltip\" title=\"点击切换\" class=\"btn-change \" data-index=\"0\" data-id=\"8100\" data-params=\"status=0\"><i class=\"fa fa-toggle-on text-success text-success  fa-2x\"></i></a></span>",
+      "height": 28.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">创建时间</span><span class=\"value\">2026-09-18 08:00:00</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">操作</span><span class=\"value\"><a href=\"/DmvTqXBpfF.php/users/yige/index/user_id/8100\" class=\"btn btn-success btn-xs btn-detail btn-dialog\" data-area=\"[&quot;80%&quot;,&quot;80%&quot;]\" title=\"单APP行为\" data-table-id=\"table\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"0\"><i class=\"\"></i> 单APP行为</a> <a href=\"/DmvTqXBpfF.php/users/duoge/index/user_id/8100\" class=\"btn btn-info btn-xs btn-detail btn-dialog\" data-area=\"[&quot;80%&quot;,&quot;80%&quot;]\" title=\"多APP行为\" data-table-id=\"table\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"1\"><i class=\"\"></i> 多APP行为</a> <a href=\"/DmvTqXBpfF.php/gameuser/coinedit/ids/8100\" class=\"btn btn-warning btn-xs btn-detail btn-dialog\" title=\"修改金币\" data-table-id=\"table\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"2\"><i class=\"\"></i> 修改金币</a> <a href=\"/DmvTqXBpfF.php/gameuser/edit/ids/8100\" class=\"btn btn-xs btn-success btn-editone\" data-toggle=\"tooltip\" title=\"编辑\" data-table-id=\"table\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"4\"><i class=\"fa fa-pencil\"></i></a></span>",
+      "height": 22.375,
+      "lineHeight": "20px"
+    }
+  ],
+  "ip_search": {
+    "requests_added": 0,
+    "expanded": false,
+    "query": {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789686708221"
+      ]
+    },
+    "filters": [
+      {
+        "name": "username-operate",
+        "value": "LIKE",
+        "type": "hidden"
+      },
+      {
+        "name": "username",
+        "value": "",
+        "type": "text"
+      },
+      {
+        "name": "parent_id-operate",
+        "value": "=",
+        "type": "hidden"
+      },
+      {
+        "name": "parent_id",
+        "value": "",
+        "type": "text"
+      },
+      {
+        "name": "game.name-operate",
+        "value": "=",
+        "type": "hidden"
+      },
+      {
+        "name": "game.name_text",
+        "value": "",
+        "type": "text"
+      },
+      {
+        "name": "game.name",
+        "value": "",
+        "type": "hidden"
+      },
+      {
+        "name": "agent.name-operate",
+        "value": "LIKE",
+        "type": "hidden"
+      },
+      {
+        "name": "agent.name_text",
+        "value": "",
+        "type": "text"
+      },
+      {
+        "name": "agent.name",
+        "value": "",
+        "type": "hidden"
+      },
+      {
+        "name": "name-operate",
+        "value": "LIKE",
+        "type": "hidden"
+      },
+      {
+        "name": "name",
+        "value": "",
+        "type": "text"
+      },
+      {
+        "name": "status-operate",
+        "value": "=",
+        "type": "hidden"
+      },
+      {
+        "name": "create_time-operate",
+        "value": "RANGE",
+        "type": "hidden"
+      },
+      {
+        "name": "create_time",
+        "value": "",
+        "type": "text"
+      }
+    ]
+  },
+  "requests": [
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789686708209"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789686708210"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789686708211"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789686708212"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789686708213"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789686708214"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789686708215"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789686708216"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789686708217"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789686708218"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789686708219"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789686708220"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789686708221"
+      ]
+    }
+  ]
+}

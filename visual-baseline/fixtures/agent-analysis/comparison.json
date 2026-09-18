@@ -1,0 +1,714 @@
+{
+  "geometry": {
+    "reference": [
+      {
+        "tag": "DIV",
+        "id": "main",
+        "cls": "",
+        "x": 0,
+        "y": -314,
+        "width": 1690,
+        "height": 1344.125
+      },
+      {
+        "tag": "DIV",
+        "id": "",
+        "cls": "alert alert-success-light",
+        "x": 15,
+        "y": -299,
+        "width": 1660,
+        "height": 54
+      },
+      {
+        "tag": "DIV",
+        "id": "",
+        "cls": "alert alert-info-light",
+        "x": 15,
+        "y": -235,
+        "width": 1660,
+        "height": 64.5625
+      },
+      {
+        "tag": "DIV",
+        "id": "",
+        "cls": "commonsearch-table ",
+        "x": 30,
+        "y": -145.4375,
+        "width": 1630,
+        "height": 96
+      },
+      {
+        "tag": "DIV",
+        "id": "",
+        "cls": "fixed-table-toolbar",
+        "x": 30,
+        "y": -49.4375,
+        "width": 1630,
+        "height": 812.5625
+      },
+      {
+        "tag": "TABLE",
+        "id": "table",
+        "cls": "table table-striped table-bordered table-hover table-nowrap",
+        "x": 30,
+        "y": 763.125,
+        "width": 1630,
+        "height": 183
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 30.5,
+        "y": 763.625,
+        "width": 68.59375,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 99.09375,
+        "y": 763.625,
+        "width": 90.03125,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 189.125,
+        "y": 763.625,
+        "width": 124.375,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 313.5,
+        "y": 763.625,
+        "width": 124.390625,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 437.890625,
+        "y": 763.625,
+        "width": 126.90625,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 564.796875,
+        "y": 763.625,
+        "width": 115.875,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 680.671875,
+        "y": 763.625,
+        "width": 115.875,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 796.546875,
+        "y": 763.625,
+        "width": 96.015625,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 892.5625,
+        "y": 763.625,
+        "width": 96.015625,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 988.578125,
+        "y": 763.625,
+        "width": 59.6875,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 1048.265625,
+        "y": 763.625,
+        "width": 69.515625,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 1117.78125,
+        "y": 763.625,
+        "width": 67.0625,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 1184.84375,
+        "y": 763.625,
+        "width": 177.671875,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 1362.515625,
+        "y": 763.625,
+        "width": 296.984375,
+        "height": 41
+      }
+    ],
+    "local": [
+      {
+        "tag": "SECTION",
+        "id": "content",
+        "cls": "content",
+        "x": 230,
+        "y": -180,
+        "width": 1690,
+        "height": 1344.140625
+      },
+      {
+        "tag": "DIV",
+        "id": "agentAnalysisName",
+        "cls": "agent-dashboard-name",
+        "x": 245,
+        "y": -165,
+        "width": 1660,
+        "height": 54
+      },
+      {
+        "tag": "FORM",
+        "id": "agentAnalysisFilters",
+        "cls": "ads-filters",
+        "x": 245,
+        "y": -11.421875,
+        "width": 1660,
+        "height": 96
+      },
+      {
+        "tag": "DIV",
+        "id": "",
+        "cls": "agent-analysis-charts",
+        "x": 260,
+        "y": 84.578125,
+        "width": 1630,
+        "height": 812.5625
+      },
+      {
+        "tag": "TABLE",
+        "id": "",
+        "cls": "ads-table",
+        "x": 260,
+        "y": 897.140625,
+        "width": 1630,
+        "height": 183
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 260.5,
+        "y": 897.640625,
+        "width": 68.59375,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 329.09375,
+        "y": 897.640625,
+        "width": 90.03125,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 419.125,
+        "y": 897.640625,
+        "width": 124.375,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 543.5,
+        "y": 897.640625,
+        "width": 124.390625,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 667.890625,
+        "y": 897.640625,
+        "width": 126.90625,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 794.796875,
+        "y": 897.640625,
+        "width": 115.875,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 910.671875,
+        "y": 897.640625,
+        "width": 115.875,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 1026.546875,
+        "y": 897.640625,
+        "width": 96.015625,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 1122.5625,
+        "y": 897.640625,
+        "width": 96.015625,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 1218.578125,
+        "y": 897.640625,
+        "width": 59.6875,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 1278.265625,
+        "y": 897.640625,
+        "width": 69.515625,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 1347.78125,
+        "y": 897.640625,
+        "width": 67.0625,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 1414.84375,
+        "y": 897.640625,
+        "width": 177.671875,
+        "height": 41
+      },
+      {
+        "tag": "TH",
+        "id": "",
+        "cls": "",
+        "x": 1592.515625,
+        "y": 897.640625,
+        "width": 296.984375,
+        "height": 41
+      }
+    ]
+  },
+  "reference_cells": [
+    {
+      "html": "9003",
+      "controls": []
+    },
+    {
+      "html": "fixture-0",
+      "controls": []
+    },
+    {
+      "html": "Fixture game",
+      "controls": []
+    },
+    {
+      "html": "Fixture agent",
+      "controls": []
+    },
+    {
+      "html": "20",
+      "controls": []
+    },
+    {
+      "html": "10",
+      "controls": []
+    },
+    {
+      "html": "2",
+      "controls": []
+    },
+    {
+      "html": "10",
+      "controls": []
+    },
+    {
+      "html": "0",
+      "controls": []
+    },
+    {
+      "html": "<span class=\"label label-info\">\u5426</span>",
+      "controls": []
+    },
+    {
+      "html": "<a href=\"javascript:;\" data-toggle=\"tooltip\" title=\"\u70b9\u51fb\u5207\u6362\" class=\"btn-change \" data-index=\"0\" data-id=\"9003\" data-params=\"is_white=1\"><i class=\"fa fa-toggle-on text-success text-success fa-flip-horizontal text-gray fa-2x\"></i></a>",
+      "controls": [
+        {
+          "tag": "A",
+          "cls": "btn-change ",
+          "width": 29.765625,
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "margin": "0px",
+          "vertical": "baseline"
+        },
+        {
+          "tag": "I",
+          "cls": "fa fa-toggle-on text-success text-success fa-flip-horizontal text-gray fa-2x",
+          "width": 29.765625,
+          "font": "26.04px / 26.04px FontAwesome",
+          "padding": "0px",
+          "margin": "0px",
+          "vertical": "baseline"
+        }
+      ]
+    },
+    {
+      "html": "<a href=\"javascript:;\" data-toggle=\"tooltip\" title=\"\u70b9\u51fb\u5207\u6362\" class=\"btn-change \" data-index=\"0\" data-id=\"9003\" data-params=\"status=0\"><i class=\"fa fa-toggle-on text-success text-success  fa-2x\"></i></a>",
+      "controls": [
+        {
+          "tag": "A",
+          "cls": "btn-change ",
+          "width": 29.765625,
+          "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "margin": "0px",
+          "vertical": "baseline"
+        },
+        {
+          "tag": "I",
+          "cls": "fa fa-toggle-on text-success text-success  fa-2x",
+          "width": 29.765625,
+          "font": "26.04px / 26.04px FontAwesome",
+          "padding": "0px",
+          "margin": "0px",
+          "vertical": "baseline"
+        }
+      ]
+    },
+    {
+      "html": "2026-09-18 08:00:00",
+      "controls": []
+    },
+    {
+      "html": "<a href=\"/DmvTqXBpfF.php/users/yige/index/user_id/9003\" class=\"btn btn-success btn-xs btn-detail btn-dialog\" data-area=\"[&quot;80%&quot;,&quot;80%&quot;]\" title=\"\u5355APP\u884c\u4e3a\" data-table-id=\"table\" data-field-index=\"13\" data-row-index=\"0\" data-button-index=\"0\"><i class=\"\"></i> \u5355APP\u884c\u4e3a</a> <a href=\"/DmvTqXBpfF.php/users/duoge/index/user_id/9003\" class=\"btn btn-info btn-xs btn-detail btn-dialog\" data-area=\"[&quot;80%&quot;,&quot;80%&quot;]\" title=\"\u591aAPP\u884c\u4e3a\" data-table-id=\"table\" data-field-index=\"13\" data-row-index=\"0\" data-button-index=\"1\"><i class=\"\"></i> \u591aAPP\u884c\u4e3a</a> <a href=\"/DmvTqXBpfF.php/gameuser/coinedit/ids/9003\" class=\"btn btn-warning btn-xs btn-detail btn-dialog\" title=\"\u4fee\u6539\u91d1\u5e01\" data-table-id=\"table\" data-field-index=\"13\" data-row-index=\"0\" data-button-index=\"2\"><i class=\"\"></i> \u4fee\u6539\u91d1\u5e01</a> <a href=\"/DmvTqXBpfF.php/gameuser/edit/ids/9003\" class=\"btn btn-xs btn-success btn-editone\" data-toggle=\"tooltip\" title=\"\u7f16\u8f91\" data-table-id=\"table\" data-field-index=\"13\" data-row-index=\"0\" data-button-index=\"4\"><i class=\"fa fa-pencil\"></i></a>",
+      "controls": [
+        {
+          "tag": "A",
+          "cls": "btn btn-success btn-xs btn-detail btn-dialog",
+          "width": 72.015625,
+          "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "1px 5px",
+          "margin": "0px",
+          "vertical": "middle"
+        },
+        {
+          "tag": "I",
+          "cls": "",
+          "width": 0,
+          "font": "italic 12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "margin": "0px",
+          "vertical": "baseline"
+        },
+        {
+          "tag": "A",
+          "cls": "btn btn-info btn-xs btn-detail btn-dialog",
+          "width": 72.015625,
+          "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "1px 5px",
+          "margin": "0px",
+          "vertical": "middle"
+        },
+        {
+          "tag": "I",
+          "cls": "",
+          "width": 0,
+          "font": "italic 12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "margin": "0px",
+          "vertical": "baseline"
+        },
+        {
+          "tag": "A",
+          "cls": "btn btn-warning btn-xs btn-detail btn-dialog",
+          "width": 60,
+          "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "1px 5px",
+          "margin": "0px",
+          "vertical": "middle"
+        },
+        {
+          "tag": "I",
+          "cls": "",
+          "width": 0,
+          "font": "italic 12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "margin": "0px",
+          "vertical": "baseline"
+        },
+        {
+          "tag": "A",
+          "cls": "btn btn-xs btn-success btn-editone",
+          "width": 22.296875,
+          "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "1px 5px",
+          "margin": "0px",
+          "vertical": "middle"
+        },
+        {
+          "tag": "I",
+          "cls": "fa fa-pencil",
+          "width": 10.296875,
+          "font": "12px / 12px FontAwesome",
+          "padding": "0px",
+          "margin": "0px",
+          "vertical": "baseline"
+        }
+      ]
+    }
+  ],
+  "local_cells": [
+    {
+      "html": "9003",
+      "controls": []
+    },
+    {
+      "html": "fixture-0",
+      "controls": []
+    },
+    {
+      "html": "Fixture game",
+      "controls": []
+    },
+    {
+      "html": "Fixture agent",
+      "controls": []
+    },
+    {
+      "html": "20",
+      "controls": []
+    },
+    {
+      "html": "10",
+      "controls": []
+    },
+    {
+      "html": "2",
+      "controls": []
+    },
+    {
+      "html": "10",
+      "controls": []
+    },
+    {
+      "html": "0",
+      "controls": []
+    },
+    {
+      "html": "<span class=\"game-user-label \">\u5426</span>",
+      "controls": []
+    },
+    {
+      "html": "<button type=\"button\" class=\"analysis-switch \" data-analysis-toggle=\"is_white\" data-analysis-member=\"9003\" role=\"switch\" aria-label=\"\u767d\u540d\u5355\" aria-checked=\"false\"><i class=\"shell-icon\" aria-hidden=\"true\">\uf205</i></button>",
+      "controls": [
+        {
+          "tag": "BUTTON",
+          "cls": "analysis-switch ",
+          "width": 29.765625,
+          "font": "26.04px / 26.04px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "margin": "0px",
+          "vertical": "baseline"
+        },
+        {
+          "tag": "I",
+          "cls": "shell-icon",
+          "width": 29.765625,
+          "font": "26.04px / 26.04px FontAwesome",
+          "padding": "0px",
+          "margin": "0px",
+          "vertical": "baseline"
+        }
+      ]
+    },
+    {
+      "html": "<button type=\"button\" class=\"analysis-switch enabled\" data-analysis-toggle=\"status\" data-analysis-member=\"9003\" role=\"switch\" aria-label=\"\u72b6\u6001\" aria-checked=\"true\"><i class=\"shell-icon\" aria-hidden=\"true\">\uf205</i></button>",
+      "controls": [
+        {
+          "tag": "BUTTON",
+          "cls": "analysis-switch enabled",
+          "width": 29.765625,
+          "font": "26.04px / 26.04px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "0px",
+          "margin": "0px",
+          "vertical": "baseline"
+        },
+        {
+          "tag": "I",
+          "cls": "shell-icon",
+          "width": 29.765625,
+          "font": "26.04px / 26.04px FontAwesome",
+          "padding": "0px",
+          "margin": "0px",
+          "vertical": "baseline"
+        }
+      ]
+    },
+    {
+      "html": "2026-09-18 08:00:00",
+      "controls": []
+    },
+    {
+      "html": "<button class=\"game-member-behavior\" data-member-behavior=\"single\" data-member-id=\"9003\" data-game-id=\"1\">\u5355APP\u884c\u4e3a</button> <button class=\"game-member-behavior multi\" data-member-behavior=\"multiple\" data-member-id=\"9003\" data-game-id=\"1\">\u591aAPP\u884c\u4e3a</button> <button type=\"button\" class=\"game-member-coins\" data-analysis-coins=\"9003\">\u4fee\u6539\u91d1\u5e01</button> <button type=\"button\" class=\"game-member-edit\" data-analysis-edit=\"9003\" title=\"\u7f16\u8f91\" aria-label=\"\u7f16\u8f91\"><i class=\"shell-icon\" aria-hidden=\"true\">\uf040</i></button>",
+      "controls": [
+        {
+          "tag": "BUTTON",
+          "cls": "game-member-behavior",
+          "width": 72.015625,
+          "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "1px 5px",
+          "margin": "0px",
+          "vertical": "middle"
+        },
+        {
+          "tag": "BUTTON",
+          "cls": "game-member-behavior multi",
+          "width": 72.015625,
+          "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "1px 5px",
+          "margin": "0px",
+          "vertical": "middle"
+        },
+        {
+          "tag": "BUTTON",
+          "cls": "game-member-coins",
+          "width": 60,
+          "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "1px 5px",
+          "margin": "0px",
+          "vertical": "middle"
+        },
+        {
+          "tag": "BUTTON",
+          "cls": "game-member-edit",
+          "width": 22.296875,
+          "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+          "padding": "1px 5px",
+          "margin": "0px",
+          "vertical": "middle"
+        },
+        {
+          "tag": "I",
+          "cls": "shell-icon",
+          "width": 10.296875,
+          "font": "12px / 18px FontAwesome",
+          "padding": "0px",
+          "margin": "0px",
+          "vertical": "baseline"
+        }
+      ]
+    }
+  ],
+  "page": {
+    "reference_size": [
+      1690,
+      1345
+    ],
+    "local_size": [
+      1690,
+      1345
+    ],
+    "changed_pixels_percent": 0.2588
+  },
+  "charts-": {
+    "reference_size": [
+      1630,
+      814
+    ],
+    "local_size": [
+      1630,
+      814
+    ],
+    "changed_pixels_percent": 0.0445
+  },
+  "table-": {
+    "reference_size": [
+      1630,
+      184
+    ],
+    "local_size": [
+      1630,
+      184
+    ],
+    "changed_pixels_percent": 0.016
+  },
+  "settings-": {
+    "reference_size": [
+      800,
+      600
+    ],
+    "local_size": [
+      800,
+      600
+    ],
+    "changed_pixels_percent": 0.2158
+  }
+}

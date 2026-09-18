@@ -1,0 +1,20 @@
+[
+  {
+    "id": 3,
+    "name": "Fixture tutorial",
+    "create_time": 1789689600,
+    "update_time": 1789776000
+  },
+  {
+    "id": 2,
+    "name": "Fixture <>&",
+    "create_time": 1789689660,
+    "update_time": 1789776060
+  },
+  {
+    "id": 1,
+    "name": "Fixture longer tutorial",
+    "create_time": 1789689720,
+    "update_time": 1789776120
+  }
+]

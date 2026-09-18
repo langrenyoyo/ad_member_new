@@ -1,0 +1,189 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>同数据对比报告</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>body{max-width:1200px;margin:32px auto;padding:0 20px;font:16px/1.7 system-ui;color:#243044;background:#f4f6f8}section{background:white;padding:24px;margin:24px 0;border:1px solid #d8dee5}img{display:block;width:100%;margin-top:16px;border:1px solid #ddd}select{font:inherit}a{color:#2455af}</style>
+<h1>同数据对比报告</h1>
+<p><a href="member-export/comparison.json">会员导出双端对比（六格式 × 全部/所选，共 12 组）</a> · <a href="member-export/data.json">导出模拟数据</a></p>
+<p><a href="member-hidden-export/comparison.json">会员隐藏列导出对比</a> · <a href="member-hidden-export/data.json">隐藏列模拟数据（含零值和前导零账号）</a></p>
+<p><a href="member-selection/comparison.json">会员跨页勾选与翻页后 25 条导出对比</a></p>
+<p><a href="../reference-verified/member-coin-dialog/client-validation.json">金币表单前端校验观察（写请求已拦截，未验证对标服务端）</a></p>
+<p><a href="../../../docs/launch-readiness.md">上线核查清单</a></p>
+<p><a href="../../../docs/review-fixture-comparison.md">提现与补贴本轮范围和待办</a> · <a href="review-controls/report.json">标签、工具栏、选择器原始对照</a> · <a href="review-pagination/report.json">两页 16 种分页对照</a> · <a href="ads-pagination/comparison.json">广告 8 种分页对照</a></p>
+<p><a href="review-controls/withdrawals-tools-reference.png">审核工具栏参考</a> · <a href="review-controls/withdrawals-tools-local.png">本地</a> · <a href="review-controls/withdrawals-tools-diff.png">差异</a> · <a href="review-pagination/withdrawals-10-reference.png">分页参考</a> · <a href="review-pagination/withdrawals-10-local.png">本地</a> · <a href="review-pagination/withdrawals-10-diff.png">差异</a></p>
+<p>浏览器注入模拟数据，不写入业务数据库。以下为已有截图证据的汇总，非本次重新运行全套检查。</p>
+<p>差异像素指任一 RGB 通道差值大于 10 的像素；占比使用整张截图面积，空白区域会稀释结果。该指标不能换算成功能完成率或全站还原率。</p>
+<p><strong>当前不能判定全站一比一或可以上线。</strong>尚需覆盖其余页面、弹窗、交互状态、权限、业务统计规则与上线检查。</p>
+<p>已有会员导出证据：24 / 24 组一致（普通列与隐藏列，六种格式，各含全部及所选记录）。仅代表这些模拟数据与导出场景。</p><table><thead><tr><th>页面或状态</th><th>差异像素</th><th>比较范围</th></tr></thead><tbody><tr><td>广告列表</td><td>0.4627%</td><td>相同 3 条广告记录，折叠筛选；核对 20 个字段、五列双向排序、七类点击筛选和六格式导出。日历及选择器尺寸已对齐；分页和选择器另有局部对比，权限和完整统计语义仍待核验。</td></tr><tr><td>广告游戏筛选：首屏</td><td>0.0039%</td><td>相同 12 个选项，首屏 10 个；核对下拉内容、尺寸和位置。</td></tr><tr><td>广告游戏筛选：末页</td><td>0.1107%</td><td>同一组生成数据，键盘翻页显示剩余 2 项。</td></tr><tr><td>广告游戏筛选：空结果</td><td>0.0000%</td><td>相同无匹配关键词，空结果弹层比较。</td></tr><tr><td>广告代理筛选：首屏</td><td>0.0020%</td><td>相同 12 个选项；按参考取整规则校正右侧展开位置。</td></tr><tr><td>广告代理筛选：末页</td><td>0.1500%</td><td>同一组生成数据，末页 2 项。</td></tr><tr><td>广告代理筛选：空结果</td><td>0.0000%</td><td>相同无匹配关键词；局部截图，真实可见权限范围另行核验。</td></tr><tr><td>补贴列表</td><td>3.2656%</td><td>相同 3 条补贴记录和图片，折叠筛选；核对四个单元格搜索请求。审核操作、权限与后台汇总语义仍未完整验证。</td></tr><tr><td>代理商筛选：下拉首屏</td><td>0.0187%</td><td>相同 12 个生成代理商，首屏 10 个；仅下拉层截图，不验证账号可见范围。</td></tr><tr><td>代理商筛选：下拉末页</td><td>0.1107%</td><td>键盘翻到第 2 页，核对剩余两个选项与分页栏。</td></tr><tr><td>代理商筛选：无匹配结果</td><td>0.0000%</td><td>相同无匹配关键词，核对空结果面板。</td></tr><tr><td>游戏筛选：下拉首屏</td><td>5.6202%</td><td>相同 12 个生成选项，首屏 10 个；仅裁剪下拉层，截图像素尺寸受小数坐标取整影响。</td></tr><tr><td>游戏筛选：下拉末页</td><td>5.4549%</td><td>右方向键翻到第 2 页，剩余 2 个生成选项；验证分页内容与面板几何。</td></tr><tr><td>游戏筛选：无匹配结果</td><td>3.4848%</td><td>相同无匹配搜索词，仅比较空结果下拉层；不代表账号可见范围或服务端语义一致。</td></tr><tr><td>会员改绑关系</td><td>0.4975%</td><td>相同模拟 ID 和三个关系字段；对标仅打开和填入模拟值，不提交保存，不验证关系联动业务规则。</td></tr><tr><td>会员基础信息：底部</td><td>1.2379%</td><td>统一模拟数据，滚动至底部；核对页签随内容滚动和固定确认栏，不等同于完整基础表单验收。</td></tr><tr><td>达标时间：时分秒</td><td>0.9904%</td><td>固定同一日期时间，比较时间面板内部，不验证弹层定位。</td></tr><tr><td>达标时间：小时选择</td><td>0.5120%</td><td>固定同一日期时间，比较小时网格。</td></tr><tr><td>达标时间：分钟选择</td><td>0.5751%</td><td>固定同一日期时间，比较分钟网格。</td></tr><tr><td>达标时间：秒选择</td><td>0.5751%</td><td>固定同一日期时间，比较秒网格。</td></tr><tr><td>会员达标时间日历</td><td>0.5320%</td><td>固定 2026-09-17 12:34:56，仅比较日期弹层裁剪；不代表弹层在表单中的定位或全部时间面板已验收。</td></tr><tr><td>会员基础信息</td><td>2.4025%</td><td>相同模拟身份字段，空头像、空密码，基础页签顶部截图；完整滚动表单和附件选择尚未验收。</td></tr><tr><td>会员代理设置</td><td>0.5969%</td><td>同一套模拟代理开关和四项比例；仅比较代理页签与窗口，不验证服务端分佣规则。</td></tr><tr><td>会员下载设置</td><td>0.5956%</td><td>相同模拟下载地址；仅比较下载页签与窗口，不验证链接内容和下载安装行为。</td></tr><tr><td>会员抽奖设置</td><td>0.8123%</td><td>同一套模拟数据：12/7 次，倒计时 3.5～9 与 1.25～8.75。仅比较抽奖页签和弹窗，不向对标提交业务修改，不验证服务端抽奖规则。</td></tr><tr><td>会员修改金币弹窗</td><td>0.4648%</td><td>相同的可用金币 12.5、冻结金币 3，800×600 弹窗区域；对标仅打开和填入模拟值，未提交。</td></tr><tr><td>会员日期日历</td><td>4.1966%</td><td>两端打开日历并设置同一段 2026 年 9 月日期范围；比较展开状态，未覆盖所有月份、快捷范围及屏幕尺寸。</td></tr><tr><td>会员卡片视图</td><td>3.4436%</td><td>相同的 3 条会员记录，卡片模式；固定视口未展示全部下方记录。操作权限、筛选控件和工具栏仍有差异。</td></tr><tr><td>仪表盘</td><td>0.1091%</td><td>相同的 31 天趋势数据、新增与登录数量；仅比较内容区域。</td></tr><tr><td>主体统计</td><td>0.3280%</td><td>相同主体名称、31 天注册数据及今日数量；仅比较内容区域，目标页面和业务统计规则另行验收。</td></tr><tr><td>主体列表</td><td>2.0859%</td><td>相同的 3 条记录：启用、禁用、上下级、中文长名称及特殊字符。权限按钮仍有差异。</td></tr><tr><td>登录页</td><td>0.0000%</td><td>相同的空表单状态，1920×1080；未提交登录，不验证错误提示与认证规则。</td></tr><tr><td>提现列表</td><td>3.7939%</td><td>相同的 3 条申请中、通过、失败记录；折叠筛选，包含金额边界值。操作权限、工具栏和列宽仍有差异。</td></tr><tr><td>会员列表</td><td>2.9428%</td><td>相同的 3 条会员记录；区分实名认证姓名与支付宝姓名。列顺序已核对，工具栏、权限操作和筛选控件仍有差异。</td></tr></tbody></table><section><h2>广告列表</h2><p>相同 3 条广告记录，折叠筛选；核对 20 个字段、五列双向排序、七类点击筛选和六格式导出。日历及选择器尺寸已对齐；分页和选择器另有局部对比，权限和完整统计语义仍待核验。</p>
+<p>差异像素占比：<strong>0.4627%</strong>；平均 RGB 差异：0.26584</p>
+<p><a href="ads/data.json">模拟数据 JSON</a> · <a href="ads/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="ads"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-ads" href="ads/reference.png"><img id="image-ads" src="ads/reference.png" alt="广告列表截图"></a></section>
+<section><h2>广告游戏筛选：首屏</h2><p>相同 12 个选项，首屏 10 个；核对下拉内容、尺寸和位置。</p>
+<p>差异像素占比：<strong>0.0039%</strong>；平均 RGB 差异：0.00095</p>
+<p><a href="ads-lookup-first/data.json">模拟数据 JSON</a> · <a href="ads-lookup-first/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="ads-lookup-first"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-ads-lookup-first" href="ads-lookup-first/reference.png"><img id="image-ads-lookup-first" src="ads-lookup-first/reference.png" alt="广告游戏筛选：首屏截图"></a></section>
+<section><h2>广告游戏筛选：末页</h2><p>同一组生成数据，键盘翻页显示剩余 2 项。</p>
+<p>差异像素占比：<strong>0.1107%</strong>；平均 RGB 差异：0.03926</p>
+<p><a href="ads-lookup-last/data.json">模拟数据 JSON</a> · <a href="ads-lookup-last/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="ads-lookup-last"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-ads-lookup-last" href="ads-lookup-last/reference.png"><img id="image-ads-lookup-last" src="ads-lookup-last/reference.png" alt="广告游戏筛选：末页截图"></a></section>
+<section><h2>广告游戏筛选：空结果</h2><p>相同无匹配关键词，空结果弹层比较。</p>
+<p>差异像素占比：<strong>0.0000%</strong>；平均 RGB 差异：0.00000</p>
+<p><a href="ads-lookup-empty/data.json">模拟数据 JSON</a> · <a href="ads-lookup-empty/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="ads-lookup-empty"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-ads-lookup-empty" href="ads-lookup-empty/reference.png"><img id="image-ads-lookup-empty" src="ads-lookup-empty/reference.png" alt="广告游戏筛选：空结果截图"></a></section>
+<section><h2>广告代理筛选：首屏</h2><p>相同 12 个选项；按参考取整规则校正右侧展开位置。</p>
+<p>差异像素占比：<strong>0.0020%</strong>；平均 RGB 差异：0.00034</p>
+<p><a href="ads-lookup-agent-first/data.json">模拟数据 JSON</a> · <a href="ads-lookup-agent-first/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="ads-lookup-agent-first"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-ads-lookup-agent-first" href="ads-lookup-agent-first/reference.png"><img id="image-ads-lookup-agent-first" src="ads-lookup-agent-first/reference.png" alt="广告代理筛选：首屏截图"></a></section>
+<section><h2>广告代理筛选：末页</h2><p>同一组生成数据，末页 2 项。</p>
+<p>差异像素占比：<strong>0.1500%</strong>；平均 RGB 差异：0.04437</p>
+<p><a href="ads-lookup-agent-last/data.json">模拟数据 JSON</a> · <a href="ads-lookup-agent-last/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="ads-lookup-agent-last"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-ads-lookup-agent-last" href="ads-lookup-agent-last/reference.png"><img id="image-ads-lookup-agent-last" src="ads-lookup-agent-last/reference.png" alt="广告代理筛选：末页截图"></a></section>
+<section><h2>广告代理筛选：空结果</h2><p>相同无匹配关键词；局部截图，真实可见权限范围另行核验。</p>
+<p>差异像素占比：<strong>0.0000%</strong>；平均 RGB 差异：0.00014</p>
+<p><a href="ads-lookup-agent-empty/data.json">模拟数据 JSON</a> · <a href="ads-lookup-agent-empty/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="ads-lookup-agent-empty"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-ads-lookup-agent-empty" href="ads-lookup-agent-empty/reference.png"><img id="image-ads-lookup-agent-empty" src="ads-lookup-agent-empty/reference.png" alt="广告代理筛选：空结果截图"></a></section>
+<section><h2>补贴列表</h2><p>相同 3 条补贴记录和图片，折叠筛选；核对四个单元格搜索请求。审核操作、权限与后台汇总语义仍未完整验证。</p>
+<p>差异像素占比：<strong>3.2656%</strong>；平均 RGB 差异：2.34601</p>
+<p><a href="subsidies/data.json">模拟数据 JSON</a> · <a href="subsidies/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="subsidies"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-subsidies" href="subsidies/reference.png"><img id="image-subsidies" src="subsidies/reference.png" alt="补贴列表截图"></a></section>
+<section><h2>代理商筛选：下拉首屏</h2><p>相同 12 个生成代理商，首屏 10 个；仅下拉层截图，不验证账号可见范围。</p>
+<p>差异像素占比：<strong>0.0187%</strong>；平均 RGB 差异：0.01045</p>
+<p><a href="member-lookup-agent-first/data.json">模拟数据 JSON</a> · <a href="member-lookup-agent-first/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-lookup-agent-first"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-lookup-agent-first" href="member-lookup-agent-first/reference.png"><img id="image-member-lookup-agent-first" src="member-lookup-agent-first/reference.png" alt="代理商筛选：下拉首屏截图"></a></section>
+<section><h2>代理商筛选：下拉末页</h2><p>键盘翻到第 2 页，核对剩余两个选项与分页栏。</p>
+<p>差异像素占比：<strong>0.1107%</strong>；平均 RGB 差异：0.03926</p>
+<p><a href="member-lookup-agent-last/data.json">模拟数据 JSON</a> · <a href="member-lookup-agent-last/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-lookup-agent-last"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-lookup-agent-last" href="member-lookup-agent-last/reference.png"><img id="image-member-lookup-agent-last" src="member-lookup-agent-last/reference.png" alt="代理商筛选：下拉末页截图"></a></section>
+<section><h2>代理商筛选：无匹配结果</h2><p>相同无匹配关键词，核对空结果面板。</p>
+<p>差异像素占比：<strong>0.0000%</strong>；平均 RGB 差异：0.00000</p>
+<p><a href="member-lookup-agent-empty/data.json">模拟数据 JSON</a> · <a href="member-lookup-agent-empty/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-lookup-agent-empty"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-lookup-agent-empty" href="member-lookup-agent-empty/reference.png"><img id="image-member-lookup-agent-empty" src="member-lookup-agent-empty/reference.png" alt="代理商筛选：无匹配结果截图"></a></section>
+<section><h2>游戏筛选：下拉首屏</h2><p>相同 12 个生成选项，首屏 10 个；仅裁剪下拉层，截图像素尺寸受小数坐标取整影响。</p>
+<p>差异像素占比：<strong>5.6202%</strong>；平均 RGB 差异：2.84482</p>
+<p><a href="member-lookup-first/data.json">模拟数据 JSON</a> · <a href="member-lookup-first/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-lookup-first"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-lookup-first" href="member-lookup-first/reference.png"><img id="image-member-lookup-first" src="member-lookup-first/reference.png" alt="游戏筛选：下拉首屏截图"></a></section>
+<section><h2>游戏筛选：下拉末页</h2><p>右方向键翻到第 2 页，剩余 2 个生成选项；验证分页内容与面板几何。</p>
+<p>差异像素占比：<strong>5.4549%</strong>；平均 RGB 差异：2.39617</p>
+<p><a href="member-lookup-last/data.json">模拟数据 JSON</a> · <a href="member-lookup-last/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-lookup-last"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-lookup-last" href="member-lookup-last/reference.png"><img id="image-member-lookup-last" src="member-lookup-last/reference.png" alt="游戏筛选：下拉末页截图"></a></section>
+<section><h2>游戏筛选：无匹配结果</h2><p>相同无匹配搜索词，仅比较空结果下拉层；不代表账号可见范围或服务端语义一致。</p>
+<p>差异像素占比：<strong>3.4848%</strong>；平均 RGB 差异：1.85453</p>
+<p><a href="member-lookup-empty/data.json">模拟数据 JSON</a> · <a href="member-lookup-empty/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-lookup-empty"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-lookup-empty" href="member-lookup-empty/reference.png"><img id="image-member-lookup-empty" src="member-lookup-empty/reference.png" alt="游戏筛选：无匹配结果截图"></a></section>
+<section><h2>会员改绑关系</h2><p>相同模拟 ID 和三个关系字段；对标仅打开和填入模拟值，不提交保存，不验证关系联动业务规则。</p>
+<p>差异像素占比：<strong>0.4975%</strong>；平均 RGB 差异：0.28928</p>
+<p><a href="member-rebind/data.json">模拟数据 JSON</a> · <a href="member-rebind/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-rebind"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-rebind" href="member-rebind/reference.png"><img id="image-member-rebind" src="member-rebind/reference.png" alt="会员改绑关系截图"></a></section>
+<section><h2>会员基础信息：底部</h2><p>统一模拟数据，滚动至底部；核对页签随内容滚动和固定确认栏，不等同于完整基础表单验收。</p>
+<p>差异像素占比：<strong>1.2379%</strong>；平均 RGB 差异：0.55455</p>
+<p><a href="member-basic-bottom/data.json">模拟数据 JSON</a> · <a href="member-basic-bottom/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-basic-bottom"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-basic-bottom" href="member-basic-bottom/reference.png"><img id="image-member-basic-bottom" src="member-basic-bottom/reference.png" alt="会员基础信息：底部截图"></a></section>
+<section><h2>达标时间：时分秒</h2><p>固定同一日期时间，比较时间面板内部，不验证弹层定位。</p>
+<p>差异像素占比：<strong>0.9904%</strong>；平均 RGB 差异：0.67551</p>
+<p><a href="member-time-time/data.json">模拟数据 JSON</a> · <a href="member-time-time/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-time-time"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-time-time" href="member-time-time/reference.png"><img id="image-member-time-time" src="member-time-time/reference.png" alt="达标时间：时分秒截图"></a></section>
+<section><h2>达标时间：小时选择</h2><p>固定同一日期时间，比较小时网格。</p>
+<p>差异像素占比：<strong>0.5120%</strong>；平均 RGB 差异：0.29869</p>
+<p><a href="member-time-hours/data.json">模拟数据 JSON</a> · <a href="member-time-hours/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-time-hours"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-time-hours" href="member-time-hours/reference.png"><img id="image-member-time-hours" src="member-time-hours/reference.png" alt="达标时间：小时选择截图"></a></section>
+<section><h2>达标时间：分钟选择</h2><p>固定同一日期时间，比较分钟网格。</p>
+<p>差异像素占比：<strong>0.5751%</strong>；平均 RGB 差异：0.33617</p>
+<p><a href="member-time-minutes/data.json">模拟数据 JSON</a> · <a href="member-time-minutes/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-time-minutes"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-time-minutes" href="member-time-minutes/reference.png"><img id="image-member-time-minutes" src="member-time-minutes/reference.png" alt="达标时间：分钟选择截图"></a></section>
+<section><h2>达标时间：秒选择</h2><p>固定同一日期时间，比较秒网格。</p>
+<p>差异像素占比：<strong>0.5751%</strong>；平均 RGB 差异：0.33617</p>
+<p><a href="member-time-seconds/data.json">模拟数据 JSON</a> · <a href="member-time-seconds/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-time-seconds"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-time-seconds" href="member-time-seconds/reference.png"><img id="image-member-time-seconds" src="member-time-seconds/reference.png" alt="达标时间：秒选择截图"></a></section>
+<section><h2>会员达标时间日历</h2><p>固定 2026-09-17 12:34:56，仅比较日期弹层裁剪；不代表弹层在表单中的定位或全部时间面板已验收。</p>
+<p>差异像素占比：<strong>0.5320%</strong>；平均 RGB 差异：0.45166</p>
+<p><a href="member-date-picker/data.json">模拟数据 JSON</a> · <a href="member-date-picker/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-date-picker"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-date-picker" href="member-date-picker/reference.png"><img id="image-member-date-picker" src="member-date-picker/reference.png" alt="会员达标时间日历截图"></a></section>
+<section><h2>会员基础信息</h2><p>相同模拟身份字段，空头像、空密码，基础页签顶部截图；完整滚动表单和附件选择尚未验收。</p>
+<p>差异像素占比：<strong>2.4025%</strong>；平均 RGB 差异：1.35506</p>
+<p><a href="member-basic/data.json">模拟数据 JSON</a> · <a href="member-basic/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-basic"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-basic" href="member-basic/reference.png"><img id="image-member-basic" src="member-basic/reference.png" alt="会员基础信息截图"></a></section>
+<section><h2>会员代理设置</h2><p>同一套模拟代理开关和四项比例；仅比较代理页签与窗口，不验证服务端分佣规则。</p>
+<p>差异像素占比：<strong>0.5969%</strong>；平均 RGB 差异：0.11278</p>
+<p><a href="member-agent/data.json">模拟数据 JSON</a> · <a href="member-agent/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-agent"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-agent" href="member-agent/reference.png"><img id="image-member-agent" src="member-agent/reference.png" alt="会员代理设置截图"></a></section>
+<section><h2>会员下载设置</h2><p>相同模拟下载地址；仅比较下载页签与窗口，不验证链接内容和下载安装行为。</p>
+<p>差异像素占比：<strong>0.5956%</strong>；平均 RGB 差异：0.11097</p>
+<p><a href="member-download/data.json">模拟数据 JSON</a> · <a href="member-download/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-download"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-download" href="member-download/reference.png"><img id="image-member-download" src="member-download/reference.png" alt="会员下载设置截图"></a></section>
+<section><h2>会员抽奖设置</h2><p>同一套模拟数据：12/7 次，倒计时 3.5～9 与 1.25～8.75。仅比较抽奖页签和弹窗，不向对标提交业务修改，不验证服务端抽奖规则。</p>
+<p>差异像素占比：<strong>0.8123%</strong>；平均 RGB 差异：0.20050</p>
+<p><a href="member-lottery/data.json">模拟数据 JSON</a> · <a href="member-lottery/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-lottery"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-lottery" href="member-lottery/reference.png"><img id="image-member-lottery" src="member-lottery/reference.png" alt="会员抽奖设置截图"></a></section>
+<section><h2>会员修改金币弹窗</h2><p>相同的可用金币 12.5、冻结金币 3，800×600 弹窗区域；对标仅打开和填入模拟值，未提交。</p>
+<p>差异像素占比：<strong>0.4648%</strong>；平均 RGB 差异：0.28125</p>
+<p><a href="member-coin/data.json">模拟数据 JSON</a> · <a href="member-coin/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-coin"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-coin" href="member-coin/reference.png"><img id="image-member-coin" src="member-coin/reference.png" alt="会员修改金币弹窗截图"></a></section>
+<section><h2>会员日期日历</h2><p>两端打开日历并设置同一段 2026 年 9 月日期范围；比较展开状态，未覆盖所有月份、快捷范围及屏幕尺寸。</p>
+<p>差异像素占比：<strong>4.1966%</strong>；平均 RGB 差异：3.14282</p>
+<p><a href="member-calendar/data.json">模拟数据 JSON</a> · <a href="member-calendar/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-calendar"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-calendar" href="member-calendar/reference.png"><img id="image-member-calendar" src="member-calendar/reference.png" alt="会员日期日历截图"></a></section>
+<section><h2>会员卡片视图</h2><p>相同的 3 条会员记录，卡片模式；固定视口未展示全部下方记录。操作权限、筛选控件和工具栏仍有差异。</p>
+<p>差异像素占比：<strong>3.4436%</strong>；平均 RGB 差异：3.09360</p>
+<p><a href="member-card/data.json">模拟数据 JSON</a> · <a href="member-card/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="member-card"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-member-card" href="member-card/reference.png"><img id="image-member-card" src="member-card/reference.png" alt="会员卡片视图截图"></a></section>
+<section><h2>仪表盘</h2><p>相同的 31 天趋势数据、新增与登录数量；仅比较内容区域。</p>
+<p>差异像素占比：<strong>0.1091%</strong>；平均 RGB 差异：0.11194</p>
+<p><a href="dashboard/data.json">模拟数据 JSON</a> · <a href="dashboard/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="dashboard"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-dashboard" href="dashboard/reference.png"><img id="image-dashboard" src="dashboard/reference.png" alt="仪表盘截图"></a></section>
+<section><h2>主体统计</h2><p>相同主体名称、31 天注册数据及今日数量；仅比较内容区域，目标页面和业务统计规则另行验收。</p>
+<p>差异像素占比：<strong>0.3280%</strong>；平均 RGB 差异：0.30631</p>
+<p><a href="agent-dashboard/data.json">模拟数据 JSON</a> · <a href="agent-dashboard/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="agent-dashboard"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-agent-dashboard" href="agent-dashboard/reference.png"><img id="image-agent-dashboard" src="agent-dashboard/reference.png" alt="主体统计截图"></a></section>
+<section><h2>主体列表</h2><p>相同的 3 条记录：启用、禁用、上下级、中文长名称及特殊字符。权限按钮仍有差异。</p>
+<p>差异像素占比：<strong>2.0859%</strong>；平均 RGB 差异：2.05819</p>
+<p><a href="agents/data.json">模拟数据 JSON</a> · <a href="agents/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="agents"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-agents" href="agents/reference.png"><img id="image-agents" src="agents/reference.png" alt="主体列表截图"></a></section>
+<section><h2>登录页</h2><p>相同的空表单状态，1920×1080；未提交登录，不验证错误提示与认证规则。</p>
+<p>差异像素占比：<strong>0.0000%</strong>；平均 RGB 差异：0.00000</p>
+<p><a href="login/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="login"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-login" href="login/reference.png"><img id="image-login" src="login/reference.png" alt="登录页截图"></a></section>
+<section><h2>提现列表</h2><p>相同的 3 条申请中、通过、失败记录；折叠筛选，包含金额边界值。操作权限、工具栏和列宽仍有差异。</p>
+<p>差异像素占比：<strong>3.7939%</strong>；平均 RGB 差异：2.93816</p>
+<p><a href="withdrawals/data.json">模拟数据 JSON</a> · <a href="withdrawals/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="withdrawals"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-withdrawals" href="withdrawals/reference.png"><img id="image-withdrawals" src="withdrawals/reference.png" alt="提现列表截图"></a></section>
+<section><h2>会员列表</h2><p>相同的 3 条会员记录；区分实名认证姓名与支付宝姓名。列顺序已核对，工具栏、权限操作和筛选控件仍有差异。</p>
+<p>差异像素占比：<strong>2.9428%</strong>；平均 RGB 差异：2.41897</p>
+<p><a href="members/data.json">模拟数据 JSON</a> · <a href="members/report.json">原始指标</a></p>
+<label>显示图片 <select data-page="members"><option value="reference">对标</option><option value="local">本地</option><option value="diff">差异图</option></select></label>
+<a id="link-members" href="members/reference.png"><img id="image-members" src="members/reference.png" alt="会员列表截图"></a></section><script>
+document.querySelectorAll('select').forEach(el=>el.addEventListener('change',()=>{
+ const path=el.dataset.page+'/'+el.value+'.png';
+ document.getElementById('image-'+el.dataset.page).src=path;
+ document.getElementById('link-'+el.dataset.page).href=path;
+}));</script></html>

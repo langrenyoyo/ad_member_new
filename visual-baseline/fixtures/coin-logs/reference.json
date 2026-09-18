@@ -1,0 +1,1082 @@
+{
+  "table": {
+    "sortName": "id",
+    "sortOrder": "desc",
+    "pageSize": 10,
+    "pageList": [
+      10,
+      15,
+      20,
+      25,
+      50,
+      "All"
+    ],
+    "exportDataType": "all",
+    "exportOptions": {
+      "ignoreColumn": [
+        0,
+        "operate"
+      ]
+    },
+    "columns": [
+      [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user_id",
+          "title": "会员ID",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "user.username",
+          "title": "用户账号",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "agent.game_ad_status",
+          "title": "广告状态",
+          "visible": false,
+          "sortable": false,
+          "operate": "=",
+          "searchList": {
+            "0": "正常",
+            "1": "封禁"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "agent.name",
+          "title": "代理商名称",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "coin_before",
+          "title": "金币变动前",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "searchList": null,
+          "formatter": "function (value) {\n                            return value*1;\n                        }"
+        },
+        {
+          "field": "coin",
+          "title": "金币变动",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "searchList": null,
+          "formatter": "function (value) {\n                            return value*1;\n                        }"
+        },
+        {
+          "field": "coin_after",
+          "title": "金币变动后",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "searchList": null,
+          "formatter": "function (value) {\n                            return value*1 ;\n                        }"
+        },
+        {
+          "field": "type",
+          "title": "类型",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "searchList": {
+            "10": "抽奖",
+            "30": "兑换",
+            "40": "分销",
+            "50": "签到",
+            "60": "VIP",
+            "70": "任务",
+            "80": "其它",
+            "100": "后台"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "remark",
+          "title": "备注",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "create_time",
+          "title": "创建时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        }
+      ]
+    ]
+  },
+  "filters": [
+    {
+      "name": "user_id",
+      "value": "",
+      "placeholder": "会员ID"
+    },
+    {
+      "name": "user.username",
+      "value": "",
+      "placeholder": "用户账号"
+    },
+    {
+      "name": "game.name_text",
+      "value": "",
+      "placeholder": "游戏名称"
+    },
+    {
+      "name": "agent.game_ad_status",
+      "value": "0",
+      "placeholder": null
+    },
+    {
+      "name": "agent.name_text",
+      "value": "",
+      "placeholder": "代理商名称"
+    },
+    {
+      "name": "type",
+      "value": "",
+      "placeholder": null
+    },
+    {
+      "name": "remark",
+      "value": "",
+      "placeholder": "备注"
+    },
+    {
+      "name": "create_time",
+      "value": "2026-09-18 00:00:00 - 2026-09-18 23:59:59",
+      "placeholder": "创建时间"
+    }
+  ],
+  "toolbar": "\n                        <a href=\"javascript:;\" class=\"btn btn-primary btn-refresh\" title=\"刷新\"><i class=\"fa fa-refresh\"></i> </a>                        <a href=\"javascript:;\" class=\"btn btn-default\" style=\"font-size:14px;color:dodgerblue;\">\n                            <span class=\"extend\">\n                                金币变动：<span id=\"coin\">17.5</span>\n                            </span>\n                        </a>\n                    <a href=\"javascript:\" class=\"btn btn-warning-light btn-selected-tips hide\" data-animation=\"false\" data-toggle=\"tooltip\" data-title=\"点击取消全部\"><i class=\"fa fa-info-circle\"></i> 跨页选择模式，已选 <b>0</b> 项</a>",
+  "cells": [
+    {
+      "text": "9100",
+      "html": "9100"
+    },
+    {
+      "text": "8100",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 8100\" data-field=\"user_id\" data-value=\"8100\">8100</a>"
+    },
+    {
+      "text": "fixture 001",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 fixture 001\" data-field=\"user.username\" data-value=\"fixture 001\">fixture 001</a>"
+    },
+    {
+      "text": "fixture game 0",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 fixture game 0\" data-field=\"game.name\" data-value=\"fixture game 0\">fixture game 0</a>"
+    },
+    {
+      "text": "fixture agent 0",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 fixture agent 0\" data-field=\"agent.name\" data-value=\"fixture agent 0\">fixture agent 0</a>"
+    },
+    {
+      "text": "12.5",
+      "html": "12.5"
+    },
+    {
+      "text": "-2.5",
+      "html": "-2.5"
+    },
+    {
+      "text": "10",
+      "html": "10"
+    },
+    {
+      "text": "兑换",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 兑换\" data-field=\"type\" data-value=\"30\"><span class=\"label label-warning\">兑换</span></a>"
+    },
+    {
+      "text": "fixture exchange",
+      "html": "fixture exchange"
+    },
+    {
+      "text": "2026-09-18 08:00:00",
+      "html": "2026-09-18 08:00:00"
+    }
+  ],
+  "styles": {
+    ".panel-body": {
+      "x": 15,
+      "y": 15,
+      "width": 1660,
+      "height": 464.5625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px"
+    },
+    ".form-commonsearch": {
+      "x": 30,
+      "y": 30,
+      "width": 1630,
+      "height": 143.5625,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px"
+    },
+    ".form-commonsearch label": {
+      "x": 30,
+      "y": 30,
+      "width": 128.328125,
+      "height": 29,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "7px 15px 0px"
+    },
+    ".fixed-table-toolbar": {
+      "x": 30,
+      "y": 173.5625,
+      "width": 1630,
+      "height": 54,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px"
+    },
+    "#table": {
+      "x": 30,
+      "y": 227.5625,
+      "width": 1630,
+      "height": 183,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px"
+    },
+    ".fixed-table-pagination": {
+      "x": 30,
+      "y": 410.5625,
+      "width": 1630,
+      "height": 54,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px"
+    }
+  },
+  "label_style": {
+    "font": "700 10.5px / 10.5px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+    "padding": "2.1px 6.3px 3.15px",
+    "color": "rgb(255, 255, 255)",
+    "background": "rgb(243, 156, 18)"
+  },
+  "control_styles": {
+    "#toolbar .btn-refresh": {
+      "x": 30,
+      "y": 184.28125,
+      "width": 37.15625,
+      "height": 32.5625,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "6px 12px",
+      "border": "1px solid rgba(0, 0, 0, 0)",
+      "borderBottom": "1px solid rgba(0, 0, 0, 0)",
+      "placeholder": "rgb(255, 255, 255)"
+    },
+    "#toolbar .btn-default": {
+      "x": 71.046875,
+      "y": 183.5625,
+      "width": 123.25,
+      "height": 34,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "6px 12px",
+      "border": "1px solid rgb(221, 221, 221)",
+      "borderBottom": "1px solid rgb(221, 221, 221)",
+      "placeholder": "rgb(30, 144, 255)"
+    },
+    ".form-commonsearch input[name=user_id]": {
+      "x": 173.328125,
+      "y": 30,
+      "width": 226.65625,
+      "height": 33,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "6px 12px",
+      "border": "1px solid rgb(210, 214, 222)",
+      "borderBottom": "1px solid rgb(210, 214, 222)",
+      "placeholder": "rgb(153, 153, 153)"
+    },
+    ".form-commonsearch .sp_input": {
+      "x": 1003.328125,
+      "y": 30,
+      "width": 226.65625,
+      "height": 33,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "4px 12px",
+      "border": "1px solid rgb(204, 204, 204)",
+      "borderBottom": "1px solid rgb(204, 204, 204)",
+      "placeholder": "rgb(153, 153, 153)"
+    },
+    ".columns button[name=toggle]": {
+      "x": 1477.75,
+      "y": 183.5625,
+      "width": 39,
+      "height": 32.5625,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "6px 12px",
+      "border": "1px solid rgb(221, 221, 221)",
+      "borderBottom": "1px solid rgb(221, 221, 221)",
+      "placeholder": "rgb(68, 68, 68)"
+    },
+    "#table th": {
+      "x": 30.5,
+      "y": 228.0625,
+      "width": 91.078125,
+      "height": 41,
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "border": "",
+      "borderBottom": "1px solid rgb(221, 221, 221)",
+      "placeholder": "rgb(51, 51, 51)"
+    }
+  },
+  "card_styles": {
+    "html": "<div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">Id</span><span class=\"value\">9100</span></div>",
+    "styles": [
+      {
+        "tag": "DIV",
+        "class": "card-view",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "width": "1598px",
+        "padding": "0px",
+        "display": "block",
+        "verticalAlign": "baseline"
+      },
+      {
+        "tag": "SPAN",
+        "class": "title",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "width": "479.391px",
+        "padding": "0px",
+        "display": "inline-block",
+        "verticalAlign": "middle"
+      },
+      {
+        "tag": "SPAN",
+        "class": "value",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "width": "auto",
+        "padding": "0px",
+        "display": "inline",
+        "verticalAlign": "baseline"
+      }
+    ]
+  },
+  "reset": [
+    {
+      "name": "user_id",
+      "value": ""
+    },
+    {
+      "name": "user.username",
+      "value": ""
+    },
+    {
+      "name": "game.name_text",
+      "value": ""
+    },
+    {
+      "name": "agent.game_ad_status",
+      "value": "0"
+    },
+    {
+      "name": "agent.name_text",
+      "value": ""
+    },
+    {
+      "name": "type",
+      "value": ""
+    },
+    {
+      "name": "remark",
+      "value": ""
+    },
+    {
+      "name": "create_time",
+      "value": "2026-09-18 00:00:00 - 2026-09-18 23:59:59"
+    }
+  ],
+  "searches": {
+    "user_id": {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"user_id\":\"8100\",\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"user_id\":\"=\",\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028798"
+      ]
+    },
+    "user.username": {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"user.username\":\"fixture 001\",\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"user.username\":\"LIKE\",\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028800"
+      ]
+    },
+    "game.name": {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"game.name\":\"fixture game 0\",\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"game.name\":\"=\",\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028802"
+      ]
+    },
+    "agent.name": {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"agent.name\":\"fixture agent 0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"agent.name\":\"LIKE\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028804"
+      ]
+    }
+  },
+  "requests": [
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028783"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028784"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028785"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028786"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028787"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028788"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028789"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028790"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028791"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028792"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028793"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028794"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028795"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028796"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028797"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"user_id\":\"8100\",\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"user_id\":\"=\",\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028798"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028799"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"user.username\":\"fixture 001\",\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"user.username\":\"LIKE\",\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028800"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028801"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"game.name\":\"fixture game 0\",\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"game.name\":\"=\",\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028802"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"game.name\":\"fixture game 0\",\"agent.game_ad_status\":\"0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"game.name\":\"=\",\"agent.game_ad_status\":\"=\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028803"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"agent.name\":\"fixture agent 0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"agent.name\":\"LIKE\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028804"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.game_ad_status\":\"0\",\"agent.name\":\"fixture agent 0\",\"create_time\":\"2026-09-18 00:00:00 - 2026-09-18 23:59:59\"}"
+      ],
+      "op": [
+        "{\"agent.game_ad_status\":\"=\",\"agent.name\":\"LIKE\",\"create_time\":\"RANGE\"}"
+      ],
+      "_": [
+        "1789685028805"
+      ]
+    }
+  ],
+  "column_metrics": [
+    {
+      "field": "id",
+      "width": 91.078125,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 10px"
+    },
+    {
+      "field": "user_id",
+      "width": 92.3125,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 10px"
+    },
+    {
+      "field": "user.username",
+      "width": 144.625,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 10px"
+    },
+    {
+      "field": "game.name",
+      "width": 175.421875,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 10px"
+    },
+    {
+      "field": "agent.name",
+      "width": 175.453125,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 10px"
+    },
+    {
+      "field": "coin_before",
+      "width": 148,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 15px"
+    },
+    {
+      "field": "coin",
+      "width": 127.484375,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 15px"
+    },
+    {
+      "field": "coin_after",
+      "width": 148,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 15px"
+    },
+    {
+      "field": "type",
+      "width": 94.640625,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 10px"
+    },
+    {
+      "field": "remark",
+      "width": 195.96875,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 10px"
+    },
+    {
+      "field": "create_time",
+      "width": 236.015625,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 15px"
+    }
+  ]
+}

@@ -1,0 +1,393 @@
+{
+  "reference_url": "https://ad.leadink.cn/DmvTqXBpfF.php/ad?ref=baseline",
+  "local_url": "http://127.0.0.1:3000/#ads",
+  "scope": "content only, no header/sidebar",
+  "viewport": [
+    1690,
+    1030
+  ],
+  "local_clip": {
+    "x": 230,
+    "y": 50,
+    "width": 1690,
+    "height": 1274
+  },
+  "reference_metrics": [
+    {
+      "name": "user.parent_id-operate",
+      "text": "",
+      "value": "=",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      }
+    },
+    {
+      "name": "user.parent_id",
+      "text": "",
+      "value": "",
+      "box": {
+        "x": 173.328125,
+        "y": 30,
+        "width": 226.65625,
+        "height": 33,
+        "top": 30,
+        "right": 399.984375,
+        "bottom": 63,
+        "left": 173.328125
+      }
+    },
+    {
+      "name": "user_id-operate",
+      "text": "",
+      "value": "=",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      }
+    },
+    {
+      "name": "user_id",
+      "text": "",
+      "value": "",
+      "box": {
+        "x": 588.328125,
+        "y": 30,
+        "width": 226.65625,
+        "height": 33,
+        "top": 30,
+        "right": 814.984375,
+        "bottom": 63,
+        "left": 588.328125
+      }
+    },
+    {
+      "name": "game.name-operate",
+      "text": "",
+      "value": "=",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      }
+    },
+    {
+      "name": "game.name_text",
+      "text": "",
+      "value": "",
+      "box": {
+        "x": 1003.328125,
+        "y": 30,
+        "width": 226.65625,
+        "height": 33,
+        "top": 30,
+        "right": 1229.984375,
+        "bottom": 63,
+        "left": 1003.328125
+      }
+    },
+    {
+      "name": "game.name",
+      "text": "",
+      "value": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      }
+    },
+    {
+      "name": "agent.name-operate",
+      "text": "",
+      "value": "LIKE",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      }
+    },
+    {
+      "name": "agent.name_text",
+      "text": "",
+      "value": "",
+      "box": {
+        "x": 1418.328125,
+        "y": 30,
+        "width": 226.65625,
+        "height": 33,
+        "top": 30,
+        "right": 1644.984375,
+        "bottom": 63,
+        "left": 1418.328125
+      }
+    },
+    {
+      "name": "agent.name",
+      "text": "",
+      "value": "",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      }
+    },
+    {
+      "name": "estimate_income-operate",
+      "text": "",
+      "value": "BETWEEN",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      }
+    },
+    {
+      "name": "estimate_income",
+      "text": "",
+      "value": "",
+      "box": {
+        "x": 173.328125,
+        "y": 78,
+        "width": 98.328125,
+        "height": 33,
+        "top": 78,
+        "right": 271.65625,
+        "bottom": 111,
+        "left": 173.328125
+      }
+    },
+    {
+      "name": "estimate_income",
+      "text": "",
+      "value": "",
+      "box": {
+        "x": 301.65625,
+        "y": 78,
+        "width": 98.328125,
+        "height": 33,
+        "top": 78,
+        "right": 399.984375,
+        "bottom": 111,
+        "left": 301.65625
+      }
+    },
+    {
+      "name": "ad_network_platform_name-operate",
+      "text": "",
+      "value": "=",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      }
+    },
+    {
+      "name": "ad_network_platform_name",
+      "text": "",
+      "value": "",
+      "box": {
+        "x": 588.328125,
+        "y": 78,
+        "width": 226.65625,
+        "height": 33,
+        "top": 78,
+        "right": 814.984375,
+        "bottom": 111,
+        "left": 588.328125
+      }
+    },
+    {
+      "name": "is_fu-operate",
+      "text": "",
+      "value": "=",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      }
+    },
+    {
+      "name": "is_fu",
+      "text": "选择激励副广",
+      "value": "0",
+      "box": {
+        "x": 1003.328125,
+        "y": 78,
+        "width": 226.65625,
+        "height": 33,
+        "top": 78,
+        "right": 1229.984375,
+        "bottom": 111,
+        "left": 1003.328125
+      }
+    },
+    {
+      "name": "fu_type-operate",
+      "text": "",
+      "value": "=",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      }
+    },
+    {
+      "name": "fu_type",
+      "text": "选择开屏Banner插屏信息流",
+      "value": "",
+      "box": {
+        "x": 1418.328125,
+        "y": 78,
+        "width": 226.65625,
+        "height": 33,
+        "top": 78,
+        "right": 1644.984375,
+        "bottom": 111,
+        "left": 1418.328125
+      }
+    },
+    {
+      "name": "is_look-operate",
+      "text": "",
+      "value": "=",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      }
+    },
+    {
+      "name": "is_look",
+      "text": "选择失败成功",
+      "value": "",
+      "box": {
+        "x": 173.328125,
+        "y": 126,
+        "width": 226.65625,
+        "height": 33,
+        "top": 126,
+        "right": 399.984375,
+        "bottom": 159,
+        "left": 173.328125
+      }
+    },
+    {
+      "name": "create_time-operate",
+      "text": "",
+      "value": "RANGE",
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      }
+    },
+    {
+      "name": "create_time",
+      "text": "",
+      "value": "2026-09-15 00:00:00 - 2026-09-15 23:59:59",
+      "box": {
+        "x": 588.328125,
+        "y": 126,
+        "width": 226.65625,
+        "height": 33,
+        "top": 126,
+        "right": 814.984375,
+        "bottom": 159,
+        "left": 588.328125
+      }
+    },
+    {
+      "name": "",
+      "text": "提交",
+      "value": "",
+      "box": {
+        "x": 1003.328125,
+        "y": 126,
+        "width": 52,
+        "height": 32.5625,
+        "top": 126,
+        "right": 1055.328125,
+        "bottom": 158.5625,
+        "left": 1003.328125
+      }
+    },
+    {
+      "name": "",
+      "text": "重置",
+      "value": "",
+      "box": {
+        "x": 1059.21875,
+        "y": 126,
+        "width": 52,
+        "height": 32.5625,
+        "top": 126,
+        "right": 1111.21875,
+        "bottom": 158.5625,
+        "left": 1059.21875
+      }
+    }
+  ],
+  "data_state": "local future-date empty results; reference live results; data not normalized"
+}

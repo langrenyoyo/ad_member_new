@@ -1,0 +1,122 @@
+{
+  "agent_id": 9000,
+  "agent_name": "Fixture agent",
+  "items": [
+    {
+      "id": 9003,
+      "username": "fixture-0",
+      "game_id": 1,
+      "game_name": "Fixture game",
+      "agent_name": "Fixture agent",
+      "coin_user": 20,
+      "coin_user_month": 10,
+      "coin_user_day": 2,
+      "coin": 10,
+      "freeze_coin": 0,
+      "game_addiction_enable": 0,
+      "is_white": 0,
+      "status": 1,
+      "created_at": "2026-09-18T00:00:00+00:00"
+    },
+    {
+      "id": 9002,
+      "username": "fixture-1",
+      "game_id": 1,
+      "game_name": "Fixture game",
+      "agent_name": "Fixture agent",
+      "coin_user": 21,
+      "coin_user_month": 11,
+      "coin_user_day": 3,
+      "coin": 11,
+      "freeze_coin": 1,
+      "game_addiction_enable": 1,
+      "is_white": 1,
+      "status": 1,
+      "created_at": "2026-09-18T00:00:00+00:00"
+    },
+    {
+      "id": 9001,
+      "username": "fixture-2",
+      "game_id": 1,
+      "game_name": "Fixture game",
+      "agent_name": "Fixture agent",
+      "coin_user": 22,
+      "coin_user_month": 12,
+      "coin_user_day": 4,
+      "coin": 12,
+      "freeze_coin": 2,
+      "game_addiction_enable": 0,
+      "is_white": 0,
+      "status": 1,
+      "created_at": "2026-09-18T00:00:00+00:00"
+    }
+  ],
+  "total": 3,
+  "echart_data": {
+    "echart_coin_data": [
+      {
+        "name": "Low",
+        "value": 1
+      },
+      {
+        "name": "Other",
+        "value": 2
+      }
+    ],
+    "echart_success_percent_data": [
+      {
+        "name": "High",
+        "value": 2
+      },
+      {
+        "name": "Other",
+        "value": 1
+      }
+    ],
+    "echart_ip_data": [
+      {
+        "name": "内网",
+        "value": 10
+      },
+      {
+        "name": "公网",
+        "value": 32
+      }
+    ],
+    "echart_app_num_data": [
+      {
+        "name": "One",
+        "value": 1
+      },
+      {
+        "name": "More",
+        "value": 2
+      }
+    ],
+    "echart_game_data": {
+      "name": [
+        "Fixture A",
+        "Fixture B"
+      ],
+      "value": [
+        1,
+        2
+      ]
+    },
+    "echart_scatter_data": [
+      [
+        20,
+        0.4
+      ],
+      [
+        35,
+        0.5
+      ],
+      [
+        50,
+        0.8
+      ]
+    ]
+  },
+  "can_configure": true
+}

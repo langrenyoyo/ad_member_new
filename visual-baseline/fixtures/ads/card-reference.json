@@ -1,0 +1,255 @@
+{
+  "html": "<table id=\"table\" class=\"table table-striped table-bordered table-hover table-nowrap\" width=\"100%\" style=\"margin-top: 0px;\">\n                    <thead style=\"display: none;\"><tr><th style=\"text-align: center; vertical-align: middle; \" data-field=\"id\"><div class=\"th-inner \">Id</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"user.parent_id\"><div class=\"th-inner \">上级Id</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"receive_name_parent\"><div class=\"th-inner \">上级支付宝姓名</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"user_id\"><div class=\"th-inner \">会员ID</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"user.username\"><div class=\"th-inner \">用户账号</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"receive_name\"><div class=\"th-inner \">支付宝姓名</div><div class=\"fht-cell\"></div></th><th style=\"text-align: left; vertical-align: middle; \" data-field=\"game.name\"><div class=\"th-inner \">游戏名称</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"pre_ecpm\"><div class=\"th-inner sortable both\">ECPM</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"estimate_income\"><div class=\"th-inner sortable both\">金币</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"ad_network_platform_name\"><div class=\"th-inner sortable both\">广告平台</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"is_lottery\"><div class=\"th-inner \">抽奖</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"is_rw\"><div class=\"th-inner \">任务</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"is_type\"><div class=\"th-inner \">奖励类型</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"is_fu\"><div class=\"th-inner \">广告类型</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"fu_type\"><div class=\"th-inner \">副广类型</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"is_look\"><div class=\"th-inner \">状态</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"create_time\"><div class=\"th-inner sortable both\">观看时间</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"ad_network_rit_id\"><div class=\"th-inner \">广告代码位</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"request_id\"><div class=\"th-inner sortable both\">广告request_id</div><div class=\"fht-cell\"></div></th><th style=\"text-align: center; vertical-align: middle; \" data-field=\"trans_id\"><div class=\"th-inner \">交易trans_id</div><div class=\"fht-cell\"></div></th></tr></thead><tbody data-listidx=\"0\"><tr data-index=\"0\"> <td colspan=\"21\"><div class=\"card-views\"> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">Id</span><span class=\"value\">9200</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">上级Id</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 8100\" data-field=\"user.parent_id\" data-value=\"8100\">8100</a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">上级支付宝姓名</span><span class=\"value\">上级姓名</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">会员ID</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 8200\" data-field=\"user_id\" data-value=\"8200\">8200</a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">用户账号</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 对照账号0\" data-field=\"user.username\" data-value=\"对照账号0\">对照账号0</a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">支付宝姓名</span><span class=\"value\">测试姓名</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: left; vertical-align: middle; \">游戏名称</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 对照游戏\" data-field=\"game.name\" data-value=\"对照游戏\">对照游戏</a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">ECPM</span><span class=\"value\">0</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">金币</span><span class=\"value\">0</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">广告平台</span><span class=\"value\">测试平台</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">抽奖</span><span class=\"value\"><span class=\"label label-info\">否</span></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">任务</span><span class=\"value\"><span class=\"label label-success\">是</span></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">奖励类型</span><span class=\"value\"><span class=\"label label-success\">提升</span></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">广告类型</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 激励\" data-field=\"is_fu\" data-value=\"0\"><span class=\"label label-success\">激励</span></a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">副广类型</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 开屏\" data-field=\"fu_type\" data-value=\"1\"><span class=\"label label-info\">开屏</span></a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">状态</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 失败\" data-field=\"is_look\" data-value=\"0\"><span class=\"label label-info\">失败</span></a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">观看时间</span><span class=\"value\">2026-09-16 08:00:00</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">广告代码位</span><span class=\"value\">code</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">广告request_id</span><span class=\"value\">REQ-0</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">交易trans_id</span><span class=\"value\">TRANS-0</span></div> </div></td> </tr><tr data-index=\"1\"> <td colspan=\"21\"><div class=\"card-views\"> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">Id</span><span class=\"value\">9201</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">上级Id</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 8100\" data-field=\"user.parent_id\" data-value=\"8100\">8100</a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">上级支付宝姓名</span><span class=\"value\">上级姓名</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">会员ID</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 8201\" data-field=\"user_id\" data-value=\"8201\">8201</a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">用户账号</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 对照账号1\" data-field=\"user.username\" data-value=\"对照账号1\">对照账号1</a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">支付宝姓名</span><span class=\"value\">测试姓名</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: left; vertical-align: middle; \">游戏名称</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 对照游戏\" data-field=\"game.name\" data-value=\"对照游戏\">对照游戏</a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">ECPM</span><span class=\"value\">12.5</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">金币</span><span class=\"value\">1.25</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">广告平台</span><span class=\"value\">测试平台</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">抽奖</span><span class=\"value\"><span class=\"label label-success\">是</span></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">任务</span><span class=\"value\"><span class=\"label label-info\">否</span></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">奖励类型</span><span class=\"value\"><span class=\"label label-warning\">领取</span></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">广告类型</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 副广\" data-field=\"is_fu\" data-value=\"1\"><span class=\"label label-warning\">副广</span></a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">副广类型</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 Banner\" data-field=\"fu_type\" data-value=\"2\"><span class=\"label label-success\">Banner</span></a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">状态</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 成功\" data-field=\"is_look\" data-value=\"1\"><span class=\"label label-success\">成功</span></a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">观看时间</span><span class=\"value\">2026-09-16 08:00:00</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">广告代码位</span><span class=\"value\">code</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">广告request_id</span><span class=\"value\">REQ-1</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">交易trans_id</span><span class=\"value\">TRANS-1</span></div> </div></td> </tr><tr data-index=\"2\"> <td colspan=\"21\"><div class=\"card-views\"> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">Id</span><span class=\"value\">9202</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">上级Id</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 8100\" data-field=\"user.parent_id\" data-value=\"8100\">8100</a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">上级支付宝姓名</span><span class=\"value\">上级姓名</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">会员ID</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 8202\" data-field=\"user_id\" data-value=\"8202\">8202</a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">用户账号</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 对照账号2\" data-field=\"user.username\" data-value=\"对照账号2\">对照账号2</a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">支付宝姓名</span><span class=\"value\">测试姓名</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: left; vertical-align: middle; \">游戏名称</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 对照游戏\" data-field=\"game.name\" data-value=\"对照游戏\">对照游戏</a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">ECPM</span><span class=\"value\">99</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">金币</span><span class=\"value\">9.9</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">广告平台</span><span class=\"value\">测试平台</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">抽奖</span><span class=\"value\"><span class=\"label label-info\">否</span></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">任务</span><span class=\"value\"><span class=\"label label-success\">是</span></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">奖励类型</span><span class=\"value\"><span class=\"label label-success\">提升</span></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">广告类型</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 激励\" data-field=\"is_fu\" data-value=\"0\"><span class=\"label label-success\">激励</span></a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">副广类型</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 插屏\" data-field=\"fu_type\" data-value=\"3\"><span class=\"label label-warning\">插屏</span></a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">状态</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 失败\" data-field=\"is_look\" data-value=\"0\"><span class=\"label label-info\">失败</span></a></span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">观看时间</span><span class=\"value\">2026-09-16 08:00:00</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">广告代码位</span><span class=\"value\">code</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">广告request_id</span><span class=\"value\">REQ-2</span></div> <div class=\"card-view\"><span class=\"title\" style=\"text-align: center; vertical-align: middle; \">交易trans_id</span><span class=\"value\">TRANS-2</span></div> </div></td> </tr></tbody></table>",
+  "rect": {
+    "x": 30,
+    "y": 84,
+    "width": 1630,
+    "height": 1334.5,
+    "top": 84,
+    "right": 1660,
+    "bottom": 1418.5,
+    "left": 30
+  },
+  "cells": [
+    {
+      "text": "Id9200\n上级Id8100\n上级支付宝姓名上级姓名\n会员ID8200\n用户账号对照账号0\n支付宝姓名测试姓名\n游戏名称对照游戏\nECPM0\n金币0\n广告平台测试平台\n抽奖否\n任务是\n奖励类型提升\n广告类型激励\n副广类型开屏\n状态失败\n观看时间2026-09-16 08:00:00\n广告代码位code\n广告request_idREQ-0\n交易trans_idTRANS-0",
+      "rect": {
+        "x": 30.5,
+        "y": 84.5,
+        "width": 1629,
+        "height": 444.5,
+        "top": 84.5,
+        "right": 1659.5,
+        "bottom": 529,
+        "left": 30.5
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "margin": "0px",
+      "display": "table-cell",
+      "width": "1629px",
+      "minWidth": "0px",
+      "verticalAlign": "top"
+    },
+    {
+      "text": "Id9200",
+      "rect": {
+        "x": 46,
+        "y": 93,
+        "width": 1598,
+        "height": 21.375,
+        "top": 93,
+        "right": 1644,
+        "bottom": 114.375,
+        "left": 46
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "block",
+      "width": "1598px",
+      "minWidth": "0px",
+      "verticalAlign": "baseline"
+    },
+    {
+      "text": "Id",
+      "rect": {
+        "x": 46,
+        "y": 94.375,
+        "width": 479.390625,
+        "height": 20,
+        "top": 94.375,
+        "right": 525.390625,
+        "bottom": 114.375,
+        "left": 46
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "inline-block",
+      "width": "479.391px",
+      "minWidth": "30%",
+      "verticalAlign": "middle"
+    },
+    {
+      "text": "9200",
+      "rect": {
+        "x": 525.390625,
+        "y": 95,
+        "width": 31.15625,
+        "height": 16,
+        "top": 95,
+        "right": 556.546875,
+        "bottom": 111,
+        "left": 525.390625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "inline",
+      "width": "auto",
+      "minWidth": "0px",
+      "verticalAlign": "baseline"
+    },
+    {
+      "text": "上级Id8100",
+      "rect": {
+        "x": 46,
+        "y": 114.375,
+        "width": 1598,
+        "height": 21.375,
+        "top": 114.375,
+        "right": 1644,
+        "bottom": 135.75,
+        "left": 46
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "block",
+      "width": "1598px",
+      "minWidth": "0px",
+      "verticalAlign": "baseline"
+    },
+    {
+      "text": "上级Id",
+      "rect": {
+        "x": 46,
+        "y": 115.75,
+        "width": 479.390625,
+        "height": 20,
+        "top": 115.75,
+        "right": 525.390625,
+        "bottom": 135.75,
+        "left": 46
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "inline-block",
+      "width": "479.391px",
+      "minWidth": "30%",
+      "verticalAlign": "middle"
+    },
+    {
+      "text": "8100",
+      "rect": {
+        "x": 525.390625,
+        "y": 116.375,
+        "width": 31.15625,
+        "height": 16,
+        "top": 116.375,
+        "right": 556.546875,
+        "bottom": 132.375,
+        "left": 525.390625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "inline",
+      "width": "auto",
+      "minWidth": "0px",
+      "verticalAlign": "baseline"
+    },
+    {
+      "text": "上级支付宝姓名上级姓名",
+      "rect": {
+        "x": 46,
+        "y": 135.75,
+        "width": 1598,
+        "height": 21.375,
+        "top": 135.75,
+        "right": 1644,
+        "bottom": 157.125,
+        "left": 46
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "block",
+      "width": "1598px",
+      "minWidth": "0px",
+      "verticalAlign": "baseline"
+    },
+    {
+      "text": "上级支付宝姓名",
+      "rect": {
+        "x": 46,
+        "y": 137.125,
+        "width": 479.390625,
+        "height": 20,
+        "top": 137.125,
+        "right": 525.390625,
+        "bottom": 157.125,
+        "left": 46
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "inline-block",
+      "width": "479.391px",
+      "minWidth": "30%",
+      "verticalAlign": "middle"
+    },
+    {
+      "text": "上级姓名",
+      "rect": {
+        "x": 525.390625,
+        "y": 137.75,
+        "width": 56,
+        "height": 16,
+        "top": 137.75,
+        "right": 581.390625,
+        "bottom": 153.75,
+        "left": 525.390625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "inline",
+      "width": "auto",
+      "minWidth": "0px",
+      "verticalAlign": "baseline"
+    },
+    {
+      "text": "会员ID8200",
+      "rect": {
+        "x": 46,
+        "y": 157.125,
+        "width": 1598,
+        "height": 21.375,
+        "top": 157.125,
+        "right": 1644,
+        "bottom": 178.5,
+        "left": 46
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "block",
+      "width": "1598px",
+      "minWidth": "0px",
+      "verticalAlign": "baseline"
+    },
+    {
+      "text": "会员ID",
+      "rect": {
+        "x": 46,
+        "y": 158.5,
+        "width": 479.390625,
+        "height": 20,
+        "top": 158.5,
+        "right": 525.390625,
+        "bottom": 178.5,
+        "left": 46
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "display": "inline-block",
+      "width": "479.391px",
+      "minWidth": "30%",
+      "verticalAlign": "middle"
+    }
+  ]
+}

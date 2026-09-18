@@ -1,0 +1,18 @@
+{
+  "route": "#members",
+  "viewport": [
+    1920,
+    1080
+  ],
+  "screenshot": "members.png",
+  "checks": [
+    "login",
+    "filter request",
+    "filter persistence",
+    "reset",
+    "VIP badge",
+    "switch rendering",
+    "no browser exceptions"
+  ],
+  "backend": "existing service; recovered source deployment not verified"
+}

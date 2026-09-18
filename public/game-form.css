@@ -1,0 +1,34 @@
+#modal:has(.game-form-fields){padding:15px;background:#0005}
+#modal:has(.game-form-fields)>.modal{display:flex;flex-direction:column;width:min(900px,100%);height:min(820px,calc(100vh - 30px));max-width:calc(100vw - 30px);max-height:calc(100vh - 30px);border-radius:2px;overflow:hidden;background:#fff;color:#333;font:14px/22px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+#modal:has(.game-form-fields) .modal-head{flex:0 0 45px;height:45px;padding:0 15px 0 20px;align-items:center;border:0;border-radius:0;background:#2c3e50;color:#fff}
+#modal:has(.game-form-fields) .modal-head h2{margin:0;font:400 14px/45px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+#modal:has(.game-form-fields) #closeModal{width:16px;height:45px;padding:0;border:0;background:transparent;color:#fff;font-size:0}
+#modal:has(.game-form-fields) #closeModal:after{content:'\e626';font:18px/45px MemberWindowIcons}
+#modal:has(.game-form-fields) #editorForm{display:flex;flex:1;min-height:0;flex-direction:column}
+#modal:has(.game-form-fields) #formFields{display:flex;flex:1;min-height:0;flex-direction:column}
+#modal:has(.game-form-fields) #cancelModal{display:none}
+.game-form-scroll{flex:1;min-height:0;overflow:auto;background:#fff}
+.game-form-fields{padding:18px 22px 24px}
+.game-form-section{margin:0;padding:0 0 18px}
+.game-form-section+.game-form-section{padding-top:17px;border-top:1px solid #eee}
+.game-form-section h3{margin:0 0 12px;padding-left:9px;border-left:3px solid #18bc9c;color:#444;font-size:13px;font-weight:600;line-height:18px}
+.game-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 20px}
+.game-form-field{display:flex;min-width:0;flex-direction:column;gap:5px;color:#555;font-size:12px}
+.game-form-field>span{color:#666}
+.game-form-field input,.game-form-field select,.game-form-field textarea{width:100%;min-width:0;box-sizing:border-box;border:1px solid #d2d6de;border-radius:0;background:#fff;color:#555;padding:6px 10px;font:13px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;outline:0}
+.game-form-field input,.game-form-field select{height:33px}
+.game-form-field textarea{min-height:100px;resize:vertical;font-family:Consolas,"Courier New",monospace;font-size:12px;line-height:18px}
+.game-form-field input:focus,.game-form-field select:focus,.game-form-field textarea:focus{border-color:#3c8dbc}
+.game-form-field-full{grid-column:1/-1}
+.game-form-readonly{height:33px;box-sizing:border-box;padding:6px 10px;border:1px solid #d2d6de;background:#eee;color:#777;line-height:19px}
+.game-form-loading{padding:50px 22px;color:#777;text-align:center}
+.game-form-error{min-height:20px;padding:0 22px 10px;color:#b33;font-size:12px}
+#modal:has(.game-form-fields) .modal-actions{flex:0 0 53px;justify-content:flex-start;align-items:start;gap:4px;padding:10px 22px;border:0;background:#ecf0f1}
+#modal:has(.game-form-fields) .modal-actions .button{min-height:33px;padding:6px 12px;border:1px solid transparent;border-radius:3px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+#modal:has(.game-form-fields) .modal-actions .primary{background:#444c69!important;border-color:#444c69!important;color:#fff}
+#modal:has(.game-form-fields) .modal-actions .ghost{background:#f4f4f4;border-color:#ddd;color:#444}
+@media(max-width:680px){
+ #modal:has(.game-form-fields)>.modal{width:100%;height:calc(100vh - 30px);max-width:calc(100vw - 30px)}
+ .game-form-fields{padding:16px}.game-form-grid{grid-template-columns:1fr;gap:12px}.game-form-field-full{grid-column:auto}
+ #modal:has(.game-form-fields) .modal-actions{padding-left:16px}
+}

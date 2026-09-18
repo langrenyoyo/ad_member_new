@@ -1,0 +1,65 @@
+[
+  {
+    "field": "user.username",
+    "requests": [],
+    "form": "上级Id会员ID游戏名称代理商名称金币广告平台广告类型选择激励副广副广类型选择开屏Banner插屏信息流状态选择失败成功观看时间提交 重置 "
+  },
+  {
+    "field": "game.name",
+    "requests": [
+      {
+        "sort": [
+          "request_id"
+        ],
+        "order": [
+          "asc"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "10"
+        ],
+        "filter": [
+          "{\"user.parent_id\":\"8100\",\"user_id\":\"8200\",\"game.name\":\"对照游戏\",\"is_fu\":\"0\",\"create_time\":\"2026-09-17 00:00:00 - 2026-09-17 23:59:59\"}"
+        ],
+        "op": [
+          "{\"user.parent_id\":\"=\",\"user_id\":\"=\",\"game.name\":\"=\",\"is_fu\":\"=\",\"create_time\":\"RANGE\"}"
+        ],
+        "_": [
+          "1789645512611"
+        ]
+      }
+    ],
+    "form": "上级Id会员ID游戏名称代理商名称金币广告平台广告类型选择激励副广副广类型选择开屏Banner插屏信息流状态选择失败成功观看时间提交 重置 "
+  },
+  {
+    "field": "agent.name",
+    "requests": [
+      {
+        "sort": [
+          "request_id"
+        ],
+        "order": [
+          "asc"
+        ],
+        "offset": [
+          "0"
+        ],
+        "limit": [
+          "10"
+        ],
+        "filter": [
+          "{\"user.parent_id\":\"8100\",\"user_id\":\"8200\",\"game.name\":\"对照游戏\",\"agent.name\":\"对照主体\",\"is_fu\":\"0\",\"create_time\":\"2026-09-17 00:00:00 - 2026-09-17 23:59:59\"}"
+        ],
+        "op": [
+          "{\"user.parent_id\":\"=\",\"user_id\":\"=\",\"game.name\":\"=\",\"agent.name\":\"LIKE\",\"is_fu\":\"=\",\"create_time\":\"RANGE\"}"
+        ],
+        "_": [
+          "1789645512612"
+        ]
+      }
+    ],
+    "form": "上级Id会员ID游戏名称代理商名称金币广告平台广告类型选择激励副广副广类型选择开屏Banner插屏信息流状态选择失败成功观看时间提交 重置 "
+  }
+]

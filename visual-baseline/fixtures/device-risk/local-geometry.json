@@ -1,0 +1,431 @@
+{
+  "geometry": [
+    [
+      {
+        "width": 44,
+        "height": 41
+      },
+      {
+        "width": 68.125,
+        "height": 41
+      },
+      {
+        "width": 108.171875,
+        "height": 41
+      },
+      {
+        "width": 123.546875,
+        "height": 41
+      },
+      {
+        "width": 131.21875,
+        "height": 41
+      },
+      {
+        "width": 126.046875,
+        "height": 41
+      },
+      {
+        "width": 115.078125,
+        "height": 41
+      },
+      {
+        "width": 115.078125,
+        "height": 41
+      },
+      {
+        "width": 95.34375,
+        "height": 41
+      },
+      {
+        "width": 95.34375,
+        "height": 41
+      },
+      {
+        "width": 69.046875,
+        "height": 41
+      },
+      {
+        "width": 66.59375,
+        "height": 41
+      },
+      {
+        "width": 176.46875,
+        "height": 41
+      },
+      {
+        "width": 294.9375,
+        "height": 41
+      }
+    ],
+    [
+      {
+        "width": 44,
+        "height": 47
+      },
+      {
+        "width": 68.125,
+        "height": 47
+      },
+      {
+        "width": 108.171875,
+        "height": 47
+      },
+      {
+        "width": 123.546875,
+        "height": 47
+      },
+      {
+        "width": 131.21875,
+        "height": 47
+      },
+      {
+        "width": 126.046875,
+        "height": 47
+      },
+      {
+        "width": 115.078125,
+        "height": 47
+      },
+      {
+        "width": 115.078125,
+        "height": 47
+      },
+      {
+        "width": 95.34375,
+        "height": 47
+      },
+      {
+        "width": 95.34375,
+        "height": 47
+      },
+      {
+        "width": 69.046875,
+        "height": 47
+      },
+      {
+        "width": 66.59375,
+        "height": 47
+      },
+      {
+        "width": 176.46875,
+        "height": 47
+      },
+      {
+        "width": 294.9375,
+        "height": 47
+      }
+    ],
+    [
+      {
+        "width": 44,
+        "height": 47
+      },
+      {
+        "width": 68.125,
+        "height": 47
+      },
+      {
+        "width": 108.171875,
+        "height": 47
+      },
+      {
+        "width": 123.546875,
+        "height": 47
+      },
+      {
+        "width": 131.21875,
+        "height": 47
+      },
+      {
+        "width": 126.046875,
+        "height": 47
+      },
+      {
+        "width": 115.078125,
+        "height": 47
+      },
+      {
+        "width": 115.078125,
+        "height": 47
+      },
+      {
+        "width": 95.34375,
+        "height": 47
+      },
+      {
+        "width": 95.34375,
+        "height": 47
+      },
+      {
+        "width": 69.046875,
+        "height": 47
+      },
+      {
+        "width": 66.59375,
+        "height": 47
+      },
+      {
+        "width": 176.46875,
+        "height": 47
+      },
+      {
+        "width": 294.9375,
+        "height": 47
+      }
+    ],
+    [
+      {
+        "width": 44,
+        "height": 47
+      },
+      {
+        "width": 68.125,
+        "height": 47
+      },
+      {
+        "width": 108.171875,
+        "height": 47
+      },
+      {
+        "width": 123.546875,
+        "height": 47
+      },
+      {
+        "width": 131.21875,
+        "height": 47
+      },
+      {
+        "width": 126.046875,
+        "height": 47
+      },
+      {
+        "width": 115.078125,
+        "height": 47
+      },
+      {
+        "width": 115.078125,
+        "height": 47
+      },
+      {
+        "width": 95.34375,
+        "height": 47
+      },
+      {
+        "width": 95.34375,
+        "height": 47
+      },
+      {
+        "width": 69.046875,
+        "height": 47
+      },
+      {
+        "width": 66.59375,
+        "height": 47
+      },
+      {
+        "width": 176.46875,
+        "height": 47
+      },
+      {
+        "width": 294.9375,
+        "height": 47
+      }
+    ]
+  ],
+  "control_styles": [
+    {
+      "html": "<input type=\"checkbox\" data-white-select=\"8100\" aria-label=\"\u9009\u62e9\u4f1a\u5458 8100\" style=\"\">",
+      "font": "14px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(51, 51, 51)",
+      "display": "inline-block",
+      "verticalAlign": "baseline",
+      "margin": "0px",
+      "padding": "0px",
+      "width": 13,
+      "height": 13
+    },
+    {
+      "html": "<button class=\"game-user-cell-search\" data-white-search=\"username\" data-value=\"fixture 001\" title=\"\u70b9\u51fb\u641c\u7d22 fixture 001\">fixture 001</button>",
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(67, 151, 253)",
+      "display": "inline-block",
+      "verticalAlign": "baseline",
+      "margin": "0px",
+      "padding": "0px",
+      "width": 65.375,
+      "height": 20
+    },
+    {
+      "html": "<button class=\"game-user-cell-search\" data-white-search=\"game_name\" data-value=\"fixture game 0\" title=\"\u70b9\u51fb\u641c\u7d22 fixture game 0\">fixture game 0</button>",
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(67, 151, 253)",
+      "display": "inline-block",
+      "verticalAlign": "baseline",
+      "margin": "0px",
+      "padding": "0px",
+      "width": 88.71875,
+      "height": 20
+    },
+    {
+      "html": "<button class=\"white-toggle\" data-white-toggle=\"is_white\" data-white-id=\"8100\" role=\"switch\" aria-label=\"\u767d\u540d\u5355\" aria-checked=\"false\" title=\"\u70b9\u51fb\u5207\u6362\"><i class=\"shell-icon\" aria-hidden=\"true\">\uf205</i></button>",
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(210, 214, 222)",
+      "display": "inline-block",
+      "verticalAlign": "baseline",
+      "margin": "0px",
+      "padding": "0px",
+      "width": 29.765625,
+      "height": 27
+    },
+    {
+      "html": "<i class=\"shell-icon\" aria-hidden=\"true\">\uf205</i>",
+      "font": "26.04px / 26.04px FontAwesome",
+      "color": "rgb(210, 214, 222)",
+      "display": "inline-block",
+      "verticalAlign": "baseline",
+      "margin": "0px",
+      "padding": "0px",
+      "width": 29.765625,
+      "height": 26.046875
+    },
+    {
+      "html": "<button class=\"white-toggle\" data-white-toggle=\"status\" data-white-id=\"8100\" role=\"switch\" aria-label=\"\u72b6\u6001\" aria-checked=\"true\" title=\"\u70b9\u51fb\u5207\u6362\"><i class=\"shell-icon\" aria-hidden=\"true\">\uf205</i></button>",
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(24, 188, 156)",
+      "display": "inline-block",
+      "verticalAlign": "baseline",
+      "margin": "0px",
+      "padding": "0px",
+      "width": 29.765625,
+      "height": 27
+    },
+    {
+      "html": "<i class=\"shell-icon\" aria-hidden=\"true\">\uf205</i>",
+      "font": "26.04px / 26.04px FontAwesome",
+      "color": "rgb(24, 188, 156)",
+      "display": "inline-block",
+      "verticalAlign": "baseline",
+      "margin": "0px",
+      "padding": "0px",
+      "width": 29.765625,
+      "height": 26.046875
+    },
+    {
+      "html": "<button class=\"game-member-behavior\" data-member-behavior=\"single\" data-member-id=\"8100\" data-game-id=\"6100\">\u5355APP\u884c\u4e3a</button>",
+      "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(255, 255, 255)",
+      "display": "inline-block",
+      "verticalAlign": "middle",
+      "margin": "0px 3.89062px 0px 0px",
+      "padding": "1px 5px",
+      "width": 72.015625,
+      "height": 22
+    },
+    {
+      "html": "<button class=\"game-member-behavior multi\" data-member-behavior=\"multiple\" data-member-id=\"8100\" data-game-id=\"6100\">\u591aAPP\u884c\u4e3a</button>",
+      "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(255, 255, 255)",
+      "display": "inline-block",
+      "verticalAlign": "middle",
+      "margin": "0px 3.89062px 0px 0px",
+      "padding": "1px 5px",
+      "width": 72.015625,
+      "height": 22
+    },
+    {
+      "html": "<button class=\"game-member-coins\" data-white-coins=\"8100\">\u4fee\u6539\u91d1\u5e01</button>",
+      "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(255, 255, 255)",
+      "display": "inline-block",
+      "verticalAlign": "middle",
+      "margin": "0px",
+      "padding": "1px 5px",
+      "width": 60,
+      "height": 22
+    },
+    {
+      "html": "<button class=\"game-member-edit\" data-white-edit=\"8100\" title=\"\u7f16\u8f91\" aria-label=\"\u7f16\u8f91\"><i class=\"shell-icon\" aria-hidden=\"true\">\uf040</i></button>",
+      "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "color": "rgb(255, 255, 255)",
+      "display": "inline-block",
+      "verticalAlign": "middle",
+      "margin": "0px",
+      "padding": "1px 5px",
+      "width": 22.296875,
+      "height": 22
+    }
+  ],
+  "card_geometry": [
+    {
+      "html": "<input type=\"checkbox\" data-white-select=\"8100\" aria-label=\"\u9009\u62e9\u4f1a\u5458 8100\" style=\"\">",
+      "height": 20,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<strong>Id</strong><span>8100</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<strong>\u8d26\u53f7</strong><span><button class=\"game-user-cell-search\" data-white-search=\"username\" data-value=\"fixture 001\" title=\"\u70b9\u51fb\u641c\u7d22 fixture 001\">fixture 001</button></span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<strong>\u4e0a\u7ea7\u6635\u79f0</strong><span>fixture parent</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<strong></strong><span><button class=\"game-user-cell-search\" data-white-search=\"game_name\" data-value=\"fixture game 0\" title=\"\u70b9\u51fb\u641c\u7d22 fixture game 0\">fixture game 0</button></span>",
+      "height": 20,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<strong>\u7d2f\u8ba1\u91d1\u5e01\u6536\u76ca</strong><span>100</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<strong>\u672c\u6708\u91d1\u5e01\u6536\u76ca</strong><span>10</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<strong>\u4eca\u65e5\u91d1\u5e01\u6536\u76ca</strong><span>0</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<strong>\u53ef\u7528\u91d1\u5e01</strong><span>10.5</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<strong>\u51bb\u7ed3\u91d1\u5e01</strong><span>0</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<strong>\u767d\u540d\u5355</strong><span><button class=\"white-toggle\" data-white-toggle=\"is_white\" data-white-id=\"8100\" role=\"switch\" aria-label=\"\u767d\u540d\u5355\" aria-checked=\"false\" title=\"\u70b9\u51fb\u5207\u6362\"><i class=\"shell-icon\" aria-hidden=\"true\">\uf205</i></button></span>",
+      "height": 28.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<strong>\u72b6\u6001</strong><span><button class=\"white-toggle\" data-white-toggle=\"status\" data-white-id=\"8100\" role=\"switch\" aria-label=\"\u72b6\u6001\" aria-checked=\"true\" title=\"\u70b9\u51fb\u5207\u6362\"><i class=\"shell-icon\" aria-hidden=\"true\">\uf205</i></button></span>",
+      "height": 28.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<strong>\u521b\u5efa\u65f6\u95f4</strong><span>2026-09-18 08:00:00</span>",
+      "height": 21.375,
+      "lineHeight": "20px"
+    },
+    {
+      "html": "<strong>\u64cd\u4f5c</strong><span><button class=\"game-member-behavior\" data-member-behavior=\"single\" data-member-id=\"8100\" data-game-id=\"6100\">\u5355APP\u884c\u4e3a</button><button class=\"game-member-behavior multi\" data-member-behavior=\"multiple\" data-member-id=\"8100\" data-game-id=\"6100\">\u591aAPP\u884c\u4e3a</button><button class=\"game-member-coins\" data-white-coins=\"8100\">\u4fee\u6539\u91d1\u5e01</button> <button class=\"game-member-edit\" data-white-edit=\"8100\" title=\"\u7f16\u8f91\" aria-label=\"\u7f16\u8f91\"><i class=\"shell-icon\" aria-hidden=\"true\">\uf040</i></button></span>",
+      "height": 22.375,
+      "lineHeight": "20px"
+    }
+  ]
+}

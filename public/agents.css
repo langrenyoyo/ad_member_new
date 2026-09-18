@@ -1,0 +1,156 @@
+.main:has(#agentHost)>.topbar{display:none}
+.content:has(#agentHost){padding:15px}
+.agent-panel{padding:15px;border-radius:3px;color:#333;font:14px/22.001px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-panel #agentFilters{grid-template-columns:repeat(4,minmax(0,1fr));gap:15px 0;margin:0 -15px;padding:0 0 15px}
+.agent-panel #agentFilters>label{display:grid;grid-template-columns:33.33333333% 66.66666667%;align-items:start;gap:0;padding:0 15px;margin:0;font-weight:400;min-width:0}
+.agent-panel #agentFilters>label>span{width:auto;padding:7px 15px 0;font:400 14px/22.001px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-panel #agentFilters input,.agent-panel #agentFilters select{height:33px;width:calc(100% - 30px);margin:0 15px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-panel #agentFilters input::placeholder{color:#999;opacity:1}
+.agent-panel #agentFilters .ads-filter-actions{grid-column:auto;padding-left:calc(33.333333% + 20px);gap:4px}
+.agent-panel #agentFilters .ads-filter-actions button{height:32.5625px;border-radius:3px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-panel #agentFilters .ads-submit{background:#18bc9c!important;border-color:#18bc9c!important}
+.agent-panel.game-user-panel .ads-toolbar{min-height:52.5625px;gap:3.890625px}
+.agent-panel .ads-refresh .shell-icon{width:auto}
+.agent-panel .ads-refresh{border-radius:3px}
+.agent-panel .game-user-table-tools{gap:0;align-self:flex-start}
+.agent-panel .game-user-table-tools>button,.agent-panel .game-user-table-tools summary{height:32.5625px;padding:6px 12px;color:#444;background:#f4f4f4;border:1px solid #ddd;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-panel .game-user-table-tools details{margin-left:-1px}
+.agent-panel .game-user-table-tools summary{border-radius:0}
+.agent-panel .game-user-table-tools [data-action=cards]{border-radius:3px 0 0 3px}
+.agent-panel .game-user-table-tools .game-user-export summary{border-radius:0 4px 4px 0}
+.agent-panel .game-user-table-tools .caret{display:inline-block;vertical-align:middle;margin-left:0;border-top:4px dashed;border-right:4px solid transparent;border-left:4px solid transparent}
+.agent-panel #agentList .ads-table th,.agent-panel #agentList .ads-table td{text-align:center;border-color:#f4f4f4}
+.agent-panel #agentList .ads-table{white-space:nowrap}
+.agent-panel #agentList .ads-table{table-layout:fixed}
+.agent-panel #agentList .ads-table th:nth-child(1),.agent-panel #agentList .ads-table td:nth-child(1){width:44px}
+.agent-panel #agentList .ads-table th:nth-child(2),.agent-panel #agentList .ads-table td:nth-child(2){width:198.65625px}
+.agent-panel #agentList .ads-table th:nth-child(3),.agent-panel #agentList .ads-table td:nth-child(3){width:360.25px}
+.agent-panel #agentList .ads-table th:nth-child(4),.agent-panel #agentList .ads-table td:nth-child(4){width:148.4375px}
+.agent-panel #agentList .ads-table th:nth-child(5),.agent-panel #agentList .ads-table td:nth-child(5){width:206.4375px}
+.agent-panel #agentList .ads-table th:nth-child(6),.agent-panel #agentList .ads-table td:nth-child(6){width:514.5625px}
+.agent-panel #agentList .ads-table th:nth-child(7),.agent-panel #agentList .ads-table td:nth-child(7){width:156.65625px}
+.agent-panel #agentList .ads-table th:nth-child(4),.agent-panel #agentList .ads-table td:nth-child(4){min-width:0;overflow:hidden}
+.agent-panel #agentList .ads-table td{height:47px}
+.agent-panel #agentList .ads-table th{color:#333;border-bottom-color:#ddd}
+.agent-panel #agentList .ads-table th button{padding:8px 15px}
+.agent-panel #agentList .ads-table th[aria-sort=ascending] button:before{border-bottom-color:#8080ff}
+.agent-panel #agentList .ads-table th[aria-sort=descending] button:after{border-top-color:#8080ff}
+.agent-panel #agentList .ads-table th[aria-sort] button:before,.agent-panel #agentList .ads-table th[aria-sort] button:after{display:none}
+.agent-panel #agentList .ads-table th[aria-sort] button{background:right center no-repeat url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAAkElEQVQoz7XQMQ5AQBCF4dWQSJxC5wwax1Cq1e7BAdxD5SL+Tq/QCM1oNiJidwox0355mXnG/DrEtIQ6azioNZQxI0ykPhTQIwhCR+BmBYtlK7kLJYwWCcJA9M4qdrZrd8pPjZWPtOqdRQy320YSV17OatFC4euts6z39GYMKRPCTKY9UnPQ6P+GtMRfGtPnBCiqhAeJPmkqAAAAAElFTkSuQmCC")}
+.agent-panel #agentList .ads-table th[aria-sort=ascending] button{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZ0lEQVQ4y2NgGLKgquEuFxBPAGI2ahhWCsS/gDibUoO0gPgxEP8H4ttArEyuQYxAPBdqEAxPBImTY5gjEL9DM+wTENuQahAvEO9DMwiGdwAxOymGJQLxTyD+jgWDxCMZRsEoGAVoAADeemwtPcZI2wAAAABJRU5ErkJggg==")}
+.agent-panel #agentList .ads-table th[aria-sort=descending] button{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZUlEQVQ4y2NgGAWjYBSggaqGu5FA/BOIv2PBIPFEUgxjB+IdQPwfC94HxLykus4GiD+hGfQOiB3J8SojEE9EM2wuSJzcsFMG4ttQgx4DsRalkZENxL+AuJQaMcsGxBOAmGvopk8AVz1sLZgg0bsAAAAASUVORK5CYII=")}
+.agent-panel #agentPagination{font:14px/34px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;margin:0;min-height:54px;padding:10px 0}
+.agent-panel #agentPagination[hidden]{display:none}
+.agent-panel #agentPagination .game-page-info{display:block;line-height:34px}
+.agent-panel #agentPagination .game-page-info>span:first-child{margin-right:5px}
+.agent-panel #agentPagination .game-page-size{display:inline}
+.agent-panel #agentPagination .game-page-size[hidden]{display:none}
+.agent-panel #agentPagination .game-page-size details{display:inline-block;vertical-align:middle;line-height:18.5714px}
+.agent-panel .game-user-cards{border:1px solid #f4f4f4}
+.agent-panel .game-user-cards article{padding:8px 15px;border:0;font:14px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-panel .game-user-cards article+article{border-top:1px solid #f4f4f4}
+.agent-panel .game-user-cards article:nth-child(odd){background:#f9f9f9}
+.agent-panel .game-user-cards article>div{display:block;padding:0}
+.agent-panel .game-user-cards article>div[hidden]{display:none}
+.agent-panel .game-user-cards strong{display:inline-block;width:30%;vertical-align:middle}
+.agent-panel .game-user-cards article>div>span{display:inline;overflow-wrap:anywhere}
+.agent-panel #agentPagination nav{gap:0;align-items:baseline;line-height:20px}
+.agent-panel #agentPagination nav>button,.agent-panel #agentPagination .game-page-gap{height:34px;padding:6px 12px;border:1px solid #ddd;border-radius:0;background:#fafafa;color:#666;font:14px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-panel #agentPagination nav>button:first-child{border-radius:3px 0 0 3px}
+.agent-panel #agentPagination nav>[aria-current=page]{position:relative;background:#444c69;border-color:#444c69;color:white}
+.agent-panel #agentPagination .game-page-gap{background:white;color:#777}
+.agent-panel #agentPagination .game-page-jump{display:inline-block;align-self:flex-start;margin:0;white-space:nowrap;line-height:22.001px}
+.agent-panel #agentPagination .game-page-jump input{display:inline-block;width:50px;height:33px;padding:6px 12px;margin:0 5px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-panel #agentPagination .game-page-jump button{height:auto;vertical-align:middle;padding:6px 12px;border-radius:3px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-panel #agentPagination .game-page-size summary{padding:6px 12px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-panel #agentPagination .game-page-size .caret{border-top:0;border-bottom:4px dashed;margin-left:0}
+#reviewError:not(:empty){padding:10px;color:#b33}
+@media(max-width:1199px){.agent-panel #agentFilters{grid-template-columns:repeat(3,minmax(0,1fr))}.agent-panel #agentFilters .ads-filter-actions{grid-column:auto}}
+@media(max-width:991px){.agent-panel #agentFilters{grid-template-columns:repeat(2,minmax(0,1fr))}.agent-panel #agentFilters .ads-filter-actions{grid-column:auto}.agent-panel .ads-toolbar{flex-wrap:wrap}}
+@media(max-width:767px){.agent-panel #agentFilters{grid-template-columns:minmax(0,1fr)}.agent-panel #agentFilters>label{grid-template-columns:105px minmax(0,1fr)}.agent-panel #agentFilters .ads-filter-actions{padding-left:135px}}
+
+.agent-panel #agentSearchToggle{margin-left:5px;border-radius:3px}
+.agent-panel input[type=checkbox]{margin:0}
+.agent-panel #agentList .ads-table th:first-child{width:44px;box-sizing:border-box}
+.agent-panel #agentList .ads-table tr.selected td,.agent-panel .game-user-cards article.selected{background:#e4e9ed}
+.agent-panel #agentList .ads-table [data-field=name]{text-align:left}
+.agent-panel #agentList th[data-field=buttons]{width:120px;box-sizing:content-box}
+.agent-panel #agentList .ads-table th[data-field=buttons],.agent-panel #agentList .ads-table td[data-field=buttons]{width:148.4375px;box-sizing:border-box}
+.agent-panel #agentList th[data-field=buttons]>span{display:block;width:100px}
+.agent-panel #agentList td[data-field=buttons]{white-space:nowrap}
+.agent-panel .agent-oss,.agent-panel .agent-enter,.agent-panel .agent-edit,.agent-panel .agent-delete{height:22px;padding:1px 5px;border:1px solid #18bc9c;border-radius:3px;background:#18bc9c;color:white;font:12px/18px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;white-space:nowrap;vertical-align:middle}
+.agent-panel .agent-enter{background:#1688f1;border-color:#1688f1}
+.agent-panel .agent-delete{background:#e74c3c;border-color:#e74c3c}
+.agent-panel .agent-status{padding:.2em .6em .3em;font-size:75%;font-weight:700;line-height:1;color:white;border-radius:.25em;white-space:nowrap}
+.agent-panel .agent-status.enabled{background:#f39c12}.agent-panel .agent-status.disabled{background:#18bc9c}
+.agent-panel .agent-more summary{background:#444c69;border-color:#444c69;color:white;border-radius:3px}
+.agent-panel .agent-more summary[aria-disabled=true]{opacity:.65}
+.agent-panel .agent-more .caret{display:inline-block;vertical-align:middle;border-top:4px dashed;border-right:4px solid transparent;border-left:4px solid transparent}
+.agent-panel #agentCreate{background:#18bc9c;border-color:#18bc9c;color:white}
+.agent-panel #agentCreate[hidden]{display:none}
+.agent-panel .agent-more[hidden]{display:none}
+.agent-panel .fa{display:inline-block;font-family:FontAwesome;font-style:normal;font-weight:normal;line-height:1}
+.agent-panel .fa-gamepad:before{content:'\f11b'}.agent-panel .fa-cog:before{content:'\f013'}.agent-panel .fa-eye:before{content:'\f06e'}.agent-panel .fa-eye-slash:before{content:'\f070'}.agent-panel .fa-plus:before{content:'\f067'}
+.agent-oss-dialog{position:fixed;inset:0;margin:auto;z-index:100;width:800px;height:600px;max-width:calc(100vw - 30px);max-height:calc(100vh - 30px);padding:0;border:0;border-radius:2px;background:white;color:#333;box-shadow:1px 1px 50px #0005;font:14px/22.001px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;overflow:hidden}
+.agent-oss-dialog::backdrop{background:transparent}
+.agent-oss-dialog>header{height:45px;display:flex;align-items:center;padding:0 15px 0 20px;background:#2c3e50;color:white;cursor:move;touch-action:none;user-select:none}
+.agent-oss-dialog>header span{margin-right:auto}
+.agent-oss-dialog>header button{position:relative;flex:0 0 16px;width:16px;height:45px;margin-left:10px;padding:0;border:0;background:none;color:white;cursor:pointer}
+.agent-oss-dialog>header button:after{position:absolute;left:0;top:0;font:18px/45px MemberWindowIcons;content:'\e626'}
+.agent-oss-dialog [data-agent-oss-minimize]:after{content:'\e625'}
+.agent-oss-dialog [data-agent-oss-maximize]:after{content:'\e623'}
+.agent-oss-dialog.expanded [data-agent-oss-maximize]:after{content:'\e624'}
+.agent-oss-dialog.expanded,.agent-oss-dialog.minimized{transform:none!important}
+.agent-oss-dialog.expanded{width:100vw;height:100vh;max-width:100vw;max-height:100vh}
+.agent-oss-dialog.expanded>header,.agent-oss-dialog.minimized>header{cursor:default}
+.agent-oss-dialog.expanded [data-agent-oss-minimize],.agent-oss-dialog.minimized [data-agent-oss-minimize],.agent-oss-dialog.minimized>main{display:none}
+.agent-oss-dialog.minimized{position:fixed;inset:auto auto var(--agent-oss-dock-bottom,0px) var(--agent-oss-dock-left,0px);margin:0;width:180px;height:45px;z-index:40}
+.agent-oss-dialog>main{height:calc(100% - 45px);overflow:auto;background:white}
+.agent-oss-body{padding:15px 0 68px}
+.agent-oss-body form{margin:0}
+.agent-oss-body label{display:flex;align-items:flex-start;margin:0 0 15px;font-weight:400;gap:15px}
+.agent-oss-body label>span{width:16.66666667%;flex:none;padding:7px 15px 0;text-align:right;font:14px/22.001px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-oss-body input{width:calc(66.66666667% - 30px);height:33px;min-width:0;padding:6px 12px;border:1px solid #d2d6de;border-radius:0;box-shadow:none;color:#555;background:white;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-oss-body input:focus{outline:0;border-color:#3c8dbc}
+.agent-oss-body input:disabled{background:#eee}
+.agent-oss-body footer{position:absolute;bottom:0;left:0;right:0;display:flex;gap:4px;padding:10px 15px 10px calc(16.66666667% + 12px);background:#ecf0f1}
+.agent-oss-body footer button{height:33px;padding:6px 12px;border:1px solid #ddd;border-radius:3px;background:#f4f4f4;color:#444;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-oss-body footer [type=submit]{background:#444c69;border-color:#444c69;color:white}
+.agent-oss-body [role=alert]{padding:0 15px;color:#b33}
+.agent-oss-body [role=alert]:empty{display:none}
+.agent-oss-body [role=status]{padding:0 15px}
+@media(max-width:767px){.agent-oss-body label{display:block}.agent-oss-body label>span{display:block;width:100%;text-align:left;padding:0 15px 7px}.agent-oss-body input{margin:0 15px;width:calc(100% - 30px)}.agent-oss-body footer{padding-left:15px}}
+.agent-dashboard-name{padding:15px;background:#dff0d8;color:#3c763d;border:1px solid #d6e9c6;border-radius:3px;margin-bottom:10px}
+.agent-dashboard-tools{padding:15px;background:#d9edf7;border:1px solid #bce8f1;border-radius:3px}
+.agent-dashboard-tools button{padding:8px 12px;background:#f39c12;color:white;border:0;border-radius:2px;cursor:pointer}
+.agent-dashboard-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin:10px 0 20px}
+.agent-dashboard-cards article{display:flex;gap:10px;align-items:center;background:white;padding:20px;border-radius:3px}
+.agent-dashboard-cards i{background:#20c449;color:white;font-size:32px;padding:15px;border-radius:4px}
+.agent-dashboard-cards article:nth-child(2) i{background:#20b6dc}
+.agent-dashboard-cards strong{display:block;font-size:23px;margin-bottom:5px}
+.agent-dashboard-cards span{font-size:13px}.agent-dashboard-chart{background:white;padding:16px;border-radius:3px}
+.agent-dashboard-chart svg{width:100%;height:360px}.agent-dashboard-chart text{font-size:10px;fill:#999}
+@media(max-width:1000px){.agent-dashboard-cards{grid-template-columns:repeat(2,1fr)}}
+#agentChart{width:100%;height:360px}
+.main:has(#agentChart)>.topbar{display:none}
+.content:has(#agentChart){padding:15px}
+.agent-dashboard:has(#agentChart){font:14px/1.42857143 "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;color:#000}
+.agent-dashboard:has(#agentChart) .agent-dashboard-name{line-height:22.001px}
+.agent-dashboard:has(#agentChart) .agent-dashboard-tools{display:flex;gap:4px}
+.agent-dashboard:has(#agentChart) .agent-dashboard-tools a,.agent-dashboard:has(#agentChart) .agent-dashboard-tools button{font:400 13px/1.42857143 "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;padding:6px 12px;border:1px solid transparent;border-radius:2px;margin:0}
+.agent-dashboard:has(#agentChart) .agent-dashboard-tools a:before,.agent-dashboard:has(#agentChart) .agent-dashboard-tools button:before{font-family:FontAwesome;margin-right:3px}
+.agent-dashboard:has(#agentChart) .agent-dashboard-tools button:before{content:'\f0e4'}
+.agent-dashboard:has(#agentChart) .agent-dashboard-tools a[href="#agent-analysis"]:before,.agent-dashboard:has(#agentChart) .agent-dashboard-tools a[href="#agent-games"]:before{content:'\f11b'}
+.agent-dashboard:has(#agentChart) .agent-dashboard-tools a[href^="#members?"]:before{content:'\f007'}
+.agent-dashboard:has(#agentChart) .agent-dashboard-tools a[href^="#withdrawals?"]:before{content:'\f0d6'}
+.agent-dashboard:has(#agentChart) .agent-dashboard-cards article{align-items:flex-start;height:101.703125px}
+.agent-dashboard:has(#agentChart) .agent-dashboard-cards i{flex:none;display:block;width:60px;height:60px;padding:0;font:normal 30px/60px FontAwesome;text-align:center;border-radius:5px;background:#27c24c}
+.agent-dashboard:has(#agentChart) .agent-dashboard-cards article:nth-child(2) i{background:#23b7e5}
+.agent-dashboard:has(#agentChart) .fa-user-plus:before{content:'\f234'}
+.agent-dashboard:has(#agentChart) .fa-user-md:before{content:'\f0f0'}
+.agent-dashboard:has(#agentChart) .agent-dashboard-cards article>div{padding-top:2px;line-height:20px}
+.agent-dashboard:has(#agentChart) .agent-dashboard-cards strong{font-size:24px;font-weight:600;line-height:34px;margin-bottom:6px}
+.agent-dashboard:has(#agentChart) .agent-dashboard-cards span{font-size:14px}
+.agent-dashboard:has(#agentChart) .agent-dashboard-chart{border:1px solid transparent;padding:15px;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.agent-dashboard-tools a{display:inline-block;padding:8px 12px;background:#444c69;color:white;border-radius:2px;text-decoration:none;margin:0 4px}
+.game-ban-icon{display:inline-flex;width:22px;height:22px;align-items:center;justify-content:center;border-radius:50%;background:#f05050;color:#fff;font-size:12px}

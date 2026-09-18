@@ -1,0 +1,2948 @@
+{
+  "reference": {
+    "rect": {
+      "x": 30,
+      "y": 84,
+      "width": 1689.40625,
+      "height": 183,
+      "top": 84,
+      "right": 1719.40625,
+      "bottom": 267,
+      "left": 30
+    },
+    "styles": [
+      {
+        "text": "Id",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "0px none rgb(51, 51, 51)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 30.5,
+          "y": 84.5,
+          "width": 62.15625,
+          "height": 41,
+          "top": 84.5,
+          "right": 92.65625,
+          "bottom": 125.5,
+          "left": 30.5
+        }
+      },
+      {
+        "text": "上级Id",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 92.65625,
+          "y": 84.5,
+          "width": 62.15625,
+          "height": 41,
+          "top": 84.5,
+          "right": 154.8125,
+          "bottom": 125.5,
+          "left": 92.65625
+        }
+      },
+      {
+        "text": "上级支付宝姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 154.8125,
+          "y": 84.5,
+          "width": 119,
+          "height": 41,
+          "top": 84.5,
+          "right": 273.8125,
+          "bottom": 125.5,
+          "left": 154.8125
+        }
+      },
+      {
+        "text": "会员ID",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 273.8125,
+          "y": 84.5,
+          "width": 63,
+          "height": 41,
+          "top": 84.5,
+          "right": 336.8125,
+          "bottom": 125.5,
+          "left": 273.8125
+        }
+      },
+      {
+        "text": "用户账号",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 336.8125,
+          "y": 84.5,
+          "width": 94.796875,
+          "height": 41,
+          "top": 84.5,
+          "right": 431.609375,
+          "bottom": 125.5,
+          "left": 336.8125
+        }
+      },
+      {
+        "text": "支付宝姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 431.609375,
+          "y": 84.5,
+          "width": 91,
+          "height": 41,
+          "top": 84.5,
+          "right": 522.609375,
+          "bottom": 125.5,
+          "left": 431.609375
+        }
+      },
+      {
+        "text": "游戏名称",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 522.609375,
+          "y": 84.5,
+          "width": 87,
+          "height": 41,
+          "top": 84.5,
+          "right": 609.609375,
+          "bottom": 125.5,
+          "left": 522.609375
+        }
+      },
+      {
+        "text": "ECPM",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 609.609375,
+          "y": 84.5,
+          "width": 71.453125,
+          "height": 41,
+          "top": 84.5,
+          "right": 681.0625,
+          "bottom": 125.5,
+          "left": 609.609375
+        }
+      },
+      {
+        "text": "金币",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 681.0625,
+          "y": 84.5,
+          "width": 59,
+          "height": 41,
+          "top": 84.5,
+          "right": 740.0625,
+          "bottom": 125.5,
+          "left": 681.0625
+        }
+      },
+      {
+        "text": "广告平台",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 740.0625,
+          "y": 84.5,
+          "width": 87,
+          "height": 41,
+          "top": 84.5,
+          "right": 827.0625,
+          "bottom": 125.5,
+          "left": 740.0625
+        }
+      },
+      {
+        "text": "抽奖",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 827.0625,
+          "y": 84.5,
+          "width": 54.09375,
+          "height": 41,
+          "top": 84.5,
+          "right": 881.15625,
+          "bottom": 125.5,
+          "left": 827.0625
+        }
+      },
+      {
+        "text": "任务",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 881.15625,
+          "y": 84.5,
+          "width": 54.09375,
+          "height": 41,
+          "top": 84.5,
+          "right": 935.25,
+          "bottom": 125.5,
+          "left": 881.15625
+        }
+      },
+      {
+        "text": "奖励类型",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 935.25,
+          "y": 84.5,
+          "width": 77,
+          "height": 41,
+          "top": 84.5,
+          "right": 1012.25,
+          "bottom": 125.5,
+          "left": 935.25
+        }
+      },
+      {
+        "text": "广告类型",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1012.25,
+          "y": 84.5,
+          "width": 77,
+          "height": 41,
+          "top": 84.5,
+          "right": 1089.25,
+          "bottom": 125.5,
+          "left": 1012.25
+        }
+      },
+      {
+        "text": "副广类型",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1089.25,
+          "y": 84.5,
+          "width": 79.78125,
+          "height": 41,
+          "top": 84.5,
+          "right": 1169.03125,
+          "bottom": 125.5,
+          "left": 1089.25
+        }
+      },
+      {
+        "text": "状态",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1169.03125,
+          "y": 84.5,
+          "width": 64.59375,
+          "height": 41,
+          "top": 84.5,
+          "right": 1233.625,
+          "bottom": 125.5,
+          "left": 1169.03125
+        }
+      },
+      {
+        "text": "观看时间",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1233.625,
+          "y": 84.5,
+          "width": 161,
+          "height": 41,
+          "top": 84.5,
+          "right": 1394.625,
+          "bottom": 125.5,
+          "left": 1233.625
+        }
+      },
+      {
+        "text": "广告代码位",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1394.625,
+          "y": 84.5,
+          "width": 91,
+          "height": 41,
+          "top": 84.5,
+          "right": 1485.625,
+          "bottom": 125.5,
+          "left": 1394.625
+        }
+      },
+      {
+        "text": "广告request_id",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1485.625,
+          "y": 84.5,
+          "width": 129.8125,
+          "height": 41,
+          "top": 84.5,
+          "right": 1615.4375,
+          "bottom": 125.5,
+          "left": 1485.625
+        }
+      },
+      {
+        "text": "交易trans_id",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1615.4375,
+          "y": 84.5,
+          "width": 103.46875,
+          "height": 41,
+          "top": 84.5,
+          "right": 1718.90625,
+          "bottom": 125.5,
+          "left": 1615.4375
+        }
+      },
+      {
+        "text": "9200",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "0px none rgb(51, 51, 51)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 30.5,
+          "y": 125.5,
+          "width": 62.15625,
+          "height": 47,
+          "top": 125.5,
+          "right": 92.65625,
+          "bottom": 172.5,
+          "left": 30.5
+        }
+      },
+      {
+        "text": "8100",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 92.65625,
+          "y": 125.5,
+          "width": 62.15625,
+          "height": 47,
+          "top": 125.5,
+          "right": 154.8125,
+          "bottom": 172.5,
+          "left": 92.65625
+        }
+      },
+      {
+        "text": "上级姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 154.8125,
+          "y": 125.5,
+          "width": 119,
+          "height": 47,
+          "top": 125.5,
+          "right": 273.8125,
+          "bottom": 172.5,
+          "left": 154.8125
+        }
+      },
+      {
+        "text": "8200",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 273.8125,
+          "y": 125.5,
+          "width": 63,
+          "height": 47,
+          "top": 125.5,
+          "right": 336.8125,
+          "bottom": 172.5,
+          "left": 273.8125
+        }
+      },
+      {
+        "text": "对照账号0",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 336.8125,
+          "y": 125.5,
+          "width": 94.796875,
+          "height": 47,
+          "top": 125.5,
+          "right": 431.609375,
+          "bottom": 172.5,
+          "left": 336.8125
+        }
+      },
+      {
+        "text": "测试姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 431.609375,
+          "y": 125.5,
+          "width": 91,
+          "height": 47,
+          "top": 125.5,
+          "right": 522.609375,
+          "bottom": 172.5,
+          "left": 431.609375
+        }
+      },
+      {
+        "text": "对照游戏",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 522.609375,
+          "y": 125.5,
+          "width": 87,
+          "height": 47,
+          "top": 125.5,
+          "right": 609.609375,
+          "bottom": 172.5,
+          "left": 522.609375
+        }
+      },
+      {
+        "text": "0",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 609.609375,
+          "y": 125.5,
+          "width": 71.453125,
+          "height": 47,
+          "top": 125.5,
+          "right": 681.0625,
+          "bottom": 172.5,
+          "left": 609.609375
+        }
+      },
+      {
+        "text": "0",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 681.0625,
+          "y": 125.5,
+          "width": 59,
+          "height": 47,
+          "top": 125.5,
+          "right": 740.0625,
+          "bottom": 172.5,
+          "left": 681.0625
+        }
+      },
+      {
+        "text": "测试平台",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 740.0625,
+          "y": 125.5,
+          "width": 87,
+          "height": 47,
+          "top": 125.5,
+          "right": 827.0625,
+          "bottom": 172.5,
+          "left": 740.0625
+        }
+      },
+      {
+        "text": "否",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 827.0625,
+          "y": 125.5,
+          "width": 54.09375,
+          "height": 47,
+          "top": 125.5,
+          "right": 881.15625,
+          "bottom": 172.5,
+          "left": 827.0625
+        }
+      },
+      {
+        "text": "是",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 881.15625,
+          "y": 125.5,
+          "width": 54.09375,
+          "height": 47,
+          "top": 125.5,
+          "right": 935.25,
+          "bottom": 172.5,
+          "left": 881.15625
+        }
+      },
+      {
+        "text": "提升",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 935.25,
+          "y": 125.5,
+          "width": 77,
+          "height": 47,
+          "top": 125.5,
+          "right": 1012.25,
+          "bottom": 172.5,
+          "left": 935.25
+        }
+      },
+      {
+        "text": "激励",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1012.25,
+          "y": 125.5,
+          "width": 77,
+          "height": 47,
+          "top": 125.5,
+          "right": 1089.25,
+          "bottom": 172.5,
+          "left": 1012.25
+        }
+      },
+      {
+        "text": "开屏",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1089.25,
+          "y": 125.5,
+          "width": 79.78125,
+          "height": 47,
+          "top": 125.5,
+          "right": 1169.03125,
+          "bottom": 172.5,
+          "left": 1089.25
+        }
+      },
+      {
+        "text": "失败",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1169.03125,
+          "y": 125.5,
+          "width": 64.59375,
+          "height": 47,
+          "top": 125.5,
+          "right": 1233.625,
+          "bottom": 172.5,
+          "left": 1169.03125
+        }
+      },
+      {
+        "text": "2026-09-16 08:00:00",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1233.625,
+          "y": 125.5,
+          "width": 161,
+          "height": 47,
+          "top": 125.5,
+          "right": 1394.625,
+          "bottom": 172.5,
+          "left": 1233.625
+        }
+      },
+      {
+        "text": "code",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1394.625,
+          "y": 125.5,
+          "width": 91,
+          "height": 47,
+          "top": 125.5,
+          "right": 1485.625,
+          "bottom": 172.5,
+          "left": 1394.625
+        }
+      },
+      {
+        "text": "REQ-0",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1485.625,
+          "y": 125.5,
+          "width": 129.8125,
+          "height": 47,
+          "top": 125.5,
+          "right": 1615.4375,
+          "bottom": 172.5,
+          "left": 1485.625
+        }
+      },
+      {
+        "text": "TRANS-0",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "0px none rgb(51, 51, 51)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1615.4375,
+          "y": 125.5,
+          "width": 103.46875,
+          "height": 47,
+          "top": 125.5,
+          "right": 1718.90625,
+          "bottom": 172.5,
+          "left": 1615.4375
+        }
+      },
+      {
+        "text": "9201",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "0px none rgb(51, 51, 51)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 30.5,
+          "y": 172.5,
+          "width": 62.15625,
+          "height": 47,
+          "top": 172.5,
+          "right": 92.65625,
+          "bottom": 219.5,
+          "left": 30.5
+        }
+      },
+      {
+        "text": "8100",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 92.65625,
+          "y": 172.5,
+          "width": 62.15625,
+          "height": 47,
+          "top": 172.5,
+          "right": 154.8125,
+          "bottom": 219.5,
+          "left": 92.65625
+        }
+      },
+      {
+        "text": "上级姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 154.8125,
+          "y": 172.5,
+          "width": 119,
+          "height": 47,
+          "top": 172.5,
+          "right": 273.8125,
+          "bottom": 219.5,
+          "left": 154.8125
+        }
+      },
+      {
+        "text": "8201",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 273.8125,
+          "y": 172.5,
+          "width": 63,
+          "height": 47,
+          "top": 172.5,
+          "right": 336.8125,
+          "bottom": 219.5,
+          "left": 273.8125
+        }
+      },
+      {
+        "text": "对照账号1",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 336.8125,
+          "y": 172.5,
+          "width": 94.796875,
+          "height": 47,
+          "top": 172.5,
+          "right": 431.609375,
+          "bottom": 219.5,
+          "left": 336.8125
+        }
+      },
+      {
+        "text": "测试姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 431.609375,
+          "y": 172.5,
+          "width": 91,
+          "height": 47,
+          "top": 172.5,
+          "right": 522.609375,
+          "bottom": 219.5,
+          "left": 431.609375
+        }
+      },
+      {
+        "text": "对照游戏",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 522.609375,
+          "y": 172.5,
+          "width": 87,
+          "height": 47,
+          "top": 172.5,
+          "right": 609.609375,
+          "bottom": 219.5,
+          "left": 522.609375
+        }
+      },
+      {
+        "text": "12.5",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 609.609375,
+          "y": 172.5,
+          "width": 71.453125,
+          "height": 47,
+          "top": 172.5,
+          "right": 681.0625,
+          "bottom": 219.5,
+          "left": 609.609375
+        }
+      },
+      {
+        "text": "1.25",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 681.0625,
+          "y": 172.5,
+          "width": 59,
+          "height": 47,
+          "top": 172.5,
+          "right": 740.0625,
+          "bottom": 219.5,
+          "left": 681.0625
+        }
+      },
+      {
+        "text": "测试平台",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 740.0625,
+          "y": 172.5,
+          "width": 87,
+          "height": 47,
+          "top": 172.5,
+          "right": 827.0625,
+          "bottom": 219.5,
+          "left": 740.0625
+        }
+      },
+      {
+        "text": "是",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 827.0625,
+          "y": 172.5,
+          "width": 54.09375,
+          "height": 47,
+          "top": 172.5,
+          "right": 881.15625,
+          "bottom": 219.5,
+          "left": 827.0625
+        }
+      },
+      {
+        "text": "否",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 881.15625,
+          "y": 172.5,
+          "width": 54.09375,
+          "height": 47,
+          "top": 172.5,
+          "right": 935.25,
+          "bottom": 219.5,
+          "left": 881.15625
+        }
+      },
+      {
+        "text": "领取",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 935.25,
+          "y": 172.5,
+          "width": 77,
+          "height": 47,
+          "top": 172.5,
+          "right": 1012.25,
+          "bottom": 219.5,
+          "left": 935.25
+        }
+      },
+      {
+        "text": "副广",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1012.25,
+          "y": 172.5,
+          "width": 77,
+          "height": 47,
+          "top": 172.5,
+          "right": 1089.25,
+          "bottom": 219.5,
+          "left": 1012.25
+        }
+      },
+      {
+        "text": "Banner",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1089.25,
+          "y": 172.5,
+          "width": 79.78125,
+          "height": 47,
+          "top": 172.5,
+          "right": 1169.03125,
+          "bottom": 219.5,
+          "left": 1089.25
+        }
+      },
+      {
+        "text": "成功",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1169.03125,
+          "y": 172.5,
+          "width": 64.59375,
+          "height": 47,
+          "top": 172.5,
+          "right": 1233.625,
+          "bottom": 219.5,
+          "left": 1169.03125
+        }
+      },
+      {
+        "text": "2026-09-16 08:00:00",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1233.625,
+          "y": 172.5,
+          "width": 161,
+          "height": 47,
+          "top": 172.5,
+          "right": 1394.625,
+          "bottom": 219.5,
+          "left": 1233.625
+        }
+      },
+      {
+        "text": "code",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1394.625,
+          "y": 172.5,
+          "width": 91,
+          "height": 47,
+          "top": 172.5,
+          "right": 1485.625,
+          "bottom": 219.5,
+          "left": 1394.625
+        }
+      },
+      {
+        "text": "REQ-1",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1485.625,
+          "y": 172.5,
+          "width": 129.8125,
+          "height": 47,
+          "top": 172.5,
+          "right": 1615.4375,
+          "bottom": 219.5,
+          "left": 1485.625
+        }
+      },
+      {
+        "text": "TRANS-1",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1615.4375,
+          "y": 172.5,
+          "width": 103.46875,
+          "height": 47,
+          "top": 172.5,
+          "right": 1718.90625,
+          "bottom": 219.5,
+          "left": 1615.4375
+        }
+      },
+      {
+        "text": "9202",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "0px none rgb(51, 51, 51)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 30.5,
+          "y": 219.5,
+          "width": 62.15625,
+          "height": 47,
+          "top": 219.5,
+          "right": 92.65625,
+          "bottom": 266.5,
+          "left": 30.5
+        }
+      },
+      {
+        "text": "8100",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 92.65625,
+          "y": 219.5,
+          "width": 62.15625,
+          "height": 47,
+          "top": 219.5,
+          "right": 154.8125,
+          "bottom": 266.5,
+          "left": 92.65625
+        }
+      },
+      {
+        "text": "上级姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 154.8125,
+          "y": 219.5,
+          "width": 119,
+          "height": 47,
+          "top": 219.5,
+          "right": 273.8125,
+          "bottom": 266.5,
+          "left": 154.8125
+        }
+      },
+      {
+        "text": "8202",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 273.8125,
+          "y": 219.5,
+          "width": 63,
+          "height": 47,
+          "top": 219.5,
+          "right": 336.8125,
+          "bottom": 266.5,
+          "left": 273.8125
+        }
+      },
+      {
+        "text": "对照账号2",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 336.8125,
+          "y": 219.5,
+          "width": 94.796875,
+          "height": 47,
+          "top": 219.5,
+          "right": 431.609375,
+          "bottom": 266.5,
+          "left": 336.8125
+        }
+      },
+      {
+        "text": "测试姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 431.609375,
+          "y": 219.5,
+          "width": 91,
+          "height": 47,
+          "top": 219.5,
+          "right": 522.609375,
+          "bottom": 266.5,
+          "left": 431.609375
+        }
+      },
+      {
+        "text": "对照游戏",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 522.609375,
+          "y": 219.5,
+          "width": 87,
+          "height": 47,
+          "top": 219.5,
+          "right": 609.609375,
+          "bottom": 266.5,
+          "left": 522.609375
+        }
+      },
+      {
+        "text": "99",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 609.609375,
+          "y": 219.5,
+          "width": 71.453125,
+          "height": 47,
+          "top": 219.5,
+          "right": 681.0625,
+          "bottom": 266.5,
+          "left": 609.609375
+        }
+      },
+      {
+        "text": "9.9",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 681.0625,
+          "y": 219.5,
+          "width": 59,
+          "height": 47,
+          "top": 219.5,
+          "right": 740.0625,
+          "bottom": 266.5,
+          "left": 681.0625
+        }
+      },
+      {
+        "text": "测试平台",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 740.0625,
+          "y": 219.5,
+          "width": 87,
+          "height": 47,
+          "top": 219.5,
+          "right": 827.0625,
+          "bottom": 266.5,
+          "left": 740.0625
+        }
+      },
+      {
+        "text": "否",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 827.0625,
+          "y": 219.5,
+          "width": 54.09375,
+          "height": 47,
+          "top": 219.5,
+          "right": 881.15625,
+          "bottom": 266.5,
+          "left": 827.0625
+        }
+      },
+      {
+        "text": "是",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 881.15625,
+          "y": 219.5,
+          "width": 54.09375,
+          "height": 47,
+          "top": 219.5,
+          "right": 935.25,
+          "bottom": 266.5,
+          "left": 881.15625
+        }
+      },
+      {
+        "text": "提升",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 935.25,
+          "y": 219.5,
+          "width": 77,
+          "height": 47,
+          "top": 219.5,
+          "right": 1012.25,
+          "bottom": 266.5,
+          "left": 935.25
+        }
+      },
+      {
+        "text": "激励",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1012.25,
+          "y": 219.5,
+          "width": 77,
+          "height": 47,
+          "top": 219.5,
+          "right": 1089.25,
+          "bottom": 266.5,
+          "left": 1012.25
+        }
+      },
+      {
+        "text": "插屏",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1089.25,
+          "y": 219.5,
+          "width": 79.78125,
+          "height": 47,
+          "top": 219.5,
+          "right": 1169.03125,
+          "bottom": 266.5,
+          "left": 1089.25
+        }
+      },
+      {
+        "text": "失败",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1169.03125,
+          "y": 219.5,
+          "width": 64.59375,
+          "height": 47,
+          "top": 219.5,
+          "right": 1233.625,
+          "bottom": 266.5,
+          "left": 1169.03125
+        }
+      },
+      {
+        "text": "2026-09-16 08:00:00",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1233.625,
+          "y": 219.5,
+          "width": 161,
+          "height": 47,
+          "top": 219.5,
+          "right": 1394.625,
+          "bottom": 266.5,
+          "left": 1233.625
+        }
+      },
+      {
+        "text": "code",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1394.625,
+          "y": 219.5,
+          "width": 91,
+          "height": 47,
+          "top": 219.5,
+          "right": 1485.625,
+          "bottom": 266.5,
+          "left": 1394.625
+        }
+      },
+      {
+        "text": "REQ-2",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1485.625,
+          "y": 219.5,
+          "width": 129.8125,
+          "height": 47,
+          "top": 219.5,
+          "right": 1615.4375,
+          "bottom": 266.5,
+          "left": 1485.625
+        }
+      },
+      {
+        "text": "TRANS-2",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1615.4375,
+          "y": 219.5,
+          "width": 103.46875,
+          "height": 47,
+          "top": 219.5,
+          "right": 1718.90625,
+          "bottom": 266.5,
+          "left": 1615.4375
+        }
+      }
+    ],
+    "headers": [
+      "Id",
+      "上级Id",
+      "上级支付宝姓名",
+      "会员ID",
+      "用户账号",
+      "支付宝姓名",
+      "游戏名称",
+      "ECPM",
+      "金币",
+      "广告平台",
+      "抽奖",
+      "任务",
+      "奖励类型",
+      "广告类型",
+      "副广类型",
+      "状态",
+      "观看时间",
+      "广告代码位",
+      "广告request_id",
+      "交易trans_id"
+    ],
+    "rows": [
+      {
+        "height": 47,
+        "cells": [
+          "9200",
+          "8100",
+          "上级姓名",
+          "8200",
+          "对照账号0",
+          "测试姓名",
+          "对照游戏",
+          "0",
+          "0",
+          "测试平台",
+          "否",
+          "是",
+          "提升",
+          "激励",
+          "开屏",
+          "失败",
+          "2026-09-16 08:00:00",
+          "code",
+          "REQ-0",
+          "TRANS-0"
+        ]
+      },
+      {
+        "height": 47,
+        "cells": [
+          "9201",
+          "8100",
+          "上级姓名",
+          "8201",
+          "对照账号1",
+          "测试姓名",
+          "对照游戏",
+          "12.5",
+          "1.25",
+          "测试平台",
+          "是",
+          "否",
+          "领取",
+          "副广",
+          "Banner",
+          "成功",
+          "2026-09-16 08:00:00",
+          "code",
+          "REQ-1",
+          "TRANS-1"
+        ]
+      },
+      {
+        "height": 47,
+        "cells": [
+          "9202",
+          "8100",
+          "上级姓名",
+          "8202",
+          "对照账号2",
+          "测试姓名",
+          "对照游戏",
+          "99",
+          "9.9",
+          "测试平台",
+          "否",
+          "是",
+          "提升",
+          "激励",
+          "插屏",
+          "失败",
+          "2026-09-16 08:00:00",
+          "code",
+          "REQ-2",
+          "TRANS-2"
+        ]
+      }
+    ]
+  },
+  "local": {
+    "rect": {
+      "x": 260,
+      "y": 134,
+      "width": 1689.40625,
+      "height": 183,
+      "top": 134,
+      "right": 1949.40625,
+      "bottom": 317,
+      "left": 260
+    },
+    "styles": [
+      {
+        "text": "Id",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 260.5,
+          "y": 134.5,
+          "width": 62.15625,
+          "height": 41,
+          "top": 134.5,
+          "right": 322.65625,
+          "bottom": 175.5,
+          "left": 260.5
+        }
+      },
+      {
+        "text": "上级Id",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 322.65625,
+          "y": 134.5,
+          "width": 62.15625,
+          "height": 41,
+          "top": 134.5,
+          "right": 384.8125,
+          "bottom": 175.5,
+          "left": 322.65625
+        }
+      },
+      {
+        "text": "上级支付宝姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 384.8125,
+          "y": 134.5,
+          "width": 119,
+          "height": 41,
+          "top": 134.5,
+          "right": 503.8125,
+          "bottom": 175.5,
+          "left": 384.8125
+        }
+      },
+      {
+        "text": "会员ID",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 503.8125,
+          "y": 134.5,
+          "width": 63,
+          "height": 41,
+          "top": 134.5,
+          "right": 566.8125,
+          "bottom": 175.5,
+          "left": 503.8125
+        }
+      },
+      {
+        "text": "用户账号",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 566.8125,
+          "y": 134.5,
+          "width": 94.796875,
+          "height": 41,
+          "top": 134.5,
+          "right": 661.609375,
+          "bottom": 175.5,
+          "left": 566.8125
+        }
+      },
+      {
+        "text": "支付宝姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 661.609375,
+          "y": 134.5,
+          "width": 91,
+          "height": 41,
+          "top": 134.5,
+          "right": 752.609375,
+          "bottom": 175.5,
+          "left": 661.609375
+        }
+      },
+      {
+        "text": "游戏名称",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 752.609375,
+          "y": 134.5,
+          "width": 87,
+          "height": 41,
+          "top": 134.5,
+          "right": 839.609375,
+          "bottom": 175.5,
+          "left": 752.609375
+        }
+      },
+      {
+        "text": "ECPM\n▴▾",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 839.609375,
+          "y": 134.5,
+          "width": 71.453125,
+          "height": 41,
+          "top": 134.5,
+          "right": 911.0625,
+          "bottom": 175.5,
+          "left": 839.609375
+        }
+      },
+      {
+        "text": "金币\n▴▾",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 911.0625,
+          "y": 134.5,
+          "width": 59,
+          "height": 41,
+          "top": 134.5,
+          "right": 970.0625,
+          "bottom": 175.5,
+          "left": 911.0625
+        }
+      },
+      {
+        "text": "广告平台\n▴▾",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 970.0625,
+          "y": 134.5,
+          "width": 87,
+          "height": 41,
+          "top": 134.5,
+          "right": 1057.0625,
+          "bottom": 175.5,
+          "left": 970.0625
+        }
+      },
+      {
+        "text": "抽奖",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1057.0625,
+          "y": 134.5,
+          "width": 54.09375,
+          "height": 41,
+          "top": 134.5,
+          "right": 1111.15625,
+          "bottom": 175.5,
+          "left": 1057.0625
+        }
+      },
+      {
+        "text": "任务",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1111.15625,
+          "y": 134.5,
+          "width": 54.09375,
+          "height": 41,
+          "top": 134.5,
+          "right": 1165.25,
+          "bottom": 175.5,
+          "left": 1111.15625
+        }
+      },
+      {
+        "text": "奖励类型",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1165.25,
+          "y": 134.5,
+          "width": 77,
+          "height": 41,
+          "top": 134.5,
+          "right": 1242.25,
+          "bottom": 175.5,
+          "left": 1165.25
+        }
+      },
+      {
+        "text": "广告类型",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1242.25,
+          "y": 134.5,
+          "width": 77,
+          "height": 41,
+          "top": 134.5,
+          "right": 1319.25,
+          "bottom": 175.5,
+          "left": 1242.25
+        }
+      },
+      {
+        "text": "副广类型",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1319.25,
+          "y": 134.5,
+          "width": 79.78125,
+          "height": 41,
+          "top": 134.5,
+          "right": 1399.03125,
+          "bottom": 175.5,
+          "left": 1319.25
+        }
+      },
+      {
+        "text": "状态",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1399.03125,
+          "y": 134.5,
+          "width": 64.59375,
+          "height": 41,
+          "top": 134.5,
+          "right": 1463.625,
+          "bottom": 175.5,
+          "left": 1399.03125
+        }
+      },
+      {
+        "text": "观看时间\n▴▾",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1463.625,
+          "y": 134.5,
+          "width": 161,
+          "height": 41,
+          "top": 134.5,
+          "right": 1624.625,
+          "bottom": 175.5,
+          "left": 1463.625
+        }
+      },
+      {
+        "text": "广告代码位",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1624.625,
+          "y": 134.5,
+          "width": 91,
+          "height": 41,
+          "top": 134.5,
+          "right": 1715.625,
+          "bottom": 175.5,
+          "left": 1624.625
+        }
+      },
+      {
+        "text": "广告request_id\n▴▾",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1715.625,
+          "y": 134.5,
+          "width": 129.8125,
+          "height": 41,
+          "top": 134.5,
+          "right": 1845.4375,
+          "bottom": 175.5,
+          "left": 1715.625
+        }
+      },
+      {
+        "text": "交易trans_id",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1845.4375,
+          "y": 134.5,
+          "width": 103.46875,
+          "height": 41,
+          "top": 134.5,
+          "right": 1948.90625,
+          "bottom": 175.5,
+          "left": 1845.4375
+        }
+      },
+      {
+        "text": "9200",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 260.5,
+          "y": 175.5,
+          "width": 62.15625,
+          "height": 47,
+          "top": 175.5,
+          "right": 322.65625,
+          "bottom": 222.5,
+          "left": 260.5
+        }
+      },
+      {
+        "text": "8100",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 322.65625,
+          "y": 175.5,
+          "width": 62.15625,
+          "height": 47,
+          "top": 175.5,
+          "right": 384.8125,
+          "bottom": 222.5,
+          "left": 322.65625
+        }
+      },
+      {
+        "text": "上级姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 384.8125,
+          "y": 175.5,
+          "width": 119,
+          "height": 47,
+          "top": 175.5,
+          "right": 503.8125,
+          "bottom": 222.5,
+          "left": 384.8125
+        }
+      },
+      {
+        "text": "8200",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 503.8125,
+          "y": 175.5,
+          "width": 63,
+          "height": 47,
+          "top": 175.5,
+          "right": 566.8125,
+          "bottom": 222.5,
+          "left": 503.8125
+        }
+      },
+      {
+        "text": "对照账号0",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 566.8125,
+          "y": 175.5,
+          "width": 94.796875,
+          "height": 47,
+          "top": 175.5,
+          "right": 661.609375,
+          "bottom": 222.5,
+          "left": 566.8125
+        }
+      },
+      {
+        "text": "测试姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 661.609375,
+          "y": 175.5,
+          "width": 91,
+          "height": 47,
+          "top": 175.5,
+          "right": 752.609375,
+          "bottom": 222.5,
+          "left": 661.609375
+        }
+      },
+      {
+        "text": "对照游戏",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 752.609375,
+          "y": 175.5,
+          "width": 87,
+          "height": 47,
+          "top": 175.5,
+          "right": 839.609375,
+          "bottom": 222.5,
+          "left": 752.609375
+        }
+      },
+      {
+        "text": "0",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 839.609375,
+          "y": 175.5,
+          "width": 71.453125,
+          "height": 47,
+          "top": 175.5,
+          "right": 911.0625,
+          "bottom": 222.5,
+          "left": 839.609375
+        }
+      },
+      {
+        "text": "0",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 911.0625,
+          "y": 175.5,
+          "width": 59,
+          "height": 47,
+          "top": 175.5,
+          "right": 970.0625,
+          "bottom": 222.5,
+          "left": 911.0625
+        }
+      },
+      {
+        "text": "测试平台",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 970.0625,
+          "y": 175.5,
+          "width": 87,
+          "height": 47,
+          "top": 175.5,
+          "right": 1057.0625,
+          "bottom": 222.5,
+          "left": 970.0625
+        }
+      },
+      {
+        "text": "否",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1057.0625,
+          "y": 175.5,
+          "width": 54.09375,
+          "height": 47,
+          "top": 175.5,
+          "right": 1111.15625,
+          "bottom": 222.5,
+          "left": 1057.0625
+        }
+      },
+      {
+        "text": "是",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1111.15625,
+          "y": 175.5,
+          "width": 54.09375,
+          "height": 47,
+          "top": 175.5,
+          "right": 1165.25,
+          "bottom": 222.5,
+          "left": 1111.15625
+        }
+      },
+      {
+        "text": "提升",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1165.25,
+          "y": 175.5,
+          "width": 77,
+          "height": 47,
+          "top": 175.5,
+          "right": 1242.25,
+          "bottom": 222.5,
+          "left": 1165.25
+        }
+      },
+      {
+        "text": "激励",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1242.25,
+          "y": 175.5,
+          "width": 77,
+          "height": 47,
+          "top": 175.5,
+          "right": 1319.25,
+          "bottom": 222.5,
+          "left": 1242.25
+        }
+      },
+      {
+        "text": "开屏",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1319.25,
+          "y": 175.5,
+          "width": 79.78125,
+          "height": 47,
+          "top": 175.5,
+          "right": 1399.03125,
+          "bottom": 222.5,
+          "left": 1319.25
+        }
+      },
+      {
+        "text": "失败",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1399.03125,
+          "y": 175.5,
+          "width": 64.59375,
+          "height": 47,
+          "top": 175.5,
+          "right": 1463.625,
+          "bottom": 222.5,
+          "left": 1399.03125
+        }
+      },
+      {
+        "text": "2026-09-16 08:00:00",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1463.625,
+          "y": 175.5,
+          "width": 161,
+          "height": 47,
+          "top": 175.5,
+          "right": 1624.625,
+          "bottom": 222.5,
+          "left": 1463.625
+        }
+      },
+      {
+        "text": "code",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1624.625,
+          "y": 175.5,
+          "width": 91,
+          "height": 47,
+          "top": 175.5,
+          "right": 1715.625,
+          "bottom": 222.5,
+          "left": 1624.625
+        }
+      },
+      {
+        "text": "REQ-0",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1715.625,
+          "y": 175.5,
+          "width": 129.8125,
+          "height": 47,
+          "top": 175.5,
+          "right": 1845.4375,
+          "bottom": 222.5,
+          "left": 1715.625
+        }
+      },
+      {
+        "text": "TRANS-0",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1845.4375,
+          "y": 175.5,
+          "width": 103.46875,
+          "height": 47,
+          "top": 175.5,
+          "right": 1948.90625,
+          "bottom": 222.5,
+          "left": 1845.4375
+        }
+      },
+      {
+        "text": "9201",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 260.5,
+          "y": 222.5,
+          "width": 62.15625,
+          "height": 47,
+          "top": 222.5,
+          "right": 322.65625,
+          "bottom": 269.5,
+          "left": 260.5
+        }
+      },
+      {
+        "text": "8100",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 322.65625,
+          "y": 222.5,
+          "width": 62.15625,
+          "height": 47,
+          "top": 222.5,
+          "right": 384.8125,
+          "bottom": 269.5,
+          "left": 322.65625
+        }
+      },
+      {
+        "text": "上级姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 384.8125,
+          "y": 222.5,
+          "width": 119,
+          "height": 47,
+          "top": 222.5,
+          "right": 503.8125,
+          "bottom": 269.5,
+          "left": 384.8125
+        }
+      },
+      {
+        "text": "8201",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 503.8125,
+          "y": 222.5,
+          "width": 63,
+          "height": 47,
+          "top": 222.5,
+          "right": 566.8125,
+          "bottom": 269.5,
+          "left": 503.8125
+        }
+      },
+      {
+        "text": "对照账号1",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 566.8125,
+          "y": 222.5,
+          "width": 94.796875,
+          "height": 47,
+          "top": 222.5,
+          "right": 661.609375,
+          "bottom": 269.5,
+          "left": 566.8125
+        }
+      },
+      {
+        "text": "测试姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 661.609375,
+          "y": 222.5,
+          "width": 91,
+          "height": 47,
+          "top": 222.5,
+          "right": 752.609375,
+          "bottom": 269.5,
+          "left": 661.609375
+        }
+      },
+      {
+        "text": "对照游戏",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 752.609375,
+          "y": 222.5,
+          "width": 87,
+          "height": 47,
+          "top": 222.5,
+          "right": 839.609375,
+          "bottom": 269.5,
+          "left": 752.609375
+        }
+      },
+      {
+        "text": "12.5",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 839.609375,
+          "y": 222.5,
+          "width": 71.453125,
+          "height": 47,
+          "top": 222.5,
+          "right": 911.0625,
+          "bottom": 269.5,
+          "left": 839.609375
+        }
+      },
+      {
+        "text": "1.25",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 911.0625,
+          "y": 222.5,
+          "width": 59,
+          "height": 47,
+          "top": 222.5,
+          "right": 970.0625,
+          "bottom": 269.5,
+          "left": 911.0625
+        }
+      },
+      {
+        "text": "测试平台",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 970.0625,
+          "y": 222.5,
+          "width": 87,
+          "height": 47,
+          "top": 222.5,
+          "right": 1057.0625,
+          "bottom": 269.5,
+          "left": 970.0625
+        }
+      },
+      {
+        "text": "是",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1057.0625,
+          "y": 222.5,
+          "width": 54.09375,
+          "height": 47,
+          "top": 222.5,
+          "right": 1111.15625,
+          "bottom": 269.5,
+          "left": 1057.0625
+        }
+      },
+      {
+        "text": "否",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1111.15625,
+          "y": 222.5,
+          "width": 54.09375,
+          "height": 47,
+          "top": 222.5,
+          "right": 1165.25,
+          "bottom": 269.5,
+          "left": 1111.15625
+        }
+      },
+      {
+        "text": "领取",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1165.25,
+          "y": 222.5,
+          "width": 77,
+          "height": 47,
+          "top": 222.5,
+          "right": 1242.25,
+          "bottom": 269.5,
+          "left": 1165.25
+        }
+      },
+      {
+        "text": "副广",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1242.25,
+          "y": 222.5,
+          "width": 77,
+          "height": 47,
+          "top": 222.5,
+          "right": 1319.25,
+          "bottom": 269.5,
+          "left": 1242.25
+        }
+      },
+      {
+        "text": "Banner",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1319.25,
+          "y": 222.5,
+          "width": 79.78125,
+          "height": 47,
+          "top": 222.5,
+          "right": 1399.03125,
+          "bottom": 269.5,
+          "left": 1319.25
+        }
+      },
+      {
+        "text": "成功",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1399.03125,
+          "y": 222.5,
+          "width": 64.59375,
+          "height": 47,
+          "top": 222.5,
+          "right": 1463.625,
+          "bottom": 269.5,
+          "left": 1399.03125
+        }
+      },
+      {
+        "text": "2026-09-16 08:00:00",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1463.625,
+          "y": 222.5,
+          "width": 161,
+          "height": 47,
+          "top": 222.5,
+          "right": 1624.625,
+          "bottom": 269.5,
+          "left": 1463.625
+        }
+      },
+      {
+        "text": "code",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1624.625,
+          "y": 222.5,
+          "width": 91,
+          "height": 47,
+          "top": 222.5,
+          "right": 1715.625,
+          "bottom": 269.5,
+          "left": 1624.625
+        }
+      },
+      {
+        "text": "REQ-1",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1715.625,
+          "y": 222.5,
+          "width": 129.8125,
+          "height": 47,
+          "top": 222.5,
+          "right": 1845.4375,
+          "bottom": 269.5,
+          "left": 1715.625
+        }
+      },
+      {
+        "text": "TRANS-1",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1845.4375,
+          "y": 222.5,
+          "width": 103.46875,
+          "height": 47,
+          "top": 222.5,
+          "right": 1948.90625,
+          "bottom": 269.5,
+          "left": 1845.4375
+        }
+      },
+      {
+        "text": "9202",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 260.5,
+          "y": 269.5,
+          "width": 62.15625,
+          "height": 47,
+          "top": 269.5,
+          "right": 322.65625,
+          "bottom": 316.5,
+          "left": 260.5
+        }
+      },
+      {
+        "text": "8100",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 322.65625,
+          "y": 269.5,
+          "width": 62.15625,
+          "height": 47,
+          "top": 269.5,
+          "right": 384.8125,
+          "bottom": 316.5,
+          "left": 322.65625
+        }
+      },
+      {
+        "text": "上级姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 384.8125,
+          "y": 269.5,
+          "width": 119,
+          "height": 47,
+          "top": 269.5,
+          "right": 503.8125,
+          "bottom": 316.5,
+          "left": 384.8125
+        }
+      },
+      {
+        "text": "8202",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 503.8125,
+          "y": 269.5,
+          "width": 63,
+          "height": 47,
+          "top": 269.5,
+          "right": 566.8125,
+          "bottom": 316.5,
+          "left": 503.8125
+        }
+      },
+      {
+        "text": "对照账号2",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 566.8125,
+          "y": 269.5,
+          "width": 94.796875,
+          "height": 47,
+          "top": 269.5,
+          "right": 661.609375,
+          "bottom": 316.5,
+          "left": 566.8125
+        }
+      },
+      {
+        "text": "测试姓名",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 661.609375,
+          "y": 269.5,
+          "width": 91,
+          "height": 47,
+          "top": 269.5,
+          "right": 752.609375,
+          "bottom": 316.5,
+          "left": 661.609375
+        }
+      },
+      {
+        "text": "对照游戏",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 752.609375,
+          "y": 269.5,
+          "width": 87,
+          "height": 47,
+          "top": 269.5,
+          "right": 839.609375,
+          "bottom": 316.5,
+          "left": 752.609375
+        }
+      },
+      {
+        "text": "99",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 839.609375,
+          "y": 269.5,
+          "width": 71.453125,
+          "height": 47,
+          "top": 269.5,
+          "right": 911.0625,
+          "bottom": 316.5,
+          "left": 839.609375
+        }
+      },
+      {
+        "text": "9.9",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 911.0625,
+          "y": 269.5,
+          "width": 59,
+          "height": 47,
+          "top": 269.5,
+          "right": 970.0625,
+          "bottom": 316.5,
+          "left": 911.0625
+        }
+      },
+      {
+        "text": "测试平台",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 970.0625,
+          "y": 269.5,
+          "width": 87,
+          "height": 47,
+          "top": 269.5,
+          "right": 1057.0625,
+          "bottom": 316.5,
+          "left": 970.0625
+        }
+      },
+      {
+        "text": "否",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1057.0625,
+          "y": 269.5,
+          "width": 54.09375,
+          "height": 47,
+          "top": 269.5,
+          "right": 1111.15625,
+          "bottom": 316.5,
+          "left": 1057.0625
+        }
+      },
+      {
+        "text": "是",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1111.15625,
+          "y": 269.5,
+          "width": 54.09375,
+          "height": 47,
+          "top": 269.5,
+          "right": 1165.25,
+          "bottom": 316.5,
+          "left": 1111.15625
+        }
+      },
+      {
+        "text": "提升",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1165.25,
+          "y": 269.5,
+          "width": 77,
+          "height": 47,
+          "top": 269.5,
+          "right": 1242.25,
+          "bottom": 316.5,
+          "left": 1165.25
+        }
+      },
+      {
+        "text": "激励",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1242.25,
+          "y": 269.5,
+          "width": 77,
+          "height": 47,
+          "top": 269.5,
+          "right": 1319.25,
+          "bottom": 316.5,
+          "left": 1242.25
+        }
+      },
+      {
+        "text": "插屏",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1319.25,
+          "y": 269.5,
+          "width": 79.78125,
+          "height": 47,
+          "top": 269.5,
+          "right": 1399.03125,
+          "bottom": 316.5,
+          "left": 1319.25
+        }
+      },
+      {
+        "text": "失败",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1399.03125,
+          "y": 269.5,
+          "width": 64.59375,
+          "height": 47,
+          "top": 269.5,
+          "right": 1463.625,
+          "bottom": 316.5,
+          "left": 1399.03125
+        }
+      },
+      {
+        "text": "2026-09-16 08:00:00",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1463.625,
+          "y": 269.5,
+          "width": 161,
+          "height": 47,
+          "top": 269.5,
+          "right": 1624.625,
+          "bottom": 316.5,
+          "left": 1463.625
+        }
+      },
+      {
+        "text": "code",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1624.625,
+          "y": 269.5,
+          "width": 91,
+          "height": 47,
+          "top": 269.5,
+          "right": 1715.625,
+          "bottom": 316.5,
+          "left": 1624.625
+        }
+      },
+      {
+        "text": "REQ-2",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1715.625,
+          "y": 269.5,
+          "width": 129.8125,
+          "height": 47,
+          "top": 269.5,
+          "right": 1845.4375,
+          "bottom": 316.5,
+          "left": 1715.625
+        }
+      },
+      {
+        "text": "TRANS-2",
+        "color": "rgb(51, 51, 51)",
+        "borderTop": "1px solid rgb(244, 244, 244)",
+        "borderLeft": "1px solid rgb(244, 244, 244)",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "rect": {
+          "x": 1845.4375,
+          "y": 269.5,
+          "width": 103.46875,
+          "height": 47,
+          "top": 269.5,
+          "right": 1948.90625,
+          "bottom": 316.5,
+          "left": 1845.4375
+        }
+      }
+    ],
+    "headers": [
+      "Id",
+      "上级Id",
+      "上级支付宝姓名",
+      "会员ID",
+      "用户账号",
+      "支付宝姓名",
+      "游戏名称",
+      "ECPM\n▴▾",
+      "金币\n▴▾",
+      "广告平台\n▴▾",
+      "抽奖",
+      "任务",
+      "奖励类型",
+      "广告类型",
+      "副广类型",
+      "状态",
+      "观看时间\n▴▾",
+      "广告代码位",
+      "广告request_id\n▴▾",
+      "交易trans_id"
+    ],
+    "rows": [
+      {
+        "height": 47,
+        "cells": [
+          "9200",
+          "8100",
+          "上级姓名",
+          "8200",
+          "对照账号0",
+          "测试姓名",
+          "对照游戏",
+          "0",
+          "0",
+          "测试平台",
+          "否",
+          "是",
+          "提升",
+          "激励",
+          "开屏",
+          "失败",
+          "2026-09-16 08:00:00",
+          "code",
+          "REQ-0",
+          "TRANS-0"
+        ]
+      },
+      {
+        "height": 47,
+        "cells": [
+          "9201",
+          "8100",
+          "上级姓名",
+          "8201",
+          "对照账号1",
+          "测试姓名",
+          "对照游戏",
+          "12.5",
+          "1.25",
+          "测试平台",
+          "是",
+          "否",
+          "领取",
+          "副广",
+          "Banner",
+          "成功",
+          "2026-09-16 08:00:00",
+          "code",
+          "REQ-1",
+          "TRANS-1"
+        ]
+      },
+      {
+        "height": 47,
+        "cells": [
+          "9202",
+          "8100",
+          "上级姓名",
+          "8202",
+          "对照账号2",
+          "测试姓名",
+          "对照游戏",
+          "99",
+          "9.9",
+          "测试平台",
+          "否",
+          "是",
+          "提升",
+          "激励",
+          "插屏",
+          "失败",
+          "2026-09-16 08:00:00",
+          "code",
+          "REQ-2",
+          "TRANS-2"
+        ]
+      }
+    ]
+  }
+}

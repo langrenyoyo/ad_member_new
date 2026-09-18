@@ -1,0 +1,28 @@
+{
+  "reference": {
+    "rect": {
+      "x": 30,
+      "y": 226.5625,
+      "width": 1630,
+      "height": 1183,
+      "top": 226.5625,
+      "right": 1660,
+      "bottom": 1409.5625,
+      "left": 30
+    },
+    "headers": []
+  },
+  "local": {
+    "rect": {
+      "x": 260,
+      "y": 276.5625,
+      "width": 1630,
+      "height": 1180,
+      "top": 276.5625,
+      "right": 1890,
+      "bottom": 1456.5625,
+      "left": 260
+    },
+    "headers": []
+  }
+}

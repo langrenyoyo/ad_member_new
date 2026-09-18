@@ -1,0 +1,142 @@
+[
+  {
+    "cls": "layui-layer-title",
+    "rect": {
+      "x": 560,
+      "y": 240,
+      "width": 800,
+      "height": 45,
+      "top": 240,
+      "right": 1360,
+      "bottom": 285,
+      "left": 560
+    },
+    "font": "14px / 45px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+    "color": "rgb(255, 255, 255)",
+    "background": "none",
+    "position": "0% 0%",
+    "margin": "0px",
+    "padding": "0px 80px 0px 20px",
+    "filter": "none",
+    "before": {
+      "content": "none",
+      "font": "14px / 45px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+    },
+    "after": {
+      "content": "none",
+      "font": "14px / 45px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+    }
+  },
+  {
+    "cls": "layui-layer-setwin",
+    "rect": {
+      "x": 1267,
+      "y": 240,
+      "width": 78,
+      "height": 45,
+      "top": 240,
+      "right": 1345,
+      "bottom": 285,
+      "left": 1267
+    },
+    "font": "0px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+    "color": "rgb(51, 51, 51)",
+    "background": "none",
+    "position": "0% 0%",
+    "margin": "0px",
+    "padding": "0px",
+    "filter": "none",
+    "before": {
+      "content": "none",
+      "font": "0px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+    },
+    "after": {
+      "content": "none",
+      "font": "0px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+    }
+  },
+  {
+    "cls": "layui-layer-min",
+    "rect": {
+      "x": 1277,
+      "y": 240,
+      "width": 16,
+      "height": 45,
+      "top": 240,
+      "right": 1293,
+      "bottom": 285,
+      "left": 1277
+    },
+    "font": "12px / 45px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+    "color": "rgb(67, 151, 253)",
+    "background": "none",
+    "position": "0% 0%",
+    "margin": "0px 0px 0px 10px",
+    "padding": "0px",
+    "filter": "none",
+    "before": {
+      "content": "none",
+      "font": "12px / 45px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+    },
+    "after": {
+      "content": "\"\ue625\"",
+      "font": "18px / 45px iconfont"
+    }
+  },
+  {
+    "cls": "layui-layer-ico layui-layer-max",
+    "rect": {
+      "x": 1303,
+      "y": 240,
+      "width": 16,
+      "height": 45,
+      "top": 240,
+      "right": 1319,
+      "bottom": 285,
+      "left": 1303
+    },
+    "font": "12px / 45px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+    "color": "rgb(67, 151, 253)",
+    "background": "none",
+    "position": "0% 0%",
+    "margin": "0px 0px 0px 10px",
+    "padding": "0px",
+    "filter": "none",
+    "before": {
+      "content": "none",
+      "font": "12px / 45px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+    },
+    "after": {
+      "content": "\"\ue623\"",
+      "font": "18px / 45px iconfont"
+    }
+  },
+  {
+    "cls": "layui-layer-ico layui-layer-close layui-layer-close1",
+    "rect": {
+      "x": 1329,
+      "y": 240,
+      "width": 16,
+      "height": 45,
+      "top": 240,
+      "right": 1345,
+      "bottom": 285,
+      "left": 1329
+    },
+    "font": "12px / 45px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+    "color": "rgb(67, 151, 253)",
+    "background": "none",
+    "position": "0% 0%",
+    "margin": "0px 0px 0px 10px",
+    "padding": "0px",
+    "filter": "none",
+    "before": {
+      "content": "none",
+      "font": "12px / 45px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+    },
+    "after": {
+      "content": "\"\ue626\"",
+      "font": "18px / 45px iconfont"
+    }
+  }
+]

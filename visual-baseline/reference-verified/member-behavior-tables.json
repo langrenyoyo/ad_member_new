@@ -1,0 +1,3821 @@
+{
+  "yige": [
+    {
+      "table": "table1",
+      "url": "users/lottery/index/user_id/FIXTURE",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user_id",
+          "title": "会员ID",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user.username",
+          "title": "用户账号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "lottery_price",
+          "title": "金币",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "ecpm",
+          "title": "ECPM",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "adn_name",
+          "title": "类型",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "ip",
+          "title": "公网IP",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "network_status",
+          "title": "内网",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "是",
+            "1": "否"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "tag",
+          "title": "是否风控",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user.is_white",
+          "title": "白名单",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "否",
+            "1": "是"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "status",
+          "title": "状态",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "失败",
+            "1": "成功"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "create_time",
+          "title": "抽奖时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        },
+        {
+          "field": "ad_network_rit_id",
+          "title": "广告代码位",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "request_id",
+          "title": "广告request_id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "trans_id",
+          "title": "交易trans_id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        }
+      ],
+      "label": "抽奖列表",
+      "filters": [
+        {
+          "label": "类型",
+          "controls": [
+            {
+              "name": "adn_name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "adn_name",
+              "type": "text",
+              "placeholder": "类型",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "公网IP",
+          "controls": [
+            {
+              "name": "ip-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "ip",
+              "type": "text",
+              "placeholder": "公网IP",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "内网",
+          "controls": [
+            {
+              "name": "network_status-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "network_status",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "0",
+                  "text": "是"
+                },
+                {
+                  "value": "1",
+                  "text": "否"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "白名单",
+          "controls": [
+            {
+              "name": "user.is_white-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "user.is_white",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "0",
+                  "text": "否"
+                },
+                {
+                  "value": "1",
+                  "text": "是"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "状态",
+          "controls": [
+            {
+              "name": "status-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "status",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "0",
+                  "text": "失败"
+                },
+                {
+                  "value": "1",
+                  "text": "成功"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "抽奖时间",
+          "controls": [
+            {
+              "name": "create_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "create_time",
+              "type": "text",
+              "placeholder": "抽奖时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    },
+    {
+      "table": "table2",
+      "url": "users/risk/index/user_id/FIXTURE",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user_id",
+          "title": "会员ID",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user.username",
+          "title": "用户账号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "ip",
+          "title": "ip",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "network_status",
+          "title": "内网",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "是",
+            "1": "否"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "tag",
+          "title": "标签",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "create_time",
+          "title": "创建时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        }
+      ],
+      "label": "风控历史",
+      "filters": [
+        {
+          "label": "ip",
+          "controls": [
+            {
+              "name": "ip-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "ip",
+              "type": "text",
+              "placeholder": "ip",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "内网",
+          "controls": [
+            {
+              "name": "network_status-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "network_status",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "0",
+                  "text": "是"
+                },
+                {
+                  "value": "1",
+                  "text": "否"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "标签",
+          "controls": [
+            {
+              "name": "tag-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "tag",
+              "type": "text",
+              "placeholder": "标签",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "创建时间",
+          "controls": [
+            {
+              "name": "create_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "create_time",
+              "type": "text",
+              "placeholder": "创建时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    },
+    {
+      "table": "table3",
+      "url": "users/coinday/index/user_id/FIXTURE",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user_id",
+          "title": "会员ID",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user.username",
+          "title": "用户账号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "coin",
+          "title": "收益",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "date",
+          "title": "时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": null
+        }
+      ],
+      "label": "每日收益",
+      "filters": [
+        {
+          "label": "时间",
+          "controls": [
+            {
+              "name": "date-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "date",
+              "type": "text",
+              "placeholder": "时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    },
+    {
+      "table": "table4",
+      "url": "users/coinlog/index/user_id/FIXTURE",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user_id",
+          "title": "会员ID",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user.username",
+          "title": "用户账号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "coin_before",
+          "title": "金币变动前",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "coin",
+          "title": "金币变动",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "coin_after",
+          "title": "金币变动后",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "type",
+          "title": "类型",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "10": "抽奖",
+            "30": "兑换",
+            "40": "分销",
+            "50": "签到",
+            "100": "后台"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "remark",
+          "title": "备注",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "create_time",
+          "title": "创建时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        }
+      ],
+      "label": "金币流水",
+      "filters": [
+        {
+          "label": "类型",
+          "controls": [
+            {
+              "name": "type-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "type",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "10",
+                  "text": "抽奖"
+                },
+                {
+                  "value": "30",
+                  "text": "兑换"
+                },
+                {
+                  "value": "40",
+                  "text": "分销"
+                },
+                {
+                  "value": "50",
+                  "text": "签到"
+                },
+                {
+                  "value": "100",
+                  "text": "后台"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "备注",
+          "controls": [
+            {
+              "name": "remark-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "remark",
+              "type": "text",
+              "placeholder": "备注",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "创建时间",
+          "controls": [
+            {
+              "name": "create_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "create_time",
+              "type": "text",
+              "placeholder": "创建时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    },
+    {
+      "table": "table5",
+      "url": "users/exchange/index/user_id/FIXTURE",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": 0,
+          "title": null,
+          "visible": true,
+          "sortable": false,
+          "operate": null,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user_id",
+          "title": "会员ID",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user.username",
+          "title": "账号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "good.name",
+          "title": "商品名称",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "exchange_value",
+          "title": "金额",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1/10 + '元';\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "receive_name",
+          "title": "收件人",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "receive_tel",
+          "title": "联系方式",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "receive_address",
+          "title": "收货地址",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "delivery_name",
+          "title": "快递名称",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "delivery_no",
+          "title": "快递单号",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "remark",
+          "title": "备注",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "status",
+          "title": "状态",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "申请中",
+            "1": "审核通过",
+            "4": "审核失败"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "reason",
+          "title": "拒绝原因",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "operate",
+          "title": "操作",
+          "visible": true,
+          "sortable": false,
+          "operate": null,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n\t\t\t\t\t\t\t\t\tvar that = $.extend({}, this);\n\t\t\t\t\t\t\t\t\tvar table = $(that.table).clone(true);\n\t\t\t\t\t\t\t\t\tif (row.status != 0) {\n\t\t\t\t\t\t\t\t\t\t$(table).data(\"operate-agree\", null);\n\t\t\t\t\t\t\t\t\t\t$(table).data(\"operate-refuse\", null);\n\t\t\t\t\t\t\t\t\t\t$(table).data(\"operate-reason\", null);\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\tif (row.status == 1 || row.status == 4) {\n\t\t\t\t\t\t\t\t\t\t$(table).data(\"operate-edit\", null);\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\tthat.table = table;\n\t\t\t\t\t\t\t\t\treturn Table.api.formatter.operate.call(that, value, row, index);\n\t\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "create_time",
+          "title": "申请时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        },
+        {
+          "field": "update_time",
+          "title": "更新时间",
+          "visible": false,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        }
+      ],
+      "label": "提现记录",
+      "filters": [
+        {
+          "label": "商品名称",
+          "controls": [
+            {
+              "name": "good.name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "good.name",
+              "type": "text",
+              "placeholder": "商品名称",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "收件人",
+          "controls": [
+            {
+              "name": "receive_name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "receive_name",
+              "type": "text",
+              "placeholder": "收件人",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "联系方式",
+          "controls": [
+            {
+              "name": "receive_tel-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "receive_tel",
+              "type": "text",
+              "placeholder": "联系方式",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "状态",
+          "controls": [
+            {
+              "name": "status-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "status",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "0",
+                  "text": "申请中"
+                },
+                {
+                  "value": "1",
+                  "text": "审核通过"
+                },
+                {
+                  "value": "4",
+                  "text": "审核失败"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "申请时间",
+          "controls": [
+            {
+              "name": "create_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "create_time",
+              "type": "text",
+              "placeholder": "申请时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "更新时间",
+          "controls": [
+            {
+              "name": "update_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "update_time",
+              "type": "text",
+              "placeholder": "更新时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    },
+    {
+      "table": "table6",
+      "url": "users/distribution/index/user_id/FIXTURE",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "username",
+          "title": "账号",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "coin_user",
+          "title": "累计金币收益",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "coin",
+          "title": "可用金币",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "freeze_coin",
+          "title": "冻结金币",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "is_white",
+          "title": "白名单",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "否",
+            "1": "是"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "status",
+          "title": "状态",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "禁用",
+            "1": "正常"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "create_time",
+          "title": "创建时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        }
+      ],
+      "label": "分销用户",
+      "filters": [
+        {
+          "label": "账号",
+          "controls": [
+            {
+              "name": "username-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "username",
+              "type": "text",
+              "placeholder": "账号",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "白名单",
+          "controls": [
+            {
+              "name": "is_white-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "is_white",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "0",
+                  "text": "否"
+                },
+                {
+                  "value": "1",
+                  "text": "是"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "状态",
+          "controls": [
+            {
+              "name": "status-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "status",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "0",
+                  "text": "禁用"
+                },
+                {
+                  "value": "1",
+                  "text": "正常"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "创建时间",
+          "controls": [
+            {
+              "name": "create_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "create_time",
+              "type": "text",
+              "placeholder": "创建时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    },
+    {
+      "table": "table7",
+      "url": "users/loginlog/index/user_id/FIXTURE",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user_id",
+          "title": "会员ID",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user.username",
+          "title": "用户账号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "device_id",
+          "title": "设备号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "ip",
+          "title": "IP",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "create_time",
+          "title": "登陆时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        }
+      ],
+      "label": "登陆历史",
+      "filters": [
+        {
+          "label": "IP",
+          "controls": [
+            {
+              "name": "ip-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "ip",
+              "type": "text",
+              "placeholder": "IP",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "登陆时间",
+          "controls": [
+            {
+              "name": "create_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "create_time",
+              "type": "text",
+              "placeholder": "登陆时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    },
+    {
+      "table": "table8",
+      "url": "users/address/index/user_id/FIXTURE",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user_id",
+          "title": "会员ID",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user.username",
+          "title": "用户账号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "receive_name",
+          "title": "收件人",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "receive_tel",
+          "title": "联系方式",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "receive_postcode",
+          "title": "邮箱编号",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "receive_address",
+          "title": "详细地址",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "default_status",
+          "title": "默认地址",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "否",
+            "1": "是"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "create_time",
+          "title": "创建时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        }
+      ],
+      "label": "收货地址",
+      "filters": [
+        {
+          "label": "收件人",
+          "controls": [
+            {
+              "name": "receive_name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "receive_name",
+              "type": "text",
+              "placeholder": "收件人",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "联系方式",
+          "controls": [
+            {
+              "name": "receive_tel-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "receive_tel",
+              "type": "text",
+              "placeholder": "联系方式",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "邮箱编号",
+          "controls": [
+            {
+              "name": "receive_postcode-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "receive_postcode",
+              "type": "text",
+              "placeholder": "邮箱编号",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "详细地址",
+          "controls": [
+            {
+              "name": "receive_address-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "receive_address",
+              "type": "text",
+              "placeholder": "详细地址",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "创建时间",
+          "controls": [
+            {
+              "name": "create_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "create_time",
+              "type": "text",
+              "placeholder": "创建时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    }
+  ],
+  "duoge": [
+    {
+      "table": "table1",
+      "url": "users/lottery/index/user_id/FIXTURE/type/1",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user_id",
+          "title": "会员ID",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "user.username",
+          "title": "用户账号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "lottery_price",
+          "title": "金币",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "ecpm",
+          "title": "ECPM",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "adn_name",
+          "title": "类型",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "ip",
+          "title": "公网IP",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "network_status",
+          "title": "内网",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "是",
+            "1": "否"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "tag",
+          "title": "是否风控",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user.is_white",
+          "title": "白名单",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "否",
+            "1": "是"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "status",
+          "title": "状态",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "失败",
+            "1": "成功"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "create_time",
+          "title": "抽奖时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        },
+        {
+          "field": "ad_network_rit_id",
+          "title": "广告代码位",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "request_id",
+          "title": "广告request_id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "trans_id",
+          "title": "交易trans_id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        }
+      ],
+      "label": "抽奖列表",
+      "filters": [
+        {
+          "label": "会员ID",
+          "controls": [
+            {
+              "name": "user_id-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "user_id",
+              "type": "text",
+              "placeholder": "会员ID",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "游戏名称",
+          "controls": [
+            {
+              "name": "game.name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "game.name",
+              "type": "text",
+              "placeholder": "游戏名称",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "类型",
+          "controls": [
+            {
+              "name": "adn_name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "adn_name",
+              "type": "text",
+              "placeholder": "类型",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "公网IP",
+          "controls": [
+            {
+              "name": "ip-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "ip",
+              "type": "text",
+              "placeholder": "公网IP",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "内网",
+          "controls": [
+            {
+              "name": "network_status-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "network_status",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "0",
+                  "text": "是"
+                },
+                {
+                  "value": "1",
+                  "text": "否"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "白名单",
+          "controls": [
+            {
+              "name": "user.is_white-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "user.is_white",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "0",
+                  "text": "否"
+                },
+                {
+                  "value": "1",
+                  "text": "是"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "状态",
+          "controls": [
+            {
+              "name": "status-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "status",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "0",
+                  "text": "失败"
+                },
+                {
+                  "value": "1",
+                  "text": "成功"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "抽奖时间",
+          "controls": [
+            {
+              "name": "create_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "create_time",
+              "type": "text",
+              "placeholder": "抽奖时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    },
+    {
+      "table": "table2",
+      "url": "users/risk/index/user_id/FIXTURE/type/1",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user.username",
+          "title": "用户账号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "ip",
+          "title": "ip",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "network_status",
+          "title": "内网",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "是",
+            "1": "否"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "tag",
+          "title": "标签",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "create_time",
+          "title": "创建时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        }
+      ],
+      "label": "风控历史",
+      "filters": [
+        {
+          "label": "游戏名称",
+          "controls": [
+            {
+              "name": "game.name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "game.name",
+              "type": "text",
+              "placeholder": "游戏名称",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "ip",
+          "controls": [
+            {
+              "name": "ip-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "ip",
+              "type": "text",
+              "placeholder": "ip",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "内网",
+          "controls": [
+            {
+              "name": "network_status-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "network_status",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "0",
+                  "text": "是"
+                },
+                {
+                  "value": "1",
+                  "text": "否"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "标签",
+          "controls": [
+            {
+              "name": "tag-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "tag",
+              "type": "text",
+              "placeholder": "标签",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "创建时间",
+          "controls": [
+            {
+              "name": "create_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "create_time",
+              "type": "text",
+              "placeholder": "创建时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    },
+    {
+      "table": "table3",
+      "url": "users/coinday/index/user_id/FIXTURE/type/1",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user_id",
+          "title": "会员ID",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "user.username",
+          "title": "用户账号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "coin",
+          "title": "收益",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "date",
+          "title": "时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": null
+        }
+      ],
+      "label": "每日收益",
+      "filters": [
+        {
+          "label": "会员ID",
+          "controls": [
+            {
+              "name": "user_id-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "user_id",
+              "type": "text",
+              "placeholder": "会员ID",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "游戏名称",
+          "controls": [
+            {
+              "name": "game.name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "game.name",
+              "type": "text",
+              "placeholder": "游戏名称",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "时间",
+          "controls": [
+            {
+              "name": "date-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "date",
+              "type": "text",
+              "placeholder": "时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    },
+    {
+      "table": "table4",
+      "url": "users/coinlog/index/user_id/FIXTURE/type/1",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user_id",
+          "title": "会员ID",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "user.username",
+          "title": "用户账号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "coin_before",
+          "title": "金币变动前",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "coin",
+          "title": "金币变动",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "coin_after",
+          "title": "金币变动后",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "type",
+          "title": "类型",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "10": "抽奖",
+            "30": "兑换",
+            "40": "分销",
+            "50": "签到",
+            "100": "后台"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "remark",
+          "title": "备注",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "create_time",
+          "title": "创建时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        }
+      ],
+      "label": "金币流水",
+      "filters": [
+        {
+          "label": "会员ID",
+          "controls": [
+            {
+              "name": "user_id-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "user_id",
+              "type": "text",
+              "placeholder": "会员ID",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "游戏名称",
+          "controls": [
+            {
+              "name": "game.name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "game.name",
+              "type": "text",
+              "placeholder": "游戏名称",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "类型",
+          "controls": [
+            {
+              "name": "type-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "type",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "10",
+                  "text": "抽奖"
+                },
+                {
+                  "value": "30",
+                  "text": "兑换"
+                },
+                {
+                  "value": "40",
+                  "text": "分销"
+                },
+                {
+                  "value": "50",
+                  "text": "签到"
+                },
+                {
+                  "value": "100",
+                  "text": "后台"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "备注",
+          "controls": [
+            {
+              "name": "remark-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "remark",
+              "type": "text",
+              "placeholder": "备注",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "创建时间",
+          "controls": [
+            {
+              "name": "create_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "create_time",
+              "type": "text",
+              "placeholder": "创建时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    },
+    {
+      "table": "table5",
+      "url": "users/exchange/index/user_id/FIXTURE/type/1",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": 0,
+          "title": null,
+          "visible": true,
+          "sortable": false,
+          "operate": null,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user_id",
+          "title": "会员ID",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "user.username",
+          "title": "账号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "good.name",
+          "title": "商品名称",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "exchange_value",
+          "title": "金额",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1/10 + '元';\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "receive_name",
+          "title": "收件人",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "receive_tel",
+          "title": "联系方式",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "receive_address",
+          "title": "收货地址",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "delivery_name",
+          "title": "快递名称",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "delivery_no",
+          "title": "快递单号",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "remark",
+          "title": "备注",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "status",
+          "title": "状态",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "申请中",
+            "1": "审核通过",
+            "4": "审核失败"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "reason",
+          "title": "拒绝原因",
+          "visible": false,
+          "sortable": false,
+          "operate": false,
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "operate",
+          "title": "操作",
+          "visible": true,
+          "sortable": false,
+          "operate": null,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n\t\t\t\t\t\t\t\t\tvar that = $.extend({}, this);\n\t\t\t\t\t\t\t\t\tvar table = $(that.table).clone(true);\n\t\t\t\t\t\t\t\t\tif (row.status != 0) {\n\t\t\t\t\t\t\t\t\t\t$(table).data(\"operate-agree\", null);\n\t\t\t\t\t\t\t\t\t\t$(table).data(\"operate-refuse\", null);\n\t\t\t\t\t\t\t\t\t\t$(table).data(\"operate-reason\", null);\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\tif (row.status == 1 || row.status == 4) {\n\t\t\t\t\t\t\t\t\t\t$(table).data(\"operate-edit\", null);\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\tthat.table = table;\n\t\t\t\t\t\t\t\t\treturn Table.api.formatter.operate.call(that, value, row, index);\n\t\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "create_time",
+          "title": "申请时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        },
+        {
+          "field": "update_time",
+          "title": "更新时间",
+          "visible": false,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        }
+      ],
+      "label": "提现记录",
+      "filters": [
+        {
+          "label": "会员ID",
+          "controls": [
+            {
+              "name": "user_id-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "user_id",
+              "type": "text",
+              "placeholder": "会员ID",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "游戏名称",
+          "controls": [
+            {
+              "name": "game.name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "game.name",
+              "type": "text",
+              "placeholder": "游戏名称",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "商品名称",
+          "controls": [
+            {
+              "name": "good.name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "good.name",
+              "type": "text",
+              "placeholder": "商品名称",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "收件人",
+          "controls": [
+            {
+              "name": "receive_name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "receive_name",
+              "type": "text",
+              "placeholder": "收件人",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "联系方式",
+          "controls": [
+            {
+              "name": "receive_tel-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "receive_tel",
+              "type": "text",
+              "placeholder": "联系方式",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "状态",
+          "controls": [
+            {
+              "name": "status-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "status",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "0",
+                  "text": "申请中"
+                },
+                {
+                  "value": "1",
+                  "text": "审核通过"
+                },
+                {
+                  "value": "4",
+                  "text": "审核失败"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "申请时间",
+          "controls": [
+            {
+              "name": "create_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "create_time",
+              "type": "text",
+              "placeholder": "申请时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "更新时间",
+          "controls": [
+            {
+              "name": "update_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "update_time",
+              "type": "text",
+              "placeholder": "更新时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    },
+    {
+      "table": "table6",
+      "url": "users/distribution/index/user_id/FIXTURE/type/1",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "username",
+          "title": "账号",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "coin_user",
+          "title": "累计金币收益",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "coin",
+          "title": "可用金币",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "freeze_coin",
+          "title": "冻结金币",
+          "visible": true,
+          "sortable": true,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value) {\n\t\t\t\t\t\t\t\treturn value*1;\n\t\t\t\t\t\t\t}"
+        },
+        {
+          "field": "is_white",
+          "title": "白名单",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "否",
+            "1": "是"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "status",
+          "title": "状态",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "禁用",
+            "1": "正常"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "create_time",
+          "title": "创建时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        }
+      ],
+      "label": "分销用户",
+      "filters": [
+        {
+          "label": "账号",
+          "controls": [
+            {
+              "name": "username-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "username",
+              "type": "text",
+              "placeholder": "账号",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "游戏名称",
+          "controls": [
+            {
+              "name": "game.name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "game.name",
+              "type": "text",
+              "placeholder": "游戏名称",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "白名单",
+          "controls": [
+            {
+              "name": "is_white-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "is_white",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "0",
+                  "text": "否"
+                },
+                {
+                  "value": "1",
+                  "text": "是"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "状态",
+          "controls": [
+            {
+              "name": "status-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "status",
+              "type": "select-one",
+              "placeholder": null,
+              "options": [
+                {
+                  "value": "",
+                  "text": "选择"
+                },
+                {
+                  "value": "0",
+                  "text": "禁用"
+                },
+                {
+                  "value": "1",
+                  "text": "正常"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "创建时间",
+          "controls": [
+            {
+              "name": "create_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "create_time",
+              "type": "text",
+              "placeholder": "创建时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    },
+    {
+      "table": "table7",
+      "url": "users/loginlog/index/user_id/FIXTURE/type/1",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user_id",
+          "title": "会员ID",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "user.username",
+          "title": "用户账号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "device_id",
+          "title": "设备号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "ip",
+          "title": "IP",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "create_time",
+          "title": "登陆时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        }
+      ],
+      "label": "登陆历史",
+      "filters": [
+        {
+          "label": "会员ID",
+          "controls": [
+            {
+              "name": "user_id-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "user_id",
+              "type": "text",
+              "placeholder": "会员ID",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "游戏名称",
+          "controls": [
+            {
+              "name": "game.name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "game.name",
+              "type": "text",
+              "placeholder": "游戏名称",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "IP",
+          "controls": [
+            {
+              "name": "ip-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "ip",
+              "type": "text",
+              "placeholder": "IP",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "登陆时间",
+          "controls": [
+            {
+              "name": "create_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "create_time",
+              "type": "text",
+              "placeholder": "登陆时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    },
+    {
+      "table": "table8",
+      "url": "users/address/index/user_id/FIXTURE/type/1",
+      "sortName": "id",
+      "sortOrder": "desc",
+      "pageList": [
+        10,
+        15,
+        20,
+        25,
+        50,
+        "All"
+      ],
+      "pageSize": 10,
+      "columns": [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user_id",
+          "title": "会员ID",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "user.username",
+          "title": "用户账号",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "left",
+          "addclass": null,
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "receive_name",
+          "title": "收件人",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "receive_tel",
+          "title": "联系方式",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "receive_postcode",
+          "title": "邮箱编号",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "receive_address",
+          "title": "详细地址",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "align": "center",
+          "addclass": null,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "default_status",
+          "title": "默认地址",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "align": "center",
+          "addclass": null,
+          "searchList": {
+            "0": "否",
+            "1": "是"
+          },
+          "formatter": "function (value, row, index) {\n                    return Table.api.formatter.flag.call(this, value, row, index);\n                }"
+        },
+        {
+          "field": "create_time",
+          "title": "创建时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "align": "center",
+          "addclass": "datetimerange",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        }
+      ],
+      "label": "收货地址",
+      "filters": [
+        {
+          "label": "会员ID",
+          "controls": [
+            {
+              "name": "user_id-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "user_id",
+              "type": "text",
+              "placeholder": "会员ID",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "游戏名称",
+          "controls": [
+            {
+              "name": "game.name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "game.name",
+              "type": "text",
+              "placeholder": "游戏名称",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "收件人",
+          "controls": [
+            {
+              "name": "receive_name-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "receive_name",
+              "type": "text",
+              "placeholder": "收件人",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "联系方式",
+          "controls": [
+            {
+              "name": "receive_tel-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "receive_tel",
+              "type": "text",
+              "placeholder": "联系方式",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "邮箱编号",
+          "controls": [
+            {
+              "name": "receive_postcode-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "receive_postcode",
+              "type": "text",
+              "placeholder": "邮箱编号",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "详细地址",
+          "controls": [
+            {
+              "name": "receive_address-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "receive_address",
+              "type": "text",
+              "placeholder": "详细地址",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": "创建时间",
+          "controls": [
+            {
+              "name": "create_time-operate",
+              "type": "hidden",
+              "placeholder": "",
+              "options": null
+            },
+            {
+              "name": "create_time",
+              "type": "text",
+              "placeholder": "创建时间",
+              "options": null
+            }
+          ]
+        },
+        {
+          "label": null,
+          "controls": []
+        }
+      ]
+    }
+  ]
+}

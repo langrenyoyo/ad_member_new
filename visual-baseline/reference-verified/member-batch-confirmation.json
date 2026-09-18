@@ -1,0 +1,69 @@
+{
+  "more_visible_after_selection": false,
+  "controls": [
+    {
+      "text": "更多",
+      "cls": "btn btn-primary btn-more dropdown-toggle btn-disabled",
+      "display": "block",
+      "visibility": "visible",
+      "visible": false,
+      "ancestors": [
+        {
+          "tag": "DIV",
+          "cls": "dropdown btn-group hide",
+          "display": "none"
+        }
+      ]
+    },
+    {
+      "text": "启用",
+      "cls": "btn btn-link btn-multi btn-disabled",
+      "display": "block",
+      "visibility": "visible",
+      "visible": false,
+      "ancestors": [
+        {
+          "tag": "LI",
+          "cls": "",
+          "display": "list-item"
+        },
+        {
+          "tag": "UL",
+          "cls": "dropdown-menu text-left",
+          "display": "none"
+        },
+        {
+          "tag": "DIV",
+          "cls": "dropdown btn-group hide",
+          "display": "none"
+        }
+      ]
+    },
+    {
+      "text": "禁用",
+      "cls": "btn btn-link btn-multi btn-disabled",
+      "display": "block",
+      "visibility": "visible",
+      "visible": false,
+      "ancestors": [
+        {
+          "tag": "LI",
+          "cls": "",
+          "display": "list-item"
+        },
+        {
+          "tag": "UL",
+          "cls": "dropdown-menu text-left",
+          "display": "none"
+        },
+        {
+          "tag": "DIV",
+          "cls": "dropdown btn-group hide",
+          "display": "none"
+        }
+      ]
+    }
+  ],
+  "dialogs": [],
+  "blocked_writes": []
+}

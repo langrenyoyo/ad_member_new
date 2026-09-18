@@ -1,0 +1,1235 @@
+{
+  "table": {
+    "sortName": "id",
+    "sortOrder": "desc",
+    "pageSize": 10,
+    "pageList": [
+      10,
+      15,
+      20,
+      25,
+      50,
+      "All"
+    ],
+    "exportDataType": "all",
+    "maintainSelected": false,
+    "ignoreColumn": [
+      0,
+      "operate"
+    ],
+    "columns": [
+      [
+        {
+          "field": "id",
+          "title": "Id",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "user_id",
+          "title": "会员ID",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "user.username",
+          "title": "用户账号",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "user.parent_id",
+          "title": "上级Id",
+          "visible": false,
+          "sortable": false,
+          "operate": "=",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "game.name",
+          "title": "游戏名称",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "agent.name",
+          "title": "代理商名称",
+          "visible": false,
+          "sortable": false,
+          "operate": "LIKE",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "tagcode",
+          "title": "标签",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "tags",
+          "title": "标签名",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "hardware_main_id",
+          "title": "硬件主ID",
+          "visible": true,
+          "sortable": false,
+          "operate": "LIKE",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "ip",
+          "title": "ip",
+          "visible": true,
+          "sortable": false,
+          "operate": "=",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var field = this.field;\n                    if (typeof this.customField !== 'undefined' && typeof row[this.customField] !== 'undefined') {\n                        value = row[this.customField];\n                        field = this.customField;\n                    }\n                    return '<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"' + __('Click to search %s', value) + '\" data-field=\"' + field + '\" data-value=\"' + value + '\">' + value + '</a>';\n                }"
+        },
+        {
+          "field": "action",
+          "title": "行为",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "risk_score",
+          "title": "风险分数",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "risk_level",
+          "title": "风险等级",
+          "visible": true,
+          "sortable": false,
+          "operate": false,
+          "searchList": null,
+          "formatter": null
+        },
+        {
+          "field": "create_time",
+          "title": "创建时间",
+          "visible": true,
+          "sortable": true,
+          "operate": "RANGE",
+          "searchList": null,
+          "formatter": "function (value, row, index) {\n                    var datetimeFormat = typeof this.datetimeFormat === 'undefined' ? 'YYYY-MM-DD HH:mm:ss' : this.datetimeFormat;\n                    if (isNaN(value)) {\n                        return value ? Moment(value).format(datetimeFormat) : __('None');\n                    } else {\n                        return value ? Moment(parseInt(value) * 1000).format(datetimeFormat) : __('None');\n                    }\n                }"
+        }
+      ]
+    ]
+  },
+  "filtersVisible": true,
+  "permissions": {
+    "operateEdit": "",
+    "operateDel": ""
+  },
+  "toolbar": "\n                        <a href=\"javascript:;\" class=\"btn btn-primary btn-refresh\" title=\"刷新\"><i class=\"fa fa-refresh\"></i> </a>\t\t\t\t\t\t<!--<a class=\"btn btn-success btn-singlesearch\" href=\"javascript:;\"><i class=\"fa fa-user\"></i> 重复手机号只显示一个</a>-->\n                    <a href=\"javascript:\" class=\"btn btn-warning-light btn-selected-tips hide\" data-animation=\"false\" data-toggle=\"tooltip\" data-title=\"点击取消全部\"><i class=\"fa fa-info-circle\"></i> 跨页选择模式，已选 <b>0</b> 项</a>",
+  "filters": [
+    {
+      "name": "user_id",
+      "value": ""
+    },
+    {
+      "name": "user.username",
+      "value": ""
+    },
+    {
+      "name": "user.parent_id",
+      "value": ""
+    },
+    {
+      "name": "game.name_text",
+      "value": ""
+    },
+    {
+      "name": "agent.name_text",
+      "value": ""
+    },
+    {
+      "name": "tagcode",
+      "value": ""
+    },
+    {
+      "name": "hardware_main_id",
+      "value": ""
+    },
+    {
+      "name": "ip",
+      "value": ""
+    },
+    {
+      "name": "create_time",
+      "value": ""
+    }
+  ],
+  "cells": [
+    {
+      "text": "9100",
+      "html": "9100"
+    },
+    {
+      "text": "8100",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 8100\" data-field=\"user_id\" data-value=\"8100\">8100</a>"
+    },
+    {
+      "text": "fixture 001",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 fixture 001\" data-field=\"user.username\" data-value=\"fixture 001\">fixture 001</a>"
+    },
+    {
+      "text": "fixture game 0",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 fixture game 0\" data-field=\"game.name\" data-value=\"fixture game 0\">fixture game 0</a>"
+    },
+    {
+      "text": "fixture-code",
+      "html": "fixture-code"
+    },
+    {
+      "text": "fixture tag",
+      "html": "fixture tag"
+    },
+    {
+      "text": "fixture-device-0",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 fixture-device-0\" data-field=\"hardware_main_id\" data-value=\"fixture-device-0\">fixture-device-0</a>"
+    },
+    {
+      "text": "192.0.2.1",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 192.0.2.1\" data-field=\"ip\" data-value=\"192.0.2.1\">192.0.2.1</a>"
+    },
+    {
+      "text": "fixture action",
+      "html": "fixture action"
+    },
+    {
+      "text": "10",
+      "html": "10"
+    },
+    {
+      "text": "low",
+      "html": "low"
+    },
+    {
+      "text": "2026-09-18 08:00:00",
+      "html": "2026-09-18 08:00:00"
+    }
+  ],
+  "geometry": [
+    {
+      "field": "id",
+      "width": 85.234375
+    },
+    {
+      "field": "user_id",
+      "width": 86.390625
+    },
+    {
+      "field": "user.username",
+      "width": 135.34375
+    },
+    {
+      "field": "game.name",
+      "width": 164.171875
+    },
+    {
+      "field": "tagcode",
+      "width": 142.828125
+    },
+    {
+      "field": "tags",
+      "width": 135.34375
+    },
+    {
+      "field": "hardware_main_id",
+      "width": 173.75
+    },
+    {
+      "field": "ip",
+      "width": 122.578125
+    },
+    {
+      "field": "action",
+      "width": 151.359375
+    },
+    {
+      "field": "risk_score",
+      "width": 105.578125
+    },
+    {
+      "field": "risk_level",
+      "width": 105.578125
+    },
+    {
+      "field": "create_time",
+      "width": 220.84375
+    }
+  ],
+  "card_geometry": [
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">Id</span><span class=\"value\">9100</span>",
+      "height": 21.375
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">会员ID</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 8100\" data-field=\"user_id\" data-value=\"8100\">8100</a></span>",
+      "height": 21.375
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">用户账号</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 fixture 001\" data-field=\"user.username\" data-value=\"fixture 001\">fixture 001</a></span>",
+      "height": 21.375
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: left; vertical-align: middle; \">游戏名称</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 fixture game 0\" data-field=\"game.name\" data-value=\"fixture game 0\">fixture game 0</a></span>",
+      "height": 21.375
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">标签</span><span class=\"value\">fixture-code</span>",
+      "height": 21.375
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">标签名</span><span class=\"value\">fixture tag</span>",
+      "height": 21.375
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: left; vertical-align: middle; \">硬件主ID</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 fixture-device-0\" data-field=\"hardware_main_id\" data-value=\"fixture-device-0\">fixture-device-0</a></span>",
+      "height": 21.375
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">ip</span><span class=\"value\"><a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 192.0.2.1\" data-field=\"ip\" data-value=\"192.0.2.1\">192.0.2.1</a></span>",
+      "height": 21.375
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">行为</span><span class=\"value\">fixture action</span>",
+      "height": 21.375
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">风险分数</span><span class=\"value\">10</span>",
+      "height": 21.375
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">风险等级</span><span class=\"value\">low</span>",
+      "height": 21.375
+    },
+    {
+      "html": "<span class=\"title\" style=\"text-align: center; vertical-align: middle; \">创建时间</span><span class=\"value\">2026-09-18 08:00:00</span>",
+      "height": 21.375
+    }
+  ],
+  "searches": {
+    "user_id": {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"user_id\":\"8100\"}"
+      ],
+      "op": [
+        "{\"user_id\":\"LIKE\"}"
+      ],
+      "_": [
+        "1789687599698"
+      ]
+    },
+    "user.username": {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"user.username\":\"fixture 001\"}"
+      ],
+      "op": [
+        "{\"user.username\":\"LIKE\"}"
+      ],
+      "_": [
+        "1789687599700"
+      ]
+    },
+    "user.parent_id": {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"user.parent_id\":\"8000\"}"
+      ],
+      "op": [
+        "{\"user.parent_id\":\"=\"}"
+      ],
+      "_": [
+        "1789687599702"
+      ]
+    },
+    "game.name": {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"game.name\":\"fixture game 0\"}"
+      ],
+      "op": [
+        "{\"game.name\":\"=\"}"
+      ],
+      "_": [
+        "1789687599704"
+      ]
+    },
+    "agent.name": {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.name\":\"fixture agent 0\"}"
+      ],
+      "op": [
+        "{\"agent.name\":\"LIKE\"}"
+      ],
+      "_": [
+        "1789687599706"
+      ]
+    },
+    "hardware_main_id": {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"hardware_main_id\":\"fixture-device-0\"}"
+      ],
+      "op": [
+        "{\"hardware_main_id\":\"LIKE\"}"
+      ],
+      "_": [
+        "1789687599708"
+      ]
+    },
+    "ip": {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"ip\":\"192.0.2.1\"}"
+      ],
+      "op": [
+        "{\"ip\":\"=\"}"
+      ],
+      "_": [
+        "1789687599710"
+      ]
+    }
+  },
+  "date_sort": [
+    {
+      "sort": [
+        "create_time"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599712"
+      ]
+    },
+    {
+      "sort": [
+        "create_time"
+      ],
+      "order": [
+        "asc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599713"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599683"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599684"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599685"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599686"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599687"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599688"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599689"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599690"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599691"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599692"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599693"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599694"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599695"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599696"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599697"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"user_id\":\"8100\"}"
+      ],
+      "op": [
+        "{\"user_id\":\"LIKE\"}"
+      ],
+      "_": [
+        "1789687599698"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599699"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"user.username\":\"fixture 001\"}"
+      ],
+      "op": [
+        "{\"user.username\":\"LIKE\"}"
+      ],
+      "_": [
+        "1789687599700"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599701"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"user.parent_id\":\"8000\"}"
+      ],
+      "op": [
+        "{\"user.parent_id\":\"=\"}"
+      ],
+      "_": [
+        "1789687599702"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599703"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"game.name\":\"fixture game 0\"}"
+      ],
+      "op": [
+        "{\"game.name\":\"=\"}"
+      ],
+      "_": [
+        "1789687599704"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"game.name\":\"fixture game 0\"}"
+      ],
+      "op": [
+        "{\"game.name\":\"=\"}"
+      ],
+      "_": [
+        "1789687599705"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.name\":\"fixture agent 0\"}"
+      ],
+      "op": [
+        "{\"agent.name\":\"LIKE\"}"
+      ],
+      "_": [
+        "1789687599706"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"agent.name\":\"fixture agent 0\"}"
+      ],
+      "op": [
+        "{\"agent.name\":\"LIKE\"}"
+      ],
+      "_": [
+        "1789687599707"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"hardware_main_id\":\"fixture-device-0\"}"
+      ],
+      "op": [
+        "{\"hardware_main_id\":\"LIKE\"}"
+      ],
+      "_": [
+        "1789687599708"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599709"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{\"ip\":\"192.0.2.1\"}"
+      ],
+      "op": [
+        "{\"ip\":\"=\"}"
+      ],
+      "_": [
+        "1789687599710"
+      ]
+    },
+    {
+      "sort": [
+        "id"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599711"
+      ]
+    },
+    {
+      "sort": [
+        "create_time"
+      ],
+      "order": [
+        "desc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599712"
+      ]
+    },
+    {
+      "sort": [
+        "create_time"
+      ],
+      "order": [
+        "asc"
+      ],
+      "offset": [
+        "0"
+      ],
+      "limit": [
+        "10"
+      ],
+      "filter": [
+        "{}"
+      ],
+      "op": [
+        "{}"
+      ],
+      "_": [
+        "1789687599713"
+      ]
+    }
+  ]
+}

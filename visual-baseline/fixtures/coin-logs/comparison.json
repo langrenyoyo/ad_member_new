@@ -1,0 +1,152 @@
+{
+  "#coinFilters": {
+    "x": 0,
+    "y": 15,
+    "width": 1660,
+    "height": 143.5625
+  },
+  ".ads-toolbar": {
+    "x": 15,
+    "y": 158.5625,
+    "width": 1630,
+    "height": 54
+  },
+  "#coinTable table": {
+    "x": 15,
+    "y": 212.5625,
+    "width": 1630,
+    "height": 183
+  },
+  "#coinPagination": {
+    "x": 15,
+    "y": 395.5625,
+    "width": 1630,
+    "height": 54
+  },
+  "columns": [
+    {
+      "field": "id",
+      "width": 91.078125,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 10px"
+    },
+    {
+      "field": "user_id",
+      "width": 92.3125,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 10px"
+    },
+    {
+      "field": "username",
+      "width": 144.625,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 10px"
+    },
+    {
+      "field": "game_name",
+      "width": 175.421875,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 10px"
+    },
+    {
+      "field": "agent_name",
+      "width": 175.453125,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 10px"
+    },
+    {
+      "field": "coin_before",
+      "width": 148,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 15px"
+    },
+    {
+      "field": "coin",
+      "width": 127.484375,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 15px"
+    },
+    {
+      "field": "coin_after",
+      "width": 148,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 15px"
+    },
+    {
+      "field": "type",
+      "width": 94.640625,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 10px"
+    },
+    {
+      "field": "remark",
+      "width": 195.96875,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 10px"
+    },
+    {
+      "field": "created_at",
+      "width": 236.015625,
+      "innerFont": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "innerPadding": "8px 15px"
+    }
+  ],
+  "exports": [
+    {
+      "format": "json",
+      "equal": true
+    },
+    {
+      "format": "xml",
+      "reference_parse_error": "not well-formed (invalid token): line 1, column 924",
+      "equal": false
+    },
+    {
+      "format": "csv",
+      "equal": true
+    },
+    {
+      "format": "txt",
+      "equal": true
+    },
+    {
+      "format": "doc",
+      "equal": true
+    },
+    {
+      "format": "excel",
+      "equal": true
+    }
+  ],
+  "reference_size": [
+    1660,
+    465
+  ],
+  "local_size": [
+    1660,
+    465
+  ],
+  "changed_pixels_percent": 0.0233,
+  "cards": {
+    "reference_size": [
+      1660,
+      1018
+    ],
+    "local_size": [
+      1660,
+      1018
+    ],
+    "changed_pixels_percent": 0.0236
+  },
+  "pagination": {
+    "reference_size": [
+      1630,
+      56
+    ],
+    "local_size": [
+      1630,
+      56
+    ],
+    "changed_pixels_percent": 0.2596
+  }
+}

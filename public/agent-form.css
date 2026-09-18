@@ -1,0 +1,7 @@
+.agent-form-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 18px;padding:20px 22px 8px}
+.agent-form-field{display:flex;flex-direction:column;gap:6px;color:#555;font-size:12px}
+.agent-form-field input,.agent-form-field select{width:100%;height:36px;min-width:0;padding:7px 10px;border:1px solid #d2d6de;border-radius:3px;background:#fff;color:#444;font:13px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.agent-form-field input:focus,.agent-form-field select:focus{border-color:#3c8dbc;outline:0;box-shadow:0 0 0 2px rgba(60,141,188,.12)}
+.agent-form-field:first-child{grid-column:1/-1}.agent-form-loading{padding:42px 22px;color:#777;text-align:center}.agent-form-error{min-height:20px;padding:0 22px 10px;color:#c0392b;font-size:12px}
+#modal:has(.agent-form-fields) .modal{width:min(760px,100%);max-height:calc(100vh - 40px);border-radius:3px}#modal:has(.agent-form-fields) .modal-head{padding:14px 18px;background:#2c3e50;color:#fff}#modal:has(.agent-form-fields) .modal-head h2{font-size:15px;font-weight:400}#modal:has(.agent-form-fields) .modal-actions{justify-content:flex-start;padding:12px 22px;border-top:1px solid #e5e7eb}#modal:has(.agent-form-fields) #cancelModal{display:none}
+@media(max-width:640px){.agent-form-fields{grid-template-columns:1fr;padding:16px}.agent-form-field:first-child{grid-column:auto}#modal:has(.agent-form-fields) .modal-actions{padding-left:16px}}

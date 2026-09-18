@@ -1,0 +1,18 @@
+{
+  "lottery": {
+    "changed_pixel_ratio": 0.04353662940997567,
+    "mean_rgb": 2.6000909240673153
+  },
+  "risk": {
+    "changed_pixel_ratio": 0.014862283302919709,
+    "mean_rgb": 0.7300666670890781
+  },
+  "coins": {
+    "changed_pixel_ratio": 0.03231922901459854,
+    "mean_rgb": 1.8054256640308193
+  },
+  "app": {
+    "changed_pixel_ratio": 0.02045625,
+    "mean_rgb": 0.7345048611111111
+  }
+}

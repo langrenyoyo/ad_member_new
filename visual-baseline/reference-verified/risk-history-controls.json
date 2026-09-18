@@ -1,0 +1,156 @@
+[
+  {
+    "tag": "INPUT",
+    "name": "user_id-operate",
+    "placeholder": "",
+    "value": "LIKE",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "user_id",
+    "placeholder": "会员ID",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "user.username-operate",
+    "placeholder": "",
+    "value": "LIKE",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "user.username",
+    "placeholder": "用户账号",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "user.parent_id-operate",
+    "placeholder": "",
+    "value": "=",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "user.parent_id",
+    "placeholder": "上级Id",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "game.name-operate",
+    "placeholder": "",
+    "value": "=",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "game.name_text",
+    "placeholder": "游戏名称",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "game.name",
+    "placeholder": "",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "agent.name-operate",
+    "placeholder": "",
+    "value": "LIKE",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "agent.name_text",
+    "placeholder": "代理商名称",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "agent.name",
+    "placeholder": "",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "tagcode-operate",
+    "placeholder": "",
+    "value": "LIKE",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "tagcode",
+    "placeholder": "标签",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "hardware_main_id-operate",
+    "placeholder": "",
+    "value": "LIKE",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "hardware_main_id",
+    "placeholder": "硬件主ID",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "ip-operate",
+    "placeholder": "",
+    "value": "=",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "ip",
+    "placeholder": "ip",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "create_time-operate",
+    "placeholder": "",
+    "value": "RANGE",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "create_time",
+    "placeholder": "创建时间",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "daterangepicker_start",
+    "placeholder": "",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "daterangepicker_end",
+    "placeholder": "",
+    "value": "",
+    "options": null
+  }
+]

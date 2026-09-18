@@ -1,0 +1,80 @@
+{
+  "changed_pixel_ratio": 0.00596875,
+  "mean_rgb": 0.11278333333333333,
+  "threshold": 10,
+  "viewport": [
+    1920,
+    1080
+  ],
+  "crop_size": [
+    800,
+    600
+  ],
+  "scope": "Synthetic agent tab only; no reference save or server-side business validation",
+  "geometry": {
+    "reference": {
+      "ht_status": {
+        "x": 158.328125,
+        "y": 149,
+        "width": 34,
+        "height": 22
+      },
+      "percent_zhi": {
+        "x": 158.328125,
+        "y": 186,
+        "width": 483.328125,
+        "height": 33
+      },
+      "percent_jian": {
+        "x": 158.328125,
+        "y": 252,
+        "width": 483.328125,
+        "height": 33
+      },
+      "percent_dai": {
+        "x": 158.328125,
+        "y": 318,
+        "width": 483.328125,
+        "height": 33
+      },
+      "percent_dai_two": {
+        "x": 158.328125,
+        "y": 384,
+        "width": 483.328125,
+        "height": 33
+      }
+    },
+    "local": {
+      "ht_status": {
+        "x": 158.328125,
+        "y": 149,
+        "width": 34,
+        "height": 22
+      },
+      "percent_zhi": {
+        "x": 158.328125,
+        "y": 186,
+        "width": 483.328125,
+        "height": 33
+      },
+      "percent_jian": {
+        "x": 158.328125,
+        "y": 252,
+        "width": 483.328125,
+        "height": 33
+      },
+      "percent_dai": {
+        "x": 158.328125,
+        "y": 318,
+        "width": 483.328125,
+        "height": 33
+      },
+      "percent_dai_two": {
+        "x": 158.328125,
+        "y": 384,
+        "width": 483.328125,
+        "height": 33
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "image_url": "",
+  "username": "fixture-9200",
+  "password": "",
+  "pay_password": "",
+  "name": "对比会员",
+  "device_id": "fixture-device",
+  "sex": "2",
+  "real_name": "模拟姓名",
+  "card_no": "000000000000000000",
+  "address": "模拟地址",
+  "is_true": 0,
+  "realname_enable": 1,
+  "exchange_enable": 1,
+  "game_addiction_enable": 0,
+  "game_addiction_time": "",
+  "is_white": 0,
+  "status": 1,
+  "vip": "2",
+  "otherlevel": "模拟其它信息"
+}

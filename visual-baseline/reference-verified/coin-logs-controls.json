@@ -1,0 +1,192 @@
+[
+  {
+    "tag": "INPUT",
+    "name": "user_id-operate",
+    "placeholder": "",
+    "value": "=",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "user_id",
+    "placeholder": "会员ID",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "user.username-operate",
+    "placeholder": "",
+    "value": "LIKE",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "user.username",
+    "placeholder": "用户账号",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "game.name-operate",
+    "placeholder": "",
+    "value": "=",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "game.name_text",
+    "placeholder": "游戏名称",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "game.name",
+    "placeholder": "",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "agent.game_ad_status-operate",
+    "placeholder": "",
+    "value": "=",
+    "options": null
+  },
+  {
+    "tag": "SELECT",
+    "name": "agent.game_ad_status",
+    "placeholder": null,
+    "value": "0",
+    "options": [
+      {
+        "value": "",
+        "text": "选择"
+      },
+      {
+        "value": "0",
+        "text": "正常"
+      },
+      {
+        "value": "1",
+        "text": "封禁"
+      }
+    ]
+  },
+  {
+    "tag": "INPUT",
+    "name": "agent.name-operate",
+    "placeholder": "",
+    "value": "LIKE",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "agent.name_text",
+    "placeholder": "代理商名称",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "agent.name",
+    "placeholder": "",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "type-operate",
+    "placeholder": "",
+    "value": "=",
+    "options": null
+  },
+  {
+    "tag": "SELECT",
+    "name": "type",
+    "placeholder": null,
+    "value": "",
+    "options": [
+      {
+        "value": "",
+        "text": "选择"
+      },
+      {
+        "value": "10",
+        "text": "抽奖"
+      },
+      {
+        "value": "30",
+        "text": "兑换"
+      },
+      {
+        "value": "40",
+        "text": "分销"
+      },
+      {
+        "value": "50",
+        "text": "签到"
+      },
+      {
+        "value": "60",
+        "text": "VIP"
+      },
+      {
+        "value": "70",
+        "text": "任务"
+      },
+      {
+        "value": "80",
+        "text": "其它"
+      },
+      {
+        "value": "100",
+        "text": "后台"
+      }
+    ]
+  },
+  {
+    "tag": "INPUT",
+    "name": "remark-operate",
+    "placeholder": "",
+    "value": "LIKE",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "remark",
+    "placeholder": "备注",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "create_time-operate",
+    "placeholder": "",
+    "value": "RANGE",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "create_time",
+    "placeholder": "创建时间",
+    "value": "2026-09-12 00:00:00 - 2026-09-12 23:59:59",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "daterangepicker_start",
+    "placeholder": "",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "daterangepicker_end",
+    "placeholder": "",
+    "value": "",
+    "options": null
+  }
+]

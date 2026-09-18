@@ -1,0 +1,402 @@
+{
+  "candidate_count": 7,
+  "repeated_username_groups": 0,
+  "probes": [
+    {
+      "sample": 0,
+      "endpoint": "lottery",
+      "results": [
+        {
+          "multiple": false,
+          "total": 42,
+          "sample_count": 20,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": true
+        },
+        {
+          "multiple": true,
+          "total": 42,
+          "sample_count": 20,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": true
+        }
+      ]
+    },
+    {
+      "sample": 0,
+      "endpoint": "coinlog",
+      "results": [
+        {
+          "multiple": false,
+          "total": 42,
+          "sample_count": 20,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": true
+        },
+        {
+          "multiple": true,
+          "total": 42,
+          "sample_count": 20,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": true
+        }
+      ]
+    },
+    {
+      "sample": 0,
+      "endpoint": "loginlog",
+      "results": [
+        {
+          "multiple": false,
+          "total": 31,
+          "sample_count": 20,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": true
+        },
+        {
+          "multiple": true,
+          "total": 31,
+          "sample_count": 20,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": true
+        }
+      ]
+    },
+    {
+      "sample": 1,
+      "endpoint": "lottery",
+      "results": [
+        {
+          "multiple": false,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        },
+        {
+          "multiple": true,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        }
+      ]
+    },
+    {
+      "sample": 1,
+      "endpoint": "coinlog",
+      "results": [
+        {
+          "multiple": false,
+          "total": 33,
+          "sample_count": 20,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": true
+        },
+        {
+          "multiple": true,
+          "total": 33,
+          "sample_count": 20,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": true
+        }
+      ]
+    },
+    {
+      "sample": 1,
+      "endpoint": "loginlog",
+      "results": [
+        {
+          "multiple": false,
+          "total": 1,
+          "sample_count": 1,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": true
+        },
+        {
+          "multiple": true,
+          "total": 1,
+          "sample_count": 1,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": true
+        }
+      ]
+    },
+    {
+      "sample": 2,
+      "endpoint": "lottery",
+      "results": [
+        {
+          "multiple": false,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        },
+        {
+          "multiple": true,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        }
+      ]
+    },
+    {
+      "sample": 2,
+      "endpoint": "coinlog",
+      "results": [
+        {
+          "multiple": false,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        },
+        {
+          "multiple": true,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        }
+      ]
+    },
+    {
+      "sample": 2,
+      "endpoint": "loginlog",
+      "results": [
+        {
+          "multiple": false,
+          "total": 1,
+          "sample_count": 1,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": false
+        },
+        {
+          "multiple": true,
+          "total": 1,
+          "sample_count": 1,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": false
+        }
+      ]
+    },
+    {
+      "sample": 3,
+      "endpoint": "lottery",
+      "results": [
+        {
+          "multiple": false,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        },
+        {
+          "multiple": true,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        }
+      ]
+    },
+    {
+      "sample": 3,
+      "endpoint": "coinlog",
+      "results": [
+        {
+          "multiple": false,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        },
+        {
+          "multiple": true,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        }
+      ]
+    },
+    {
+      "sample": 3,
+      "endpoint": "loginlog",
+      "results": [
+        {
+          "multiple": false,
+          "total": 1,
+          "sample_count": 1,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": false
+        },
+        {
+          "multiple": true,
+          "total": 1,
+          "sample_count": 1,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": false
+        }
+      ]
+    },
+    {
+      "sample": 4,
+      "endpoint": "lottery",
+      "results": [
+        {
+          "multiple": false,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        },
+        {
+          "multiple": true,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        }
+      ]
+    },
+    {
+      "sample": 4,
+      "endpoint": "coinlog",
+      "results": [
+        {
+          "multiple": false,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        },
+        {
+          "multiple": true,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        }
+      ]
+    },
+    {
+      "sample": 4,
+      "endpoint": "loginlog",
+      "results": [
+        {
+          "multiple": false,
+          "total": 4,
+          "sample_count": 4,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": false
+        },
+        {
+          "multiple": true,
+          "total": 4,
+          "sample_count": 4,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": false
+        }
+      ]
+    },
+    {
+      "sample": 5,
+      "endpoint": "lottery",
+      "results": [
+        {
+          "multiple": false,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        },
+        {
+          "multiple": true,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        }
+      ]
+    },
+    {
+      "sample": 5,
+      "endpoint": "coinlog",
+      "results": [
+        {
+          "multiple": false,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        },
+        {
+          "multiple": true,
+          "total": 0,
+          "sample_count": 0,
+          "distinct_members": 0,
+          "outside_selected_member": 0,
+          "all_same_username": null
+        }
+      ]
+    },
+    {
+      "sample": 5,
+      "endpoint": "loginlog",
+      "results": [
+        {
+          "multiple": false,
+          "total": 1,
+          "sample_count": 1,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": true
+        },
+        {
+          "multiple": true,
+          "total": 1,
+          "sample_count": 1,
+          "distinct_members": 1,
+          "outside_selected_member": 0,
+          "all_same_username": true
+        }
+      ]
+    }
+  ]
+}

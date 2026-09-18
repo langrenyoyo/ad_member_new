@@ -1,0 +1,296 @@
+{
+  "reference": {
+    "styles": [
+      {
+        "selector": ".calendar-table td",
+        "font": "13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "5px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "margin": "0px",
+        "color": "rgb(153, 153, 153)",
+        "rect": {
+          "x": 769.828125,
+          "y": 271.34375,
+          "width": 32,
+          "height": 31.421875,
+          "top": 271.34375,
+          "right": 801.828125,
+          "bottom": 302.765625,
+          "left": 769.828125
+        }
+      },
+      {
+        "selector": ".calendar-table th",
+        "font": "700 13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "5px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "margin": "0px",
+        "color": "rgb(51, 51, 51)",
+        "rect": {
+          "x": 769.828125,
+          "y": 208.5,
+          "width": 32,
+          "height": 31.421875,
+          "top": 208.5,
+          "right": 801.828125,
+          "bottom": 239.921875,
+          "left": 769.828125
+        }
+      },
+      {
+        "selector": ".ranges li",
+        "font": "13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "3px 12px",
+        "border": "1px solid rgb(245, 245, 245)",
+        "margin": "0px 0px 8px",
+        "color": "rgb(0, 136, 204)",
+        "rect": {
+          "x": 596.328125,
+          "y": 168,
+          "width": 160,
+          "height": 28.421875,
+          "top": 168,
+          "right": 756.328125,
+          "bottom": 196.421875,
+          "left": 596.328125
+        }
+      },
+      {
+        "selector": ".calendar-table",
+        "font": "13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "4px 12px 4px 4px",
+        "border": "",
+        "margin": "0px",
+        "color": "rgb(51, 51, 51)",
+        "rect": {
+          "x": 764.328125,
+          "y": 203,
+          "width": 242,
+          "height": 262.375,
+          "top": 203,
+          "right": 1006.328125,
+          "bottom": 465.375,
+          "left": 764.328125
+        }
+      },
+      {
+        "selector": ".calendar",
+        "font": "13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "border": "0px none rgb(51, 51, 51)",
+        "margin": "4px 0px 4px 4px",
+        "color": "rgb(51, 51, 51)",
+        "rect": {
+          "x": 764.328125,
+          "y": 168,
+          "width": 242,
+          "height": 297.375,
+          "top": 168,
+          "right": 1006.328125,
+          "bottom": 465.375,
+          "left": 764.328125
+        }
+      },
+      {
+        "selector": ".daterangepicker",
+        "font": "13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "4px",
+        "border": "0px none rgb(51, 51, 51)",
+        "margin": "1px 0px 0px",
+        "color": "rgb(51, 51, 51)",
+        "rect": {
+          "x": 588.328125,
+          "y": 160,
+          "width": 660,
+          "height": 313.375,
+          "top": 160,
+          "right": 1248.328125,
+          "bottom": 473.375,
+          "left": 588.328125
+        }
+      }
+    ],
+    "locale": {
+      "direction": "ltr",
+      "format": "YYYY-MM-DD HH:mm:ss",
+      "separator": " - ",
+      "applyLabel": "应用",
+      "cancelLabel": "清空",
+      "weekLabel": "W",
+      "customRangeLabel": "自定义",
+      "daysOfWeek": [
+        "一",
+        "二",
+        "三",
+        "四",
+        "五",
+        "六",
+        "日"
+      ],
+      "monthNames": [
+        "1月",
+        "2月",
+        "3月",
+        "4月",
+        "5月",
+        "6月",
+        "7月",
+        "8月",
+        "9月",
+        "10月",
+        "11月",
+        "12月"
+      ],
+      "firstDay": 1
+    },
+    "start": "2026-09-10 00:00:00",
+    "end": "2026-09-16 23:59:59"
+  },
+  "local": {
+    "styles": [
+      {
+        "selector": ".calendar-table td",
+        "font": "13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "5px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "margin": "0px",
+        "color": "rgb(153, 153, 153)",
+        "rect": {
+          "x": 999.828125,
+          "y": 321.34375,
+          "width": 32,
+          "height": 31.421875,
+          "top": 321.34375,
+          "right": 1031.828125,
+          "bottom": 352.765625,
+          "left": 999.828125
+        }
+      },
+      {
+        "selector": ".calendar-table th",
+        "font": "700 13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "5px",
+        "border": "1px solid rgba(0, 0, 0, 0)",
+        "margin": "0px",
+        "color": "rgb(51, 51, 51)",
+        "rect": {
+          "x": 999.828125,
+          "y": 258.5,
+          "width": 32,
+          "height": 31.421875,
+          "top": 258.5,
+          "right": 1031.828125,
+          "bottom": 289.921875,
+          "left": 999.828125
+        }
+      },
+      {
+        "selector": ".ranges li",
+        "font": "13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "3px 12px",
+        "border": "1px solid rgb(245, 245, 245)",
+        "margin": "0px 0px 8px",
+        "color": "rgb(0, 136, 204)",
+        "rect": {
+          "x": 826.328125,
+          "y": 218,
+          "width": 160,
+          "height": 28.421875,
+          "top": 218,
+          "right": 986.328125,
+          "bottom": 246.421875,
+          "left": 826.328125
+        }
+      },
+      {
+        "selector": ".calendar-table",
+        "font": "13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "4px 12px 4px 4px",
+        "border": "",
+        "margin": "0px",
+        "color": "rgb(51, 51, 51)",
+        "rect": {
+          "x": 994.328125,
+          "y": 253,
+          "width": 242,
+          "height": 262.375,
+          "top": 253,
+          "right": 1236.328125,
+          "bottom": 515.375,
+          "left": 994.328125
+        }
+      },
+      {
+        "selector": ".calendar",
+        "font": "13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "0px",
+        "border": "0px none rgb(51, 51, 51)",
+        "margin": "4px 0px 4px 4px",
+        "color": "rgb(51, 51, 51)",
+        "rect": {
+          "x": 994.328125,
+          "y": 218,
+          "width": 242,
+          "height": 297.375,
+          "top": 218,
+          "right": 1236.328125,
+          "bottom": 515.375,
+          "left": 994.328125
+        }
+      },
+      {
+        "selector": ".daterangepicker",
+        "font": "13px / 20.4295px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "4px",
+        "border": "0px none rgb(51, 51, 51)",
+        "margin": "1px 0px 0px",
+        "color": "rgb(51, 51, 51)",
+        "rect": {
+          "x": 818.328125,
+          "y": 210,
+          "width": 660,
+          "height": 313.375,
+          "top": 210,
+          "right": 1478.328125,
+          "bottom": 523.375,
+          "left": 818.328125
+        }
+      }
+    ],
+    "locale": {
+      "direction": "ltr",
+      "format": "YYYY-MM-DD HH:mm:ss",
+      "separator": " - ",
+      "applyLabel": "应用",
+      "cancelLabel": "清空",
+      "weekLabel": "W",
+      "customRangeLabel": "自定义",
+      "daysOfWeek": [
+        "一",
+        "二",
+        "三",
+        "四",
+        "五",
+        "六",
+        "日"
+      ],
+      "monthNames": [
+        "1月",
+        "2月",
+        "3月",
+        "4月",
+        "5月",
+        "6月",
+        "7月",
+        "8月",
+        "9月",
+        "10月",
+        "11月",
+        "12月"
+      ],
+      "firstDay": 1
+    },
+    "start": "2026-09-10 00:00:00",
+    "end": "2026-09-16 23:59:59"
+  }
+}

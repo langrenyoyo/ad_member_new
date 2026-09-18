@@ -1,0 +1,123 @@
+{
+  "geometry": [
+    {
+      "field": "id",
+      "width": 85.234375
+    },
+    {
+      "field": "user_id",
+      "width": 86.390625
+    },
+    {
+      "field": "username",
+      "width": 135.34375
+    },
+    {
+      "field": "game_name",
+      "width": 164.171875
+    },
+    {
+      "field": "tagcode",
+      "width": 142.828125
+    },
+    {
+      "field": "tags",
+      "width": 135.34375
+    },
+    {
+      "field": "hardware_main_id",
+      "width": 173.75
+    },
+    {
+      "field": "ip",
+      "width": 122.578125
+    },
+    {
+      "field": "action",
+      "width": 151.359375
+    },
+    {
+      "field": "risk_score",
+      "width": 105.578125
+    },
+    {
+      "field": "risk_level",
+      "width": 105.578125
+    },
+    {
+      "field": "created_at",
+      "width": 220.84375
+    }
+  ],
+  "exports": [
+    {
+      "format": "json",
+      "equal": true
+    },
+    {
+      "format": "xml",
+      "reference_parse_error": "not well-formed (invalid token): line 1, column 776",
+      "equal": false
+    },
+    {
+      "format": "csv",
+      "equal": true
+    },
+    {
+      "format": "txt",
+      "equal": true
+    },
+    {
+      "format": "doc",
+      "equal": true
+    },
+    {
+      "format": "excel",
+      "equal": true
+    }
+  ],
+  "table": {
+    "reference_size": [
+      1660,
+      464
+    ],
+    "local_size": [
+      1660,
+      464
+    ],
+    "changed_pixels_percent": 0.0208
+  },
+  "collapsed-": {
+    "reference_size": [
+      1660,
+      320
+    ],
+    "local_size": [
+      1660,
+      320
+    ],
+    "changed_pixels_percent": 0.0416
+  },
+  "cards-": {
+    "reference_size": [
+      1660,
+      1060
+    ],
+    "local_size": [
+      1660,
+      1060
+    ],
+    "changed_pixels_percent": 0.0216
+  },
+  "pagination-": {
+    "reference_size": [
+      1630,
+      56
+    ],
+    "local_size": [
+      1630,
+      56
+    ],
+    "changed_pixels_percent": 0.2596
+  }
+}

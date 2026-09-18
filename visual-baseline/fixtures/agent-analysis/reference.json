@@ -1,0 +1,2695 @@
+{
+  "text": "代理商名称：三河市摩羯座网络科技有限公司\n 数据统计  数据分析  游戏列表  用户列表  用户提现\n累计用户金币收益\n每次抽奖金币收益\n成功率\nAPP数量\n抽奖时间\n提交 重置\n 金币数据\n 成功率数据\n网络环境\n APP数量数据\nId\n\t\n账号\n\t\n游戏名称\n\t\n代理商名称\n\t\n累计金币收益\n\t\n本月金币收益\n\t\n今日金币收益\n\t\n可用金币\n\t\n冻结金币\n\t\n达标\n\t\n白名单\n\t\n状态\n\t\n创建时间\n\t\n操作\n\n677093\t19999999998\t欢快消除\t三河市摩羯座网络科技有限公司\t20.23\t0\t0\t20.23\t0\t是\t\t\t2026-07-21 11:36:58\t单APP行为 多APP行为 修改金币 \n显示第 1 到第 1 条记录，总共 1 条记录",
+  "config": {
+    "site": "object",
+    "upload": "object",
+    "modulename": "string",
+    "controllername": "string",
+    "actionname": "string",
+    "jsname": "string",
+    "moduleurl": "string",
+    "language": "string",
+    "referer": "object",
+    "__PUBLIC__": "string",
+    "__ROOT__": "string",
+    "__CDN__": "string"
+  },
+  "elements": [
+    {
+      "tag": "DIV",
+      "id": "main",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "tab-content tab-addtabs",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "content",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-12 col-sm-12 col-md-12 col-lg-12",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "SECTION",
+      "id": "",
+      "cls": "content-header hide",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "H1",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "SMALL",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "content",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "STYLE",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": "",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "alert alert-success-light",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "alert alert-info-light",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "cls": "btn btn-primary ",
+      "name": "",
+      "type": "",
+      "href": "/DmvTqXBpfF.php/agents/dash/index/agent_id/133"
+    },
+    {
+      "tag": "I",
+      "id": "",
+      "cls": "fa fa-dashboard",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "cls": "btn btn-warning ",
+      "name": "",
+      "type": "",
+      "href": "javascript:;"
+    },
+    {
+      "tag": "I",
+      "id": "",
+      "cls": "fa fa-gamepad",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "cls": "btn btn-primary ",
+      "name": "",
+      "type": "",
+      "href": "/DmvTqXBpfF.php/agents/game/index/agent_id/133"
+    },
+    {
+      "tag": "I",
+      "id": "",
+      "cls": "fa fa-gamepad",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "cls": "btn btn-primary ",
+      "name": "",
+      "type": "",
+      "href": "/DmvTqXBpfF.php/agents/user/index/agent_id/133"
+    },
+    {
+      "tag": "I",
+      "id": "",
+      "cls": "fa fa-user",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "cls": "btn btn-primary ",
+      "name": "",
+      "type": "",
+      "href": "/DmvTqXBpfF.php/agents/exchange/index/agent_id/133"
+    },
+    {
+      "tag": "I",
+      "id": "",
+      "cls": "fa fa-money",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel panel-default panel-intro",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel-body",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "myTabContent",
+      "cls": "tab-content",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "one",
+      "cls": "tab-pane fade active in",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "widget-body no-padding",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "bootstrap-table",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "commonsearch-table ",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "FORM",
+      "id": "",
+      "cls": "form-horizontal form-commonsearch nice-validator n-default n-bootstrap",
+      "name": "",
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "FIELDSET",
+      "id": "",
+      "cls": "",
+      "name": "",
+      "type": "fieldset",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "LABEL",
+      "id": "",
+      "cls": "control-label col-xs-4",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-8",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "",
+      "cls": "form-control operate",
+      "name": "coin_user_total-operate",
+      "type": "hidden",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row row-between",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-6",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "coin_user_total-min",
+      "cls": "form-control",
+      "name": "coin_user_total",
+      "type": "text",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-6",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "coin_user_total-max",
+      "cls": "form-control",
+      "name": "coin_user_total",
+      "type": "text",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "LABEL",
+      "id": "",
+      "cls": "control-label col-xs-4",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-8",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "",
+      "cls": "form-control operate",
+      "name": "coin_every-operate",
+      "type": "hidden",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row row-between",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-6",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "coin_every-min",
+      "cls": "form-control",
+      "name": "coin_every",
+      "type": "text",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-6",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "coin_every-max",
+      "cls": "form-control",
+      "name": "coin_every",
+      "type": "text",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "LABEL",
+      "id": "",
+      "cls": "control-label col-xs-4",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-8",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "",
+      "cls": "form-control operate",
+      "name": "success_percent-operate",
+      "type": "hidden",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row row-between",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-6",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "success_percent-min",
+      "cls": "form-control",
+      "name": "success_percent",
+      "type": "text",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-6",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "success_percent-max",
+      "cls": "form-control",
+      "name": "success_percent",
+      "type": "text",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "LABEL",
+      "id": "",
+      "cls": "control-label col-xs-4",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-8",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "",
+      "cls": "form-control operate",
+      "name": "app_num-operate",
+      "type": "hidden",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row row-between",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-6",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "app_num-min",
+      "cls": "form-control",
+      "name": "app_num",
+      "type": "text",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-6",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "app_num-max",
+      "cls": "form-control",
+      "name": "app_num",
+      "type": "text",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "LABEL",
+      "id": "",
+      "cls": "control-label col-xs-4",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-8",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "",
+      "cls": "form-control operate",
+      "name": "create_time-operate",
+      "type": "hidden",
+      "href": null
+    },
+    {
+      "tag": "INPUT",
+      "id": "create_time",
+      "cls": "form-control datetimerange",
+      "name": "create_time",
+      "type": "text",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-sm-8 col-xs-offset-4",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "cls": "btn btn-success",
+      "name": "",
+      "type": "submit",
+      "href": null
+    },
+    {
+      "tag": "BUTTON",
+      "id": "",
+      "cls": "btn btn-default",
+      "name": "",
+      "type": "reset",
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fixed-table-toolbar",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "bs-bars pull-left",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "toolbar",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-12 col-md-3",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel-body",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "echart1",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "CANVAS",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "cls": "btn btn-info btn-coinedit btn-dialog dropdown-toggle ",
+      "name": "",
+      "type": "",
+      "href": "assay/coinedit/agent_id/133"
+    },
+    {
+      "tag": "I",
+      "id": "",
+      "cls": "fa fa-cog",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-12 col-md-3",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel-body",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "echart2",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "CANVAS",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "cls": "btn btn-info btn-successpercentedit btn-dialog dropdown-toggle ",
+      "name": "",
+      "type": "",
+      "href": "assay/successpercentedit/agent_id/133"
+    },
+    {
+      "tag": "I",
+      "id": "",
+      "cls": "fa fa-cog",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-12 col-md-3",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel-body",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "echart3",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "CANVAS",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "cls": "btn btn-info dropdown-toggle",
+      "name": "",
+      "type": "",
+      "href": "javascript:;"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-12 col-md-3",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel-body",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "echart4",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "CANVAS",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "cls": "btn btn-info btn-appnumedit btn-dialog dropdown-toggle ",
+      "name": "",
+      "type": "",
+      "href": "assay/appnumedit/agent_id/133"
+    },
+    {
+      "tag": "I",
+      "id": "",
+      "cls": "fa fa-cog",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-12 col-md-6",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel-body",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "echart6",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "CANVAS",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "col-xs-12 col-md-6",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel-body",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "echart7",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "CANVAS",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "A",
+      "id": "",
+      "cls": "btn btn-warning-light btn-selected-tips hide",
+      "name": "",
+      "type": "",
+      "href": "javascript:"
+    },
+    {
+      "tag": "I",
+      "id": "",
+      "cls": "fa fa-info-circle",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "B",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fixed-table-container",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fixed-table-header",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TABLE",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fixed-table-body",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fixed-table-loading",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TABLE",
+      "id": "table",
+      "cls": "table table-striped table-bordered table-hover table-nowrap",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "THEAD",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TR",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TH",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "th-inner ",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fht-cell",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TH",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "th-inner ",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fht-cell",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TH",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "th-inner ",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fht-cell",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TH",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "th-inner ",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fht-cell",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TH",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "th-inner sortable both",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fht-cell",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TH",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "th-inner ",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fht-cell",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TH",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "th-inner ",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fht-cell",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TH",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "th-inner sortable both",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fht-cell",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TH",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "th-inner sortable both",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fht-cell",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TH",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "th-inner ",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fht-cell",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TH",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "th-inner ",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fht-cell",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TH",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "th-inner ",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fht-cell",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TH",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "th-inner sortable both",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fht-cell",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "TH",
+      "id": "",
+      "cls": "",
+      "name": null,
+      "type": null,
+      "href": null
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "th-inner ",
+      "name": null,
+      "type": null,
+      "href": null
+    }
+  ],
+  "controls": [
+    {
+      "tag": "INPUT",
+      "name": "coin_user_total-operate",
+      "type": "hidden",
+      "placeholder": "",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "coin_user_total",
+      "type": "text",
+      "placeholder": "累计用户金币收益",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "coin_user_total",
+      "type": "text",
+      "placeholder": "累计用户金币收益",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "coin_every-operate",
+      "type": "hidden",
+      "placeholder": "",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "coin_every",
+      "type": "text",
+      "placeholder": "每次抽奖金币收益",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "coin_every",
+      "type": "text",
+      "placeholder": "每次抽奖金币收益",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "success_percent-operate",
+      "type": "hidden",
+      "placeholder": "",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "success_percent",
+      "type": "text",
+      "placeholder": "成功率",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "success_percent",
+      "type": "text",
+      "placeholder": "成功率",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "app_num-operate",
+      "type": "hidden",
+      "placeholder": "",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "app_num",
+      "type": "text",
+      "placeholder": "APP数量",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "app_num",
+      "type": "text",
+      "placeholder": "APP数量",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "create_time-operate",
+      "type": "hidden",
+      "placeholder": "",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "create_time",
+      "type": "text",
+      "placeholder": "抽奖时间",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "BUTTON",
+      "name": "",
+      "type": "submit",
+      "placeholder": null,
+      "text": "提交",
+      "html": null
+    },
+    {
+      "tag": "BUTTON",
+      "name": "",
+      "type": "reset",
+      "placeholder": null,
+      "text": "重置",
+      "html": null
+    },
+    {
+      "tag": "BUTTON",
+      "name": "",
+      "type": "button",
+      "placeholder": null,
+      "text": "10 ",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "",
+      "type": "text",
+      "placeholder": "",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "BUTTON",
+      "name": "",
+      "type": "button",
+      "placeholder": null,
+      "text": "跳转",
+      "html": null
+    },
+    {
+      "tag": "BUTTON",
+      "name": "",
+      "type": "button",
+      "placeholder": null,
+      "text": "应用",
+      "html": null
+    },
+    {
+      "tag": "BUTTON",
+      "name": "",
+      "type": "button",
+      "placeholder": null,
+      "text": "清空",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "daterangepicker_start",
+      "type": "text",
+      "placeholder": "",
+      "text": "",
+      "html": null
+    },
+    {
+      "tag": "INPUT",
+      "name": "daterangepicker_end",
+      "type": "text",
+      "placeholder": "",
+      "text": "",
+      "html": null
+    }
+  ],
+  "charts": [
+    {
+      "id": "echart1",
+      "width": 355,
+      "height": 200
+    },
+    {
+      "id": "echart2",
+      "width": 355,
+      "height": 200
+    },
+    {
+      "id": "echart3",
+      "width": 355,
+      "height": 200
+    },
+    {
+      "id": "echart4",
+      "width": 355,
+      "height": 200
+    },
+    {
+      "id": "echart6",
+      "width": 770,
+      "height": 500
+    },
+    {
+      "id": "echart7",
+      "width": 770,
+      "height": 500
+    }
+  ],
+  "requests": [
+    {
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/gameuser/index?sort=id&order=desc&offset=0&limit=10&filter=%7B%7D&op=%7B%7D&_=1789696449621",
+      "method": "GET"
+    },
+    {
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/agents/assay/index/agent_id/133?sort=user.id&order=desc&offset=0&limit=10&filter=%7B%7D&op=%7B%7D&_=1789696449982",
+      "method": "GET"
+    }
+  ],
+  "response_shape": {
+    "keys": [
+      "total",
+      "rows",
+      "echart_data"
+    ],
+    "total": 1,
+    "rows": [
+      {
+        "id": "[omitted]",
+        "user_id": "[omitted]",
+        "lottery_key": "[omitted]",
+        "lottery_name": "[omitted]",
+        "lottery_count": 1,
+        "lottery_price": "0.83",
+        "status": 1,
+        "create_time": 1784605432,
+        "device_id": "[omitted]",
+        "ip": "[omitted]",
+        "useragent": "[omitted]",
+        "content": "[omitted]",
+        "tag": "[omitted]",
+        "ip_android": "[omitted]",
+        "network_status": 1,
+        "adn_name": "[omitted]",
+        "is_white": 0,
+        "user": [
+          "id",
+          "game_id",
+          "parent_id",
+          "username",
+          "password",
+          "pay_password",
+          "name",
+          "image_url",
+          "sex",
+          "real_name",
+          "card_no",
+          "address",
+          "realname_enable",
+          "coin_agent",
+          "coin_user",
+          "coin",
+          "freeze_coin",
+          "exchange_enable",
+          "game_addiction_enable",
+          "game_addiction_time",
+          "is_white",
+          "status",
+          "create_time",
+          "update_time",
+          "salt",
+          "device_id",
+          "ip",
+          "useragent",
+          "countdown",
+          "openid",
+          "unionid",
+          "ip_address",
+          "means",
+          "means_month",
+          "means_total",
+          "game_unionfcm",
+          "star_countdown",
+          "over_countdown",
+          "raffle_num",
+          "star_countdown2",
+          "over_countdown2",
+          "raffle_num2",
+          "raffle_open",
+          "device_id_ban",
+          "is_true",
+          "down_load",
+          "qd_day",
+          "ban_time",
+          "ban_device_id",
+          "ht_id",
+          "ht_status",
+          "ht_top_id",
+          "user_id_show",
+          "ip_check",
+          "coin_chi",
+          "percent_zhi",
+          "percent_jian",
+          "percent_dai",
+          "percent_dai_two",
+          "otherlevel",
+          "vip",
+          "invite_score",
+          "income_score",
+          "commission_score",
+          "beishu",
+          "jiangli_first",
+          "is_di",
+          "look_time",
+          "look_time_ban",
+          "beishu_day_num",
+          "beishu_coin_min",
+          "beishu_coin_max",
+          "beishu_coin_random_open",
+          "beishu_day_num_son",
+          "beishu_coin_min_son",
+          "beishu_coin_max_son",
+          "beishu_coin_random_open_son",
+          "percent_son",
+          "coin_butie",
+          "ban_msg",
+          "coin_user_month",
+          "coin_user_day"
+        ],
+        "game": [
+          "id",
+          "agent_id",
+          "name",
+          "game_icon",
+          "game_key",
+          "game_url",
+          "star_countdown",
+          "over_countdown",
+          "raffle_num",
+          "ad_status",
+          "status",
+          "ordinary_num",
+          "client_num",
+          "server_num",
+          "multiorder_num",
+          "player_num",
+          "game_app_name",
+          "game_ad_app_id",
+          "game_ad_secret_id",
+          "game_app_name_taku",
+          "game_ad_app_id_taku",
+          "game_ad_secret_id_taku",
+          "ad_incentive_video_code_id",
+          "ad_incentive_video_status",
+          "ad_open_screen_video_code_id",
+          "ad_open_screen_video_status",
+          "ad_full_screen_video_code_id",
+          "ad_full_screen_video_status",
+          "ad_banner_code_id",
+          "ad_banner_status",
+          "ad_plaque_code_id",
+          "ad_plaque_status",
+          "create_time",
+          "update_time",
+          "winning_rate",
+          "star_coin",
+          "over_coin",
+          "commission_source",
+          "commission_rate",
+          "commission_status",
+          "coin_get",
+          "exchange_num",
+          "raffle_cont",
+          "commission_open",
+          "is_landscape",
+          "game_bg",
+          "lucky_enable",
+          "countdown",
+          "is_game",
+          "is_mobile",
+          "is_lottery",
+          "game_hf_bg",
+          "is_app_exchange",
+          "is_app_invite",
+          "is_app_raffle",
+          "is_app_notice",
+          "is_app_kefu",
+          "is_app_kefu_url",
+          "is_app_daytask",
+          "m_key",
+          "game_type",
+          "game_secret",
+          "game_unionfcm",
+          "star_countdown2",
+          "over_countdown2",
+          "raffle_num2",
+          "game_ad_status",
+          "game_lottery_num",
+          "ordinary_num2",
+          "client_num2",
+          "server_num2",
+          "multiorder_num2",
+          "player_num2",
+          "is_full_game",
+          "wx_appid",
+          "wx_secert",
+          "wx_share_url",
+          "wxlogin_bg",
+          "score",
+          "is_douyin_shop",
+          "other_url",
+          "ban_day",
+          "coin_get_once",
+          "percent_sf_jlc",
+          "tixian_price",
+          "tixian_coin",
+          "tixian_wx",
+          "duanju_look",
+          "duanju_lock",
+          "percent_zhi",
+          "percent_jian",
+          "percent_dai",
+          "plaque_time",
+          "m_key2",
+          "wx_qiye_id",
+          "wx_qiye_kf",
+          "m_key3",
+          "ad_plaque_code_id_duanju",
+          "ad_plaque_status_duanju",
+          "percent_dai_two",
+          "jiangli_first",
+          "vip_up",
+          "m_key4",
+          "rw_num",
+          "rw_coin",
+          "m_key5",
+          "risk_select",
+          "ip_login_limit",
+          "tx_status",
+          "youtui_code_id",
+          "youtui_status",
+          "default_user_id",
+          "chi_coin",
+          "chi_coin_in_percent",
+          "chi_coin_status",
+          "chi_coin_limit",
+          "chi_coin_max",
+          "chi_coin_out_percent",
+          "ad_full_screen_video_code_id_two",
+          "ad_full_screen_video_status_two",
+          "ad_incentive_video_code_id_two",
+          "ad_incentive_video_status_two",
+          "bao_zdy",
+          "default_user_vip",
+          "is_imei",
+          "percent_zhi_open",
+          "invite_vip_show",
+          "clear_time",
+          "ad_ks_num",
+          "ad_tx_num",
+          "ad_bz_num",
+          "ad_qt_num",
+          "day_hb_coin",
+          "day_hb_num",
+          "hour_be_open",
+          "hour_be_percent",
+          "hour_be_start",
+          "hour_be_update",
+          "day_hb_num_get",
+          "day_hb_update",
+          "tixian_coin_butie",
+          "ad_auto_ecpm",
+          "ad_auto_num",
+          "m_key6"
+        ],
+        "agent": [
+          "id",
+          "parent_id",
+          "user_name",
+          "name",
+          "avatar",
+          "password",
+          "salt",
+          "user_id",
+          "role_id",
+          "security_key",
+          "status",
+          "create_time",
+          "update_time",
+          "game_ad_status",
+          "ht_status",
+          "is_gx"
+        ]
+      }
+    ],
+    "echart_data": {
+      "agentechart": {
+        "id": 104,
+        "agent_id": 133,
+        "create_time": 1789695175,
+        "update_time": 1789695175,
+        "coin_value": null,
+        "success_percent_value": null,
+        "app_num_value": null,
+        "auth_id": 0
+      },
+      "echart_coin_data": [
+        {
+          "value": 1,
+          "name": "其它"
+        }
+      ],
+      "echart_success_percent_data": [
+        {
+          "value": 1,
+          "name": "其它"
+        }
+      ],
+      "echart_ip_data": [
+        {
+          "name": "内网",
+          "value": 0
+        },
+        {
+          "name": "公网",
+          "value": 42
+        }
+      ],
+      "echart_app_num_data": [
+        {
+          "value": 1,
+          "name": "其它"
+        }
+      ],
+      "echart_game_data": {
+        "name": [
+          "Fixture game 0"
+        ],
+        "value": [
+          1
+        ]
+      },
+      "echart_scatter_data": [
+        [
+          "20.23",
+          "0.48"
+        ]
+      ]
+    },
+    "lottery_comparison": {
+      "row_id_is_user": true,
+      "total": 42,
+      "loaded": 42,
+      "sum": 20.23,
+      "success_count": 42,
+      "member_coin_user": "20.23"
+    }
+  },
+  "filter_probes": [
+    {
+      "field": "coin_every",
+      "value": "0.48,0.48",
+      "http_status": 200,
+      "is_json": true,
+      "total": 1,
+      "scatter": [
+        [
+          "20.23",
+          "0.48"
+        ]
+      ]
+    },
+    {
+      "field": "coin_user_total",
+      "value": "20.23,20.23",
+      "http_status": 200,
+      "is_json": true,
+      "total": 1,
+      "scatter": [
+        [
+          "20.23",
+          "0.48"
+        ]
+      ]
+    },
+    {
+      "field": "success_percent",
+      "value": "100,100",
+      "http_status": 200,
+      "is_json": true,
+      "total": 1,
+      "scatter": [
+        [
+          "20.23",
+          "0.48"
+        ]
+      ]
+    },
+    {
+      "field": "app_num",
+      "value": "1,1",
+      "http_status": 200,
+      "is_json": true,
+      "total": 1,
+      "scatter": [
+        [
+          "20.23",
+          "0.48"
+        ]
+      ]
+    },
+    {
+      "field": "coin_every",
+      "value": "9999,",
+      "http_status": 500,
+      "is_json": false,
+      "total": null,
+      "scatter": null
+    }
+  ],
+  "links": [
+    {
+      "text": "数据统计",
+      "href": "/DmvTqXBpfF.php/agents/dash/index/agent_id/133",
+      "cls": "btn btn-primary "
+    },
+    {
+      "text": "数据分析",
+      "href": "javascript:;",
+      "cls": "btn btn-warning "
+    },
+    {
+      "text": "游戏列表",
+      "href": "/DmvTqXBpfF.php/agents/game/index/agent_id/133",
+      "cls": "btn btn-primary "
+    },
+    {
+      "text": "用户列表",
+      "href": "/DmvTqXBpfF.php/agents/user/index/agent_id/133",
+      "cls": "btn btn-primary "
+    },
+    {
+      "text": "用户提现",
+      "href": "/DmvTqXBpfF.php/agents/exchange/index/agent_id/133",
+      "cls": "btn btn-primary "
+    },
+    {
+      "text": "金币数据",
+      "href": "assay/coinedit/agent_id/133",
+      "cls": "btn btn-info btn-coinedit btn-dialog dropdown-toggle "
+    },
+    {
+      "text": "成功率数据",
+      "href": "assay/successpercentedit/agent_id/133",
+      "cls": "btn btn-info btn-successpercentedit btn-dialog dropdown-toggle "
+    },
+    {
+      "text": "网络环境",
+      "href": "javascript:;",
+      "cls": "btn btn-info dropdown-toggle"
+    },
+    {
+      "text": "APP数量数据",
+      "href": "assay/appnumedit/agent_id/133",
+      "cls": "btn btn-info btn-appnumedit btn-dialog dropdown-toggle "
+    },
+    {
+      "text": "跨页选择模式，已选 0 项",
+      "href": "javascript:",
+      "cls": "btn btn-warning-light btn-selected-tips hide"
+    },
+    {
+      "text": "",
+      "href": "javascript:;",
+      "cls": "btn-change "
+    },
+    {
+      "text": "",
+      "href": "javascript:;",
+      "cls": "btn-change "
+    },
+    {
+      "text": "单APP行为",
+      "href": "/DmvTqXBpfF.php/users/yige/index/user_id/677093",
+      "cls": "btn btn-success btn-xs btn-detail btn-dialog"
+    },
+    {
+      "text": "多APP行为",
+      "href": "/DmvTqXBpfF.php/users/duoge/index/user_id/677093",
+      "cls": "btn btn-info btn-xs btn-detail btn-dialog"
+    },
+    {
+      "text": "修改金币",
+      "href": "/DmvTqXBpfF.php/gameuser/coinedit/ids/677093",
+      "cls": "btn btn-warning btn-xs btn-detail btn-dialog"
+    },
+    {
+      "text": "",
+      "href": "/DmvTqXBpfF.php/gameuser/edit/ids/677093",
+      "cls": "btn btn-xs btn-success btn-editone"
+    },
+    {
+      "text": "10",
+      "href": "#",
+      "cls": ""
+    },
+    {
+      "text": "上一页",
+      "href": "#",
+      "cls": ""
+    },
+    {
+      "text": "1",
+      "href": "#",
+      "cls": ""
+    },
+    {
+      "text": "下一页",
+      "href": "#",
+      "cls": ""
+    }
+  ],
+  "layout": [
+    {
+      "tag": "DIV",
+      "id": "main",
+      "cls": "",
+      "x": 0,
+      "y": 0,
+      "width": 1690,
+      "height": 1250.125,
+      "padding": "0px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row",
+      "x": -15,
+      "y": 0,
+      "width": 1720,
+      "height": 1250.125,
+      "padding": "0px",
+      "margin": "0px -15px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel panel-default panel-intro",
+      "x": 15,
+      "y": 153.5625,
+      "width": 1660,
+      "height": 1081.5625,
+      "padding": "0px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel-body",
+      "x": 15,
+      "y": 153.5625,
+      "width": 1660,
+      "height": 1081.5625,
+      "padding": "15px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "bootstrap-table",
+      "x": 30,
+      "y": 168.5625,
+      "width": 1630,
+      "height": 1051.5625,
+      "padding": "0px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "commonsearch-table ",
+      "x": 30,
+      "y": 168.5625,
+      "width": 1630,
+      "height": 96,
+      "padding": "0px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row",
+      "x": 15,
+      "y": 168.5625,
+      "width": 1660,
+      "height": 96,
+      "padding": "0px",
+      "margin": "0px -15px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row row-between",
+      "x": 158.328125,
+      "y": 168.5625,
+      "width": 256.65625,
+      "height": 33,
+      "padding": "0px",
+      "margin": "0px -15px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row row-between",
+      "x": 573.328125,
+      "y": 168.5625,
+      "width": 256.65625,
+      "height": 33,
+      "padding": "0px",
+      "margin": "0px -15px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row row-between",
+      "x": 988.328125,
+      "y": 168.5625,
+      "width": 256.65625,
+      "height": 33,
+      "padding": "0px",
+      "margin": "0px -15px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row row-between",
+      "x": 1403.328125,
+      "y": 168.5625,
+      "width": 256.65625,
+      "height": 33,
+      "padding": "0px",
+      "margin": "0px -15px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "fixed-table-toolbar",
+      "x": 30,
+      "y": 264.5625,
+      "width": 1630,
+      "height": 812.5625,
+      "padding": "0px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row",
+      "x": 15,
+      "y": 274.5625,
+      "width": 1660,
+      "height": 262.5625,
+      "padding": "0px",
+      "margin": "0px -15px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel-body",
+      "x": 30,
+      "y": 274.5625,
+      "width": 385,
+      "height": 262.5625,
+      "padding": "15px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "echart1",
+      "cls": "",
+      "x": 45,
+      "y": 289.5625,
+      "width": 355,
+      "height": 200,
+      "padding": "0px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel-body",
+      "x": 445,
+      "y": 274.5625,
+      "width": 385,
+      "height": 262.5625,
+      "padding": "15px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "echart2",
+      "cls": "",
+      "x": 460,
+      "y": 289.5625,
+      "width": 355,
+      "height": 200,
+      "padding": "0px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel-body",
+      "x": 860,
+      "y": 274.5625,
+      "width": 385,
+      "height": 262.5625,
+      "padding": "15px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "echart3",
+      "cls": "",
+      "x": 875,
+      "y": 289.5625,
+      "width": 355,
+      "height": 200,
+      "padding": "0px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel-body",
+      "x": 1275,
+      "y": 274.5625,
+      "width": 385,
+      "height": 262.5625,
+      "padding": "15px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "echart4",
+      "cls": "",
+      "x": 1290,
+      "y": 289.5625,
+      "width": 355,
+      "height": 200,
+      "padding": "0px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "row",
+      "x": 15,
+      "y": 537.125,
+      "width": 1660,
+      "height": 530,
+      "padding": "0px",
+      "margin": "0px -15px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel-body",
+      "x": 30,
+      "y": 537.125,
+      "width": 800,
+      "height": 530,
+      "padding": "15px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "echart6",
+      "cls": "",
+      "x": 45,
+      "y": 552.125,
+      "width": 770,
+      "height": 500,
+      "padding": "0px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "",
+      "cls": "panel-body",
+      "x": 860,
+      "y": 537.125,
+      "width": 800,
+      "height": 530,
+      "padding": "15px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DIV",
+      "id": "echart7",
+      "cls": "",
+      "x": 875,
+      "y": 552.125,
+      "width": 770,
+      "height": 500,
+      "padding": "0px",
+      "margin": "0px"
+    },
+    {
+      "tag": "TABLE",
+      "id": "table",
+      "cls": "table table-striped table-bordered table-hover table-nowrap",
+      "x": 30,
+      "y": 1077.125,
+      "width": 1630,
+      "height": 89,
+      "padding": "8px",
+      "margin": "0px"
+    }
+  ],
+  "settings": {
+    "coinedit": {
+      "text": "配置项:\n名称 开始(>=) 结束(<=)\n 追加\n提交 重置",
+      "fields": [],
+      "added_fields": [
+        {
+          "name": "row[row[coin_value]][0][name]",
+          "type": "text",
+          "value": ""
+        },
+        {
+          "name": "row[row[coin_value]][0][start]",
+          "type": "text",
+          "value": ""
+        },
+        {
+          "name": "row[row[coin_value]][0][end]",
+          "type": "text",
+          "value": ""
+        },
+        {
+          "name": "row[coin_value]",
+          "type": "textarea",
+          "value": ""
+        }
+      ]
+    },
+    "successpercentedit": {
+      "text": "配置项:\n名称 开始(>=) 结束(<=)\n 追加\n提交 重置",
+      "fields": [],
+      "added_fields": [
+        {
+          "name": "row[row[success_percent_value]][0][name]",
+          "type": "text",
+          "value": ""
+        },
+        {
+          "name": "row[row[success_percent_value]][0][start]",
+          "type": "text",
+          "value": ""
+        },
+        {
+          "name": "row[row[success_percent_value]][0][end]",
+          "type": "text",
+          "value": ""
+        },
+        {
+          "name": "row[success_percent_value]",
+          "type": "textarea",
+          "value": ""
+        }
+      ]
+    },
+    "appnumedit": {
+      "text": "配置项:\n名称 开始(>=) 结束(<=)\n 追加\n提交 重置",
+      "fields": [],
+      "added_fields": [
+        {
+          "name": "row[row[app_num_value]][0][name]",
+          "type": "text",
+          "value": ""
+        },
+        {
+          "name": "row[row[app_num_value]][0][start]",
+          "type": "text",
+          "value": ""
+        },
+        {
+          "name": "row[row[app_num_value]][0][end]",
+          "type": "text",
+          "value": ""
+        },
+        {
+          "name": "row[app_num_value]",
+          "type": "textarea",
+          "value": ""
+        }
+      ]
+    }
+  },
+  "settings_window": {
+    "width": 800,
+    "height": 600,
+    "title": "金币数据",
+    "buttons": "<a class=\"layui-layer-min\" href=\"javascript:;\"><cite></cite></a><a class=\"layui-layer-ico layui-layer-max\" href=\"javascript:;\"></a><a class=\"layui-layer-ico layui-layer-close layui-layer-close1\" href=\"javascript:;\"></a>",
+    "shade": false
+  },
+  "settings_layout": [
+    {
+      "tag": "FORM",
+      "cls": "form-horizontal nice-validator n-default n-bootstrap",
+      "text": null,
+      "name": "",
+      "x": 15,
+      "y": 15,
+      "width": 770,
+      "height": 125,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DL",
+      "cls": "fieldlist",
+      "text": null,
+      "name": null,
+      "x": 148.328125,
+      "y": 23,
+      "width": 503.328125,
+      "height": 99,
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px 18px"
+    },
+    {
+      "tag": "DD",
+      "cls": "",
+      "text": null,
+      "name": null,
+      "x": 148.328125,
+      "y": 23,
+      "width": 503.328125,
+      "height": 20,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "8px 0px"
+    },
+    {
+      "tag": "DD",
+      "cls": "form-inline",
+      "text": null,
+      "name": null,
+      "x": 148.328125,
+      "y": 51,
+      "width": 503.328125,
+      "height": 33,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "8px 0px"
+    },
+    {
+      "tag": "INPUT",
+      "cls": "form-control",
+      "text": null,
+      "name": "row[row[coin_value]][0][name]",
+      "x": 148.328125,
+      "y": 51,
+      "width": 110,
+      "height": 33,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "6px 12px",
+      "margin": "0px"
+    },
+    {
+      "tag": "INPUT",
+      "cls": "form-control",
+      "text": null,
+      "name": "row[row[coin_value]][0][start]",
+      "x": 262.21875,
+      "y": 51,
+      "width": 110,
+      "height": 33,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "6px 12px",
+      "margin": "0px"
+    },
+    {
+      "tag": "INPUT",
+      "cls": "form-control",
+      "text": null,
+      "name": "row[row[coin_value]][0][end]",
+      "x": 376.109375,
+      "y": 51,
+      "width": 110,
+      "height": 33,
+      "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "6px 12px",
+      "margin": "0px"
+    },
+    {
+      "tag": "DD",
+      "cls": "",
+      "text": null,
+      "name": null,
+      "x": 148.328125,
+      "y": 92,
+      "width": 503.328125,
+      "height": 30,
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "8px 0px"
+    },
+    {
+      "tag": "A",
+      "cls": "btn btn-sm btn-success btn-append",
+      "text": null,
+      "name": "",
+      "x": 148.328125,
+      "y": 92,
+      "width": 58.78125,
+      "height": 30,
+      "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "5px 10px",
+      "margin": "0px"
+    }
+  ]
+}

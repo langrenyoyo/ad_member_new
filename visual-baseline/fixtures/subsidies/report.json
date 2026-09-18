@@ -1,0 +1,10 @@
+{
+  "comparison_valid": true,
+  "browser_capture": true,
+  "rows": 3,
+  "reference_live": true,
+  "scope": "Three identical subsidy records, loaded images, collapsed filters; content area only",
+  "mean_rgb": 2.3460075448574327,
+  "changed_pixel_ratio": 0.0326558281151261,
+  "blocked_requests": []
+}

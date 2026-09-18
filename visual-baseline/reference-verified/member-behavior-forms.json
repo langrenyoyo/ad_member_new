@@ -1,0 +1,120 @@
+{
+  "coin": {
+    "fields": [
+      {
+        "label": "可用金币:",
+        "inputs": [
+          {
+            "tag": "INPUT",
+            "name": "row[coin]",
+            "type": "text",
+            "options": []
+          }
+        ]
+      },
+      {
+        "label": "冻结金币:",
+        "inputs": [
+          {
+            "tag": "INPUT",
+            "name": "row[freeze_coin]",
+            "type": "text",
+            "options": []
+          }
+        ]
+      },
+      {
+        "label": "",
+        "inputs": []
+      }
+    ],
+    "headings": [
+      "控制台                                    Control panel",
+      "确定",
+      "重置"
+    ],
+    "tables": []
+  },
+  "single": {
+    "fields": [],
+    "headings": [
+      "控制台                                    Control panel",
+      "抽奖列表",
+      "风控历史",
+      "每日收益",
+      "金币流水",
+      "提现记录",
+      "分销用户",
+      "登陆历史",
+      "收货地址",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0"
+    ],
+    "tables": [
+      "table1",
+      "table2",
+      "table3",
+      "table4",
+      "table5",
+      "table6",
+      "table7",
+      "table8"
+    ]
+  },
+  "multiple": {
+    "fields": [],
+    "headings": [
+      "控制台                                    Control panel",
+      "抽奖列表",
+      "风控历史",
+      "每日收益",
+      "金币流水",
+      "提现记录",
+      "分销用户",
+      "登陆历史",
+      "收货地址",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0"
+    ],
+    "tables": [
+      "table1",
+      "table2",
+      "table3",
+      "table4",
+      "table5",
+      "table6",
+      "table7",
+      "table8"
+    ]
+  }
+}

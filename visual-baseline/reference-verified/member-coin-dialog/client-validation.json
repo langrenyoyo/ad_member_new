@@ -1,0 +1,56 @@
+{
+  "scope": "reference browser behavior only; all write requests fulfilled locally, no reference server validation inferred",
+  "cases": [
+    {
+      "coin_input": "",
+      "client_sent_request": false,
+      "intercepted_fields": []
+    },
+    {
+      "coin_input": "abc",
+      "client_sent_request": true,
+      "intercepted_fields": [
+        {
+          "row[coin]": [
+            "abc"
+          ],
+          "row[freeze_coin]": [
+            "3"
+          ]
+        }
+      ]
+    },
+    {
+      "coin_input": "-5",
+      "client_sent_request": true,
+      "intercepted_fields": [
+        {
+          "row[coin]": [
+            "-5"
+          ],
+          "row[freeze_coin]": [
+            "3"
+          ]
+        }
+      ]
+    },
+    {
+      "coin_input": "1.25",
+      "client_sent_request": true,
+      "intercepted_fields": [
+        {
+          "row[coin]": [
+            "1.25"
+          ],
+          "row[freeze_coin]": [
+            "3"
+          ]
+        }
+      ]
+    }
+  ],
+  "reset": {
+    "coin": "12.5",
+    "freeze_coin": "3"
+  }
+}

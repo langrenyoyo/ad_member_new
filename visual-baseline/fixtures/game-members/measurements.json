@@ -1,0 +1,1429 @@
+{
+  "reference": {
+    "width": 1476,
+    "headers": [
+      {
+        "text": "",
+        "width": 44
+      },
+      {
+        "text": "Id",
+        "width": 62.15625
+      },
+      {
+        "text": "账号",
+        "width": 79.921875
+      },
+      {
+        "text": "上级昵称",
+        "width": 84.875
+      },
+      {
+        "text": "游戏名称",
+        "width": 84.875
+      },
+      {
+        "text": "累计金币收益",
+        "width": 115
+      },
+      {
+        "text": "本月金币收益",
+        "width": 105
+      },
+      {
+        "text": "今日金币收益",
+        "width": 105
+      },
+      {
+        "text": "可用金币",
+        "width": 87
+      },
+      {
+        "text": "冻结金币",
+        "width": 87
+      },
+      {
+        "text": "内部号",
+        "width": 63
+      },
+      {
+        "text": "达标",
+        "width": 54.09375
+      },
+      {
+        "text": "白名单",
+        "width": 63
+      },
+      {
+        "text": "状态",
+        "width": 60.765625
+      },
+      {
+        "text": "创建时间",
+        "width": 145.359375
+      },
+      {
+        "text": "操作",
+        "width": 233.953125
+      }
+    ],
+    "rows": [
+      {
+        "height": 61.75
+      },
+      {
+        "height": 61.75
+      },
+      {
+        "height": 61.75
+      }
+    ],
+    "cells": [
+      {
+        "text": "",
+        "html": "<input data-index=\"0\" name=\"btSelectItem\" type=\"checkbox\" style=\"\">",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "9001",
+        "html": "9001",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "fixture-0",
+        "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 fixture-0\" data-field=\"username\" data-value=\"fixture-0\">fixture-0</a>",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "上级昵称",
+        "html": "上级昵称",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "对照游戏",
+        "html": "对照游戏",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "1234.5",
+        "html": "1234.5",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "234",
+        "html": "234",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "12",
+        "html": "12",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "123.5",
+        "html": "123.5",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "3",
+        "html": "3",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "否",
+        "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 否\" data-field=\"is_true\" data-value=\"0\"><span class=\"label label-info\">否</span></a>",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "否",
+        "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"点击搜索 否\" data-field=\"game_addiction_enable\" data-value=\"0\"><span class=\"label label-info\">否</span></a>",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "",
+        "html": "<a href=\"javascript:;\" data-toggle=\"tooltip\" title=\"点击切换\" class=\"btn-change \" data-index=\"0\" data-id=\"9001\" data-params=\"is_white=1\"><i class=\"fa fa-toggle-on text-success text-success fa-flip-horizontal text-gray fa-2x\"></i></a>",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "",
+        "html": "<a href=\"javascript:;\" data-toggle=\"tooltip\" title=\"点击切换\" class=\"btn-change \" data-index=\"0\" data-id=\"9001\" data-params=\"status=0\"><i class=\"fa fa-toggle-on text-success text-success  fa-2x\"></i></a>",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "2026-09-17 12:00:00",
+        "html": "2026-09-17 12:00:00",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "单APP行为 多APP行为 修改金币 ",
+        "html": "<a href=\"/DmvTqXBpfF.php/users/yige/index/user_id/9001\" class=\"btn btn-success btn-xs btn-detail btn-dialog\" data-area=\"[&quot;80%&quot;,&quot;80%&quot;]\" title=\"单APP行为\" data-table-id=\"table4\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"0\"><i class=\"\"></i> 单APP行为</a> <a href=\"/DmvTqXBpfF.php/users/duoge/index/user_id/9001\" class=\"btn btn-info btn-xs btn-detail btn-dialog\" data-area=\"[&quot;80%&quot;,&quot;80%&quot;]\" title=\"多APP行为\" data-table-id=\"table4\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"1\"><i class=\"\"></i> 多APP行为</a> <a href=\"/DmvTqXBpfF.php/gameuser/coinedit/ids/9001\" class=\"btn btn-warning btn-xs btn-detail btn-dialog\" title=\"修改金币\" data-table-id=\"table4\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"2\"><i class=\"\"></i> 修改金币</a> <a href=\"/DmvTqXBpfF.php/gameuser/edit/ids/9001\" class=\"btn btn-xs btn-success btn-editone\" data-toggle=\"tooltip\" title=\"编辑\" data-table-id=\"table4\" data-field-index=\"24\" data-row-index=\"0\" data-button-index=\"4\"><i class=\"fa fa-pencil\"></i></a>",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "单APP行为",
+        "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgb(24, 188, 156)",
+        "height": 22
+      },
+      {
+        "text": "多APP行为",
+        "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgb(22, 136, 241)",
+        "height": 22
+      },
+      {
+        "text": "修改金币",
+        "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgb(243, 156, 18)",
+        "height": 22
+      },
+      {
+        "text": "",
+        "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgb(24, 188, 156)",
+        "height": 22
+      }
+    ]
+  },
+  "local": {
+    "width": 1476,
+    "headers": [
+      {
+        "text": "",
+        "width": 44
+      },
+      {
+        "text": "Id",
+        "width": 62.15625
+      },
+      {
+        "text": "账号",
+        "width": 79.859375
+      },
+      {
+        "text": "上级昵称",
+        "width": 84.796875
+      },
+      {
+        "text": "游戏名称",
+        "width": 84.796875
+      },
+      {
+        "text": "累计金币收益",
+        "width": 115
+      },
+      {
+        "text": "本月金币收益",
+        "width": 105
+      },
+      {
+        "text": "今日金币收益",
+        "width": 105
+      },
+      {
+        "text": "可用金币",
+        "width": 87
+      },
+      {
+        "text": "冻结金币",
+        "width": 87
+      },
+      {
+        "text": "内部号",
+        "width": 63
+      },
+      {
+        "text": "达标",
+        "width": 54.09375
+      },
+      {
+        "text": "白名单",
+        "width": 63
+      },
+      {
+        "text": "状态",
+        "width": 63
+      },
+      {
+        "text": "创建时间",
+        "width": 144.8125
+      },
+      {
+        "text": "操作",
+        "width": 232.484375
+      }
+    ],
+    "rows": [
+      {
+        "height": 61.75
+      },
+      {
+        "height": 61.75
+      },
+      {
+        "height": 61.75
+      }
+    ],
+    "cells": [
+      {
+        "text": "",
+        "html": "<input type=\"checkbox\" data-member-select=\"9001\" aria-label=\"选择会员 9001\" style=\"\">",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "9001",
+        "html": "9001",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "fixture-0",
+        "html": "<button class=\"game-user-cell-search\" data-search-field=\"username\" data-search-value=\"fixture-0\">fixture-0</button>",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "上级昵称",
+        "html": "上级昵称",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "对照游戏",
+        "html": "对照游戏",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "1234.5",
+        "html": "1234.5",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "234",
+        "html": "234",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "12",
+        "html": "12",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "123.5",
+        "html": "123.5",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "3",
+        "html": "3",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "否",
+        "html": "<button class=\"game-user-cell-search game-user-label-search\" data-search-field=\"is_true\" data-search-value=\"0\"><span class=\"game-user-label value-0 \">否</span></button>",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "否",
+        "html": "<button class=\"game-user-cell-search game-user-label-search\" data-search-field=\"game_addiction_enable\" data-search-value=\"0\"><span class=\"game-user-label value-0 \">否</span></button>",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "",
+        "html": "<button class=\"game-member-toggle \" type=\"button\" role=\"switch\" aria-label=\"白名单\" aria-checked=\"false\" data-member-toggle=\"is_white\" data-member-id=\"9001\"><i class=\"shell-icon\" aria-hidden=\"true\"></i></button>",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "",
+        "html": "<button class=\"game-member-toggle enabled\" type=\"button\" role=\"switch\" aria-label=\"状态\" aria-checked=\"true\" data-member-toggle=\"status\" data-member-id=\"9001\"><i class=\"shell-icon\" aria-hidden=\"true\"></i></button>",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "2026-09-17 12:00:00",
+        "html": "2026-09-17 12:00:00",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      },
+      {
+        "text": "单APP行为多APP行为修改金币 ",
+        "html": "<button class=\"game-member-behavior\" data-member-behavior=\"single\" data-member-id=\"9001\" data-game-id=\"243\">单APP行为</button><button class=\"game-member-behavior multi\" data-member-behavior=\"multiple\" data-member-id=\"9001\" data-game-id=\"243\">多APP行为</button><button class=\"game-member-coins\" data-member-coins=\"9001\">修改金币</button> <button class=\"game-member-edit\" data-game-member-edit=\"9001\" aria-label=\"编辑\" title=\"编辑\"><i class=\"shell-icon\" aria-hidden=\"true\"></i></button>",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "padding": "8px 15px",
+        "whiteSpace": "normal",
+        "wordBreak": "normal",
+        "color": "rgb(51, 51, 51)"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "fixture-0",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 40
+      },
+      {
+        "text": "否",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 20
+      },
+      {
+        "text": "否",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 20
+      },
+      {
+        "text": "",
+        "font": "28px / 28px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 29
+      },
+      {
+        "text": "",
+        "font": "28px / 28px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgba(0, 0, 0, 0)",
+        "height": 29
+      },
+      {
+        "text": "单APP行为",
+        "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgb(24, 188, 156)",
+        "height": 22
+      },
+      {
+        "text": "多APP行为",
+        "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgb(22, 136, 241)",
+        "height": 22
+      },
+      {
+        "text": "修改金币",
+        "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgb(243, 156, 18)",
+        "height": 22
+      },
+      {
+        "text": "",
+        "font": "12px / 18px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "background": "rgb(24, 188, 156)",
+        "height": 22
+      }
+    ]
+  },
+  "referenceLayout": [
+    {
+      "selector": "DIV.panel panel-default panel-intro",
+      "rect": {
+        "x": 15,
+        "y": 15,
+        "width": 1506,
+        "height": 420.8125,
+        "top": 15,
+        "right": 1521,
+        "bottom": 435.8125,
+        "left": 15
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "background": "rgb(255, 255, 255)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "DIV.panel-heading",
+      "rect": {
+        "x": 15,
+        "y": 15,
+        "width": 1506,
+        "height": 57,
+        "top": 15,
+        "right": 1521,
+        "bottom": 72,
+        "left": 15
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px 15px 0px",
+      "margin": "0px",
+      "background": "rgb(232, 237, 240)",
+      "display": "block",
+      "border": ""
+    },
+    {
+      "selector": "UL.nav nav-tabs",
+      "rect": {
+        "x": 30,
+        "y": 30,
+        "width": 1476,
+        "height": 41,
+        "top": 30,
+        "right": 1506,
+        "bottom": 71,
+        "left": 30
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "LI.",
+      "rect": {
+        "x": 30,
+        "y": 30,
+        "width": 92,
+        "height": 42,
+        "top": 30,
+        "right": 122,
+        "bottom": 72,
+        "left": 30
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px -1px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "A.",
+      "rect": {
+        "x": 30,
+        "y": 30,
+        "width": 88,
+        "height": 42,
+        "top": 30,
+        "right": 118,
+        "bottom": 72,
+        "left": 30
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "10px 15px",
+      "margin": "0px 4px 0px 0px",
+      "background": "rgb(216, 224, 230)",
+      "display": "block",
+      "border": ""
+    },
+    {
+      "selector": "LI.",
+      "rect": {
+        "x": 122,
+        "y": 30,
+        "width": 92,
+        "height": 42,
+        "top": 30,
+        "right": 214,
+        "bottom": 72,
+        "left": 122
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px -1px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "A.",
+      "rect": {
+        "x": 122,
+        "y": 30,
+        "width": 88,
+        "height": 42,
+        "top": 30,
+        "right": 210,
+        "bottom": 72,
+        "left": 122
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "10px 15px",
+      "margin": "0px 4px 0px 0px",
+      "background": "rgb(216, 224, 230)",
+      "display": "block",
+      "border": ""
+    },
+    {
+      "selector": "LI.",
+      "rect": {
+        "x": 214,
+        "y": 30,
+        "width": 92,
+        "height": 42,
+        "top": 30,
+        "right": 306,
+        "bottom": 72,
+        "left": 214
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px -1px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "A.",
+      "rect": {
+        "x": 214,
+        "y": 30,
+        "width": 88,
+        "height": 42,
+        "top": 30,
+        "right": 302,
+        "bottom": 72,
+        "left": 214
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "10px 15px",
+      "margin": "0px 4px 0px 0px",
+      "background": "rgb(216, 224, 230)",
+      "display": "block",
+      "border": ""
+    },
+    {
+      "selector": "LI.active",
+      "rect": {
+        "x": 306,
+        "y": 30,
+        "width": 92,
+        "height": 42,
+        "top": 30,
+        "right": 398,
+        "bottom": 72,
+        "left": 306
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px -1px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "A.",
+      "rect": {
+        "x": 306,
+        "y": 30,
+        "width": 88,
+        "height": 42,
+        "top": 30,
+        "right": 394,
+        "bottom": 72,
+        "left": 306
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "10px 15px",
+      "margin": "0px 4px 0px 0px",
+      "background": "rgb(255, 255, 255)",
+      "display": "block",
+      "border": ""
+    },
+    {
+      "selector": "LI.",
+      "rect": {
+        "x": 398,
+        "y": 30,
+        "width": 92,
+        "height": 42,
+        "top": 30,
+        "right": 490,
+        "bottom": 72,
+        "left": 398
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px -1px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "A.",
+      "rect": {
+        "x": 398,
+        "y": 30,
+        "width": 88,
+        "height": 42,
+        "top": 30,
+        "right": 486,
+        "bottom": 72,
+        "left": 398
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "10px 15px",
+      "margin": "0px 4px 0px 0px",
+      "background": "rgb(216, 224, 230)",
+      "display": "block",
+      "border": ""
+    },
+    {
+      "selector": "LI.",
+      "rect": {
+        "x": 490,
+        "y": 30,
+        "width": 92,
+        "height": 42,
+        "top": 30,
+        "right": 582,
+        "bottom": 72,
+        "left": 490
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px -1px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "A.",
+      "rect": {
+        "x": 490,
+        "y": 30,
+        "width": 88,
+        "height": 42,
+        "top": 30,
+        "right": 578,
+        "bottom": 72,
+        "left": 490
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "10px 15px",
+      "margin": "0px 4px 0px 0px",
+      "background": "rgb(216, 224, 230)",
+      "display": "block",
+      "border": ""
+    },
+    {
+      "selector": "LI.",
+      "rect": {
+        "x": 582,
+        "y": 30,
+        "width": 92,
+        "height": 42,
+        "top": 30,
+        "right": 674,
+        "bottom": 72,
+        "left": 582
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px -1px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "A.",
+      "rect": {
+        "x": 582,
+        "y": 30,
+        "width": 88,
+        "height": 42,
+        "top": 30,
+        "right": 670,
+        "bottom": 72,
+        "left": 582
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "10px 15px",
+      "margin": "0px 4px 0px 0px",
+      "background": "rgb(216, 224, 230)",
+      "display": "block",
+      "border": ""
+    },
+    {
+      "selector": "DIV.panel-body",
+      "rect": {
+        "x": 15,
+        "y": 72,
+        "width": 1506,
+        "height": 363.8125,
+        "top": 72,
+        "right": 1521,
+        "bottom": 435.8125,
+        "left": 15
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "DIV.fixed-table-toolbar",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "DIV.fixed-table-pagination",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "DIV.panel bg-blue-gradient panel-intro panel-statistics",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(255, 255, 255)"
+    },
+    {
+      "selector": "DIV.panel-body",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(255, 255, 255)"
+    },
+    {
+      "selector": "DIV.panel bg-teal-gradient panel-intro panel-statistics",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(255, 255, 255)"
+    },
+    {
+      "selector": "DIV.panel-body",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(255, 255, 255)"
+    },
+    {
+      "selector": "DIV.fixed-table-toolbar",
+      "rect": {
+        "x": 30,
+        "y": 87,
+        "width": 1476,
+        "height": 52.5625,
+        "top": 87,
+        "right": 1506,
+        "bottom": 139.5625,
+        "left": 30
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "DIV.toolbar",
+      "rect": {
+        "x": 30,
+        "y": 97,
+        "width": 37.15625,
+        "height": 32.5625,
+        "top": 97,
+        "right": 67.15625,
+        "bottom": 129.5625,
+        "left": 30
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "DIV.dropdown btn-group hide",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "none",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "DIV.fixed-table-pagination",
+      "rect": {
+        "x": 30,
+        "y": 366.8125,
+        "width": 1476,
+        "height": 54,
+        "top": 366.8125,
+        "right": 1506,
+        "bottom": 420.8125,
+        "left": 30
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "DIV.panel bg-blue-gradient no-border",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px 18px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(255, 255, 255)"
+    },
+    {
+      "selector": "DIV.panel-body",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(255, 255, 255)"
+    },
+    {
+      "selector": "DIV.panel bg-teal-gradient no-border",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px 18px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(255, 255, 255)"
+    },
+    {
+      "selector": "DIV.panel-body",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(255, 255, 255)"
+    },
+    {
+      "selector": "DIV.panel bg-yellow-gradient no-border",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px 18px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(255, 255, 255)"
+    },
+    {
+      "selector": "DIV.panel-body",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(255, 255, 255)"
+    },
+    {
+      "selector": "DIV.panel bg-purple-gradient no-border",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px 18px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(255, 255, 255)"
+    },
+    {
+      "selector": "DIV.panel-body",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(255, 255, 255)"
+    },
+    {
+      "selector": "DIV.panel bg-green-gradient no-border",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px 18px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(255, 255, 255)"
+    },
+    {
+      "selector": "DIV.panel-body",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(255, 255, 255)"
+    },
+    {
+      "selector": "DIV.panel",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px 18px",
+      "background": "rgb(255, 255, 255)",
+      "display": "block",
+      "border": "1px solid rgba(0, 0, 0, 0)"
+    },
+    {
+      "selector": "DIV.panel-body",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "DIV.panel",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px 18px",
+      "background": "rgb(255, 255, 255)",
+      "display": "block",
+      "border": "1px solid rgba(0, 0, 0, 0)"
+    },
+    {
+      "selector": "DIV.panel-body",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "DIV.panel",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px 18px",
+      "background": "rgb(255, 255, 255)",
+      "display": "block",
+      "border": "1px solid rgba(0, 0, 0, 0)"
+    },
+    {
+      "selector": "DIV.panel-body",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "selector": "DIV.panel",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "margin": "0px 0px 18px",
+      "background": "rgb(255, 255, 255)",
+      "display": "block",
+      "border": "1px solid rgba(0, 0, 0, 0)"
+    },
+    {
+      "selector": "DIV.panel-body",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      },
+      "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "15px",
+      "margin": "0px",
+      "background": "rgba(0, 0, 0, 0)",
+      "display": "block",
+      "border": "0px none rgb(51, 51, 51)"
+    }
+  ],
+  "referencePagination": {
+    "pageList": [
+      10,
+      15,
+      20,
+      25,
+      50,
+      "All"
+    ],
+    "pageSize": 10,
+    "showJumpto": true,
+    "paginationLoop": true,
+    "smartDisplay": true,
+    "paginationPreText": "上一页",
+    "paginationNextText": "下一页"
+  },
+  "referencePaginationHtml": "<div class=\"pull-left pagination-detail\"><span class=\"pagination-info\">显示第 1 到第 10 条记录，总共 1234 条记录</span><span class=\"page-list\">每页显示 <span class=\"btn-group dropup\"><button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\"><span class=\"page-size\">10</span> <span class=\"caret\"></span></button><ul class=\"dropdown-menu\" role=\"menu\"><li role=\"menuitem\" class=\"active\"><a href=\"#\">10</a></li><li role=\"menuitem\"><a href=\"#\">15</a></li><li role=\"menuitem\"><a href=\"#\">20</a></li><li role=\"menuitem\"><a href=\"#\">25</a></li><li role=\"menuitem\"><a href=\"#\">50</a></li><li role=\"menuitem\"><a href=\"#\">All</a></li></ul></span> 条记录</span></div><div class=\"pull-right pagination\"><ul class=\"pagination\"><li class=\"page-pre\"><a href=\"#\">上一页</a></li><li class=\"page-number active\"><a href=\"#\">1</a></li><li class=\"page-number\"><a href=\"#\">2</a></li><li class=\"page-number\"><a href=\"#\">3</a></li><li class=\"page-number\"><a href=\"#\">4</a></li><li class=\"page-number\"><a href=\"#\">5</a></li><li class=\"page-last-separator disabled\"><a href=\"#\">...</a></li><li class=\"page-last\"><a href=\"#\">124</a></li><li class=\"page-next\"><a href=\"#\">下一页</a></li><li class=\"jumpto\"><input type=\"text\" class=\"form-control\"><button class=\"btn btn-default\" title=\"跳转\" type=\"button\">跳转</button></li></ul></div>"
+}

@@ -1,0 +1,172 @@
+{
+  "game": {
+    "options": {
+      "lang": "cn",
+      "multiple": false,
+      "pagination": true,
+      "dropButton": true,
+      "listSize": 10,
+      "multipleControlbar": true,
+      "maxSelectLimit": 0,
+      "selectToCloseList": false,
+      "dbTable": "tbl",
+      "keyField": "id",
+      "showField": "name",
+      "andOr": "OR",
+      "separator": ",",
+      "pageSize": 10,
+      "autoFillResult": false,
+      "autoSelectFirst": false,
+      "noResultClean": true,
+      "selectOnly": false,
+      "inputDelay": 0.5,
+      "index": 6,
+      "eAjaxSuccess": null,
+      "data": "ajax/gameList_source/agent_ids/133",
+      "searchField": [
+        "name"
+      ],
+      "orderBy": [
+        [
+          "name",
+          "ASC"
+        ]
+      ]
+    },
+    "hidden": "<input type=\"hidden\" class=\"sp_hidden\" name=\"game.name\" id=\"game.name\" value=\"\" data-rule=\"\">",
+    "rect": {
+      "x": 1003.328125,
+      "y": 30,
+      "width": 226.65625,
+      "height": 33,
+      "top": 30,
+      "right": 1229.984375,
+      "bottom": 63,
+      "left": 1003.328125
+    },
+    "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+    "container": "<div class=\"sp_container sp_container_open\" style=\"width: 100%;\"><input type=\"text\" class=\"form-control selectpage sp_input\" name=\"game.name_text\" value=\"\" placeholder=\"游戏名称\" id=\"game.name_text\" data-index=\"6\" autocomplete=\"off\" novalidate=\"novalidate\"><input type=\"hidden\" class=\"sp_hidden\" name=\"game.name\" id=\"game.name\" value=\"\" data-rule=\"\"><div class=\"sp_button\" title=\"关闭 (Tab键)\"><span class=\"sp_caret\"></span></div></div>",
+    "selected": {
+      "visible": "对照游戏 00",
+      "hidden": "<input type=\"hidden\" class=\"sp_hidden\" name=\"game.name\" id=\"game.name\" value=\"7200\" data-rule=\"\">"
+    }
+  },
+  "agent": {
+    "options": {
+      "lang": "cn",
+      "multiple": false,
+      "pagination": true,
+      "dropButton": true,
+      "listSize": 10,
+      "multipleControlbar": true,
+      "maxSelectLimit": 0,
+      "selectToCloseList": false,
+      "dbTable": "tbl",
+      "keyField": "id",
+      "showField": "name",
+      "andOr": "OR",
+      "separator": ",",
+      "pageSize": 10,
+      "autoFillResult": false,
+      "autoSelectFirst": false,
+      "noResultClean": true,
+      "selectOnly": false,
+      "inputDelay": 0.5,
+      "index": 7,
+      "eAjaxSuccess": null,
+      "data": "ajax/agentList_source/agent_ids/133",
+      "searchField": [
+        "name"
+      ],
+      "orderBy": [
+        [
+          "name",
+          "ASC"
+        ]
+      ]
+    },
+    "hidden": "<input type=\"hidden\" class=\"sp_hidden\" name=\"agent.name\" id=\"agent.name\" value=\"\" data-rule=\"\">",
+    "rect": {
+      "x": 1418.328125,
+      "y": 30,
+      "width": 226.65625,
+      "height": 33,
+      "top": 30,
+      "right": 1644.984375,
+      "bottom": 63,
+      "left": 1418.328125
+    },
+    "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+    "container": "<div class=\"sp_container sp_container_open\" style=\"width: 100%;\"><input type=\"text\" class=\"form-control selectpage sp_input\" name=\"agent.name_text\" value=\"\" placeholder=\"代理商名称\" id=\"agent.name_text\" data-index=\"7\" autocomplete=\"off\" novalidate=\"novalidate\"><input type=\"hidden\" class=\"sp_hidden\" name=\"agent.name\" id=\"agent.name\" value=\"\" data-rule=\"\"><div class=\"sp_button\" title=\"关闭 (Tab键)\"><span class=\"sp_caret\"></span></div></div>",
+    "selected": {
+      "visible": "对照代理商 00",
+      "hidden": "<input type=\"hidden\" class=\"sp_hidden\" name=\"agent.name\" id=\"agent.name\" value=\"6200\" data-rule=\"\">"
+    }
+  },
+  "query": {
+    "filter": "{\"game.name\":\"7200\",\"agent.name\":\"6200\",\"is_fu\":\"0\",\"create_time\":\"2026-09-17 00:00:00 - 2026-09-17 23:59:59\"}",
+    "op": "{\"game.name\":\"=\",\"agent.name\":\"LIKE\",\"is_fu\":\"=\",\"create_time\":\"RANGE\"}"
+  },
+  "requests": [
+    {
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/ajax/gameList_source/agent_ids/133",
+      "params": {
+        "pageNumber": [
+          "1"
+        ],
+        "pageSize": [
+          "10"
+        ],
+        "andOr": [
+          "OR"
+        ],
+        "orderBy[0][]": [
+          "name",
+          "ASC"
+        ],
+        "searchTable": [
+          "tbl"
+        ],
+        "showField": [
+          "name"
+        ],
+        "keyField": [
+          "id"
+        ],
+        "searchField[]": [
+          "name"
+        ]
+      }
+    },
+    {
+      "url": "https://ad.leadink.cn/DmvTqXBpfF.php/ajax/agentList_source/agent_ids/133",
+      "params": {
+        "pageNumber": [
+          "1"
+        ],
+        "pageSize": [
+          "10"
+        ],
+        "andOr": [
+          "OR"
+        ],
+        "orderBy[0][]": [
+          "name",
+          "ASC"
+        ],
+        "searchTable": [
+          "tbl"
+        ],
+        "showField": [
+          "name"
+        ],
+        "keyField": [
+          "id"
+        ],
+        "searchField[]": [
+          "name"
+        ]
+      }
+    }
+  ]
+}

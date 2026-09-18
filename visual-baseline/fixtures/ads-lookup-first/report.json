@@ -1,0 +1,13 @@
+{
+  "scope": "Lookup panel only, first; white padding for unequal image sizes; server scope unverified",
+  "reference_size": [
+    301,
+    337
+  ],
+  "local_size": [
+    301,
+    337
+  ],
+  "mean_rgb": 0.0009464002287133886,
+  "changed_pixel_ratio": 3.943334286305786e-05
+}

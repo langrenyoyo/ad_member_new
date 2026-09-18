@@ -1,0 +1,365 @@
+[
+  {
+    "field": "parent_id",
+    "reference_filter": {
+      "user.parent_id": "8100",
+      "is_fu": "0",
+      "create_time": "2026-09-17 00:00:00 - 2026-09-17 23:59:59"
+    },
+    "reference_operate": {
+      "user.parent_id": "=",
+      "is_fu": "=",
+      "create_time": "RANGE"
+    },
+    "local_query": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "request_id"
+      ],
+      "order": [
+        "asc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "parent_id": [
+        "8100"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  },
+  {
+    "field": "user_id",
+    "reference_filter": {
+      "user.parent_id": "8100",
+      "user_id": "8200",
+      "is_fu": "0",
+      "create_time": "2026-09-17 00:00:00 - 2026-09-17 23:59:59"
+    },
+    "reference_operate": {
+      "user.parent_id": "=",
+      "user_id": "=",
+      "is_fu": "=",
+      "create_time": "RANGE"
+    },
+    "local_query": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "request_id"
+      ],
+      "order": [
+        "asc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "parent_id": [
+        "8100"
+      ],
+      "user_id": [
+        "8200"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  },
+  {
+    "field": "game_name",
+    "reference_filter": {
+      "user.parent_id": "8100",
+      "user_id": "8200",
+      "game.name": "对照游戏",
+      "is_fu": "0",
+      "create_time": "2026-09-17 00:00:00 - 2026-09-17 23:59:59"
+    },
+    "reference_operate": {
+      "user.parent_id": "=",
+      "user_id": "=",
+      "game.name": "=",
+      "is_fu": "=",
+      "create_time": "RANGE"
+    },
+    "local_query": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "request_id"
+      ],
+      "order": [
+        "asc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "parent_id": [
+        "8100"
+      ],
+      "user_id": [
+        "8200"
+      ],
+      "game_name": [
+        "对照游戏"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  },
+  {
+    "field": "agent_name",
+    "reference_filter": {
+      "user.parent_id": "8100",
+      "user_id": "8200",
+      "game.name": "对照游戏",
+      "agent.name": "对照主体",
+      "is_fu": "0",
+      "create_time": "2026-09-17 00:00:00 - 2026-09-17 23:59:59"
+    },
+    "reference_operate": {
+      "user.parent_id": "=",
+      "user_id": "=",
+      "game.name": "=",
+      "agent.name": "LIKE",
+      "is_fu": "=",
+      "create_time": "RANGE"
+    },
+    "local_query": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "request_id"
+      ],
+      "order": [
+        "asc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "parent_id": [
+        "8100"
+      ],
+      "user_id": [
+        "8200"
+      ],
+      "game_name": [
+        "对照游戏"
+      ],
+      "agent_name": [
+        "对照主体"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  },
+  {
+    "field": "is_fu",
+    "reference_filter": {
+      "user.parent_id": "8100",
+      "user_id": "8200",
+      "game.name": "对照游戏",
+      "agent.name": "对照主体",
+      "is_fu": "0",
+      "create_time": "2026-09-17 00:00:00 - 2026-09-17 23:59:59"
+    },
+    "reference_operate": {
+      "user.parent_id": "=",
+      "user_id": "=",
+      "game.name": "=",
+      "agent.name": "LIKE",
+      "is_fu": "=",
+      "create_time": "RANGE"
+    },
+    "local_query": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "request_id"
+      ],
+      "order": [
+        "asc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "parent_id": [
+        "8100"
+      ],
+      "user_id": [
+        "8200"
+      ],
+      "game_name": [
+        "对照游戏"
+      ],
+      "agent_name": [
+        "对照主体"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  },
+  {
+    "field": "fu_type",
+    "reference_filter": {
+      "user.parent_id": "8100",
+      "user_id": "8200",
+      "game.name": "对照游戏",
+      "agent.name": "对照主体",
+      "is_fu": "0",
+      "fu_type": "1",
+      "create_time": "2026-09-17 00:00:00 - 2026-09-17 23:59:59"
+    },
+    "reference_operate": {
+      "user.parent_id": "=",
+      "user_id": "=",
+      "game.name": "=",
+      "agent.name": "LIKE",
+      "is_fu": "=",
+      "fu_type": "=",
+      "create_time": "RANGE"
+    },
+    "local_query": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "request_id"
+      ],
+      "order": [
+        "asc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "parent_id": [
+        "8100"
+      ],
+      "user_id": [
+        "8200"
+      ],
+      "game_name": [
+        "对照游戏"
+      ],
+      "agent_name": [
+        "对照主体"
+      ],
+      "fu_type": [
+        "1"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  },
+  {
+    "field": "is_look",
+    "reference_filter": {
+      "user.parent_id": "8100",
+      "user_id": "8200",
+      "game.name": "对照游戏",
+      "agent.name": "对照主体",
+      "is_fu": "0",
+      "fu_type": "1",
+      "is_look": "0",
+      "create_time": "2026-09-17 00:00:00 - 2026-09-17 23:59:59"
+    },
+    "reference_operate": {
+      "user.parent_id": "=",
+      "user_id": "=",
+      "game.name": "=",
+      "agent.name": "LIKE",
+      "is_fu": "=",
+      "fu_type": "=",
+      "is_look": "=",
+      "create_time": "RANGE"
+    },
+    "local_query": {
+      "limit": [
+        "10"
+      ],
+      "offset": [
+        "0"
+      ],
+      "sort": [
+        "request_id"
+      ],
+      "order": [
+        "asc"
+      ],
+      "is_fu": [
+        "0"
+      ],
+      "parent_id": [
+        "8100"
+      ],
+      "user_id": [
+        "8200"
+      ],
+      "game_name": [
+        "对照游戏"
+      ],
+      "agent_name": [
+        "对照主体"
+      ],
+      "fu_type": [
+        "1"
+      ],
+      "is_look": [
+        "0"
+      ],
+      "watched_from": [
+        "2026-09-16T16:00:00.000Z"
+      ],
+      "watched_to": [
+        "2026-09-17T15:59:59.000Z"
+      ]
+    }
+  }
+]

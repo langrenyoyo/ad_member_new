@@ -1,0 +1,2853 @@
+{
+  "referenceActionHTML": [
+    {
+      "index": 0,
+      "text": "",
+      "html": "<input data-index=\"0\" name=\"btSelectItem\" type=\"checkbox\" style=\"\">"
+    },
+    {
+      "index": 1,
+      "text": "9100",
+      "html": "9100"
+    },
+    {
+      "index": 2,
+      "text": "8100",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"\u70b9\u51fb\u641c\u7d22 8100\" data-field=\"user_id\" data-value=\"8100\">8100</a>"
+    },
+    {
+      "index": 3,
+      "text": "\u5bf9\u7167\u8d26\u53f70",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"\u70b9\u51fb\u641c\u7d22 \u5bf9\u7167\u8d26\u53f70\" data-field=\"user.username\" data-value=\"\u5bf9\u7167\u8d26\u53f70\">\u5bf9\u7167\u8d26\u53f70</a>"
+    },
+    {
+      "index": 4,
+      "text": "V0",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"\u70b9\u51fb\u641c\u7d22 V0\" data-field=\"user.vip\" data-value=\"0\"><span class=\"label label-success\">V0</span></a>"
+    },
+    {
+      "index": 5,
+      "text": "\u4e0a\u7ea7\u7532",
+      "html": "\u4e0a\u7ea7\u7532"
+    },
+    {
+      "index": 6,
+      "text": "\u5355APP\u884c\u4e3a",
+      "html": "<a href=\"users/yige/index/user_id/8100\" class=\"btn btn-success btn-xs btn-detail btn-dialog\" data-area=\"[&quot;80%&quot;,&quot;80%&quot;]\" title=\"\u5355APP\u884c\u4e3a\" data-table-id=\"table\" data-field-index=\"8\" data-row-index=\"0\" data-button-index=\"0\"><i class=\"\"></i> \u5355APP\u884c\u4e3a</a>"
+    },
+    {
+      "index": 7,
+      "text": "\u5bf9\u7167\u6e38\u620f",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"\u70b9\u51fb\u641c\u7d22 \u5bf9\u7167\u6e38\u620f\" data-field=\"game.name\" data-value=\"\u5bf9\u7167\u6e38\u620f\">\u5bf9\u7167\u6e38\u620f</a>"
+    },
+    {
+      "index": 8,
+      "text": "\u6d4b\u8bd5\u5546\u54c1",
+      "html": "\u6d4b\u8bd5\u5546\u54c1"
+    },
+    {
+      "index": 9,
+      "text": "12.5\u5143",
+      "html": "12.5\u5143"
+    },
+    {
+      "index": 10,
+      "text": "\u6d4b\u8bd5\u673a\u578b",
+      "html": "\u6d4b\u8bd5\u673a\u578b"
+    },
+    {
+      "index": 11,
+      "text": "\u6d4b\u8bd5\u6536\u4ef6\u4eba",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"\u70b9\u51fb\u641c\u7d22 \u6d4b\u8bd5\u6536\u4ef6\u4eba\" data-field=\"receive_name\" data-value=\"\u6d4b\u8bd5\u6536\u4ef6\u4eba\">\u6d4b\u8bd5\u6536\u4ef6\u4eba</a>"
+    },
+    {
+      "index": 12,
+      "text": "13800000000",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"\u70b9\u51fb\u641c\u7d22 13800000000\" data-field=\"receive_tel\" data-value=\"13800000000\">13800000000</a>"
+    },
+    {
+      "index": 13,
+      "text": "\u9ed8\u8ba4",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"\u70b9\u51fb\u641c\u7d22 \u9ed8\u8ba4\" data-field=\"exchange_type\" data-value=\"0\"><span class=\"label label-info\">\u9ed8\u8ba4</span></a>"
+    },
+    {
+      "index": 14,
+      "text": "\u7533\u8bf7\u4e2d",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"\u70b9\u51fb\u641c\u7d22 \u7533\u8bf7\u4e2d\" data-field=\"status\" data-value=\"0\"><span class=\"label label-info\">\u7533\u8bf7\u4e2d</span></a>"
+    },
+    {
+      "index": 15,
+      "text": "\u9ed8\u8ba4",
+      "html": "<a href=\"javascript:;\" class=\"searchit\" data-toggle=\"tooltip\" title=\"\u70b9\u51fb\u641c\u7d22 \u9ed8\u8ba4\" data-field=\"plan_status\" data-value=\"0\"><span class=\"label label-info\">\u9ed8\u8ba4</span></a>"
+    },
+    {
+      "index": 16,
+      "text": "",
+      "html": ""
+    },
+    {
+      "index": 17,
+      "text": "\u62c9\u9ed1",
+      "html": "<a href=\"/DmvTqXBpfF.php/tixian/lahei/ids/9100\" class=\"btn btn-warning btn-xs btn-detail btn-ajax\" data-confirm=\"\u786e\u8ba4\u62c9\u9ed1\u5417\" title=\"\u62c9\u9ed1\" data-table-id=\"table\" data-field-index=\"27\" data-row-index=\"0\" data-button-index=\"0\"><i class=\"\"></i> \u62c9\u9ed1</a> <a href=\"/DmvTqXBpfF.php/tixian/edit/ids/9100\" class=\"btn btn-xs btn-success btn-editone\" data-toggle=\"tooltip\" title=\"\u7f16\u8f91\" data-table-id=\"table\" data-field-index=\"27\" data-row-index=\"0\" data-button-index=\"5\"><i class=\"fa fa-pencil\"></i></a>"
+    },
+    {
+      "index": 18,
+      "text": "\u6b63\u5e38",
+      "html": "\u6b63\u5e38"
+    },
+    {
+      "index": 19,
+      "text": "2026-09-16 08:00:00",
+      "html": "2026-09-16 08:00:00"
+    }
+  ],
+  "reference": [
+    {
+      "selector": ".panel",
+      "rect": {
+        "x": 15,
+        "y": 15,
+        "width": 1660,
+        "height": 378,
+        "top": 15,
+        "right": 1675,
+        "bottom": 393,
+        "left": 15
+      }
+    },
+    {
+      "selector": "#table",
+      "rect": {
+        "x": 30,
+        "y": 141,
+        "width": 1726.765625,
+        "height": 183,
+        "top": 141,
+        "right": 1756.765625,
+        "bottom": 324,
+        "left": 30
+      }
+    },
+    {
+      "selector": ".fixed-table-toolbar",
+      "rect": {
+        "x": 30,
+        "y": 87,
+        "width": 1630,
+        "height": 54,
+        "top": 87,
+        "right": 1660,
+        "bottom": 141,
+        "left": 30
+      }
+    },
+    {
+      "selector": "tbody tr",
+      "rect": {
+        "x": 30.5,
+        "y": 182.5,
+        "width": 1725.765625,
+        "height": 47,
+        "top": 182.5,
+        "right": 1756.265625,
+        "bottom": 229.5,
+        "left": 30.5
+      }
+    }
+  ],
+  "referenceCells": [
+    {
+      "tag": "TH",
+      "field": "0",
+      "text": "",
+      "rect": {
+        "x": 30.5,
+        "y": 141.5,
+        "width": 44,
+        "height": 41,
+        "top": 141.5,
+        "right": 74.5,
+        "bottom": 182.5,
+        "left": 30.5
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 31,
+        "y": 142,
+        "width": 43,
+        "height": 40,
+        "top": 142,
+        "right": 74,
+        "bottom": 182,
+        "left": 31
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 0px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 31,
+        "y": 182,
+        "width": 43,
+        "height": 0,
+        "top": 182,
+        "right": 74,
+        "bottom": 182,
+        "left": 31
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "id",
+      "text": "Id",
+      "rect": {
+        "x": 74.5,
+        "y": 141.5,
+        "width": 62.15625,
+        "height": 41,
+        "top": 141.5,
+        "right": 136.65625,
+        "bottom": 182.5,
+        "left": 74.5
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "Id",
+      "rect": {
+        "x": 75,
+        "y": 142,
+        "width": 61.15625,
+        "height": 40,
+        "top": 142,
+        "right": 136.15625,
+        "bottom": 182,
+        "left": 75
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 75,
+        "y": 182,
+        "width": 61.15625,
+        "height": 0,
+        "top": 182,
+        "right": 136.15625,
+        "bottom": 182,
+        "left": 75
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "user_id",
+      "text": "\u4f1a\u5458ID",
+      "rect": {
+        "x": 136.65625,
+        "y": 141.5,
+        "width": 63,
+        "height": 41,
+        "top": 141.5,
+        "right": 199.65625,
+        "bottom": 182.5,
+        "left": 136.65625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u4f1a\u5458ID",
+      "rect": {
+        "x": 137.15625,
+        "y": 142,
+        "width": 62,
+        "height": 40,
+        "top": 142,
+        "right": 199.15625,
+        "bottom": 182,
+        "left": 137.15625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 137.15625,
+        "y": 182,
+        "width": 62,
+        "height": 0,
+        "top": 182,
+        "right": 199.15625,
+        "bottom": 182,
+        "left": 137.15625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "user.username",
+      "text": "\u8d26\u53f7",
+      "rect": {
+        "x": 199.65625,
+        "y": 141.5,
+        "width": 94.796875,
+        "height": 41,
+        "top": 141.5,
+        "right": 294.453125,
+        "bottom": 182.5,
+        "left": 199.65625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u8d26\u53f7",
+      "rect": {
+        "x": 200.15625,
+        "y": 142,
+        "width": 93.796875,
+        "height": 40,
+        "top": 142,
+        "right": 293.953125,
+        "bottom": 182,
+        "left": 200.15625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 200.15625,
+        "y": 182,
+        "width": 93.796875,
+        "height": 0,
+        "top": 182,
+        "right": 293.953125,
+        "bottom": 182,
+        "left": 200.15625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "user.vip",
+      "text": "VIP",
+      "rect": {
+        "x": 294.453125,
+        "y": 141.5,
+        "width": 56.4375,
+        "height": 41,
+        "top": 141.5,
+        "right": 350.890625,
+        "bottom": 182.5,
+        "left": 294.453125
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "VIP",
+      "rect": {
+        "x": 294.953125,
+        "y": 142,
+        "width": 55.4375,
+        "height": 40,
+        "top": 142,
+        "right": 350.390625,
+        "bottom": 182,
+        "left": 294.953125
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 294.953125,
+        "y": 182,
+        "width": 55.4375,
+        "height": 0,
+        "top": 182,
+        "right": 350.390625,
+        "bottom": 182,
+        "left": 294.953125
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "user.parent_name",
+      "text": "\u4e0a\u7ea7\u6635\u79f0",
+      "rect": {
+        "x": 350.890625,
+        "y": 141.5,
+        "width": 77,
+        "height": 41,
+        "top": 141.5,
+        "right": 427.890625,
+        "bottom": 182.5,
+        "left": 350.890625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u4e0a\u7ea7\u6635\u79f0",
+      "rect": {
+        "x": 351.390625,
+        "y": 142,
+        "width": 76,
+        "height": 40,
+        "top": 142,
+        "right": 427.390625,
+        "bottom": 182,
+        "left": 351.390625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 351.390625,
+        "y": 182,
+        "width": 76,
+        "height": 0,
+        "top": 182,
+        "right": 427.390625,
+        "bottom": 182,
+        "left": 351.390625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "buttons",
+      "text": "\u7528\u6237\u884c\u4e3a",
+      "rect": {
+        "x": 427.890625,
+        "y": 141.5,
+        "width": 120,
+        "height": 41,
+        "top": 141.5,
+        "right": 547.890625,
+        "bottom": 182.5,
+        "left": 427.890625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u7528\u6237\u884c\u4e3a",
+      "rect": {
+        "x": 428.390625,
+        "y": 142,
+        "width": 120,
+        "height": 40,
+        "top": 142,
+        "right": 548.390625,
+        "bottom": 182,
+        "left": 428.390625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 428.390625,
+        "y": 182,
+        "width": 119,
+        "height": 0,
+        "top": 182,
+        "right": 547.390625,
+        "bottom": 182,
+        "left": 428.390625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "game.name",
+      "text": "\u6e38\u620f\u540d\u79f0",
+      "rect": {
+        "x": 547.890625,
+        "y": 141.5,
+        "width": 87,
+        "height": 41,
+        "top": 141.5,
+        "right": 634.890625,
+        "bottom": 182.5,
+        "left": 547.890625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u6e38\u620f\u540d\u79f0",
+      "rect": {
+        "x": 548.390625,
+        "y": 142,
+        "width": 86,
+        "height": 40,
+        "top": 142,
+        "right": 634.390625,
+        "bottom": 182,
+        "left": 548.390625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 548.390625,
+        "y": 182,
+        "width": 86,
+        "height": 0,
+        "top": 182,
+        "right": 634.390625,
+        "bottom": 182,
+        "left": 548.390625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "good.name",
+      "text": "\u5546\u54c1\u540d\u79f0",
+      "rect": {
+        "x": 634.890625,
+        "y": 141.5,
+        "width": 87,
+        "height": 41,
+        "top": 141.5,
+        "right": 721.890625,
+        "bottom": 182.5,
+        "left": 634.890625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u5546\u54c1\u540d\u79f0",
+      "rect": {
+        "x": 635.390625,
+        "y": 142,
+        "width": 86,
+        "height": 40,
+        "top": 142,
+        "right": 721.390625,
+        "bottom": 182,
+        "left": 635.390625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 635.390625,
+        "y": 182,
+        "width": 86,
+        "height": 0,
+        "top": 182,
+        "right": 721.390625,
+        "bottom": 182,
+        "left": 635.390625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "exchange_value",
+      "text": "\u91d1\u989d",
+      "rect": {
+        "x": 721.890625,
+        "y": 141.5,
+        "width": 72.25,
+        "height": 41,
+        "top": 141.5,
+        "right": 794.140625,
+        "bottom": 182.5,
+        "left": 721.890625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u91d1\u989d",
+      "rect": {
+        "x": 722.390625,
+        "y": 142,
+        "width": 71.25,
+        "height": 40,
+        "top": 142,
+        "right": 793.640625,
+        "bottom": 182,
+        "left": 722.390625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 722.390625,
+        "y": 182,
+        "width": 71.25,
+        "height": 0,
+        "top": 182,
+        "right": 793.640625,
+        "bottom": 182,
+        "left": 722.390625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "device_manufacturer",
+      "text": "\u624b\u673a\u578b\u53f7",
+      "rect": {
+        "x": 794.140625,
+        "y": 141.5,
+        "width": 87,
+        "height": 41,
+        "top": 141.5,
+        "right": 881.140625,
+        "bottom": 182.5,
+        "left": 794.140625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u624b\u673a\u578b\u53f7",
+      "rect": {
+        "x": 794.640625,
+        "y": 142,
+        "width": 86,
+        "height": 40,
+        "top": 142,
+        "right": 880.640625,
+        "bottom": 182,
+        "left": 794.640625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 794.640625,
+        "y": 182,
+        "width": 86,
+        "height": 0,
+        "top": 182,
+        "right": 880.640625,
+        "bottom": 182,
+        "left": 794.640625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "receive_name",
+      "text": "\u6536\u4ef6\u4eba",
+      "rect": {
+        "x": 881.140625,
+        "y": 141.5,
+        "width": 101,
+        "height": 41,
+        "top": 141.5,
+        "right": 982.140625,
+        "bottom": 182.5,
+        "left": 881.140625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u6536\u4ef6\u4eba",
+      "rect": {
+        "x": 881.640625,
+        "y": 142,
+        "width": 100,
+        "height": 40,
+        "top": 142,
+        "right": 981.640625,
+        "bottom": 182,
+        "left": 881.640625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 881.640625,
+        "y": 182,
+        "width": 100,
+        "height": 0,
+        "top": 182,
+        "right": 981.640625,
+        "bottom": 182,
+        "left": 881.640625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "receive_tel",
+      "text": "\u8054\u7cfb\u65b9\u5f0f",
+      "rect": {
+        "x": 982.140625,
+        "y": 141.5,
+        "width": 116.65625,
+        "height": 41,
+        "top": 141.5,
+        "right": 1098.796875,
+        "bottom": 182.5,
+        "left": 982.140625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u8054\u7cfb\u65b9\u5f0f",
+      "rect": {
+        "x": 982.640625,
+        "y": 142,
+        "width": 115.65625,
+        "height": 40,
+        "top": 142,
+        "right": 1098.296875,
+        "bottom": 182,
+        "left": 982.640625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 982.640625,
+        "y": 182,
+        "width": 115.65625,
+        "height": 0,
+        "top": 182,
+        "right": 1098.296875,
+        "bottom": 182,
+        "left": 982.640625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "exchange_type",
+      "text": "\u63d0\u73b0\u65b9\u5f0f",
+      "rect": {
+        "x": 1098.796875,
+        "y": 141.5,
+        "width": 77,
+        "height": 41,
+        "top": 141.5,
+        "right": 1175.796875,
+        "bottom": 182.5,
+        "left": 1098.796875
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u63d0\u73b0\u65b9\u5f0f",
+      "rect": {
+        "x": 1099.296875,
+        "y": 142,
+        "width": 76,
+        "height": 40,
+        "top": 142,
+        "right": 1175.296875,
+        "bottom": 182,
+        "left": 1099.296875
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 1099.296875,
+        "y": 182,
+        "width": 76,
+        "height": 0,
+        "top": 182,
+        "right": 1175.296875,
+        "bottom": 182,
+        "left": 1099.296875
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "status",
+      "text": "\u72b6\u6001",
+      "rect": {
+        "x": 1175.796875,
+        "y": 141.5,
+        "width": 85.59375,
+        "height": 41,
+        "top": 141.5,
+        "right": 1261.390625,
+        "bottom": 182.5,
+        "left": 1175.796875
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u72b6\u6001",
+      "rect": {
+        "x": 1176.296875,
+        "y": 142,
+        "width": 84.59375,
+        "height": 40,
+        "top": 142,
+        "right": 1260.890625,
+        "bottom": 182,
+        "left": 1176.296875
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 1176.296875,
+        "y": 182,
+        "width": 84.59375,
+        "height": 0,
+        "top": 182,
+        "right": 1260.890625,
+        "bottom": 182,
+        "left": 1176.296875
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "plan_status",
+      "text": "\u5b9a\u65f6",
+      "rect": {
+        "x": 1261.390625,
+        "y": 141.5,
+        "width": 75.09375,
+        "height": 41,
+        "top": 141.5,
+        "right": 1336.484375,
+        "bottom": 182.5,
+        "left": 1261.390625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u5b9a\u65f6",
+      "rect": {
+        "x": 1261.890625,
+        "y": 142,
+        "width": 74.09375,
+        "height": 40,
+        "top": 142,
+        "right": 1335.984375,
+        "bottom": 182,
+        "left": 1261.890625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 1261.890625,
+        "y": 182,
+        "width": 74.09375,
+        "height": 0,
+        "top": 182,
+        "right": 1335.984375,
+        "bottom": 182,
+        "left": 1261.890625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "sub_msg",
+      "text": "\u5931\u8d25\u539f\u56e0",
+      "rect": {
+        "x": 1336.484375,
+        "y": 141.5,
+        "width": 88.59375,
+        "height": 41,
+        "top": 141.5,
+        "right": 1425.078125,
+        "bottom": 182.5,
+        "left": 1336.484375
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u5931\u8d25\u539f\u56e0",
+      "rect": {
+        "x": 1336.984375,
+        "y": 142,
+        "width": 87.59375,
+        "height": 40,
+        "top": 142,
+        "right": 1424.578125,
+        "bottom": 182,
+        "left": 1336.984375
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 1336.984375,
+        "y": 182,
+        "width": 87.59375,
+        "height": 0,
+        "top": 182,
+        "right": 1424.578125,
+        "bottom": 182,
+        "left": 1336.984375
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "operate",
+      "text": "\u64cd\u4f5c",
+      "rect": {
+        "x": 1425.078125,
+        "y": 141.5,
+        "width": 93.1875,
+        "height": 41,
+        "top": 141.5,
+        "right": 1518.265625,
+        "bottom": 182.5,
+        "left": 1425.078125
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u64cd\u4f5c",
+      "rect": {
+        "x": 1425.578125,
+        "y": 142,
+        "width": 92.1875,
+        "height": 40,
+        "top": 142,
+        "right": 1517.765625,
+        "bottom": 182,
+        "left": 1425.578125
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 1425.578125,
+        "y": 182,
+        "width": 92.1875,
+        "height": 0,
+        "top": 182,
+        "right": 1517.765625,
+        "bottom": 182,
+        "left": 1425.578125
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "check_status_txt",
+      "text": "\u4f5c\u5f0a\u5ba1\u67e5",
+      "rect": {
+        "x": 1518.265625,
+        "y": 141.5,
+        "width": 77,
+        "height": 41,
+        "top": 141.5,
+        "right": 1595.265625,
+        "bottom": 182.5,
+        "left": 1518.265625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u4f5c\u5f0a\u5ba1\u67e5",
+      "rect": {
+        "x": 1518.765625,
+        "y": 142,
+        "width": 76,
+        "height": 40,
+        "top": 142,
+        "right": 1594.765625,
+        "bottom": 182,
+        "left": 1518.765625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 1518.765625,
+        "y": 182,
+        "width": 76,
+        "height": 0,
+        "top": 182,
+        "right": 1594.765625,
+        "bottom": 182,
+        "left": 1518.765625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": "create_time",
+      "text": "\u7533\u8bf7\u65f6\u95f4",
+      "rect": {
+        "x": 1595.265625,
+        "y": 141.5,
+        "width": 161,
+        "height": 41,
+        "top": 141.5,
+        "right": 1756.265625,
+        "bottom": 182.5,
+        "left": 1595.265625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(221, 221, 221)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "\u7533\u8bf7\u65f6\u95f4",
+      "rect": {
+        "x": 1595.765625,
+        "y": 142,
+        "width": 160,
+        "height": 40,
+        "top": 142,
+        "right": 1755.765625,
+        "bottom": 182,
+        "left": 1595.765625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "DIV",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 1595.765625,
+        "y": 182,
+        "width": 160,
+        "height": 0,
+        "top": 182,
+        "right": 1755.765625,
+        "bottom": 182,
+        "left": 1595.765625
+      },
+      "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 30.5,
+        "y": 182.5,
+        "width": 44,
+        "height": 47,
+        "top": 182.5,
+        "right": 74.5,
+        "bottom": 229.5,
+        "left": 30.5
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "9100",
+      "rect": {
+        "x": 74.5,
+        "y": 182.5,
+        "width": 62.15625,
+        "height": 47,
+        "top": 182.5,
+        "right": 136.65625,
+        "bottom": 229.5,
+        "left": 74.5
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "8100",
+      "rect": {
+        "x": 136.65625,
+        "y": 182.5,
+        "width": 63,
+        "height": 47,
+        "top": 182.5,
+        "right": 199.65625,
+        "bottom": 229.5,
+        "left": 136.65625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "\u5bf9\u7167\u8d26\u53f70",
+      "rect": {
+        "x": 199.65625,
+        "y": 182.5,
+        "width": 94.796875,
+        "height": 47,
+        "top": 182.5,
+        "right": 294.453125,
+        "bottom": 229.5,
+        "left": 199.65625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "V0",
+      "rect": {
+        "x": 294.453125,
+        "y": 182.5,
+        "width": 56.4375,
+        "height": 47,
+        "top": 182.5,
+        "right": 350.890625,
+        "bottom": 229.5,
+        "left": 294.453125
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "\u4e0a\u7ea7\u7532",
+      "rect": {
+        "x": 350.890625,
+        "y": 182.5,
+        "width": 77,
+        "height": 47,
+        "top": 182.5,
+        "right": 427.890625,
+        "bottom": 229.5,
+        "left": 350.890625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "\u5355APP\u884c\u4e3a",
+      "rect": {
+        "x": 427.890625,
+        "y": 182.5,
+        "width": 120,
+        "height": 47,
+        "top": 182.5,
+        "right": 547.890625,
+        "bottom": 229.5,
+        "left": 427.890625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "\u5bf9\u7167\u6e38\u620f",
+      "rect": {
+        "x": 547.890625,
+        "y": 182.5,
+        "width": 87,
+        "height": 47,
+        "top": 182.5,
+        "right": 634.890625,
+        "bottom": 229.5,
+        "left": 547.890625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "\u6d4b\u8bd5\u5546\u54c1",
+      "rect": {
+        "x": 634.890625,
+        "y": 182.5,
+        "width": 87,
+        "height": 47,
+        "top": 182.5,
+        "right": 721.890625,
+        "bottom": 229.5,
+        "left": 634.890625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "12.5\u5143",
+      "rect": {
+        "x": 721.890625,
+        "y": 182.5,
+        "width": 72.25,
+        "height": 47,
+        "top": 182.5,
+        "right": 794.140625,
+        "bottom": 229.5,
+        "left": 721.890625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "\u6d4b\u8bd5\u673a\u578b",
+      "rect": {
+        "x": 794.140625,
+        "y": 182.5,
+        "width": 87,
+        "height": 47,
+        "top": 182.5,
+        "right": 881.140625,
+        "bottom": 229.5,
+        "left": 794.140625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "\u6d4b\u8bd5\u6536\u4ef6\u4eba",
+      "rect": {
+        "x": 881.140625,
+        "y": 182.5,
+        "width": 101,
+        "height": 47,
+        "top": 182.5,
+        "right": 982.140625,
+        "bottom": 229.5,
+        "left": 881.140625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "13800000000",
+      "rect": {
+        "x": 982.140625,
+        "y": 182.5,
+        "width": 116.65625,
+        "height": 47,
+        "top": 182.5,
+        "right": 1098.796875,
+        "bottom": 229.5,
+        "left": 982.140625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "\u9ed8\u8ba4",
+      "rect": {
+        "x": 1098.796875,
+        "y": 182.5,
+        "width": 77,
+        "height": 47,
+        "top": 182.5,
+        "right": 1175.796875,
+        "bottom": 229.5,
+        "left": 1098.796875
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "\u7533\u8bf7\u4e2d",
+      "rect": {
+        "x": 1175.796875,
+        "y": 182.5,
+        "width": 85.59375,
+        "height": 47,
+        "top": 182.5,
+        "right": 1261.390625,
+        "bottom": 229.5,
+        "left": 1175.796875
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "\u9ed8\u8ba4",
+      "rect": {
+        "x": 1261.390625,
+        "y": 182.5,
+        "width": 75.09375,
+        "height": 47,
+        "top": 182.5,
+        "right": 1336.484375,
+        "bottom": 229.5,
+        "left": 1261.390625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 1336.484375,
+        "y": 182.5,
+        "width": 88.59375,
+        "height": 47,
+        "top": 182.5,
+        "right": 1425.078125,
+        "bottom": 229.5,
+        "left": 1336.484375
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "\u62c9\u9ed1",
+      "rect": {
+        "x": 1425.078125,
+        "y": 182.5,
+        "width": 93.1875,
+        "height": 47,
+        "top": 182.5,
+        "right": 1518.265625,
+        "bottom": 229.5,
+        "left": 1425.078125
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "\u6b63\u5e38",
+      "rect": {
+        "x": 1518.265625,
+        "y": 182.5,
+        "width": 77,
+        "height": 47,
+        "top": 182.5,
+        "right": 1595.265625,
+        "bottom": 229.5,
+        "left": 1518.265625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "2026-09-16 08:00:00",
+      "rect": {
+        "x": 1595.265625,
+        "y": 182.5,
+        "width": 161,
+        "height": 47,
+        "top": 182.5,
+        "right": 1756.265625,
+        "bottom": 229.5,
+        "left": 1595.265625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    }
+  ],
+  "localActionHTML": [
+    {
+      "index": 0,
+      "text": "",
+      "html": "<input type=\"checkbox\" data-withdrawal-select=\"9100\" aria-label=\"\u9009\u62e9\u63d0\u73b0 9100\" style=\"\">"
+    },
+    {
+      "index": 1,
+      "text": "Id9100",
+      "html": "<span class=\"review-card-title\">Id</span><span class=\"review-card-value\">9100</span>"
+    },
+    {
+      "index": 2,
+      "text": "\u4f1a\u5458ID8100",
+      "html": "<span class=\"review-card-title\">\u4f1a\u5458ID</span><span class=\"review-card-value\"><button class=\"review-search-value\" data-review-search=\"user_id\" data-review-value=\"8100\">8100</button></span>"
+    },
+    {
+      "index": 3,
+      "text": "\u8d26\u53f7\u5bf9\u7167\u8d26\u53f70",
+      "html": "<span class=\"review-card-title\">\u8d26\u53f7</span><span class=\"review-card-value\"><button class=\"review-search-value\" data-review-search=\"username\" data-review-value=\"\u5bf9\u7167\u8d26\u53f70\">\u5bf9\u7167\u8d26\u53f70</button></span>"
+    },
+    {
+      "index": 4,
+      "text": "VIPV0",
+      "html": "<span class=\"review-card-title\">VIP</span><span class=\"review-card-value\"><span class=\"review-badge review-badge-success\">V0</span></span>"
+    },
+    {
+      "index": 5,
+      "text": "\u4e0a\u7ea7Id",
+      "html": "<span class=\"review-card-title\">\u4e0a\u7ea7Id</span><span class=\"review-card-value\"></span>"
+    },
+    {
+      "index": 6,
+      "text": "\u4e0a\u7ea7\u8d26\u53f7",
+      "html": "<span class=\"review-card-title\">\u4e0a\u7ea7\u8d26\u53f7</span><span class=\"review-card-value\"></span>"
+    },
+    {
+      "index": 7,
+      "text": "\u4e0a\u7ea7\u6635\u79f0\u4e0a\u7ea7\u7532",
+      "html": "<span class=\"review-card-title\">\u4e0a\u7ea7\u6635\u79f0</span><span class=\"review-card-value\">\u4e0a\u7ea7\u7532</span>"
+    },
+    {
+      "index": 8,
+      "text": "\u7528\u6237\u884c\u4e3a\u5355APP\u884c\u4e3a",
+      "html": "<span class=\"review-card-title\">\u7528\u6237\u884c\u4e3a</span><span class=\"review-card-value\"><button class=\"review-behavior\" data-member-behavior=\"single\" data-member-id=\"8100\" data-game-id=\"7100\">\u5355APP\u884c\u4e3a</button></span>"
+    },
+    {
+      "index": 9,
+      "text": "\u6e38\u620f\u540d\u79f0\u5bf9\u7167\u6e38\u620f",
+      "html": "<span class=\"review-card-title\">\u6e38\u620f\u540d\u79f0</span><span class=\"review-card-value\"><button class=\"review-search-value\" data-review-search=\"game_id\" data-review-value=\"7100\">\u5bf9\u7167\u6e38\u620f</button></span>"
+    },
+    {
+      "index": 10,
+      "text": "\u4ee3\u7406\u5546\u540d\u79f0\u5bf9\u7167\u4e3b\u4f53",
+      "html": "<span class=\"review-card-title\">\u4ee3\u7406\u5546\u540d\u79f0</span><span class=\"review-card-value\">\u5bf9\u7167\u4e3b\u4f53</span>"
+    },
+    {
+      "index": 11,
+      "text": "\u6635\u79f0\u6d4b\u8bd5\u4f1a\u5458",
+      "html": "<span class=\"review-card-title\">\u6635\u79f0</span><span class=\"review-card-value\">\u6d4b\u8bd5\u4f1a\u5458</span>"
+    },
+    {
+      "index": 12,
+      "text": "\u5546\u54c1\u540d\u79f0\u6d4b\u8bd5\u5546\u54c1",
+      "html": "<span class=\"review-card-title\">\u5546\u54c1\u540d\u79f0</span><span class=\"review-card-value\">\u6d4b\u8bd5\u5546\u54c1</span>"
+    },
+    {
+      "index": 13,
+      "text": "\u91d1\u989d12.5\u5143",
+      "html": "<span class=\"review-card-title\">\u91d1\u989d</span><span class=\"review-card-value\">12.5\u5143</span>"
+    },
+    {
+      "index": 14,
+      "text": "\u624b\u673a\u578b\u53f7\u6d4b\u8bd5\u673a\u578b",
+      "html": "<span class=\"review-card-title\">\u624b\u673a\u578b\u53f7</span><span class=\"review-card-value\">\u6d4b\u8bd5\u673a\u578b</span>"
+    },
+    {
+      "index": 15,
+      "text": "\u6536\u4ef6\u4eba\u6d4b\u8bd5\u6536\u4ef6\u4eba",
+      "html": "<span class=\"review-card-title\">\u6536\u4ef6\u4eba</span><span class=\"review-card-value\"><button class=\"review-search-value\" data-review-search=\"receive_name\" data-review-value=\"\u6d4b\u8bd5\u6536\u4ef6\u4eba\">\u6d4b\u8bd5\u6536\u4ef6\u4eba</button></span>"
+    },
+    {
+      "index": 16,
+      "text": "\u8054\u7cfb\u65b9\u5f0f13800000000",
+      "html": "<span class=\"review-card-title\">\u8054\u7cfb\u65b9\u5f0f</span><span class=\"review-card-value\"><button class=\"review-search-value\" data-review-search=\"receive_tel\" data-review-value=\"13800000000\">13800000000</button></span>"
+    },
+    {
+      "index": 17,
+      "text": "\u6536\u8d27\u5730\u5740",
+      "html": "<span class=\"review-card-title\">\u6536\u8d27\u5730\u5740</span><span class=\"review-card-value\"></span>"
+    },
+    {
+      "index": 18,
+      "text": "\u5feb\u9012\u540d\u79f0",
+      "html": "<span class=\"review-card-title\">\u5feb\u9012\u540d\u79f0</span><span class=\"review-card-value\"></span>"
+    },
+    {
+      "index": 19,
+      "text": "\u5feb\u9012\u5355\u53f7",
+      "html": "<span class=\"review-card-title\">\u5feb\u9012\u5355\u53f7</span><span class=\"review-card-value\"></span>"
+    },
+    {
+      "index": 20,
+      "text": "\u5907\u6ce8",
+      "html": "<span class=\"review-card-title\">\u5907\u6ce8</span><span class=\"review-card-value\"></span>"
+    },
+    {
+      "index": 21,
+      "text": "\u63d0\u73b0\u65b9\u5f0f\u9ed8\u8ba4",
+      "html": "<span class=\"review-card-title\">\u63d0\u73b0\u65b9\u5f0f</span><span class=\"review-card-value\"><span class=\"review-badge review-badge-info\">\u9ed8\u8ba4</span></span>"
+    },
+    {
+      "index": 22,
+      "text": "\u5185\u90e8\u53f7",
+      "html": "<span class=\"review-card-title\">\u5185\u90e8\u53f7</span><span class=\"review-card-value\"></span>"
+    },
+    {
+      "index": 23,
+      "text": "\u72b6\u6001\u7533\u8bf7\u4e2d",
+      "html": "<span class=\"review-card-title\">\u72b6\u6001</span><span class=\"review-card-value\"><span class=\"review-badge review-badge-info\">\u7533\u8bf7\u4e2d</span></span>"
+    },
+    {
+      "index": 24,
+      "text": "\u5b9a\u65f6\u9ed8\u8ba4",
+      "html": "<span class=\"review-card-title\">\u5b9a\u65f6</span><span class=\"review-card-value\"><span class=\"review-badge review-badge-info\">\u9ed8\u8ba4</span></span>"
+    },
+    {
+      "index": 25,
+      "text": "\u5931\u8d25\u539f\u56e0",
+      "html": "<span class=\"review-card-title\">\u5931\u8d25\u539f\u56e0</span><span class=\"review-card-value\"></span>"
+    },
+    {
+      "index": 26,
+      "text": "\u62d2\u7edd\u539f\u56e0",
+      "html": "<span class=\"review-card-title\">\u62d2\u7edd\u539f\u56e0</span><span class=\"review-card-value\"></span>"
+    },
+    {
+      "index": 27,
+      "text": "\u64cd\u4f5c\u540c\u610f\u62d2\u7edd\u6709\u7406\u7531\u62d2\u7edd",
+      "html": "<span class=\"review-card-title\">\u64cd\u4f5c</span><span class=\"review-card-value\"><button class=\"withdraw-approve\" data-review-action=\"approve\" data-review-id=\"9100\">\u540c\u610f</button><button class=\"withdraw-reject\" data-review-action=\"refuse\" data-review-id=\"9100\">\u62d2\u7edd</button><button class=\"withdraw-reject\" data-review-action=\"reject\" data-review-id=\"9100\">\u6709\u7406\u7531\u62d2\u7edd</button></span>"
+    },
+    {
+      "index": 28,
+      "text": "\u4f5c\u5f0a\u5ba1\u67e5\u6b63\u5e38",
+      "html": "<span class=\"review-card-title\">\u4f5c\u5f0a\u5ba1\u67e5</span><span class=\"review-card-value\">\u6b63\u5e38</span>"
+    },
+    {
+      "index": 29,
+      "text": "\u7533\u8bf7\u65f6\u95f42026-09-16 08:00:00",
+      "html": "<span class=\"review-card-title\">\u7533\u8bf7\u65f6\u95f4</span><span class=\"review-card-value\">2026-09-16 08:00:00</span>"
+    },
+    {
+      "index": 30,
+      "text": "\u66f4\u65b0\u65f6\u95f42026-09-16 08:00:00",
+      "html": "<span class=\"review-card-title\">\u66f4\u65b0\u65f6\u95f4</span><span class=\"review-card-value\">2026-09-16 08:00:00</span>"
+    }
+  ],
+  "local": [
+    {
+      "selector": ".withdrawal-panel",
+      "rect": {
+        "x": 245,
+        "y": 65,
+        "width": 1660,
+        "height": 378,
+        "top": 65,
+        "right": 1905,
+        "bottom": 443,
+        "left": 245
+      }
+    },
+    {
+      "selector": ".ads-table",
+      "rect": {
+        "x": 260,
+        "y": 191,
+        "width": 1797.59375,
+        "height": 183,
+        "top": 191,
+        "right": 2057.59375,
+        "bottom": 374,
+        "left": 260
+      }
+    },
+    {
+      "selector": ".withdrawal-toolbar",
+      "rect": {
+        "x": 260,
+        "y": 137,
+        "width": 1630,
+        "height": 54,
+        "top": 137,
+        "right": 1890,
+        "bottom": 191,
+        "left": 260
+      }
+    },
+    {
+      "selector": "tbody tr",
+      "rect": {
+        "x": 260.5,
+        "y": 232.5,
+        "width": 1796.59375,
+        "height": 47,
+        "top": 232.5,
+        "right": 2057.09375,
+        "bottom": 279.5,
+        "left": 260.5
+      }
+    }
+  ],
+  "localCells": [
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 260.5,
+        "y": 191.5,
+        "width": 44,
+        "height": 41,
+        "top": 191.5,
+        "right": 304.5,
+        "bottom": 232.5,
+        "left": 260.5
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "INPUT",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 276,
+        "y": 204,
+        "width": 13,
+        "height": 13,
+        "top": 204,
+        "right": 289,
+        "bottom": 217,
+        "left": 276
+      },
+      "font": "700 14px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "baseline",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "Id\u25bc",
+      "rect": {
+        "x": 304.5,
+        "y": 191.5,
+        "width": 62.15625,
+        "height": 41,
+        "top": 191.5,
+        "right": 366.65625,
+        "bottom": 232.5,
+        "left": 304.5
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "BUTTON",
+      "field": null,
+      "text": "Id\u25bc",
+      "rect": {
+        "x": 320,
+        "y": 200,
+        "width": 31.15625,
+        "height": 24,
+        "top": 200,
+        "right": 351.15625,
+        "bottom": 224,
+        "left": 320
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u4f1a\u5458ID",
+      "rect": {
+        "x": 366.65625,
+        "y": 191.5,
+        "width": 63,
+        "height": 41,
+        "top": 191.5,
+        "right": 429.65625,
+        "bottom": 232.5,
+        "left": 366.65625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u8d26\u53f7",
+      "rect": {
+        "x": 429.65625,
+        "y": 191.5,
+        "width": 94.796875,
+        "height": 41,
+        "top": 191.5,
+        "right": 524.453125,
+        "bottom": 232.5,
+        "left": 429.65625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "VIP",
+      "rect": {
+        "x": 524.453125,
+        "y": 191.5,
+        "width": 56.4375,
+        "height": 41,
+        "top": 191.5,
+        "right": 580.890625,
+        "bottom": 232.5,
+        "left": 524.453125
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u4e0a\u7ea7\u6635\u79f0",
+      "rect": {
+        "x": 580.890625,
+        "y": 191.5,
+        "width": 77,
+        "height": 41,
+        "top": 191.5,
+        "right": 657.890625,
+        "bottom": 232.5,
+        "left": 580.890625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u7528\u6237\u884c\u4e3a",
+      "rect": {
+        "x": 657.890625,
+        "y": 191.5,
+        "width": 103.015625,
+        "height": 41,
+        "top": 191.5,
+        "right": 760.90625,
+        "bottom": 232.5,
+        "left": 657.890625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u6e38\u620f\u540d\u79f0",
+      "rect": {
+        "x": 760.90625,
+        "y": 191.5,
+        "width": 87,
+        "height": 41,
+        "top": 191.5,
+        "right": 847.90625,
+        "bottom": 232.5,
+        "left": 760.90625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u5546\u54c1\u540d\u79f0",
+      "rect": {
+        "x": 847.90625,
+        "y": 191.5,
+        "width": 87,
+        "height": 41,
+        "top": 191.5,
+        "right": 934.90625,
+        "bottom": 232.5,
+        "left": 847.90625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u91d1\u989d\u25b4\u25be",
+      "rect": {
+        "x": 934.90625,
+        "y": 191.5,
+        "width": 72.25,
+        "height": 41,
+        "top": 191.5,
+        "right": 1007.15625,
+        "bottom": 232.5,
+        "left": 934.90625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "BUTTON",
+      "field": null,
+      "text": "\u91d1\u989d\u25b4\u25be",
+      "rect": {
+        "x": 950.40625,
+        "y": 200,
+        "width": 41.25,
+        "height": 24,
+        "top": 200,
+        "right": 991.65625,
+        "bottom": 224,
+        "left": 950.40625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u624b\u673a\u578b\u53f7",
+      "rect": {
+        "x": 1007.15625,
+        "y": 191.5,
+        "width": 87,
+        "height": 41,
+        "top": 191.5,
+        "right": 1094.15625,
+        "bottom": 232.5,
+        "left": 1007.15625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u6536\u4ef6\u4eba",
+      "rect": {
+        "x": 1094.15625,
+        "y": 191.5,
+        "width": 101,
+        "height": 41,
+        "top": 191.5,
+        "right": 1195.15625,
+        "bottom": 232.5,
+        "left": 1094.15625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u8054\u7cfb\u65b9\u5f0f",
+      "rect": {
+        "x": 1195.15625,
+        "y": 191.5,
+        "width": 116.65625,
+        "height": 41,
+        "top": 191.5,
+        "right": 1311.8125,
+        "bottom": 232.5,
+        "left": 1195.15625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u63d0\u73b0\u65b9\u5f0f",
+      "rect": {
+        "x": 1311.8125,
+        "y": 191.5,
+        "width": 77,
+        "height": 41,
+        "top": 191.5,
+        "right": 1388.8125,
+        "bottom": 232.5,
+        "left": 1311.8125
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u72b6\u6001",
+      "rect": {
+        "x": 1388.8125,
+        "y": 191.5,
+        "width": 85.59375,
+        "height": 41,
+        "top": 191.5,
+        "right": 1474.40625,
+        "bottom": 232.5,
+        "left": 1388.8125
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u5b9a\u65f6",
+      "rect": {
+        "x": 1474.40625,
+        "y": 191.5,
+        "width": 75.09375,
+        "height": 41,
+        "top": 191.5,
+        "right": 1549.5,
+        "bottom": 232.5,
+        "left": 1474.40625
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u5931\u8d25\u539f\u56e0",
+      "rect": {
+        "x": 1549.5,
+        "y": 191.5,
+        "width": 88.59375,
+        "height": 41,
+        "top": 191.5,
+        "right": 1638.09375,
+        "bottom": 232.5,
+        "left": 1549.5
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u64cd\u4f5c",
+      "rect": {
+        "x": 1638.09375,
+        "y": 191.5,
+        "width": 181,
+        "height": 41,
+        "top": 191.5,
+        "right": 1819.09375,
+        "bottom": 232.5,
+        "left": 1638.09375
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u4f5c\u5f0a\u5ba1\u67e5",
+      "rect": {
+        "x": 1819.09375,
+        "y": 191.5,
+        "width": 77,
+        "height": 41,
+        "top": 191.5,
+        "right": 1896.09375,
+        "bottom": 232.5,
+        "left": 1819.09375
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 10px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TH",
+      "field": null,
+      "text": "\u7533\u8bf7\u65f6\u95f4\u25b4\u25be",
+      "rect": {
+        "x": 1896.09375,
+        "y": 191.5,
+        "width": 161,
+        "height": 41,
+        "top": 191.5,
+        "right": 2057.09375,
+        "bottom": 232.5,
+        "left": 1896.09375
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "0px none rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "BUTTON",
+      "field": null,
+      "text": "\u7533\u8bf7\u65f6\u95f4\u25b4\u25be",
+      "rect": {
+        "x": 1911.59375,
+        "y": 200,
+        "width": 130,
+        "height": 24,
+        "top": 200,
+        "right": 2041.59375,
+        "bottom": 224,
+        "left": 1911.59375
+      },
+      "font": "700 14px / 24px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "0px",
+      "verticalAlign": "top",
+      "borderTop": "0px none rgb(51, 51, 51)",
+      "borderBottom": "0px none rgb(51, 51, 51)"
+    },
+    {
+      "tag": "TD",
+      "field": null,
+      "text": "",
+      "rect": {
+        "x": 260.5,
+        "y": 232.5,
+        "width": 44,
+        "height": 47,
+        "top": 232.5,
+        "right": 304.5,
+        "bottom": 279.5,
+        "left": 260.5
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "id",
+      "text": "Id9100",
+      "rect": {
+        "x": 304.5,
+        "y": 232.5,
+        "width": 62.15625,
+        "height": 47,
+        "top": 232.5,
+        "right": 366.65625,
+        "bottom": 279.5,
+        "left": 304.5
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "user_id",
+      "text": "\u4f1a\u5458ID8100",
+      "rect": {
+        "x": 366.65625,
+        "y": 232.5,
+        "width": 63,
+        "height": 47,
+        "top": 232.5,
+        "right": 429.65625,
+        "bottom": 279.5,
+        "left": 366.65625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "username",
+      "text": "\u8d26\u53f7\u5bf9\u7167\u8d26\u53f70",
+      "rect": {
+        "x": 429.65625,
+        "y": 232.5,
+        "width": 94.796875,
+        "height": 47,
+        "top": 232.5,
+        "right": 524.453125,
+        "bottom": 279.5,
+        "left": 429.65625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "vip",
+      "text": "VIPV0",
+      "rect": {
+        "x": 524.453125,
+        "y": 232.5,
+        "width": 56.4375,
+        "height": 47,
+        "top": 232.5,
+        "right": 580.890625,
+        "bottom": 279.5,
+        "left": 524.453125
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "parent_name",
+      "text": "\u4e0a\u7ea7\u6635\u79f0\u4e0a\u7ea7\u7532",
+      "rect": {
+        "x": 580.890625,
+        "y": 232.5,
+        "width": 77,
+        "height": 47,
+        "top": 232.5,
+        "right": 657.890625,
+        "bottom": 279.5,
+        "left": 580.890625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "behavior",
+      "text": "\u7528\u6237\u884c\u4e3a\u5355APP\u884c\u4e3a",
+      "rect": {
+        "x": 657.890625,
+        "y": 232.5,
+        "width": 103.015625,
+        "height": 47,
+        "top": 232.5,
+        "right": 760.90625,
+        "bottom": 279.5,
+        "left": 657.890625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "game_name",
+      "text": "\u6e38\u620f\u540d\u79f0\u5bf9\u7167\u6e38\u620f",
+      "rect": {
+        "x": 760.90625,
+        "y": 232.5,
+        "width": 87,
+        "height": 47,
+        "top": 232.5,
+        "right": 847.90625,
+        "bottom": 279.5,
+        "left": 760.90625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "good_name",
+      "text": "\u5546\u54c1\u540d\u79f0\u6d4b\u8bd5\u5546\u54c1",
+      "rect": {
+        "x": 847.90625,
+        "y": 232.5,
+        "width": 87,
+        "height": 47,
+        "top": 232.5,
+        "right": 934.90625,
+        "bottom": 279.5,
+        "left": 847.90625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "exchange_value",
+      "text": "\u91d1\u989d12.5\u5143",
+      "rect": {
+        "x": 934.90625,
+        "y": 232.5,
+        "width": 72.25,
+        "height": 47,
+        "top": 232.5,
+        "right": 1007.15625,
+        "bottom": 279.5,
+        "left": 934.90625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "device_manufacturer",
+      "text": "\u624b\u673a\u578b\u53f7\u6d4b\u8bd5\u673a\u578b",
+      "rect": {
+        "x": 1007.15625,
+        "y": 232.5,
+        "width": 87,
+        "height": 47,
+        "top": 232.5,
+        "right": 1094.15625,
+        "bottom": 279.5,
+        "left": 1007.15625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "receive_name",
+      "text": "\u6536\u4ef6\u4eba\u6d4b\u8bd5\u6536\u4ef6\u4eba",
+      "rect": {
+        "x": 1094.15625,
+        "y": 232.5,
+        "width": 101,
+        "height": 47,
+        "top": 232.5,
+        "right": 1195.15625,
+        "bottom": 279.5,
+        "left": 1094.15625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "receive_tel",
+      "text": "\u8054\u7cfb\u65b9\u5f0f13800000000",
+      "rect": {
+        "x": 1195.15625,
+        "y": 232.5,
+        "width": 116.65625,
+        "height": 47,
+        "top": 232.5,
+        "right": 1311.8125,
+        "bottom": 279.5,
+        "left": 1195.15625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "exchange_type",
+      "text": "\u63d0\u73b0\u65b9\u5f0f\u9ed8\u8ba4",
+      "rect": {
+        "x": 1311.8125,
+        "y": 232.5,
+        "width": 77,
+        "height": 47,
+        "top": 232.5,
+        "right": 1388.8125,
+        "bottom": 279.5,
+        "left": 1311.8125
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "status",
+      "text": "\u72b6\u6001\u7533\u8bf7\u4e2d",
+      "rect": {
+        "x": 1388.8125,
+        "y": 232.5,
+        "width": 85.59375,
+        "height": 47,
+        "top": 232.5,
+        "right": 1474.40625,
+        "bottom": 279.5,
+        "left": 1388.8125
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "plan_status",
+      "text": "\u5b9a\u65f6\u9ed8\u8ba4",
+      "rect": {
+        "x": 1474.40625,
+        "y": 232.5,
+        "width": 75.09375,
+        "height": 47,
+        "top": 232.5,
+        "right": 1549.5,
+        "bottom": 279.5,
+        "left": 1474.40625
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "sub_msg",
+      "text": "\u5931\u8d25\u539f\u56e0",
+      "rect": {
+        "x": 1549.5,
+        "y": 232.5,
+        "width": 88.59375,
+        "height": 47,
+        "top": 232.5,
+        "right": 1638.09375,
+        "bottom": 279.5,
+        "left": 1549.5
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "review_actions",
+      "text": "\u64cd\u4f5c\u540c\u610f\u62d2\u7edd\u6709\u7406\u7531\u62d2\u7edd",
+      "rect": {
+        "x": 1638.09375,
+        "y": 232.5,
+        "width": 181,
+        "height": 47,
+        "top": 232.5,
+        "right": 1819.09375,
+        "bottom": 279.5,
+        "left": 1638.09375
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "check_status_txt",
+      "text": "\u4f5c\u5f0a\u5ba1\u67e5\u6b63\u5e38",
+      "rect": {
+        "x": 1819.09375,
+        "y": 232.5,
+        "width": 77,
+        "height": 47,
+        "top": 232.5,
+        "right": 1896.09375,
+        "bottom": 279.5,
+        "left": 1819.09375
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    },
+    {
+      "tag": "TD",
+      "field": "created_at",
+      "text": "\u7533\u8bf7\u65f6\u95f42026-09-16 08:00:00",
+      "rect": {
+        "x": 1896.09375,
+        "y": 232.5,
+        "width": 161,
+        "height": 47,
+        "top": 232.5,
+        "right": 2057.09375,
+        "bottom": 279.5,
+        "left": 1896.09375
+      },
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+      "padding": "8px 15px",
+      "verticalAlign": "middle",
+      "borderTop": "1px solid rgb(244, 244, 244)",
+      "borderBottom": "1px solid rgb(244, 244, 244)"
+    }
+  ]
+}

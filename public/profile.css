@@ -1,0 +1,83 @@
+.profile-view .topbar{display:none}
+.profile-view .content{padding:15px}
+.profile-layout{display:grid;grid-template-columns:calc((100% - 60px)/3) calc((100% + 60px)*2/3 - 50px);gap:30px;align-items:start;color:#333;font:14px/22.001px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.profile-card{background:#fff;border-top:3px solid #3c8dff;border-radius:3px;box-shadow:0 1px 1px #0000001a;margin-bottom:20px}
+.profile-card>header{padding:10px 15px;height:43px;font-weight:400}
+.profile-card-body{padding:15px 25px 40px}
+.profile-avatar-container{position:relative;width:100px;height:100px;margin:10px auto 0}
+.profile-avatar{display:block;width:100px;height:100px;border:3px solid #d2d6de;border-radius:50%;padding:3px}
+#profileForm .profile-avatar-container #profileAvatarUpload{position:absolute;inset:0;border:0;border-radius:50%;background:#4449;color:white;opacity:0;width:100%;height:100%;font-size:14px;line-height:22.001px;padding:0}
+#profileForm #profileAvatarFile{display:none}
+#profileForm .profile-avatar-container:hover #profileAvatarUpload,#profileForm .profile-avatar-container:focus-within #profileAvatarUpload{opacity:1}
+.profile-card h2{font:500 21px/23.1px "Source Sans Pro",sans-serif;text-align:center;margin:5px 0 9px;overflow-wrap:anywhere}
+#profileForm label{display:block;font-weight:700;margin:0 0 15px}
+#profileForm label>input{display:block;width:100%;height:33px;margin-top:5px;border:1px solid #d2d6de;border-radius:0;padding:6px 12px;font:400 13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;color:#555}
+#profileForm input:disabled{background:#eee}
+#profileForm input::placeholder{color:#999;opacity:1}
+#profileForm button{height:32.5625px;padding:6px 12px;border:1px solid #ddd;border-radius:3px;background:#f4f4f4;color:#444;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+#profileForm .profile-primary{background:#444c69;border-color:transparent;color:#fff}
+#profileForm button:disabled{opacity:.5;cursor:default}
+#profileMessage{margin:0}
+#profileMessage:not(:empty){margin-top:10px;overflow-wrap:anywhere}
+.profile-log-tab{display:inline-block;height:46px;padding:11px 15px 12px;background:#fff;color:#95a5a6;border:1px solid transparent;border-radius:3px 3px 0 0}
+.profile-log-tab .shell-icon{width:auto;font-size:14px}
+.profile-view .profile-log-panel{padding:15px;background:#fff;border-radius:0 0 3px 3px;box-shadow:0 1px 1px #0000000d;color:#333;font-size:14px}
+.profile-log-tab{color:#7b8a8b}
+.profile-log-panel .ads-filters{display:none}
+.profile-log-panel [data-action=search]{display:none}
+.profile-log-panel #profileLogSearch{width:194px;height:33px;padding:6px 12px;border:1px solid #d2d6de;margin-right:5px;border-radius:0;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;color:#555}
+.profile-log-panel #profileLogSearch::placeholder{color:#999;opacity:1}
+.profile-log-panel .profile-log-link{display:flex;width:250px;margin:0 auto;height:30px}
+.profile-log-panel .profile-log-link input{width:0;min-width:0;flex:1;height:30px;border:1px solid #d2d6de;border-radius:0;padding:5px 10px;font:12px/18px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;color:#555}
+.profile-log-panel .profile-link-button{display:block;flex:none;height:30px;padding:5px 10px;border:1px solid #ddd;margin-left:-1px;border-radius:0 3px 3px 0;background:#f4f4f4;color:#444;font:12px/18px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.profile-log-panel .profile-link-button .shell-icon{width:auto;font-size:12px;line-height:1}
+.profile-log-panel #profileLogTable .ads-table th[data-field=path]{text-align:left}
+#profileLogError:not(:empty){color:#b33;padding:10px}
+.profile-loading{padding:15px;background:#fff}
+.profile-log-panel .ads-toolbar{min-height:54px;gap:3.890625px}
+.profile-log-panel .ads-refresh .shell-icon{width:auto}
+.profile-log-panel .ads-refresh{border-radius:3px}
+.profile-log-panel .game-user-table-tools{gap:0;align-self:flex-start}
+.profile-log-panel .game-user-table-tools>button,.profile-log-panel .game-user-table-tools summary{height:32.5625px;padding:6px 12px;color:#444;background:#f4f4f4;border:1px solid #ddd;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.profile-log-panel .game-user-table-tools details{margin-left:-1px}
+.profile-log-panel .game-user-table-tools summary{border-radius:0}
+.profile-log-panel .game-user-table-tools [data-action=cards]{border-radius:3px 0 0 3px}
+.profile-log-panel .game-user-table-tools .game-user-export summary{border-radius:0 4px 4px 0}
+.profile-log-panel .game-user-table-tools .caret{display:inline-block;vertical-align:middle;margin-left:0;border-top:4px dashed;border-right:4px solid transparent;border-left:4px solid transparent}
+.profile-log-panel #profileLogTable .ads-table th,.profile-log-panel #profileLogTable .ads-table td{text-align:center;border-color:#f4f4f4}
+.profile-log-panel #profileLogTable .ads-table td{height:47px}
+.profile-log-panel #profileLogTable .ads-table th{color:#333;border-bottom-color:#ddd}
+.profile-log-panel #profileLogTable .ads-table th button{padding:8px 15px}
+.profile-log-panel #profileLogTable .ads-table th[aria-sort=ascending] button:before{border-bottom-color:#8080ff}
+.profile-log-panel #profileLogTable .ads-table th[aria-sort=descending] button:after{border-top-color:#8080ff}
+.profile-log-panel #profileLogTable .ads-table th[aria-sort] button:before,.profile-log-panel #profileLogTable .ads-table th[aria-sort] button:after{display:none}
+.profile-log-panel #profileLogTable .ads-table th[aria-sort] button{background:right center no-repeat url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAAkElEQVQoz7XQMQ5AQBCF4dWQSJxC5wwax1Cq1e7BAdxD5SL+Tq/QCM1oNiJidwox0355mXnG/DrEtIQ6azioNZQxI0ykPhTQIwhCR+BmBYtlK7kLJYwWCcJA9M4qdrZrd8pPjZWPtOqdRQy320YSV17OatFC4euts6z39GYMKRPCTKY9UnPQ6P+GtMRfGtPnBCiqhAeJPmkqAAAAAElFTkSuQmCC")}
+.profile-log-panel #profileLogTable .ads-table th[aria-sort=ascending] button{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZ0lEQVQ4y2NgGLKgquEuFxBPAGI2ahhWCsS/gDibUoO0gPgxEP8H4ttArEyuQYxAPBdqEAxPBImTY5gjEL9DM+wTENuQahAvEO9DMwiGdwAxOymGJQLxTyD+jgWDxCMZRsEoGAVoAADeemwtPcZI2wAAAABJRU5ErkJggg==")}
+.profile-log-panel #profileLogTable .ads-table th[aria-sort=descending] button{background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZUlEQVQ4y2NgGAWjYBSggaqGu5FA/BOIv2PBIPFEUgxjB+IdQPwfC94HxLykus4GiD+hGfQOiB3J8SojEE9EM2wuSJzcsFMG4ttQgx4DsRalkZENxL+AuJQaMcsGxBOAmGvopk8AVz1sLZgg0bsAAAAASUVORK5CYII=")}
+.profile-log-panel #profileLogPagination{font:14px/34px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif;margin:0;min-height:54px;padding:10px 0}
+.profile-log-panel #profileLogPagination[hidden]{display:none}
+.profile-log-panel #profileLogPagination .game-page-info{display:block;line-height:34px}
+.profile-log-panel #profileLogPagination .game-page-info>span:first-child{margin-right:5px}
+.profile-log-panel #profileLogPagination .game-page-size{display:inline}
+.profile-log-panel #profileLogPagination .game-page-size[hidden]{display:none}
+.profile-log-panel #profileLogPagination .game-page-size details{display:inline-block;vertical-align:middle;line-height:18.5714px}
+.profile-log-panel .game-user-cards{border:1px solid #f4f4f4}
+.profile-log-panel .game-user-cards article{padding:8px 15px;border:0;font:14px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.profile-log-panel .game-user-cards article+article{border-top:1px solid #f4f4f4}
+.profile-log-panel .game-user-cards article:nth-child(odd){background:#f9f9f9}
+.profile-log-panel .game-user-cards article>div{display:block;padding:0}
+.profile-log-panel .game-user-cards article>div[hidden]{display:none}
+.profile-log-panel .game-user-cards strong{display:inline-block;width:30%;vertical-align:middle}
+.profile-log-panel .game-user-cards article>div>span{display:inline;overflow-wrap:anywhere}
+.profile-log-panel #profileLogPagination nav{gap:0;align-items:baseline;line-height:20px}
+.profile-log-panel #profileLogPagination nav>button,.profile-log-panel #profileLogPagination .game-page-gap{height:34px;padding:6px 12px;border:1px solid #ddd;border-radius:0;background:#fafafa;color:#666;font:14px/20px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.profile-log-panel #profileLogPagination nav>button:first-child{border-radius:3px 0 0 3px}
+.profile-log-panel #profileLogPagination nav>[aria-current=page]{position:relative;background:#444c69;border-color:#444c69;color:white}
+.profile-log-panel #profileLogPagination .game-page-gap{background:white;color:#777}
+.profile-log-panel #profileLogPagination .game-page-jump{display:inline-block;align-self:flex-start;margin:0;white-space:nowrap;line-height:22.001px}
+.profile-log-panel #profileLogPagination .game-page-jump input{display:inline-block;width:50px;height:33px;padding:6px 12px;margin:0 5px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.profile-log-panel #profileLogPagination .game-page-jump button{height:auto;vertical-align:middle;padding:6px 12px;border-radius:3px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.profile-log-panel #profileLogPagination .game-page-size summary{padding:6px 12px;font:13px/18.5714px "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif}
+.profile-log-panel #profileLogPagination .game-page-size .caret{border-top:0;border-bottom:4px dashed;margin-left:0}
+@media(max-width:1199px){.profile-layout{grid-template-columns:calc((100% - 30px)*.375) minmax(0,1fr)}}
+@media(max-width:991px){.profile-layout{grid-template-columns:minmax(0,1fr)}.profile-log-panel .ads-toolbar{flex-wrap:wrap}.profile-log-panel .game-user-table-tools{max-width:100%}.profile-log-panel #profileLogSearch{min-width:50px;flex:1}.profile-log-panel .game-user-pagination{flex-wrap:wrap}}

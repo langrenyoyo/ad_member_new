@@ -1,0 +1,248 @@
+[
+  {
+    "label": "性别:",
+    "controls": [
+      {
+        "name": "row[sex]",
+        "type": "select-one",
+        "options": [
+          {
+            "value": "0",
+            "label": "未知"
+          },
+          {
+            "value": "1",
+            "label": "男"
+          },
+          {
+            "value": "2",
+            "label": "女"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "内部号:",
+    "controls": [
+      {
+        "name": "row[is_true]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "0",
+            "label": "否"
+          }
+        ]
+      },
+      {
+        "name": "row[is_true]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "1",
+            "label": "是"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "实名状态:",
+    "controls": [
+      {
+        "name": "row[realname_enable]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "0",
+            "label": "否"
+          }
+        ]
+      },
+      {
+        "name": "row[realname_enable]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "1",
+            "label": "是"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "兑换状态:",
+    "controls": [
+      {
+        "name": "row[exchange_enable]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "0",
+            "label": "否"
+          }
+        ]
+      },
+      {
+        "name": "row[exchange_enable]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "1",
+            "label": "是"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "关键行为达标:",
+    "controls": [
+      {
+        "name": "row[game_addiction_enable]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "0",
+            "label": "否"
+          }
+        ]
+      },
+      {
+        "name": "row[game_addiction_enable]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "1",
+            "label": "是"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "白名单:",
+    "controls": [
+      {
+        "name": "row[is_white]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "0",
+            "label": "否"
+          }
+        ]
+      },
+      {
+        "name": "row[is_white]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "1",
+            "label": "是"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "状态:",
+    "controls": [
+      {
+        "name": "row[status]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "0",
+            "label": "禁用"
+          }
+        ]
+      },
+      {
+        "name": "row[status]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "1",
+            "label": "启用"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "vip:",
+    "controls": [
+      {
+        "name": "row[vip]",
+        "type": "select-one",
+        "options": [
+          {
+            "value": "0",
+            "label": "0"
+          },
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "独立抽奖设置:",
+    "controls": [
+      {
+        "name": "row[raffle_open]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "1",
+            "label": "开启"
+          }
+        ]
+      },
+      {
+        "name": "row[raffle_open]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "0",
+            "label": "关闭"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "代理:",
+    "controls": [
+      {
+        "name": "row[ht_status]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "0",
+            "label": "否"
+          }
+        ]
+      },
+      {
+        "name": "row[ht_status]",
+        "type": "radio",
+        "options": [
+          {
+            "value": "1",
+            "label": "是"
+          }
+        ]
+      }
+    ]
+  }
+]

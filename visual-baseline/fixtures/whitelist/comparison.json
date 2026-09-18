@@ -1,0 +1,97 @@
+{
+  "exports": [
+    {
+      "format": "json",
+      "selected": false,
+      "equal": true
+    },
+    {
+      "format": "xml",
+      "selected": false,
+      "equal": true
+    },
+    {
+      "format": "csv",
+      "selected": false,
+      "equal": true
+    },
+    {
+      "format": "txt",
+      "selected": false,
+      "equal": true
+    },
+    {
+      "format": "doc",
+      "selected": false,
+      "equal": true
+    },
+    {
+      "format": "excel",
+      "selected": false,
+      "equal": true
+    },
+    {
+      "format": "json",
+      "selected": true,
+      "equal": true
+    },
+    {
+      "format": "xml",
+      "selected": true,
+      "equal": true
+    },
+    {
+      "format": "csv",
+      "selected": true,
+      "equal": true
+    },
+    {
+      "format": "txt",
+      "selected": true,
+      "equal": true
+    },
+    {
+      "format": "doc",
+      "selected": true,
+      "equal": true
+    },
+    {
+      "format": "excel",
+      "selected": true,
+      "equal": true
+    }
+  ],
+  "table": {
+    "reference_size": [
+      1660,
+      320
+    ],
+    "local_size": [
+      1660,
+      320
+    ],
+    "changed_pixels_percent": 0.0113
+  },
+  "expanded-": {
+    "reference_size": [
+      1660,
+      416
+    ],
+    "local_size": [
+      1660,
+      416
+    ],
+    "changed_pixels_percent": 0.0618
+  },
+  "cards-": {
+    "reference_size": [
+      1660,
+      1224
+    ],
+    "local_size": [
+      1660,
+      1224
+    ],
+    "changed_pixels_percent": 0.0216
+  }
+}

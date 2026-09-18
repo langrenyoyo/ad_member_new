@@ -1,0 +1,4 @@
+会员ID,用户账号,游戏名称,标签,标签名,硬件主ID,ip,行为,风险分数,风险等级,创建时间
+8100,"fixture 001","fixture game 0",fixture-code,"fixture tag",fixture-device-0,192.0.2.1,"fixture action",10,low,"2026-09-18 08:00:00"
+8101,"fixture &lt;&gt;&amp;","fixture game 1","fixture <>&","fixture <>&",fixture-device-1,192.0.2.2,"fixture action",11,low,"2026-09-18 08:01:00"
+8102,"fixture 003","fixture game 2",,,fixture-device-2,192.0.2.3,"fixture action",12,low,"2026-09-18 08:02:00"

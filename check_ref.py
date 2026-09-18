@@ -1,0 +1,3 @@
+﻿from playwright.sync_api import sync_playwright
+with sync_playwright() as p:
+ b=p.chromium.launch(headless=True);pg=b.new_page(viewport={'width':1920,'height':1080});pg.goto('https://ad.leadink.cn/DmvTqXBpfF.php/index/login',wait_until='domcontentloaded',timeout=30000);pg.fill('[name=username]','18532306918');pg.fill('[name=password]','123456');pg.locator('button[type=submit],input[type=submit]').first.click();pg.wait_for_timeout(2000);print('frames',len(pg.frames),'body',pg.locator('body').get_attribute('class'));print('sidebar',pg.locator('.sidebar,.sidebar-menu,.navbar').count());pg.screenshot(path='visual-baseline/reference-captured/shell-check.png',full_page=False);b.close()

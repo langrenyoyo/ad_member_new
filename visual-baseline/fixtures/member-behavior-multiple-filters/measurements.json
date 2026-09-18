@@ -1,0 +1,2177 @@
+{
+  "lottery": {
+    "filters": {
+      "referenceLayout": [
+        {
+          "tag": "FORM",
+          "cls": "form-horizontal form-commonsearch nice-validator n-default n-bootstrap",
+          "rect": {
+            "x": 30,
+            "y": 236.53125,
+            "width": 1476,
+            "height": 143.5625,
+            "top": 236.53125,
+            "right": 1506,
+            "bottom": 380.09375,
+            "left": 30
+          },
+          "padding": "0px",
+          "margin": "0px",
+          "width": "1476px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "row",
+          "rect": {
+            "x": 15,
+            "y": 236.53125,
+            "width": 1506,
+            "height": 143.5625,
+            "top": 236.53125,
+            "right": 1521,
+            "bottom": 380.09375,
+            "left": 15
+          },
+          "padding": "0px",
+          "margin": "0px -15px",
+          "width": "1506px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 15,
+            "y": 236.53125,
+            "width": 376.5,
+            "height": 33,
+            "top": 236.53125,
+            "right": 391.5,
+            "bottom": 269.53125,
+            "left": 15
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 30,
+            "y": 236.53125,
+            "width": 115.5,
+            "height": 29,
+            "top": 236.53125,
+            "right": 145.5,
+            "bottom": 265.53125,
+            "left": 30
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "INPUT",
+          "cls": "form-control",
+          "rect": {
+            "x": 160.5,
+            "y": 236.53125,
+            "width": 201,
+            "height": 33,
+            "top": 236.53125,
+            "right": 361.5,
+            "bottom": 269.53125,
+            "left": 160.5
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 391.5,
+            "y": 236.53125,
+            "width": 376.5,
+            "height": 33,
+            "top": 236.53125,
+            "right": 768,
+            "bottom": 269.53125,
+            "left": 391.5
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 406.5,
+            "y": 236.53125,
+            "width": 115.5,
+            "height": 29,
+            "top": 236.53125,
+            "right": 522,
+            "bottom": 265.53125,
+            "left": 406.5
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "INPUT",
+          "cls": "form-control",
+          "rect": {
+            "x": 537,
+            "y": 236.53125,
+            "width": 201,
+            "height": 33,
+            "top": 236.53125,
+            "right": 738,
+            "bottom": 269.53125,
+            "left": 537
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 768,
+            "y": 236.53125,
+            "width": 376.5,
+            "height": 33,
+            "top": 236.53125,
+            "right": 1144.5,
+            "bottom": 269.53125,
+            "left": 768
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 783,
+            "y": 236.53125,
+            "width": 115.5,
+            "height": 29,
+            "top": 236.53125,
+            "right": 898.5,
+            "bottom": 265.53125,
+            "left": 783
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "INPUT",
+          "cls": "form-control",
+          "rect": {
+            "x": 913.5,
+            "y": 236.53125,
+            "width": 201,
+            "height": 33,
+            "top": 236.53125,
+            "right": 1114.5,
+            "bottom": 269.53125,
+            "left": 913.5
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 1144.5,
+            "y": 236.53125,
+            "width": 376.5,
+            "height": 33,
+            "top": 236.53125,
+            "right": 1521,
+            "bottom": 269.53125,
+            "left": 1144.5
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 1159.5,
+            "y": 236.53125,
+            "width": 115.5,
+            "height": 29,
+            "top": 236.53125,
+            "right": 1275,
+            "bottom": 265.53125,
+            "left": 1159.5
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "INPUT",
+          "cls": "form-control",
+          "rect": {
+            "x": 1290,
+            "y": 236.53125,
+            "width": 201,
+            "height": 33,
+            "top": 236.53125,
+            "right": 1491,
+            "bottom": 269.53125,
+            "left": 1290
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 15,
+            "y": 284.53125,
+            "width": 376.5,
+            "height": 33,
+            "top": 284.53125,
+            "right": 391.5,
+            "bottom": 317.53125,
+            "left": 15
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 30,
+            "y": 284.53125,
+            "width": 115.5,
+            "height": 29,
+            "top": 284.53125,
+            "right": 145.5,
+            "bottom": 313.53125,
+            "left": 30
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "SELECT",
+          "cls": "form-control",
+          "rect": {
+            "x": 160.5,
+            "y": 284.53125,
+            "width": 201,
+            "height": 33,
+            "top": 284.53125,
+            "right": 361.5,
+            "bottom": 317.53125,
+            "left": 160.5
+          },
+          "padding": "6px 25px 6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 391.5,
+            "y": 284.53125,
+            "width": 376.5,
+            "height": 33,
+            "top": 284.53125,
+            "right": 768,
+            "bottom": 317.53125,
+            "left": 391.5
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 406.5,
+            "y": 284.53125,
+            "width": 115.5,
+            "height": 29,
+            "top": 284.53125,
+            "right": 522,
+            "bottom": 313.53125,
+            "left": 406.5
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "SELECT",
+          "cls": "form-control",
+          "rect": {
+            "x": 537,
+            "y": 284.53125,
+            "width": 201,
+            "height": 33,
+            "top": 284.53125,
+            "right": 738,
+            "bottom": 317.53125,
+            "left": 537
+          },
+          "padding": "6px 25px 6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 768,
+            "y": 284.53125,
+            "width": 376.5,
+            "height": 33,
+            "top": 284.53125,
+            "right": 1144.5,
+            "bottom": 317.53125,
+            "left": 768
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 783,
+            "y": 284.53125,
+            "width": 115.5,
+            "height": 29,
+            "top": 284.53125,
+            "right": 898.5,
+            "bottom": 313.53125,
+            "left": 783
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "SELECT",
+          "cls": "form-control",
+          "rect": {
+            "x": 913.5,
+            "y": 284.53125,
+            "width": 201,
+            "height": 33,
+            "top": 284.53125,
+            "right": 1114.5,
+            "bottom": 317.53125,
+            "left": 913.5
+          },
+          "padding": "6px 25px 6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 1144.5,
+            "y": 284.53125,
+            "width": 376.5,
+            "height": 33,
+            "top": 284.53125,
+            "right": 1521,
+            "bottom": 317.53125,
+            "left": 1144.5
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 1159.5,
+            "y": 284.53125,
+            "width": 115.5,
+            "height": 29,
+            "top": 284.53125,
+            "right": 1275,
+            "bottom": 313.53125,
+            "left": 1159.5
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "INPUT",
+          "cls": "form-control datetimerange",
+          "rect": {
+            "x": 1290,
+            "y": 284.53125,
+            "width": 201,
+            "height": 33,
+            "top": 284.53125,
+            "right": 1491,
+            "bottom": 317.53125,
+            "left": 1290
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 15,
+            "y": 332.53125,
+            "width": 376.5,
+            "height": 32.5625,
+            "top": 332.53125,
+            "right": 391.5,
+            "bottom": 365.09375,
+            "left": 15
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "BUTTON",
+          "cls": "btn btn-success",
+          "rect": {
+            "x": 160.5,
+            "y": 332.53125,
+            "width": 52,
+            "height": 32.5625,
+            "top": 332.53125,
+            "right": 212.5,
+            "bottom": 365.09375,
+            "left": 160.5
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "52px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "BUTTON",
+          "cls": "btn btn-default",
+          "rect": {
+            "x": 216.390625,
+            "y": 332.53125,
+            "width": 52,
+            "height": 32.5625,
+            "top": 332.53125,
+            "right": 268.390625,
+            "bottom": 365.09375,
+            "left": 216.390625
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "52px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        }
+      ],
+      "reference": [
+        {
+          "name": "user_id",
+          "rect": {
+            "x": 160.5,
+            "y": 236.53125,
+            "width": 201,
+            "height": 33,
+            "top": 236.53125,
+            "right": 361.5,
+            "bottom": 269.53125,
+            "left": 160.5
+          }
+        },
+        {
+          "name": "game.name",
+          "rect": {
+            "x": 537,
+            "y": 236.53125,
+            "width": 201,
+            "height": 33,
+            "top": 236.53125,
+            "right": 738,
+            "bottom": 269.53125,
+            "left": 537
+          }
+        },
+        {
+          "name": "adn_name",
+          "rect": {
+            "x": 913.5,
+            "y": 236.53125,
+            "width": 201,
+            "height": 33,
+            "top": 236.53125,
+            "right": 1114.5,
+            "bottom": 269.53125,
+            "left": 913.5
+          }
+        },
+        {
+          "name": "ip",
+          "rect": {
+            "x": 1290,
+            "y": 236.53125,
+            "width": 201,
+            "height": 33,
+            "top": 236.53125,
+            "right": 1491,
+            "bottom": 269.53125,
+            "left": 1290
+          }
+        },
+        {
+          "name": "network_status",
+          "rect": {
+            "x": 160.5,
+            "y": 284.53125,
+            "width": 201,
+            "height": 33,
+            "top": 284.53125,
+            "right": 361.5,
+            "bottom": 317.53125,
+            "left": 160.5
+          }
+        },
+        {
+          "name": "user.is_white",
+          "rect": {
+            "x": 537,
+            "y": 284.53125,
+            "width": 201,
+            "height": 33,
+            "top": 284.53125,
+            "right": 738,
+            "bottom": 317.53125,
+            "left": 537
+          }
+        },
+        {
+          "name": "status",
+          "rect": {
+            "x": 913.5,
+            "y": 284.53125,
+            "width": 201,
+            "height": 33,
+            "top": 284.53125,
+            "right": 1114.5,
+            "bottom": 317.53125,
+            "left": 913.5
+          }
+        },
+        {
+          "name": "create_time",
+          "rect": {
+            "x": 1290,
+            "y": 284.53125,
+            "width": 201,
+            "height": 33,
+            "top": 284.53125,
+            "right": 1491,
+            "bottom": 317.53125,
+            "left": 1290
+          }
+        }
+      ],
+      "local": [
+        {
+          "name": "user_id",
+          "rect": {
+            "x": 352.5,
+            "y": 387,
+            "width": 201,
+            "height": 33,
+            "top": 387,
+            "right": 553.5,
+            "bottom": 420,
+            "left": 352.5
+          }
+        },
+        {
+          "name": "game_name",
+          "rect": {
+            "x": 729,
+            "y": 387,
+            "width": 201,
+            "height": 33,
+            "top": 387,
+            "right": 930,
+            "bottom": 420,
+            "left": 729
+          }
+        },
+        {
+          "name": "adn_name",
+          "rect": {
+            "x": 1105.5,
+            "y": 387,
+            "width": 201,
+            "height": 33,
+            "top": 387,
+            "right": 1306.5,
+            "bottom": 420,
+            "left": 1105.5
+          }
+        },
+        {
+          "name": "ip",
+          "rect": {
+            "x": 1482,
+            "y": 387,
+            "width": 201,
+            "height": 33,
+            "top": 387,
+            "right": 1683,
+            "bottom": 420,
+            "left": 1482
+          }
+        },
+        {
+          "name": "network_status",
+          "rect": {
+            "x": 352.5,
+            "y": 435,
+            "width": 201,
+            "height": 33,
+            "top": 435,
+            "right": 553.5,
+            "bottom": 468,
+            "left": 352.5
+          }
+        },
+        {
+          "name": "is_white",
+          "rect": {
+            "x": 729,
+            "y": 435,
+            "width": 201,
+            "height": 33,
+            "top": 435,
+            "right": 930,
+            "bottom": 468,
+            "left": 729
+          }
+        },
+        {
+          "name": "status",
+          "rect": {
+            "x": 1105.5,
+            "y": 435,
+            "width": 201,
+            "height": 33,
+            "top": 435,
+            "right": 1306.5,
+            "bottom": 468,
+            "left": 1105.5
+          }
+        },
+        {
+          "name": "created_range",
+          "rect": {
+            "x": 1482,
+            "y": 435,
+            "width": 201,
+            "height": 33,
+            "top": 435,
+            "right": 1683,
+            "bottom": 468,
+            "left": 1482
+          }
+        }
+      ]
+    },
+    "reference": {
+      "width": 1476,
+      "headers": [
+        {
+          "text": "Id",
+          "width": 69.28125
+        },
+        {
+          "text": "会员ID",
+          "width": 70.21875
+        },
+        {
+          "text": "用户账号",
+          "width": 85.828125
+        },
+        {
+          "text": "游戏名称",
+          "width": 120.4375
+        },
+        {
+          "text": "金币",
+          "width": 65.765625
+        },
+        {
+          "text": "ECPM",
+          "width": 68.5
+        },
+        {
+          "text": "类型",
+          "width": 77.046875
+        },
+        {
+          "text": "公网IP",
+          "width": 99.640625
+        },
+        {
+          "text": "内网",
+          "width": 60.296875
+        },
+        {
+          "text": "是否风控",
+          "width": 85.828125
+        },
+        {
+          "text": "白名单",
+          "width": 70.21875
+        },
+        {
+          "text": "状态",
+          "width": 72
+        },
+        {
+          "text": "抽奖时间",
+          "width": 179.46875
+        },
+        {
+          "text": "广告代码位",
+          "width": 101.4375
+        },
+        {
+          "text": "广告request_id",
+          "width": 133.5625
+        },
+        {
+          "text": "交易trans_id",
+          "width": 115.46875
+        }
+      ],
+      "rows": [
+        47,
+        47,
+        47
+      ]
+    },
+    "local": {
+      "width": 1476,
+      "headers": [
+        {
+          "text": "Id",
+          "width": 69.28125
+        },
+        {
+          "text": "会员ID",
+          "width": 70.21875
+        },
+        {
+          "text": "用户账号",
+          "width": 85.828125
+        },
+        {
+          "text": "游戏名称",
+          "width": 120.4375
+        },
+        {
+          "text": "金币",
+          "width": 65.765625
+        },
+        {
+          "text": "ECPM",
+          "width": 68.5
+        },
+        {
+          "text": "类型",
+          "width": 77.046875
+        },
+        {
+          "text": "公网IP",
+          "width": 99.640625
+        },
+        {
+          "text": "内网",
+          "width": 60.296875
+        },
+        {
+          "text": "是否风控",
+          "width": 85.828125
+        },
+        {
+          "text": "白名单",
+          "width": 70.21875
+        },
+        {
+          "text": "状态",
+          "width": 72
+        },
+        {
+          "text": "抽奖时间",
+          "width": 179.46875
+        },
+        {
+          "text": "广告代码位",
+          "width": 101.4375
+        },
+        {
+          "text": "广告request_id",
+          "width": 133.5625
+        },
+        {
+          "text": "交易trans_id",
+          "width": 115.46875
+        }
+      ],
+      "rows": [
+        47,
+        47,
+        47
+      ]
+    }
+  },
+  "risk": {
+    "filters": {
+      "referenceLayout": [
+        {
+          "tag": "FORM",
+          "cls": "form-horizontal form-commonsearch nice-validator n-default n-bootstrap",
+          "rect": {
+            "x": 30,
+            "y": 87,
+            "width": 1476,
+            "height": 96,
+            "top": 87,
+            "right": 1506,
+            "bottom": 183,
+            "left": 30
+          },
+          "padding": "0px",
+          "margin": "0px",
+          "width": "1476px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "row",
+          "rect": {
+            "x": 15,
+            "y": 87,
+            "width": 1506,
+            "height": 96,
+            "top": 87,
+            "right": 1521,
+            "bottom": 183,
+            "left": 15
+          },
+          "padding": "0px",
+          "margin": "0px -15px",
+          "width": "1506px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 15,
+            "y": 87,
+            "width": 376.5,
+            "height": 33,
+            "top": 87,
+            "right": 391.5,
+            "bottom": 120,
+            "left": 15
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 30,
+            "y": 87,
+            "width": 115.5,
+            "height": 29,
+            "top": 87,
+            "right": 145.5,
+            "bottom": 116,
+            "left": 30
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "INPUT",
+          "cls": "form-control",
+          "rect": {
+            "x": 160.5,
+            "y": 87,
+            "width": 201,
+            "height": 33,
+            "top": 87,
+            "right": 361.5,
+            "bottom": 120,
+            "left": 160.5
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 391.5,
+            "y": 87,
+            "width": 376.5,
+            "height": 33,
+            "top": 87,
+            "right": 768,
+            "bottom": 120,
+            "left": 391.5
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 406.5,
+            "y": 87,
+            "width": 115.5,
+            "height": 29,
+            "top": 87,
+            "right": 522,
+            "bottom": 116,
+            "left": 406.5
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "INPUT",
+          "cls": "form-control",
+          "rect": {
+            "x": 537,
+            "y": 87,
+            "width": 201,
+            "height": 33,
+            "top": 87,
+            "right": 738,
+            "bottom": 120,
+            "left": 537
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 768,
+            "y": 87,
+            "width": 376.5,
+            "height": 33,
+            "top": 87,
+            "right": 1144.5,
+            "bottom": 120,
+            "left": 768
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 783,
+            "y": 87,
+            "width": 115.5,
+            "height": 29,
+            "top": 87,
+            "right": 898.5,
+            "bottom": 116,
+            "left": 783
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "SELECT",
+          "cls": "form-control",
+          "rect": {
+            "x": 913.5,
+            "y": 87,
+            "width": 201,
+            "height": 33,
+            "top": 87,
+            "right": 1114.5,
+            "bottom": 120,
+            "left": 913.5
+          },
+          "padding": "6px 25px 6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 1144.5,
+            "y": 87,
+            "width": 376.5,
+            "height": 33,
+            "top": 87,
+            "right": 1521,
+            "bottom": 120,
+            "left": 1144.5
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 1159.5,
+            "y": 87,
+            "width": 115.5,
+            "height": 29,
+            "top": 87,
+            "right": 1275,
+            "bottom": 116,
+            "left": 1159.5
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "INPUT",
+          "cls": "form-control",
+          "rect": {
+            "x": 1290,
+            "y": 87,
+            "width": 201,
+            "height": 33,
+            "top": 87,
+            "right": 1491,
+            "bottom": 120,
+            "left": 1290
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 15,
+            "y": 135,
+            "width": 376.5,
+            "height": 33,
+            "top": 135,
+            "right": 391.5,
+            "bottom": 168,
+            "left": 15
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 30,
+            "y": 135,
+            "width": 115.5,
+            "height": 29,
+            "top": 135,
+            "right": 145.5,
+            "bottom": 164,
+            "left": 30
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "INPUT",
+          "cls": "form-control datetimerange",
+          "rect": {
+            "x": 160.5,
+            "y": 135,
+            "width": 201,
+            "height": 33,
+            "top": 135,
+            "right": 361.5,
+            "bottom": 168,
+            "left": 160.5
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 391.5,
+            "y": 135,
+            "width": 376.5,
+            "height": 32.5625,
+            "top": 135,
+            "right": 768,
+            "bottom": 167.5625,
+            "left": 391.5
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "BUTTON",
+          "cls": "btn btn-success",
+          "rect": {
+            "x": 537,
+            "y": 135,
+            "width": 52,
+            "height": 32.5625,
+            "top": 135,
+            "right": 589,
+            "bottom": 167.5625,
+            "left": 537
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "52px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "BUTTON",
+          "cls": "btn btn-default",
+          "rect": {
+            "x": 592.890625,
+            "y": 135,
+            "width": 52,
+            "height": 32.5625,
+            "top": 135,
+            "right": 644.890625,
+            "bottom": 167.5625,
+            "left": 592.890625
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "52px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        }
+      ],
+      "reference": [
+        {
+          "name": "game.name",
+          "rect": {
+            "x": 160.5,
+            "y": 87,
+            "width": 201,
+            "height": 33,
+            "top": 87,
+            "right": 361.5,
+            "bottom": 120,
+            "left": 160.5
+          }
+        },
+        {
+          "name": "ip",
+          "rect": {
+            "x": 537,
+            "y": 87,
+            "width": 201,
+            "height": 33,
+            "top": 87,
+            "right": 738,
+            "bottom": 120,
+            "left": 537
+          }
+        },
+        {
+          "name": "network_status",
+          "rect": {
+            "x": 913.5,
+            "y": 87,
+            "width": 201,
+            "height": 33,
+            "top": 87,
+            "right": 1114.5,
+            "bottom": 120,
+            "left": 913.5
+          }
+        },
+        {
+          "name": "tag",
+          "rect": {
+            "x": 1290,
+            "y": 87,
+            "width": 201,
+            "height": 33,
+            "top": 87,
+            "right": 1491,
+            "bottom": 120,
+            "left": 1290
+          }
+        },
+        {
+          "name": "create_time",
+          "rect": {
+            "x": 160.5,
+            "y": 135,
+            "width": 201,
+            "height": 33,
+            "top": 135,
+            "right": 361.5,
+            "bottom": 168,
+            "left": 160.5
+          }
+        }
+      ],
+      "local": [
+        {
+          "name": "game_name",
+          "rect": {
+            "x": 352.5,
+            "y": 237,
+            "width": 201,
+            "height": 33,
+            "top": 237,
+            "right": 553.5,
+            "bottom": 270,
+            "left": 352.5
+          }
+        },
+        {
+          "name": "ip",
+          "rect": {
+            "x": 729,
+            "y": 237,
+            "width": 201,
+            "height": 33,
+            "top": 237,
+            "right": 930,
+            "bottom": 270,
+            "left": 729
+          }
+        },
+        {
+          "name": "network_status",
+          "rect": {
+            "x": 1105.5,
+            "y": 237,
+            "width": 201,
+            "height": 33,
+            "top": 237,
+            "right": 1306.5,
+            "bottom": 270,
+            "left": 1105.5
+          }
+        },
+        {
+          "name": "tags",
+          "rect": {
+            "x": 1482,
+            "y": 237,
+            "width": 201,
+            "height": 33,
+            "top": 237,
+            "right": 1683,
+            "bottom": 270,
+            "left": 1482
+          }
+        },
+        {
+          "name": "created_range",
+          "rect": {
+            "x": 352.5,
+            "y": 285,
+            "width": 201,
+            "height": 33,
+            "top": 285,
+            "right": 553.5,
+            "bottom": 318,
+            "left": 352.5
+          }
+        }
+      ]
+    },
+    "reference": {
+      "width": 1476,
+      "headers": [
+        {
+          "text": "Id",
+          "width": 147.671875
+        },
+        {
+          "text": "用户账号",
+          "width": 182.9375
+        },
+        {
+          "text": "游戏名称",
+          "width": 256.703125
+        },
+        {
+          "text": "ip",
+          "width": 212.375
+        },
+        {
+          "text": "内网",
+          "width": 128.515625
+        },
+        {
+          "text": "标签",
+          "width": 164.234375
+        },
+        {
+          "text": "创建时间",
+          "width": 382.5625
+        }
+      ],
+      "rows": [
+        47,
+        47,
+        47
+      ]
+    },
+    "local": {
+      "width": 1476,
+      "headers": [
+        {
+          "text": "Id",
+          "width": 147.671875
+        },
+        {
+          "text": "用户账号",
+          "width": 182.9375
+        },
+        {
+          "text": "游戏名称",
+          "width": 256.703125
+        },
+        {
+          "text": "ip",
+          "width": 212.375
+        },
+        {
+          "text": "内网",
+          "width": 128.515625
+        },
+        {
+          "text": "标签",
+          "width": 164.234375
+        },
+        {
+          "text": "创建时间",
+          "width": 382.5625
+        }
+      ],
+      "rows": [
+        47,
+        47,
+        47
+      ]
+    }
+  },
+  "coins": {
+    "filters": {
+      "referenceLayout": [
+        {
+          "tag": "FORM",
+          "cls": "form-horizontal form-commonsearch nice-validator n-default n-bootstrap",
+          "rect": {
+            "x": 30,
+            "y": 203,
+            "width": 1476,
+            "height": 96,
+            "top": 203,
+            "right": 1506,
+            "bottom": 299,
+            "left": 30
+          },
+          "padding": "0px",
+          "margin": "0px",
+          "width": "1476px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "row",
+          "rect": {
+            "x": 15,
+            "y": 203,
+            "width": 1506,
+            "height": 96,
+            "top": 203,
+            "right": 1521,
+            "bottom": 299,
+            "left": 15
+          },
+          "padding": "0px",
+          "margin": "0px -15px",
+          "width": "1506px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 15,
+            "y": 203,
+            "width": 376.5,
+            "height": 33,
+            "top": 203,
+            "right": 391.5,
+            "bottom": 236,
+            "left": 15
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 30,
+            "y": 203,
+            "width": 115.5,
+            "height": 29,
+            "top": 203,
+            "right": 145.5,
+            "bottom": 232,
+            "left": 30
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "INPUT",
+          "cls": "form-control",
+          "rect": {
+            "x": 160.5,
+            "y": 203,
+            "width": 201,
+            "height": 33,
+            "top": 203,
+            "right": 361.5,
+            "bottom": 236,
+            "left": 160.5
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 391.5,
+            "y": 203,
+            "width": 376.5,
+            "height": 33,
+            "top": 203,
+            "right": 768,
+            "bottom": 236,
+            "left": 391.5
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 406.5,
+            "y": 203,
+            "width": 115.5,
+            "height": 29,
+            "top": 203,
+            "right": 522,
+            "bottom": 232,
+            "left": 406.5
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "INPUT",
+          "cls": "form-control",
+          "rect": {
+            "x": 537,
+            "y": 203,
+            "width": 201,
+            "height": 33,
+            "top": 203,
+            "right": 738,
+            "bottom": 236,
+            "left": 537
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 768,
+            "y": 203,
+            "width": 376.5,
+            "height": 33,
+            "top": 203,
+            "right": 1144.5,
+            "bottom": 236,
+            "left": 768
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 783,
+            "y": 203,
+            "width": 115.5,
+            "height": 29,
+            "top": 203,
+            "right": 898.5,
+            "bottom": 232,
+            "left": 783
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "SELECT",
+          "cls": "form-control",
+          "rect": {
+            "x": 913.5,
+            "y": 203,
+            "width": 201,
+            "height": 33,
+            "top": 203,
+            "right": 1114.5,
+            "bottom": 236,
+            "left": 913.5
+          },
+          "padding": "6px 25px 6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 1144.5,
+            "y": 203,
+            "width": 376.5,
+            "height": 33,
+            "top": 203,
+            "right": 1521,
+            "bottom": 236,
+            "left": 1144.5
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 1159.5,
+            "y": 203,
+            "width": 115.5,
+            "height": 29,
+            "top": 203,
+            "right": 1275,
+            "bottom": 232,
+            "left": 1159.5
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "INPUT",
+          "cls": "form-control",
+          "rect": {
+            "x": 1290,
+            "y": 203,
+            "width": 201,
+            "height": 33,
+            "top": 203,
+            "right": 1491,
+            "bottom": 236,
+            "left": 1290
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 15,
+            "y": 251,
+            "width": 376.5,
+            "height": 33,
+            "top": 251,
+            "right": 391.5,
+            "bottom": 284,
+            "left": 15
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "LABEL",
+          "cls": "control-label col-xs-4",
+          "rect": {
+            "x": 30,
+            "y": 251,
+            "width": 115.5,
+            "height": 29,
+            "top": 251,
+            "right": 145.5,
+            "bottom": 280,
+            "left": 30
+          },
+          "padding": "7px 15px 0px",
+          "margin": "0px",
+          "width": "115.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "INPUT",
+          "cls": "form-control datetimerange",
+          "rect": {
+            "x": 160.5,
+            "y": 251,
+            "width": 201,
+            "height": 33,
+            "top": 251,
+            "right": 361.5,
+            "bottom": 284,
+            "left": 160.5
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "201px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "DIV",
+          "cls": "form-group col-xs-12 col-sm-6 col-md-4 col-lg-3",
+          "rect": {
+            "x": 391.5,
+            "y": 251,
+            "width": 376.5,
+            "height": 32.5625,
+            "top": 251,
+            "right": 768,
+            "bottom": 283.5625,
+            "left": 391.5
+          },
+          "padding": "0px 15px",
+          "margin": "0px 0px 15px",
+          "width": "376.5px",
+          "display": "block",
+          "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "BUTTON",
+          "cls": "btn btn-success",
+          "rect": {
+            "x": 537,
+            "y": 251,
+            "width": 52,
+            "height": 32.5625,
+            "top": 251,
+            "right": 589,
+            "bottom": 283.5625,
+            "left": 537
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "52px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        },
+        {
+          "tag": "BUTTON",
+          "cls": "btn btn-default",
+          "rect": {
+            "x": 592.890625,
+            "y": 251,
+            "width": 52,
+            "height": 32.5625,
+            "top": 251,
+            "right": 644.890625,
+            "bottom": 283.5625,
+            "left": 592.890625
+          },
+          "padding": "6px 12px",
+          "margin": "0px",
+          "width": "52px",
+          "display": "inline-block",
+          "font": "13px / 18.5714px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+        }
+      ],
+      "reference": [
+        {
+          "name": "user_id",
+          "rect": {
+            "x": 160.5,
+            "y": 203,
+            "width": 201,
+            "height": 33,
+            "top": 203,
+            "right": 361.5,
+            "bottom": 236,
+            "left": 160.5
+          }
+        },
+        {
+          "name": "game.name",
+          "rect": {
+            "x": 537,
+            "y": 203,
+            "width": 201,
+            "height": 33,
+            "top": 203,
+            "right": 738,
+            "bottom": 236,
+            "left": 537
+          }
+        },
+        {
+          "name": "type",
+          "rect": {
+            "x": 913.5,
+            "y": 203,
+            "width": 201,
+            "height": 33,
+            "top": 203,
+            "right": 1114.5,
+            "bottom": 236,
+            "left": 913.5
+          }
+        },
+        {
+          "name": "remark",
+          "rect": {
+            "x": 1290,
+            "y": 203,
+            "width": 201,
+            "height": 33,
+            "top": 203,
+            "right": 1491,
+            "bottom": 236,
+            "left": 1290
+          }
+        },
+        {
+          "name": "create_time",
+          "rect": {
+            "x": 160.5,
+            "y": 251,
+            "width": 201,
+            "height": 33,
+            "top": 251,
+            "right": 361.5,
+            "bottom": 284,
+            "left": 160.5
+          }
+        }
+      ],
+      "local": [
+        {
+          "name": "user_id",
+          "rect": {
+            "x": 352.5,
+            "y": 353,
+            "width": 201,
+            "height": 33,
+            "top": 353,
+            "right": 553.5,
+            "bottom": 386,
+            "left": 352.5
+          }
+        },
+        {
+          "name": "game_name",
+          "rect": {
+            "x": 729,
+            "y": 353,
+            "width": 201,
+            "height": 33,
+            "top": 353,
+            "right": 930,
+            "bottom": 386,
+            "left": 729
+          }
+        },
+        {
+          "name": "type",
+          "rect": {
+            "x": 1105.5,
+            "y": 353,
+            "width": 201,
+            "height": 33,
+            "top": 353,
+            "right": 1306.5,
+            "bottom": 386,
+            "left": 1105.5
+          }
+        },
+        {
+          "name": "remark",
+          "rect": {
+            "x": 1482,
+            "y": 353,
+            "width": 201,
+            "height": 33,
+            "top": 353,
+            "right": 1683,
+            "bottom": 386,
+            "left": 1482
+          }
+        },
+        {
+          "name": "created_range",
+          "rect": {
+            "x": 352.5,
+            "y": 401,
+            "width": 201,
+            "height": 33,
+            "top": 401,
+            "right": 553.5,
+            "bottom": 434,
+            "left": 352.5
+          }
+        }
+      ]
+    },
+    "reference": {
+      "width": 1476,
+      "headers": [
+        {
+          "text": "Id",
+          "width": 97.375
+        },
+        {
+          "text": "会员ID",
+          "width": 98.703125
+        },
+        {
+          "text": "用户账号",
+          "width": 120.640625
+        },
+        {
+          "text": "游戏名称",
+          "width": 169.28125
+        },
+        {
+          "text": "金币变动前",
+          "width": 158.25
+        },
+        {
+          "text": "金币变动",
+          "width": 136.3125
+        },
+        {
+          "text": "金币变动后",
+          "width": 158.25
+        },
+        {
+          "text": "类型",
+          "width": 101.203125
+        },
+        {
+          "text": "备注",
+          "width": 182.65625
+        },
+        {
+          "text": "创建时间",
+          "width": 252.328125
+        }
+      ],
+      "rows": [
+        47,
+        47,
+        47
+      ]
+    },
+    "local": {
+      "width": 1476,
+      "headers": [
+        {
+          "text": "Id",
+          "width": 97.375
+        },
+        {
+          "text": "会员ID",
+          "width": 98.703125
+        },
+        {
+          "text": "用户账号",
+          "width": 120.640625
+        },
+        {
+          "text": "游戏名称",
+          "width": 169.28125
+        },
+        {
+          "text": "金币变动前",
+          "width": 158.25
+        },
+        {
+          "text": "金币变动",
+          "width": 136.3125
+        },
+        {
+          "text": "金币变动后",
+          "width": 158.25
+        },
+        {
+          "text": "类型",
+          "width": 101.203125
+        },
+        {
+          "text": "备注",
+          "width": 182.65625
+        },
+        {
+          "text": "创建时间",
+          "width": 252.328125
+        }
+      ],
+      "rows": [
+        47,
+        47,
+        47
+      ]
+    },
+    "summary": {
+      "html": "<span class=\"extend\">\n\t\t\t\t\t\t\t金币变动：<span id=\"coin_toolbar4\">6</span>\n\t\t\t\t\t\t</span>",
+      "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif"
+    }
+  },
+  "app": {
+    "reference": {
+      "x": 383,
+      "y": 171,
+      "width": 770,
+      "height": 148
+    },
+    "local": {
+      "x": 575,
+      "y": 300,
+      "width": 770,
+      "height": 148
+    },
+    "referenceStyles": [
+      {
+        "selector": "body",
+        "font": "14px / 22.001px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgb(255, 255, 255) none repeat scroll 0% 0% / auto padding-box border-box",
+        "lineHeight": "22.001px"
+      },
+      {
+        "selector": "th",
+        "font": "700 14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "lineHeight": "20px"
+      },
+      {
+        "selector": "td",
+        "font": "14px / 20px \"Source Sans Pro\", \"Helvetica Neue\", Helvetica, Arial, sans-serif",
+        "color": "rgb(51, 51, 51)",
+        "background": "rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box",
+        "lineHeight": "20px"
+      }
+    ],
+    "note": "Synthetic cell text on both sides; this comparison does not establish duration semantics."
+  }
+}

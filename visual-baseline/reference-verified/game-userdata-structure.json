@@ -1,0 +1,243 @@
+{
+  "tabs": [
+    {
+      "text": "抽奖列表",
+      "href": "#first",
+      "active": true
+    },
+    {
+      "text": "风控历史",
+      "href": "#second",
+      "active": false
+    },
+    {
+      "text": "提现记录",
+      "href": "#third",
+      "active": false
+    },
+    {
+      "text": "用户列表",
+      "href": "#four",
+      "active": false
+    },
+    {
+      "text": "登陆历史",
+      "href": "#five",
+      "active": false
+    },
+    {
+      "text": "每日活跃",
+      "href": "#six",
+      "active": false
+    },
+    {
+      "text": "数据统计",
+      "href": "#seven",
+      "active": false
+    }
+  ],
+  "panels": [
+    {
+      "id": "first",
+      "text": "",
+      "tables": [
+        "table1"
+      ]
+    },
+    {
+      "id": "second",
+      "text": "重复手机号只显示一个",
+      "tables": [
+        "table2"
+      ]
+    },
+    {
+      "id": "third",
+      "text": "0\n已兑换金币\n0\n兑换中金币\n批量同意 批量拒绝",
+      "tables": [
+        "table3"
+      ]
+    },
+    {
+      "id": "four",
+      "text": "更多\n启用\n禁用\n清空金币",
+      "tables": [
+        "table4"
+      ]
+    },
+    {
+      "id": "five",
+      "text": "",
+      "tables": [
+        "table5"
+      ]
+    },
+    {
+      "id": "six",
+      "text": "",
+      "tables": [
+        "table6"
+      ]
+    },
+    {
+      "id": "seven",
+      "text": "总金额（更新日期2026-09-18）\n¥0.00\n预估收益API\n本年金额（更新日期2026-09-18）\n¥0.00\n预估收益API\n上月金额\n¥0.00\n预估收益API\n本月金额（更新日期2026-09-18）\n¥0.00\n预估收益API\n昨日金额\n¥0.00\n预估收益API\n7\n总会员数\n0\n今日新增\n0\n今日登陆",
+      "tables": []
+    }
+  ],
+  "endpoints": {
+    "lottery": {
+      "status": 200,
+      "total": 42,
+      "fields": [
+        "id",
+        "user_id",
+        "lottery_key",
+        "lottery_name",
+        "lottery_count",
+        "lottery_price",
+        "status",
+        "create_time",
+        "device_id",
+        "ip",
+        "useragent",
+        "content",
+        "tag",
+        "ip_android",
+        "network_status",
+        "adn_name",
+        "ecpm",
+        "ad_network_rit_id",
+        "request_id",
+        "trans_id",
+        "user",
+        "game"
+      ]
+    },
+    "risk": {
+      "status": 200,
+      "total": 0,
+      "fields": []
+    },
+    "exchange": {
+      "status": 200,
+      "total": 0,
+      "fields": []
+    },
+    "user": {
+      "status": 200,
+      "total": 7,
+      "fields": [
+        "id",
+        "game_id",
+        "parent_id",
+        "username",
+        "password",
+        "pay_password",
+        "name",
+        "image_url",
+        "sex",
+        "real_name",
+        "card_no",
+        "address",
+        "realname_enable",
+        "coin_agent",
+        "coin_user",
+        "coin",
+        "freeze_coin",
+        "exchange_enable",
+        "game_addiction_enable",
+        "game_addiction_time",
+        "is_white",
+        "status",
+        "create_time",
+        "update_time",
+        "salt",
+        "device_id",
+        "ip",
+        "useragent",
+        "countdown",
+        "openid",
+        "unionid",
+        "ip_address",
+        "means",
+        "means_month",
+        "means_total",
+        "game_unionfcm",
+        "star_countdown",
+        "over_countdown",
+        "raffle_num",
+        "star_countdown2",
+        "over_countdown2",
+        "raffle_num2",
+        "raffle_open",
+        "device_id_ban",
+        "is_true",
+        "down_load",
+        "qd_day",
+        "ban_time",
+        "ban_device_id",
+        "ht_id",
+        "ht_status",
+        "ht_top_id",
+        "user_id_show",
+        "ip_check",
+        "coin_chi",
+        "percent_zhi",
+        "percent_jian",
+        "percent_dai",
+        "percent_dai_two",
+        "otherlevel",
+        "vip",
+        "invite_score",
+        "income_score",
+        "commission_score",
+        "beishu",
+        "jiangli_first",
+        "is_di",
+        "look_time",
+        "look_time_ban",
+        "beishu_day_num",
+        "beishu_coin_min",
+        "beishu_coin_max",
+        "beishu_coin_random_open",
+        "beishu_day_num_son",
+        "beishu_coin_min_son",
+        "beishu_coin_max_son",
+        "beishu_coin_random_open_son",
+        "percent_son",
+        "coin_butie",
+        "ban_msg",
+        "parent_username",
+        "parent_name",
+        "last_login_ip",
+        "last_login_time",
+        "last_login_device_id",
+        "coin_user_month",
+        "coin_user_day",
+        "game"
+      ]
+    },
+    "loginlog": {
+      "status": 200,
+      "total": 40,
+      "fields": [
+        "id",
+        "user_id",
+        "device_id",
+        "ip",
+        "title",
+        "useragent",
+        "content",
+        "create_time",
+        "user",
+        "game"
+      ]
+    },
+    "live": {
+      "status": 200,
+      "total": 0,
+      "fields": []
+    }
+  }
+}

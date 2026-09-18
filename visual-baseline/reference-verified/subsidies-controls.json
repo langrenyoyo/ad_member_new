@@ -1,0 +1,267 @@
+[
+  {
+    "tag": "INPUT",
+    "name": "user_id-operate",
+    "placeholder": "",
+    "value": "=",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "user_id",
+    "placeholder": "会员ID",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "user.username-operate",
+    "placeholder": "",
+    "value": "LIKE",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "user.username",
+    "placeholder": "账号",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "user.vip-operate",
+    "placeholder": "",
+    "value": "=",
+    "options": null
+  },
+  {
+    "tag": "SELECT",
+    "name": "user.vip",
+    "placeholder": null,
+    "value": "",
+    "options": [
+      {
+        "value": "",
+        "text": "选择"
+      },
+      {
+        "value": "0",
+        "text": "V0"
+      },
+      {
+        "value": "1",
+        "text": "V1"
+      },
+      {
+        "value": "2",
+        "text": "V2"
+      }
+    ]
+  },
+  {
+    "tag": "INPUT",
+    "name": "user.parent_id-operate",
+    "placeholder": "",
+    "value": "=",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "user.parent_id",
+    "placeholder": "上级Id",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "game.name-operate",
+    "placeholder": "",
+    "value": "=",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "game.name_text",
+    "placeholder": "游戏名称",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "game.name",
+    "placeholder": "",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "agent.name-operate",
+    "placeholder": "",
+    "value": "LIKE",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "agent.name_text",
+    "placeholder": "代理商名称",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "agent.name",
+    "placeholder": "",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "user.name-operate",
+    "placeholder": "",
+    "value": "LIKE",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "user.name",
+    "placeholder": "昵称",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "pics-operate",
+    "placeholder": "",
+    "value": "=",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "pics",
+    "placeholder": "申请图片",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "receive_name-operate",
+    "placeholder": "",
+    "value": "=",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "receive_name",
+    "placeholder": "收件人",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "receive_tel-operate",
+    "placeholder": "",
+    "value": "=",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "receive_tel",
+    "placeholder": "联系方式",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "status-operate",
+    "placeholder": "",
+    "value": "=",
+    "options": null
+  },
+  {
+    "tag": "SELECT",
+    "name": "status",
+    "placeholder": null,
+    "value": "",
+    "options": [
+      {
+        "value": "",
+        "text": "选择"
+      },
+      {
+        "value": "0",
+        "text": "申请中"
+      },
+      {
+        "value": "1",
+        "text": "审核通过"
+      },
+      {
+        "value": "4",
+        "text": "审核失败"
+      }
+    ]
+  },
+  {
+    "tag": "INPUT",
+    "name": "create_time-operate",
+    "placeholder": "",
+    "value": "RANGE",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "create_time",
+    "placeholder": "申请时间",
+    "value": "2026-09-10 00:00:00 - 2026-09-12 23:59:59",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "update_time-operate",
+    "placeholder": "",
+    "value": "RANGE",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "update_time",
+    "placeholder": "更新时间",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "btSelectAll",
+    "placeholder": "",
+    "value": "on",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "daterangepicker_start",
+    "placeholder": "",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "daterangepicker_end",
+    "placeholder": "",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "daterangepicker_start",
+    "placeholder": "",
+    "value": "",
+    "options": null
+  },
+  {
+    "tag": "INPUT",
+    "name": "daterangepicker_end",
+    "placeholder": "",
+    "value": "",
+    "options": null
+  }
+]

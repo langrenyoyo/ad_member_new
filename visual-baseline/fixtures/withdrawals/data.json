@@ -1,0 +1,210 @@
+{
+  "local": [
+    {
+      "id": 9100,
+      "user_id": 8100,
+      "username": "对照账号0",
+      "vip": 0,
+      "parent_name": "上级甲",
+      "game_id": 7100,
+      "game_name": "对照游戏",
+      "agent_id": 6100,
+      "agent_name": "对照主体",
+      "name": "测试会员",
+      "good_name": "测试商品",
+      "exchange_value": 125,
+      "device_manufacturer": "测试机型",
+      "receive_name": "测试收件人",
+      "receive_tel": "13800000000",
+      "exchange_type": 0,
+      "status": 0,
+      "plan_status": 0,
+      "sub_msg": "",
+      "check_status_txt": "正常",
+      "created_at": "2026-09-16T00:00:00Z",
+      "updated_at": "2026-09-16T00:00:00Z"
+    },
+    {
+      "id": 9101,
+      "user_id": 8101,
+      "username": "对照账号1",
+      "vip": 1,
+      "parent_name": "上级甲",
+      "game_id": 7100,
+      "game_name": "对照游戏",
+      "agent_id": 6100,
+      "agent_name": "对照主体",
+      "name": "测试会员",
+      "good_name": "测试商品",
+      "exchange_value": 0,
+      "device_manufacturer": "测试机型",
+      "receive_name": "测试收件人",
+      "receive_tel": "13800000000",
+      "exchange_type": 1,
+      "status": 1,
+      "plan_status": 1,
+      "sub_msg": "",
+      "check_status_txt": "正常",
+      "created_at": "2026-09-16T00:00:00Z",
+      "updated_at": "2026-09-16T00:00:00Z"
+    },
+    {
+      "id": 9102,
+      "user_id": 8102,
+      "username": "对照账号2",
+      "vip": 2,
+      "parent_name": "上级甲",
+      "game_id": 7100,
+      "game_name": "对照游戏",
+      "agent_id": 6100,
+      "agent_name": "对照主体",
+      "name": "测试会员",
+      "good_name": "测试商品",
+      "exchange_value": 1000,
+      "device_manufacturer": "测试机型",
+      "receive_name": "测试收件人",
+      "receive_tel": "13800000000",
+      "exchange_type": 2,
+      "status": 2,
+      "plan_status": 2,
+      "sub_msg": "原因 <>&",
+      "check_status_txt": "正常",
+      "created_at": "2026-09-16T00:00:00Z",
+      "updated_at": "2026-09-16T00:00:00Z"
+    }
+  ],
+  "reference": [
+    {
+      "id": 9100,
+      "user_id": 8100,
+      "username": "对照账号0",
+      "vip": 0,
+      "parent_name": "上级甲",
+      "game_id": 7100,
+      "game_name": "对照游戏",
+      "agent_id": 6100,
+      "agent_name": "对照主体",
+      "name": "测试会员",
+      "good_name": "测试商品",
+      "exchange_value": 125,
+      "device_manufacturer": "测试机型",
+      "receive_name": "测试收件人",
+      "receive_tel": "13800000000",
+      "exchange_type": 0,
+      "status": 0,
+      "plan_status": 0,
+      "sub_msg": "",
+      "check_status_txt": "正常",
+      "created_at": "2026-09-16T00:00:00Z",
+      "updated_at": "2026-09-16T00:00:00Z",
+      "user": {
+        "id": 8100,
+        "username": "对照账号0",
+        "vip": 0,
+        "parent_name": "上级甲",
+        "name": "测试会员",
+        "parent_id": 0,
+        "is_true": 0
+      },
+      "game": {
+        "name": "对照游戏"
+      },
+      "agent": {
+        "name": "对照主体"
+      },
+      "good": {
+        "name": "测试商品"
+      },
+      "create_time": 1789516800,
+      "update_time": 1789516800
+    },
+    {
+      "id": 9101,
+      "user_id": 8101,
+      "username": "对照账号1",
+      "vip": 1,
+      "parent_name": "上级甲",
+      "game_id": 7100,
+      "game_name": "对照游戏",
+      "agent_id": 6100,
+      "agent_name": "对照主体",
+      "name": "测试会员",
+      "good_name": "测试商品",
+      "exchange_value": 0,
+      "device_manufacturer": "测试机型",
+      "receive_name": "测试收件人",
+      "receive_tel": "13800000000",
+      "exchange_type": 1,
+      "status": 1,
+      "plan_status": 1,
+      "sub_msg": "",
+      "check_status_txt": "正常",
+      "created_at": "2026-09-16T00:00:00Z",
+      "updated_at": "2026-09-16T00:00:00Z",
+      "user": {
+        "id": 8101,
+        "username": "对照账号1",
+        "vip": 1,
+        "parent_name": "上级甲",
+        "name": "测试会员",
+        "parent_id": 0,
+        "is_true": 0
+      },
+      "game": {
+        "name": "对照游戏"
+      },
+      "agent": {
+        "name": "对照主体"
+      },
+      "good": {
+        "name": "测试商品"
+      },
+      "create_time": 1789516800,
+      "update_time": 1789516800
+    },
+    {
+      "id": 9102,
+      "user_id": 8102,
+      "username": "对照账号2",
+      "vip": 2,
+      "parent_name": "上级甲",
+      "game_id": 7100,
+      "game_name": "对照游戏",
+      "agent_id": 6100,
+      "agent_name": "对照主体",
+      "name": "测试会员",
+      "good_name": "测试商品",
+      "exchange_value": 1000,
+      "device_manufacturer": "测试机型",
+      "receive_name": "测试收件人",
+      "receive_tel": "13800000000",
+      "exchange_type": 2,
+      "status": 4,
+      "plan_status": 2,
+      "sub_msg": "原因 <>&",
+      "check_status_txt": "正常",
+      "created_at": "2026-09-16T00:00:00Z",
+      "updated_at": "2026-09-16T00:00:00Z",
+      "user": {
+        "id": 8102,
+        "username": "对照账号2",
+        "vip": 2,
+        "parent_name": "上级甲",
+        "name": "测试会员",
+        "parent_id": 0,
+        "is_true": 0
+      },
+      "game": {
+        "name": "对照游戏"
+      },
+      "agent": {
+        "name": "对照主体"
+      },
+      "good": {
+        "name": "测试商品"
+      },
+      "create_time": 1789516800,
+      "update_time": 1789516800
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "scope": "Read-only form structure; current member values omitted; no save attempted",
+  "title": "改绑关系",
+  "fields": [
+    {
+      "label": "当前ID:",
+      "controls": [
+        {
+          "tag": "INPUT",
+          "type": "text",
+          "name": "row[id]",
+          "required": false,
+          "readonly": false,
+          "disabled": true,
+          "rule": "required",
+          "placeholder": "",
+          "classes": "form-control",
+          "source": null,
+          "primaryKey": null,
+          "field": null
+        }
+      ]
+    },
+    {
+      "label": "上级ID:",
+      "controls": [
+        {
+          "tag": "INPUT",
+          "type": "text",
+          "name": "row[parent_id]",
+          "required": false,
+          "readonly": false,
+          "disabled": false,
+          "rule": null,
+          "placeholder": "",
+          "classes": "form-control",
+          "source": null,
+          "primaryKey": null,
+          "field": null
+        }
+      ]
+    },
+    {
+      "label": "归属ID:",
+      "controls": [
+        {
+          "tag": "INPUT",
+          "type": "text",
+          "name": "row[ht_id]",
+          "required": false,
+          "readonly": false,
+          "disabled": false,
+          "rule": null,
+          "placeholder": "",
+          "classes": "form-control",
+          "source": null,
+          "primaryKey": null,
+          "field": null
+        }
+      ]
+    },
+    {
+      "label": "源头ID:",
+      "controls": [
+        {
+          "tag": "INPUT",
+          "type": "text",
+          "name": "row[ht_top_id]",
+          "required": false,
+          "readonly": false,
+          "disabled": false,
+          "rule": null,
+          "placeholder": "",
+          "classes": "form-control",
+          "source": null,
+          "primaryKey": null,
+          "field": null
+        }
+      ]
+    },
+    {
+      "label": "",
+      "controls": []
+    }
+  ],
+  "buttons": [
+    "确定",
+    "重置"
+  ],
+  "blocked_writes": []
+}

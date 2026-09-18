@@ -1,0 +1,146 @@
+{
+  "viewport": [
+    1920,
+    1080
+  ],
+  "scope": "Page loading only; visual and interaction parity not certified",
+  "pages": [
+    {
+      "route": "dashboard",
+      "screenshot": "dashboard.png",
+      "content_length": 17,
+      "visible_errors": [],
+      "row_count": 0,
+      "errors": [],
+      "failed_responses": [],
+      "load_passed": true
+    },
+    {
+      "route": "members",
+      "screenshot": "members.png",
+      "content_length": 1282,
+      "visible_errors": [],
+      "row_count": 10,
+      "errors": [],
+      "failed_responses": [],
+      "load_passed": true
+    },
+    {
+      "route": "agents",
+      "screenshot": "agents.png",
+      "content_length": 300,
+      "visible_errors": [],
+      "row_count": 4,
+      "errors": [],
+      "failed_responses": [],
+      "load_passed": true
+    },
+    {
+      "route": "games",
+      "screenshot": "games.png",
+      "content_length": 362,
+      "visible_errors": [],
+      "row_count": 7,
+      "errors": [],
+      "failed_responses": [],
+      "load_passed": true
+    },
+    {
+      "route": "ads",
+      "screenshot": "ads.png",
+      "content_length": 95,
+      "visible_errors": [],
+      "row_count": 1,
+      "errors": [],
+      "failed_responses": [],
+      "load_passed": true
+    },
+    {
+      "route": "withdrawals",
+      "screenshot": "withdrawals.png",
+      "content_length": 311,
+      "visible_errors": [],
+      "row_count": 1,
+      "errors": [],
+      "failed_responses": [],
+      "load_passed": true
+    },
+    {
+      "route": "subsidies",
+      "screenshot": "subsidies.png",
+      "content_length": 253,
+      "visible_errors": [],
+      "row_count": 1,
+      "errors": [],
+      "failed_responses": [],
+      "load_passed": true
+    },
+    {
+      "route": "coin-logs",
+      "screenshot": "coin-logs.png",
+      "content_length": 162,
+      "visible_errors": [],
+      "row_count": 1,
+      "errors": [],
+      "failed_responses": [],
+      "load_passed": true
+    },
+    {
+      "route": "risk-whitelist",
+      "screenshot": "risk-whitelist.png",
+      "content_length": 86,
+      "visible_errors": [],
+      "row_count": 1,
+      "errors": [],
+      "failed_responses": [],
+      "load_passed": true
+    },
+    {
+      "route": "risk-history",
+      "screenshot": "risk-history.png",
+      "content_length": 257,
+      "visible_errors": [],
+      "row_count": 1,
+      "errors": [],
+      "failed_responses": [],
+      "load_passed": true
+    },
+    {
+      "route": "risk-devices",
+      "screenshot": "risk-devices.png",
+      "content_length": 23,
+      "visible_errors": [
+        "设备风控名单暂不可用，请稍后重试"
+      ],
+      "row_count": 0,
+      "errors": [],
+      "failed_responses": [
+        {
+          "url": "http://127.0.0.1:3000/api/v1/risk/devices?limit=10&offset=0&sort=id&order=desc",
+          "status": 503
+        }
+      ],
+      "load_passed": false
+    },
+    {
+      "route": "profile",
+      "screenshot": "profile.png",
+      "content_length": 575,
+      "visible_errors": [],
+      "row_count": 10,
+      "errors": [],
+      "failed_responses": [],
+      "load_passed": true
+    },
+    {
+      "route": "book",
+      "screenshot": "book.png",
+      "content_length": 117,
+      "visible_errors": [],
+      "row_count": 2,
+      "errors": [],
+      "failed_responses": [],
+      "load_passed": true
+    }
+  ]
+}

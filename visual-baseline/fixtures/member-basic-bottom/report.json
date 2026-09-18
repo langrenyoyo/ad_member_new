@@ -1,0 +1,260 @@
+{
+  "changed_pixel_ratio": 0.012379166666666667,
+  "mean_rgb": 0.5545506944444445,
+  "threshold": 10,
+  "viewport": [
+    1920,
+    1080
+  ],
+  "crop_size": [
+    800,
+    600
+  ],
+  "scope": "Synthetic basic tab only; no reference save or server-side business validation",
+  "geometry": {
+    "reference": {
+      "image_url": {
+        "x": 158.328125,
+        "y": 142,
+        "width": 343.375,
+        "height": 33
+      },
+      "username": {
+        "x": 158.328125,
+        "y": 190,
+        "width": 483.328125,
+        "height": 33
+      },
+      "password": {
+        "x": 158.328125,
+        "y": 238,
+        "width": 483.328125,
+        "height": 33
+      },
+      "pay_password": {
+        "x": 158.328125,
+        "y": 286,
+        "width": 483.328125,
+        "height": 33
+      },
+      "name": {
+        "x": 158.328125,
+        "y": 334,
+        "width": 483.328125,
+        "height": 33
+      },
+      "device_id": {
+        "x": 158.328125,
+        "y": 382,
+        "width": 483.328125,
+        "height": 33
+      },
+      "sex": {
+        "x": 158.328125,
+        "y": 430,
+        "width": 483.328125,
+        "height": 33
+      },
+      "real_name": {
+        "x": 158.328125,
+        "y": 478,
+        "width": 483.328125,
+        "height": 33
+      },
+      "card_no": {
+        "x": 158.328125,
+        "y": 526,
+        "width": 483.328125,
+        "height": 33
+      },
+      "address": {
+        "x": 158.328125,
+        "y": 574,
+        "width": 483.328125,
+        "height": 33
+      },
+      "is_true": {
+        "x": 158.328125,
+        "y": 629,
+        "width": 34,
+        "height": 22
+      },
+      "realname_enable": {
+        "x": 158.328125,
+        "y": 673,
+        "width": 34,
+        "height": 22
+      },
+      "exchange_enable": {
+        "x": 158.328125,
+        "y": 717,
+        "width": 34,
+        "height": 22
+      },
+      "game_addiction_enable": {
+        "x": 158.328125,
+        "y": 761,
+        "width": 34,
+        "height": 22
+      },
+      "game_addiction_time": {
+        "x": 158.328125,
+        "y": 798,
+        "width": 483.328125,
+        "height": 33
+      },
+      "is_white": {
+        "x": 158.328125,
+        "y": 853,
+        "width": 34,
+        "height": 22
+      },
+      "status": {
+        "x": 158.328125,
+        "y": 897,
+        "width": 48,
+        "height": 22
+      },
+      "vip": {
+        "x": 158.328125,
+        "y": 934,
+        "width": 483.328125,
+        "height": 33
+      },
+      "otherlevel": {
+        "x": 158.328125,
+        "y": 982,
+        "width": 483.328125,
+        "height": 33
+      },
+      "bottom_field": {
+        "x": 718.328125,
+        "y": 709,
+        "width": 483.328125,
+        "height": 33
+      }
+    },
+    "local": {
+      "image_url": {
+        "x": 158.328125,
+        "y": 142,
+        "width": 410.25,
+        "height": 33
+      },
+      "username": {
+        "x": 158.328125,
+        "y": 190,
+        "width": 483.328125,
+        "height": 33
+      },
+      "password": {
+        "x": 158.328125,
+        "y": 238,
+        "width": 483.328125,
+        "height": 33
+      },
+      "pay_password": {
+        "x": 158.328125,
+        "y": 286,
+        "width": 483.328125,
+        "height": 33
+      },
+      "name": {
+        "x": 158.328125,
+        "y": 334,
+        "width": 483.328125,
+        "height": 33
+      },
+      "device_id": {
+        "x": 158.328125,
+        "y": 382,
+        "width": 483.328125,
+        "height": 33
+      },
+      "sex": {
+        "x": 158.328125,
+        "y": 430,
+        "width": 483.328125,
+        "height": 33
+      },
+      "real_name": {
+        "x": 158.328125,
+        "y": 478,
+        "width": 483.328125,
+        "height": 33
+      },
+      "card_no": {
+        "x": 158.328125,
+        "y": 526,
+        "width": 483.328125,
+        "height": 33
+      },
+      "address": {
+        "x": 158.328125,
+        "y": 574,
+        "width": 483.328125,
+        "height": 33
+      },
+      "is_true": {
+        "x": 158.328125,
+        "y": 677,
+        "width": 34,
+        "height": 22
+      },
+      "realname_enable": {
+        "x": 158.328125,
+        "y": 721,
+        "width": 34,
+        "height": 22
+      },
+      "exchange_enable": {
+        "x": 158.328125,
+        "y": 765,
+        "width": 34,
+        "height": 22
+      },
+      "game_addiction_enable": {
+        "x": 158.328125,
+        "y": 809,
+        "width": 34,
+        "height": 22
+      },
+      "game_addiction_time": {
+        "x": 158.328125,
+        "y": 846,
+        "width": 483.328125,
+        "height": 33
+      },
+      "is_white": {
+        "x": 158.328125,
+        "y": 901,
+        "width": 34,
+        "height": 22
+      },
+      "status": {
+        "x": 158.328125,
+        "y": 945,
+        "width": 48,
+        "height": 22
+      },
+      "vip": {
+        "x": 158.328125,
+        "y": 982,
+        "width": 483.328125,
+        "height": 33
+      },
+      "otherlevel": {
+        "x": 158.328125,
+        "y": 1030,
+        "width": 483.328125,
+        "height": 33
+      },
+      "bottom_field": {
+        "x": 718.328125,
+        "y": 709,
+        "width": 483.328125,
+        "height": 33
+      }
+    }
+  }
+}

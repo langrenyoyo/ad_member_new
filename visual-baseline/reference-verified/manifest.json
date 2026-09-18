@@ -1,0 +1,119 @@
+[
+  {
+    "page": "dashboard",
+    "reference_url": "https://ad.leadink.cn/DmvTqXBpfF.php/dash?ref=addtabs",
+    "local_route": "#dashboard",
+    "screenshot": "dashboard.png",
+    "layout": "admin shell with content iframe",
+    "status": 200,
+    "valid": true
+  },
+  {
+    "page": "members",
+    "reference_url": "https://ad.leadink.cn/DmvTqXBpfF.php/gameuser?ref=addtabs",
+    "local_route": "#members",
+    "screenshot": "members.png",
+    "layout": "admin shell with content iframe",
+    "status": 200,
+    "valid": true
+  },
+  {
+    "page": "agents",
+    "reference_url": "https://ad.leadink.cn/DmvTqXBpfF.php/agent?ref=addtabs",
+    "local_route": "#agents",
+    "screenshot": "agents.png",
+    "layout": "admin shell with content iframe",
+    "status": 200,
+    "valid": true
+  },
+  {
+    "page": "games",
+    "reference_url": "https://ad.leadink.cn/DmvTqXBpfF.php/game?ref=addtabs",
+    "local_route": "#games",
+    "screenshot": "games.png",
+    "layout": "admin shell with content iframe",
+    "status": 200,
+    "valid": true
+  },
+  {
+    "page": "ads",
+    "reference_url": "https://ad.leadink.cn/DmvTqXBpfF.php/ad?ref=addtabs",
+    "local_route": "#ads",
+    "screenshot": "ads.png",
+    "layout": "admin shell with content iframe",
+    "status": 200,
+    "valid": true
+  },
+  {
+    "page": "withdrawals",
+    "reference_url": "https://ad.leadink.cn/DmvTqXBpfF.php/tixian?ref=addtabs",
+    "local_route": "#withdrawals",
+    "screenshot": "withdrawals.png",
+    "layout": "admin shell with content iframe",
+    "status": 200,
+    "valid": true
+  },
+  {
+    "page": "subsidies",
+    "reference_url": "https://ad.leadink.cn/DmvTqXBpfF.php/butie?ref=addtabs",
+    "local_route": "#subsidies",
+    "screenshot": "subsidies.png",
+    "layout": "admin shell with content iframe",
+    "status": 200,
+    "valid": true
+  },
+  {
+    "page": "coin-logs",
+    "reference_url": "https://ad.leadink.cn/DmvTqXBpfF.php/profit/coinlog?ref=addtabs",
+    "local_route": "#coin-logs",
+    "screenshot": "coin-logs.png",
+    "layout": "admin shell with content iframe",
+    "status": 200,
+    "valid": true
+  },
+  {
+    "page": "risk-whitelist",
+    "reference_url": "https://ad.leadink.cn/DmvTqXBpfF.php/risk/userw?ref=addtabs",
+    "local_route": "#risk-whitelist",
+    "screenshot": "risk-whitelist.png",
+    "layout": "admin shell with content iframe",
+    "status": 200,
+    "valid": true
+  },
+  {
+    "page": "risk-history",
+    "reference_url": "https://ad.leadink.cn/DmvTqXBpfF.php/risk/risk?ref=addtabs",
+    "local_route": "#risk-history",
+    "screenshot": "risk-history.png",
+    "layout": "admin shell with content iframe",
+    "status": 200,
+    "valid": true
+  },
+  {
+    "page": "risk-devices",
+    "reference_url": "https://ad.leadink.cn/DmvTqXBpfF.php/risk/userd?ref=addtabs",
+    "local_route": "#risk-devices",
+    "screenshot": "risk-devices.png",
+    "layout": "admin shell with content iframe",
+    "status": 200,
+    "valid": true
+  },
+  {
+    "page": "profile",
+    "reference_url": "https://ad.leadink.cn/DmvTqXBpfF.php/general/profile?ref=addtabs",
+    "local_route": "#profile",
+    "screenshot": "profile.png",
+    "layout": "admin shell with content iframe",
+    "status": 200,
+    "valid": true
+  },
+  {
+    "page": "book",
+    "reference_url": "https://ad.leadink.cn/DmvTqXBpfF.php/book?ref=addtabs",
+    "local_route": "#book",
+    "screenshot": "book.png",
+    "layout": "admin shell with content iframe",
+    "status": 200,
+    "valid": true
+  }
+]

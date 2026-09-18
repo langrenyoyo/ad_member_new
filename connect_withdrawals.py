@@ -1,0 +1,3 @@
+from pathlib import Path
+p=Path('public/app.js');d=p.read_bytes();old=b"if(state.view==='ads'){await renderAds();return}";assert d.count(old)==1;d=d.replace(old,old+b"if(state.view==='withdrawals'){await renderWithdrawals();return}");old=b"document.body.classList.toggle('member-view',state.view==='members');";assert d.count(old)==1;d=d.replace(old,old+b"document.body.classList.toggle('withdrawals-view',state.view==='withdrawals');");p.write_bytes(d)
+p=Path('public/index.html');d=p.read_bytes().replace(b'</head>',b'<link rel="stylesheet" href="/withdrawals.css"></head>').replace(b'<script src="/app.js">',b'<script src="/withdrawals.js"></script><script src="/app.js">');p.write_bytes(d)
