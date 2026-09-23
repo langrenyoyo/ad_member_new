@@ -20,6 +20,7 @@ import jwt
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, Query, Request, Response, status
 from fastapi.responses import FileResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from fastapi.staticfiles import StaticFiles
 from jwt import InvalidTokenError
 from pydantic import BaseModel, Field
 from .payment import configured_provider
@@ -428,6 +429,39 @@ class RiskRecord(Base, TimestampMixin):
     action: Mapped[str] = mapped_column(String(128), default="")
     risk_score: Mapped[int] = mapped_column(Integer, default=0)
     risk_level: Mapped[str] = mapped_column(String(32), default="")
+
+
+class KuaishouRiskAssessment(Base, TimestampMixin):
+    """Manual, versioned Kwai risk assessment snapshots.
+
+    This is an operator advisory record. It is intentionally separate from
+    RiskRecord because it is based on manually entered aggregate metrics and
+    must never be used as a user-level reward or ban decision by itself.
+    """
+
+    __tablename__ = "kuaishou_risk_assessments"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    assessment_date: Mapped[date] = mapped_column(Date, index=True, nullable=False)
+    agent_id: Mapped[int] = mapped_column(Integer, default=0, index=True)
+    game_id: Mapped[int] = mapped_column(Integer, default=0, index=True)
+    pay_rate: Mapped[float] = mapped_column(Float, nullable=False)
+    retain_1: Mapped[float] = mapped_column(Float, nullable=False)
+    ctr: Mapped[float] = mapped_column(Float, nullable=False)
+    flow_growth: Mapped[float] = mapped_column(Float, nullable=False)
+    device_repeat: Mapped[float] = mapped_column(Float, nullable=False)
+    pay_score: Mapped[float] = mapped_column(Float, nullable=False)
+    retain_score: Mapped[float] = mapped_column(Float, nullable=False)
+    ctr_score: Mapped[float] = mapped_column(Float, nullable=False)
+    flow_score: Mapped[float] = mapped_column(Float, nullable=False)
+    device_score: Mapped[float] = mapped_column(Float, nullable=False)
+    risk_score: Mapped[float] = mapped_column(Float, nullable=False)
+    risk_level: Mapped[str] = mapped_column(String(32), nullable=False)
+    suggestion: Mapped[str] = mapped_column(Text, nullable=False)
+    model_version: Mapped[str] = mapped_column(String(64), nullable=False, default="v1-revised")
+    source: Mapped[str] = mapped_column(String(32), nullable=False, default="manual")
+    operator_id: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    operator_name: Mapped[str] = mapped_column(String(128), nullable=False, default="")
 
 
 def stringify(value: Any) -> Any:
@@ -1403,6 +1437,10 @@ def serialize_coinlog(item: CoinLog) -> dict[str, Any]:
 def serialize_risk(item: RiskRecord) -> dict[str, Any]:
     return serialize(item, list(item.__table__.columns.keys()))
 
+
+def serialize_kuaishou_risk(item: KuaishouRiskAssessment) -> dict[str, Any]:
+    return serialize(item, list(item.__table__.columns.keys()))
+
 def operator_display_name(admin: AdminUser) -> str:
     return (admin.display_name or admin.username or "").strip()[:128]
 
@@ -1828,6 +1866,60 @@ class SubsidyUpdate(BaseModel):
 
 class SubsidyAction(BaseModel):
     message: str = ""
+
+
+class KuaishouRiskAssessmentCreate(BaseModel):
+    assessment_date: date
+    agent_id: int = Field(default=0, ge=0)
+    game_id: int = Field(default=0, ge=0)
+    pay_rate: float = Field(ge=0, le=100, allow_inf_nan=False)
+    retain_1: float = Field(ge=0, le=1, allow_inf_nan=False)
+    ctr: float = Field(ge=0, le=100, allow_inf_nan=False)
+    flow_growth: float = Field(ge=-100, le=1000, allow_inf_nan=False)
+    device_repeat: float = Field(ge=0, le=1, allow_inf_nan=False)
+
+
+KUAISHOU_RISK_MODEL_VERSION = "v1-revised"
+
+
+def calculate_kuaishou_risk(payload: KuaishouRiskAssessmentCreate) -> dict[str, Any]:
+    """Calculate the corrected manual warning rule from the supplied TXT.
+
+    Inputs use percent values for pay_rate/ctr/flow_growth and decimal values
+    for retain_1/device_repeat. Each component is clamped to its declared
+    weight so an invalid direction or outlier cannot overflow the total.
+    """
+
+    pay_score = min(35.0, max(0.0, payload.pay_rate / 12.0 * 35.0))
+    retain_score = min(25.0, max(0.0, (1.0 - payload.retain_1 / 0.35) * 25.0))
+    ctr_score = min(20.0, max(0.0, abs(payload.ctr - 3.5) / 3.5 * 20.0))
+    flow_score = min(12.0, max(0.0, payload.flow_growth / 60.0 * 12.0))
+    # device_repeat is a decimal ratio, so its maximum contribution is 8.
+    device_score = min(8.0, max(0.0, payload.device_repeat * 8.0))
+    risk_score = round(min(100.0, max(0.0, pay_score + retain_score + ctr_score + flow_score + device_score)), 2)
+    if risk_score <= 30:
+        risk_level = "safe"
+        suggestion = "指标整体健康，按原定节奏运行并保持每日监控。"
+    elif risk_score <= 55:
+        risk_level = "attention"
+        suggestion = "指标出现轻微异常，逐步核查流量渠道质量并观察转化与留存变化。"
+    elif risk_score <= 80:
+        risk_level = "warning"
+        suggestion = "风险偏高，建议降低高风险流量占比并排查重复设备和异常广告行为。"
+    else:
+        risk_level = "high"
+        suggestion = "风险较高，建议暂停扩大投放，进入人工复核并连续观察 3-5 天。"
+    return {
+        "pay_score": round(pay_score, 2),
+        "retain_score": round(retain_score, 2),
+        "ctr_score": round(ctr_score, 2),
+        "flow_score": round(flow_score, 2),
+        "device_score": round(device_score, 2),
+        "risk_score": risk_score,
+        "risk_level": risk_level,
+        "suggestion": suggestion,
+        "model_version": KUAISHOU_RISK_MODEL_VERSION,
+    }
 
 
 def ad_group_backfill_sql() -> str:
@@ -4679,6 +4771,127 @@ def reject_subsidy(
         return serialize_subsidy(item)
 
 
+@api.get("/kuaishou-risk")
+def list_kuaishou_risk(
+    agent_id: int | None = Query(None, ge=1),
+    game_id: int | None = Query(None, ge=1),
+    date_from: date | None = None,
+    date_to: date | None = None,
+    risk_level: Literal["safe", "attention", "warning", "high"] | None = None,
+    limit: int = Query(20, ge=1, le=200),
+    offset: int = Query(0, ge=0),
+    admin: AdminUser = Depends(require_admin),
+) -> dict[str, Any]:
+    if date_from is not None and date_to is not None and date_from > date_to:
+        raise HTTPException(status_code=422, detail="日期范围无效")
+    with SessionLocal() as session:
+        conditions: list[Any] = []
+        if agent_id is not None:
+            conditions.append(KuaishouRiskAssessment.agent_id == agent_id)
+        if game_id is not None:
+            conditions.append(KuaishouRiskAssessment.game_id == game_id)
+        if date_from is not None:
+            conditions.append(KuaishouRiskAssessment.assessment_date >= date_from)
+        if date_to is not None:
+            conditions.append(KuaishouRiskAssessment.assessment_date <= date_to)
+        if risk_level:
+            conditions.append(KuaishouRiskAssessment.risk_level == risk_level)
+        payload = list_payload(
+            session,
+            KuaishouRiskAssessment,
+            ["risk_level", "suggestion", "operator_name"],
+            serialize_kuaishou_risk,
+            None,
+            limit,
+            offset,
+            conditions,
+            [KuaishouRiskAssessment.assessment_date.desc(), KuaishouRiskAssessment.id.desc()],
+        )
+        rows = payload["items"]
+        agent_ids = {row["agent_id"] for row in rows if row["agent_id"]}
+        game_ids = {row["game_id"] for row in rows if row["game_id"]}
+        agents = dict(session.execute(select(Agent.id, Agent.name).where(Agent.id.in_(agent_ids))).all()) if agent_ids else {}
+        games = dict(session.execute(select(Game.id, Game.name).where(Game.id.in_(game_ids))).all()) if game_ids else {}
+        for row in rows:
+            row["agent_name"] = agents.get(row["agent_id"], "")
+            row["game_name"] = games.get(row["game_id"], "")
+        summary_stmt = select(
+            func.count(KuaishouRiskAssessment.id).label("total"),
+            func.coalesce(func.avg(KuaishouRiskAssessment.risk_score), 0.0).label("average_score"),
+        ).where(*conditions)
+        summary_row = session.execute(summary_stmt).one()
+        level_counts = dict(session.execute(
+            select(KuaishouRiskAssessment.risk_level, func.count(KuaishouRiskAssessment.id))
+            .where(*conditions).group_by(KuaishouRiskAssessment.risk_level)
+        ).all())
+        payload["summary"] = {
+            "total": int(summary_row.total or 0),
+            "average_score": round(float(summary_row.average_score or 0), 2),
+            "levels": {level: int(level_counts.get(level, 0)) for level in ("safe", "attention", "warning", "high")},
+        }
+        payload["permissions"] = {"can_write": admin.role == "superadmin" or admin.role == "operator"}
+        return payload
+
+
+@api.post("/kuaishou-risk", status_code=status.HTTP_201_CREATED)
+def create_kuaishou_risk(
+    payload: KuaishouRiskAssessmentCreate,
+    request: Request,
+    admin: AdminUser = Depends(allow_roles("operator")),
+) -> dict[str, Any]:
+    with SessionLocal() as session:
+        agent = session.get(Agent, payload.agent_id) if payload.agent_id else None
+        game = session.get(Game, payload.game_id) if payload.game_id else None
+        if payload.agent_id and agent is None:
+            raise HTTPException(status_code=404, detail="主体不存在")
+        if payload.game_id and game is None:
+            raise HTTPException(status_code=404, detail="游戏不存在")
+        if game is not None and payload.agent_id and game.agent_id != payload.agent_id:
+            raise HTTPException(status_code=422, detail="游戏不属于所选主体")
+        result = calculate_kuaishou_risk(payload)
+        item = KuaishouRiskAssessment(
+            assessment_date=payload.assessment_date,
+            agent_id=payload.agent_id,
+            game_id=payload.game_id,
+            pay_rate=payload.pay_rate,
+            retain_1=payload.retain_1,
+            ctr=payload.ctr,
+            flow_growth=payload.flow_growth,
+            device_repeat=payload.device_repeat,
+            **result,
+            source="manual",
+            operator_id=admin.id,
+            operator_name=operator_display_name(admin),
+        )
+        session.add(item)
+        session.flush()
+        session.add(AdminOperation(
+            admin_id=admin.id,
+            title="新增快手风控评估",
+            path=request.url.path,
+            ip=request.client.host if request.client else "",
+        ))
+        session.commit()
+        session.refresh(item)
+        response = serialize_kuaishou_risk(item)
+        response["agent_name"] = agent.name if agent else ""
+        response["game_name"] = game.name if game else ""
+        return response
+
+
+@api.get("/kuaishou-risk/{assessment_id}")
+def get_kuaishou_risk(assessment_id: int, admin: AdminUser = Depends(require_admin)) -> dict[str, Any]:
+    with SessionLocal() as session:
+        item = get_or_404(session, KuaishouRiskAssessment, assessment_id, "快手风控评估")
+        response = serialize_kuaishou_risk(item)
+        agent = session.get(Agent, item.agent_id) if item.agent_id else None
+        game = session.get(Game, item.game_id) if item.game_id else None
+        response["agent_name"] = agent.name if agent else ""
+        response["game_name"] = game.name if game else ""
+        response["permissions"] = {"can_write": admin.role == "superadmin" or admin.role == "operator"}
+        return response
+
+
 @api.get("/{resource}/{item_id}")
 def resource_detail(resource: str, item_id: int) -> dict[str, Any]:
     mapping: dict[str, tuple[Any, list[str], Callable[[Any], dict[str, Any]]]] = {
@@ -4700,5 +4913,10 @@ def resource_detail(resource: str, item_id: int) -> dict[str, Any]:
 
 
 app.include_router(api)
+
+# Keep the standalone FastAPI entry point usable in development as well as
+# through the Node shell.  API routes are registered before this catch-all
+# mount, so `/api/*` continues to be handled by FastAPI.
+app.mount("/", StaticFiles(directory=PUBLIC_DIR, html=True), name="public")
 
 
