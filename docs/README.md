@@ -4,6 +4,9 @@
 
 - [需求总文档](../requirements-and-estimate.md)
 - [接口文档](./api-current.md)
+- [APP 前端 API 接口文档](./app-frontend-api.md)
+- [用户 APP API 接口文档](./user-app-api.md)
+- [快手风控脚本接入评估](./kuaishou-risk-integration-analysis.md)
 - [前端联调 API 契约](./api-frontend-contract.md)
 - [前后端 API 闭环分析](./api-closure-analysis.md)
 - [数据库设计](./db.md)

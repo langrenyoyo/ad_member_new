@@ -1,0 +1,20 @@
+﻿蹇墜鑱旂洘椋庢帶AI棰勮妯″瀷Python鑴氭湰
+
+
+蹇墜鑱旂洘椋庢帶 AI 棰勮妯″瀷鈥慞ython 妯℃嫙鑴氭湰
+
+璇存槑锛氳鑴氭湰瀵瑰簲鍓嶉潰鏁村 Kwai鈥慤nion鈥慠isk鈥慓uard V1.0 棰勮瑙勫垯锛屼粎鍋氭祦閲忛闄╂ā鎷熸墦鍒嗭紝涓嶆槸瀵规帴蹇墜瀹樻柟鍚庡彴鎺ュ彛锛屾棤娉曡嚜鍔ㄦ媺鍙栬仈鐩熸暟鎹紝鍚勯」鎸囨爣闇€瑕佹墜鍔ㄥ～鍏ャ€?
+
+椋庨櫓寰楀垎鍖洪棿锛?鈥?00 鍒嗭紱閰嶅杈撳嚭椋庨櫓绛夌骇涓庡搴旂殑鏁存敼绛栫暐銆?
+
+python
+
+# -*- coding:utf-8 -*- """ 蹇墜鑱旂洘 Kwai鈥慤nion鈥慠isk鈥慓uard V1.0 棰勮妯″瀷 鎸囨爣閲婁箟锛?pay_rate : 鍏呭€艰浆鍖栫巼(%) retain_1 : 娆℃棩鐣欏瓨(灏忔暟锛屼緥0.25浠ｈ〃25%) ctr : 骞垮憡鐐瑰嚮鐜?%) flow_growth : 娴侀噺鐜瘮娑ㄥ箙(%) device_repeat : 璁惧閲嶅鍗犳瘮(灏忔暟锛屼緥0.15浠ｈ〃15%) """ def calc_risk_score(pay_rate, retain_1, ctr, flow_growth, device_repeat): score = 0 # 1銆佷粯璐硅浆鍖栫巼鏉冮噸锛?5鍒?max_pay = 12 if pay_rate > max_pay: score += 35 else: score += (pay_rate / max_pay) * 35 # 2銆佹鏃ョ暀瀛樻潈閲嶏細25鍒嗭紝鍩哄噯鐣欏瓨0.35 score += (1 - retain_1 / 0.35) * 25 # 3銆丆TR鍋忕鍩哄噯3.5%锛屾潈閲嶏細20鍒?score += (abs(ctr - 3.5) / 3.5) * 20 # 4銆佹祦閲忕幆姣旀定骞呮潈閲嶏細12鍒嗭紝璀︽垝绾?0% max_growth = 60 if flow_growth > max_growth: score += 12 else: score += (flow_growth / max_growth) * 12 # 5銆佽澶囬噸澶嶅崰姣旀潈閲嶏細8鍒?score += device_repeat * 8 * 100 # 鍒嗘暟闄愬埗鍦?鈥?00鍖洪棿 score = max(0, min(score, 100)) return round(score, 2) def get_warn_level(risk_score): if 0 <= risk_score <= 30: return "鉁呫€愬畨鍏ㄣ€?, "娴侀噺鎸囨爣鍋ュ悍锛屽彲浠ユ寜鐓у師瀹氳妭濂忔甯歌窇娴侊紱淇濇寔姣忔棩鎸囨爣鐩戞帶銆? elif 31 <= risk_score <= 55: return "鈿狅笍銆愭敞鎰忋€?, "鎸囨爣鍑虹幇杞诲井寮傚父锛岄€愭涓嬭皟鍏呭€艰浆鍖栨瘮渚嬶紝鏍告煡娴侀噺娓犻亾璐ㄩ噺銆? elif 56 <= risk_score <= 80: return "馃煚銆愯鍛娿€?, "椋庨櫓鍋忛珮锛佺珛鍒婚檷浣庨鍏呮瘮渚嬶紝鏁翠綋娴侀噺缂╁噺25%锛屾帓鏌ラ噸澶嶆帴鍗曡澶囥€? else: return "馃敶銆愰珮鍗便€?, "椋庨櫓鏋侀珮锛佸叏閮ㄦ殏鍋滄父鎴忛鍏呰浆鍖栵紝娴侀噺鍑忓崐锛岃繛缁瀵?鈥?澶╁悇椤规寚鏍囧洖钀芥儏鍐点€? if __name__ == "__main__": # ==========鍦ㄨ繖閲屾墜鍔ㄥ～鍏ュ綋鏃ュ疄闄呮暟鎹?========= pay_rate = 9.2 # 鍏呭€艰浆鍖栫巼 % retain_1 = 0.21 # 娆℃棩鐣欏瓨 ctr = 4.1 # CTR鐐瑰嚮鐜?% flow_growth = 42 # 娴侀噺鐜瘮娑ㄥ箙 % device_repeat = 0.13 # 璁惧閲嶅鍗犳瘮 # ============================================= final_score = calc_risk_score(pay_rate, retain_1, ctr, flow_growth, device_repeat) level, suggestion = get_warn_level(final_score) print("=====蹇墜鑱旂洘AI椋庢帶棰勮缁撴灉=====") print(f"浠樿垂杞寲鐜囷細{pay_rate}%") print(f"娆℃棩鐣欏瓨锛歿retain_1}") print(f"CTR鐐瑰嚮鐜囷細{ctr}%") print(f"娴侀噺鐜瘮娑ㄥ箙锛歿flow_growth}%") print(f"璁惧閲嶅鍗犳瘮锛歿device_repeat}") print(f"\n馃憠椋庨櫓缁煎悎寰楀垎锛歿final_score}") print(f"馃憠棰勮绛夌骇锛歿level}") print(f"馃憠AI鏁存敼寤鸿锛歿suggestion}")
+
+浣跨敤鏂规硶
+
+1銆佸鍒跺叏閮ㄤ唬鐮侊紝绮樿创鍒?Python 鐜鐩存帴杩愯
+
+2銆佷慨鏀筰f __name__ == "__main__":涓嬫柟鐨?5 椤瑰弬鏁帮紝濉叆浣犲綋澶╄仈鐩熷悗鍙扮殑鐪熷疄鏁版嵁
+
+3銆佽繍琛屼箣鍚庤嚜鍔ㄨ緭鍑洪闄╁垎鏁般€侀璀︾瓑绾с€佸搴旂殑璋冩暣鏂规
