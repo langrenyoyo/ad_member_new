@@ -14,7 +14,8 @@ from decimal import Decimal, InvalidOperation
 from io import StringIO
 from pathlib import Path
 from typing import Any, Callable, Literal
-from urllib.parse import unquote
+from urllib.parse import unquote, urlencode
+from urllib.request import Request as UrlRequest, urlopen
 
 import jwt
 from fastapi import APIRouter, Depends, FastAPI, HTTPException, Query, Request, Response, status
@@ -452,6 +453,19 @@ class MemberDevice(Base, TimestampMixin):
     today_clicks: Mapped[int | None] = mapped_column(Integer, nullable=True)
     today_failed: Mapped[int | None] = mapped_column(Integer, nullable=True)
     counter_date: Mapped[date | None] = mapped_column(Date, nullable=True)
+
+
+class WechatIdentity(Base, TimestampMixin):
+    __tablename__ = "wechat_identities"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    member_id: Mapped[int] = mapped_column(Integer, index=True, nullable=False)
+    provider: Mapped[str] = mapped_column(String(32), default="mini_program", nullable=False)
+    app_id: Mapped[str] = mapped_column(String(128), nullable=False)
+    openid: Mapped[str] = mapped_column(String(128), nullable=False)
+    unionid: Mapped[str] = mapped_column(String(128), default="")
+    nickname: Mapped[str] = mapped_column(String(128), default="")
+    avatar_url: Mapped[str] = mapped_column(String(512), default="")
+    __table_args__ = (UniqueConstraint("provider", "app_id", "openid", name="uq_wechat_identity_provider_app_openid"),)
 
 
 class AgentAnalysisConfig(Base, TimestampMixin):
@@ -2386,6 +2400,14 @@ class AppLoginRequest(AppClient):
     password: str = Field(min_length=1, max_length=128)
 
 
+class AppWechatLoginRequest(AppClient):
+    code: str = Field(min_length=1, max_length=1024)
+    game_id: int | None = Field(default=None, ge=1)
+    provider: Literal["mini_program", "app"] = "mini_program"
+    nickname: str = Field(default="", max_length=128)
+    avatar_url: str = Field(default="", max_length=512)
+
+
 class AppRefreshRequest(BaseModel):
     refresh_token: str = Field(min_length=20, max_length=512)
     device_id: str = Field(min_length=1, max_length=128)
@@ -2579,6 +2601,95 @@ def app_register(payload: AppRegisterRequest, request: Request) -> dict[str, Any
         session.add(member)
         session.flush()
         _app_device(session, member, payload.device_id, request, payload.app_version)
+        tokens = _app_tokens(session, member, payload.device_id)
+        session.commit()
+        session.refresh(member)
+        return {"data": {"user": _app_member_payload(member, payload.device_id), **tokens}, "request_id": secrets.token_urlsafe(12)}
+
+
+def _wechat_game(session: Session, game_id: int | None) -> Game:
+    game = session.get(Game, game_id) if game_id else session.scalar(select(Game).where(Game.status == 1).order_by(Game.id).limit(1))
+    if game is None or game.status != 1:
+        raise HTTPException(status_code=404, detail="Game is unavailable")
+    return game
+
+
+def _wechat_exchange_code(provider: str, code: str, app_id: str, secret: str) -> dict[str, str]:
+    if not app_id or not secret:
+        raise HTTPException(status_code=503, detail="WeChat login is not configured for this game")
+    if provider == "mini_program":
+        endpoint = "https://api.weixin.qq.com/sns/jscode2session"
+        params = {"appid": app_id, "secret": secret, "js_code": code, "grant_type": "authorization_code"}
+    else:
+        endpoint = "https://api.weixin.qq.com/sns/oauth2/access_token"
+        params = {"appid": app_id, "secret": secret, "code": code, "grant_type": "authorization_code"}
+    try:
+        request = UrlRequest(endpoint + "?" + urlencode(params), headers={"Accept": "application/json"})
+        with urlopen(request, timeout=float(os.getenv("WECHAT_HTTP_TIMEOUT", "8"))) as response:
+            result = json.loads(response.read().decode("utf-8"))
+    except (OSError, TimeoutError, ValueError, json.JSONDecodeError) as exc:
+        raise HTTPException(status_code=502, detail="WeChat authorization service is unavailable") from exc
+    if not isinstance(result, dict) or result.get("errcode") not in (None, 0):
+        raise HTTPException(status_code=401, detail="Invalid WeChat authorization code")
+    openid = str(result.get("openid") or "").strip()
+    if not openid:
+        raise HTTPException(status_code=401, detail="WeChat authorization did not return an openid")
+    return {"openid": openid, "unionid": str(result.get("unionid") or "").strip()}
+
+
+def _wechat_username(session: Session, openid: str) -> str:
+    prefix = "wx_" + hashlib.sha256(openid.encode("utf-8")).hexdigest()[:20]
+    username = prefix
+    suffix = 1
+    while session.scalar(select(Member.id).where(Member.username == username)) is not None:
+        username = f"{prefix}_{suffix}"
+        suffix += 1
+    return username
+
+
+@app_api.post("/auth/wechat-login")
+@app_api.post("/auth/wechat")
+def app_wechat_login(payload: AppWechatLoginRequest, request: Request) -> dict[str, Any]:
+    with SessionLocal() as session:
+        game = _wechat_game(session, payload.game_id)
+        app_id = game.wx_appid.strip()
+        identity = _wechat_exchange_code(payload.provider, payload.code.strip(), app_id, game.wx_secert.strip())
+        stored = session.scalar(select(WechatIdentity).where(
+            WechatIdentity.provider == payload.provider,
+            WechatIdentity.app_id == app_id,
+            WechatIdentity.openid == identity["openid"],
+        ))
+        if stored is None and identity["unionid"]:
+            stored = session.scalar(select(WechatIdentity).where(
+                WechatIdentity.provider == payload.provider,
+                WechatIdentity.app_id == app_id,
+                WechatIdentity.unionid == identity["unionid"],
+            ))
+        member = session.get(Member, stored.member_id) if stored else None
+        if member is None:
+            password, salt = hash_password(secrets.token_urlsafe(32))
+            member = Member(agent_id=game.agent_id, game_id=game.id, username=_wechat_username(session, identity["openid"]),
+                            name=payload.nickname.strip(), image_url=payload.avatar_url.strip(), password_hash=password,
+                            password_salt=salt, status=1)
+            session.add(member)
+            session.flush()
+            stored = WechatIdentity(member_id=member.id, provider=payload.provider, app_id=app_id,
+                                    openid=identity["openid"], unionid=identity["unionid"],
+                                    nickname=payload.nickname.strip(), avatar_url=payload.avatar_url.strip())
+            session.add(stored)
+        elif member.status != 1:
+            raise HTTPException(status_code=403, detail="Account is disabled")
+        if stored.unionid == "" and identity["unionid"]:
+            stored.unionid = identity["unionid"]
+        if payload.nickname.strip() and not member.name:
+            member.name = payload.nickname.strip()
+        if payload.avatar_url.strip() and not member.image_url:
+            member.image_url = payload.avatar_url.strip()
+        device = session.get(MemberDevice, member.id)
+        if device and device.device_id and device.device_id != payload.device_id and device.device_id_ban:
+            raise HTTPException(status_code=403, detail="Device is blocked")
+        _app_device(session, member, payload.device_id, request, payload.app_version)
+        session.add(MemberLoginLog(user_id=member.id, game_id=member.game_id, device_id=payload.device_id, ip=request.client.host if request.client else ""))
         tokens = _app_tokens(session, member, payload.device_id)
         session.commit()
         session.refresh(member)
