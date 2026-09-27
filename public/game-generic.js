@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded',()=>genericGameObserver.observe(doc
 
 // This script is loaded before app.js in the single-line shell, so inject the
 // editor before the page registers its generic create/edit handlers.
-document.write('<link rel="stylesheet" href="/game-form.css?v=20260927"><script src="/game-form.js?v=20260927"><\/script>');
+document.write('<link rel="stylesheet" href="/game-form.css?v=20260927"><script src="/game-form.js?v=20260928"><\/script>');
 
 
 

@@ -77,11 +77,24 @@ function gameFormBody(form){
  return body;
 }
 document.addEventListener('click',event=>{
- const trigger=event.target.closest('#createButton,#agentGameCreate,[data-game-edit],[data-edit]');if(!trigger)return;
+ const trigger=event.target.closest('#createButton,#agentGameCreate,button[data-game-edit],button[data-edit]');if(!trigger)return;
  const scopedPage=state.view==='agent-games',globalPage=state.view==='games';if(!scopedPage&&!globalPage)return;
  if(trigger.matches('[data-edit]')&&!globalPage)return;if(trigger.matches('#agentGameCreate,[data-game-edit]')&&!scopedPage)return;
  event.preventDefault();event.stopImmediatePropagation();
- const id=trigger.matches('[data-game-edit],[data-edit]')?Number(trigger.dataset.gameEdit||trigger.dataset.edit):null;
+ let id=null;
+ if(trigger.matches('[data-game-edit],[data-edit]')){
+  const raw=trigger.dataset.gameEdit||trigger.dataset.edit;
+  id=Number(raw);
+  if(!Number.isSafeInteger(id)||id<=0){
+   const row=trigger.closest('tr');
+   id=Number(row?.querySelector('[data-select]')?.dataset.select||row?.querySelector('[data-field=\"id\"]')?.textContent?.trim());
+  }
+  if(!Number.isSafeInteger(id)||id<=0){
+   const box=document.querySelector('#editorForm .game-form-error');
+   if(box)box.textContent='?? ID ???????????';
+   return;
+  }
+ }
  openAgentGameForm(id,scopedPage?Number(sessionStorage.getItem('agent-dashboard-id')):null);
 },true);
 function closeGameForm(){
