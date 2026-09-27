@@ -272,6 +272,9 @@ Authorization: Bearer <user_access_token>
     "game": {"id": 237, "name": "示例游戏", "status": 1, "ad_status": 1},
     "ad_config": {
       "enabled": true,
+      "provider": "internal",
+      "app_id": "?? App ID",
+      "app_key": "?? App Key",
       "placements": [
         {"placement": "splash", "ad_unit_id": "splash-placement-id"},
         {"placement": "native", "ad_unit_id": "native-placement-id"},

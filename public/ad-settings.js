@@ -4,6 +4,7 @@ const adSettingLabels={
   title:'\u5e7f\u544a\u8054\u76df\u8bbe\u7f6e',
   provider:'\u5e7f\u544a\u8054\u76df',
   appId:'\u8054\u76df App ID',
+  appKey:'\u8054\u76df App Key',
   rewarded:'\u6fc0\u52b1\u5e7f\u544a\u4f4d ID',
   interstitial:'\u63d2\u5c4f\u5e7f\u544a\u4f4d ID',
   banner:'Banner \u5e7f\u544a\u4f4d ID',
@@ -35,6 +36,7 @@ function adSettingsCard(game,config){
       <label class="ad-settings-field"><span>${adSettingLabels.enabled}</span><select name="enabled"><option value="1" ${enabled?'selected':''}>${adSettingLabels.on}</option><option value="0" ${enabled?'':'selected'}>${adSettingLabels.off}</option></select></label>
       ${adSettingsField(adSettingLabels.provider,'provider',config?.provider||'internal')}
       ${adSettingsField(adSettingLabels.appId,'app_id',config?.app_id)}
+      ${adSettingsField(adSettingLabels.appKey,'app_key',config?.app_key)}
       ${adSettingsField(adSettingLabels.rewarded,'rewarded_unit_id',rewarded.unit_id)}
       ${adSettingsField(adSettingLabels.interstitial,'interstitial_unit_id',interstitial.unit_id)}
       ${adSettingsField(adSettingLabels.banner,'banner_unit_id',banner.unit_id)}

@@ -6,9 +6,9 @@ const gameFormLabels={
  raffle_num:'抽奖次数',star_countdown:'开始倒计时',over_countdown:'结束倒计时',star_coin:'开始奖励金币',over_coin:'结束奖励金币',coin_get:'金币上限',exchange_num:'兑换数量',
  commission_status:'独立分佣',commission_source:'分佣来源',commission_rate:'分佣比例',tixian_price:'提现价格',tixian_coin:'提现金币',tixian_wx:'微信提现',
  wx_appid:'微信 AppID',wx_secert:'微信 Secret',other_url:'其它链接',settings_json:'高级配置 JSON',
- ad_provider:'广告联盟',ad_app_id:'联盟 App ID',ad_rewarded_unit_id:'激励广告位 ID',ad_interstitial_unit_id:'插屏广告位 ID',ad_banner_unit_id:'Banner 广告位 ID',ad_splash_unit_id:'\u5f00\u5c4f\u5e7f\u544a\u4f4d ID',ad_native_unit_id:'\u4fe1\u606f\u6d41\u5e7f\u544a\u4f4d ID',ad_reward_coin:'激励奖励金币',ad_cooldown_seconds:'广告冷却秒数',ad_config_enabled:'广告联盟配置'
+ ad_provider:'广告联盟',ad_app_id:'联盟 App ID',ad_app_key:'\u8054\u76df App Key',ad_rewarded_unit_id:'激励广告位 ID',ad_interstitial_unit_id:'插屏广告位 ID',ad_banner_unit_id:'Banner 广告位 ID',ad_splash_unit_id:'\u5f00\u5c4f\u5e7f\u544a\u4f4d ID',ad_native_unit_id:'\u4fe1\u606f\u6d41\u5e7f\u544a\u4f4d ID',ad_reward_coin:'激励奖励金币',ad_cooldown_seconds:'广告冷却秒数',ad_config_enabled:'广告联盟配置'
 };
-const gameFormDefaults={agent_id:0,name:'',game_icon:'',game_key:'',game_url:'',game_type:0,status:1,ad_status:1,lucky_enable:1,is_landscape:0,is_game:1,is_mobile:0,is_imei:0,raffle_num:500,star_countdown:30,over_countdown:50,star_coin:.01,over_coin:.01,coin_get:1000000,exchange_num:10,commission_status:0,commission_source:0,commission_rate:0,tixian_price:'',tixian_coin:'',tixian_wx:0,wx_appid:'',wx_secert:'',other_url:'',settings_json:'{}',ad_provider:'internal',ad_app_id:'',ad_rewarded_unit_id:'',ad_interstitial_unit_id:'',ad_banner_unit_id:'',ad_splash_unit_id:'',ad_native_unit_id:'',ad_reward_coin:.01,ad_cooldown_seconds:0,ad_config_enabled:1};
+const gameFormDefaults={agent_id:0,name:'',game_icon:'',game_key:'',game_url:'',game_type:0,status:1,ad_status:1,lucky_enable:1,is_landscape:0,is_game:1,is_mobile:0,is_imei:0,raffle_num:500,star_countdown:30,over_countdown:50,star_coin:.01,over_coin:.01,coin_get:1000000,exchange_num:10,commission_status:0,commission_source:0,commission_rate:0,tixian_price:'',tixian_coin:'',tixian_wx:0,wx_appid:'',wx_secert:'',other_url:'',settings_json:'{}',ad_provider:'internal',ad_app_id:'',ad_app_key:'',ad_rewarded_unit_id:'',ad_interstitial_unit_id:'',ad_banner_unit_id:'',ad_splash_unit_id:'',ad_native_unit_id:'',ad_reward_coin:.01,ad_cooldown_seconds:0,ad_config_enabled:1};
 const gameFormNumberFields=new Set(['agent_id','game_type','status','ad_status','lucky_enable','is_landscape','is_game','is_mobile','is_imei','raffle_num','star_countdown','over_countdown','star_coin','over_coin','coin_get','exchange_num','commission_status','commission_source','commission_rate','tixian_wx','ad_reward_coin','ad_cooldown_seconds','ad_config_enabled']);
 const gameFormIntegerFields=new Set(['agent_id','game_type','status','ad_status','lucky_enable','is_landscape','is_game','is_mobile','is_imei','raffle_num','exchange_num','commission_status','commission_source','tixian_wx','ad_cooldown_seconds','ad_config_enabled']);
 const gameFormOptions={
@@ -21,7 +21,7 @@ const gameFormSections=[
  {title:'基础信息',fields:['agent_id','name','game_icon','game_key','game_url','game_type']},
  {title:'运行配置',fields:['status','ad_status','lucky_enable','is_landscape','is_game','is_mobile','is_imei','raffle_num','star_countdown','over_countdown','star_coin','over_coin','coin_get','exchange_num']},
  {title:'分佣与提现',fields:['commission_status','commission_source','commission_rate','tixian_price','tixian_coin','tixian_wx']},
- {title:'广告联盟设置',fields:['ad_config_enabled','ad_provider','ad_app_id','ad_rewarded_unit_id','ad_interstitial_unit_id','ad_banner_unit_id','ad_splash_unit_id','ad_native_unit_id','ad_reward_coin','ad_cooldown_seconds']},
+ {title:'广告联盟设置',fields:['ad_config_enabled','ad_provider','ad_app_id','ad_app_key','ad_rewarded_unit_id','ad_interstitial_unit_id','ad_banner_unit_id','ad_splash_unit_id','ad_native_unit_id','ad_reward_coin','ad_cooldown_seconds']},
  {title:'微信与高级配置',fields:['wx_appid','wx_secert','other_url','settings_json']}
 ];
 

@@ -655,6 +655,7 @@ GAME_EDITOR_FIELDS = [
 GAME_AD_EDITOR_FIELDS = [
     "ad_provider",
     "ad_app_id",
+    "ad_app_key",
     "ad_rewarded_unit_id",
     "ad_interstitial_unit_id",
     "ad_banner_unit_id",
@@ -853,6 +854,7 @@ def game_ad_config(item: Game) -> dict[str, Any]:
         "enabled": bool(configured.get("enabled", item.ad_status == 1)),
         "provider": str(configured.get("provider") or "internal"),
         "app_id": str(configured.get("app_id") or ""),
+        "app_key": str(configured.get("app_key") or ""),
         "placements": {
             "rewarded": rewarded,
             "interstitial": interstitial,
@@ -869,6 +871,7 @@ def serialize_game_editor(item: Game) -> dict[str, Any]:
     payload.update({
         "ad_provider": config["provider"],
         "ad_app_id": config["app_id"],
+        "ad_app_key": config["app_key"],
         "ad_rewarded_unit_id": config["placements"]["rewarded"]["unit_id"],
         "ad_interstitial_unit_id": config["placements"]["interstitial"]["unit_id"],
         "ad_banner_unit_id": config["placements"]["banner"]["unit_id"],
@@ -899,6 +902,7 @@ def merge_game_ad_config(changes: dict[str, Any], existing_settings: str | None 
     placements = {name: dict(value) for name, value in placements.items() if isinstance(value, dict)} if isinstance(placements, dict) else {}
     if "ad_provider" in ad_changes: current["provider"] = str(ad_changes["ad_provider"] or "internal").strip()
     if "ad_app_id" in ad_changes: current["app_id"] = str(ad_changes["ad_app_id"] or "").strip()
+    if "ad_app_key" in ad_changes: current["app_key"] = str(ad_changes["ad_app_key"] or "").strip()
     if "ad_config_enabled" in ad_changes: current["enabled"] = bool(ad_changes["ad_config_enabled"])
     rewarded = placements.setdefault("rewarded", {})
     if "ad_rewarded_unit_id" in ad_changes: rewarded["unit_id"] = str(ad_changes["ad_rewarded_unit_id"] or "").strip()
@@ -1879,6 +1883,7 @@ class GameCreate(BaseModel):
     settings_json: str = "{}"
     ad_provider: str = Field(default="internal", max_length=64)
     ad_app_id: str = Field(default="", max_length=128)
+    ad_app_key: str = Field(default="", max_length=255)
     ad_rewarded_unit_id: str = Field(default="", max_length=255)
     ad_interstitial_unit_id: str = Field(default="", max_length=255)
     ad_banner_unit_id: str = Field(default="", max_length=255)
@@ -1922,6 +1927,7 @@ class GameUpdate(BaseModel):
     settings_json: str | None = None
     ad_provider: str | None = Field(default=None, max_length=64)
     ad_app_id: str | None = Field(default=None, max_length=128)
+    ad_app_key: str | None = Field(default=None, max_length=255)
     ad_rewarded_unit_id: str | None = Field(default=None, max_length=255)
     ad_interstitial_unit_id: str | None = Field(default=None, max_length=255)
     ad_banner_unit_id: str | None = Field(default=None, max_length=255)
@@ -2777,7 +2783,7 @@ def app_bootstrap(game_id: int | None = Query(None, ge=1), member: Member = Depe
         game = _app_game_for_member(session, member, game_id)
         config = game_ad_config(game)
         placements = [{"placement": name, "ad_type": name, "ad_unit_id": value["unit_id"], "cooldown_seconds": value["cooldown_seconds"], "reward_coin": value["reward_coin"]} for name, value in config["placements"].items() if value["unit_id"] or name == "rewarded"]
-        return {"data": {"user": _app_member_payload(member), "game": {"id": game.id, "name": game.name, "status": game.status, "ad_status": game.ad_status}, "ad_config": {"enabled": config["enabled"], "provider": config["provider"], "app_id": config["app_id"], "placements": placements}, "server_time": now().isoformat()}, "request_id": secrets.token_urlsafe(12)}
+        return {"data": {"user": _app_member_payload(member), "game": {"id": game.id, "name": game.name, "status": game.status, "ad_status": game.ad_status}, "ad_config": {"enabled": config["enabled"], "provider": config["provider"], "app_id": config["app_id"], "app_key": config["app_key"], "placements": placements}, "server_time": now().isoformat()}, "request_id": secrets.token_urlsafe(12)}
 
 
 @app_api.post("/ads/request", status_code=201)
@@ -5038,6 +5044,7 @@ def update_game(game_id: int, payload: GameUpdate) -> dict[str, Any]:
 class GameAdConfigUpdate(BaseModel):
     provider: str = Field(default="internal", max_length=64)
     app_id: str = Field(default="", max_length=128)
+    app_key: str = Field(default="", max_length=255)
     enabled: Literal[0, 1] = 1
     rewarded_unit_id: str = Field(default="", max_length=255)
     interstitial_unit_id: str = Field(default="", max_length=255)
@@ -5062,6 +5069,7 @@ def update_game_ad_config(game_id: int, payload: GameAdConfigUpdate) -> dict[str
         changes = {
             "ad_provider": payload.provider,
             "ad_app_id": payload.app_id,
+            "ad_app_key": payload.app_key,
             "ad_config_enabled": payload.enabled,
             "ad_rewarded_unit_id": payload.rewarded_unit_id,
             "ad_interstitial_unit_id": payload.interstitial_unit_id,
