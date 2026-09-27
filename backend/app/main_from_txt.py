@@ -243,6 +243,65 @@ class AdRecord(Base, TimestampMixin):
     trans_id: Mapped[str] = mapped_column(String(128), default="")
 
 
+class AppRefreshSession(Base, TimestampMixin):
+    """Rotating refresh tokens for the user APP.
+
+    Only a hash of the opaque refresh token is persisted.  This keeps a
+    leaked database from being enough to impersonate an APP user.
+    """
+
+    __tablename__ = "app_refresh_sessions"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    member_id: Mapped[int] = mapped_column(Integer, index=True, nullable=False)
+    token_hash: Mapped[str] = mapped_column(String(128), unique=True, index=True, nullable=False)
+    device_id: Mapped[str] = mapped_column(String(128), default="", nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    last_used_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+
+
+class AppAdSession(Base, TimestampMixin):
+    """A server-issued, single-use advertisement session."""
+
+    __tablename__ = "app_ad_sessions"
+
+    id: Mapped[str] = mapped_column(String(80), primary_key=True)
+    member_id: Mapped[int] = mapped_column(Integer, index=True, nullable=False)
+    agent_id: Mapped[int] = mapped_column(Integer, index=True, nullable=False)
+    game_id: Mapped[int] = mapped_column(Integer, index=True, nullable=False)
+    device_id: Mapped[str] = mapped_column(String(128), default="", nullable=False)
+    client_request_id: Mapped[str] = mapped_column(String(128), default="", nullable=False)
+    request_id: Mapped[str] = mapped_column(String(128), unique=True, index=True, nullable=False)
+    placement: Mapped[str] = mapped_column(String(64), default="rewarded", nullable=False)
+    ad_type: Mapped[str] = mapped_column(String(64), default="rewarded", nullable=False)
+    provider: Mapped[str] = mapped_column(String(64), default="internal", nullable=False)
+    ad_unit_id: Mapped[str] = mapped_column(String(255), default="", nullable=False)
+    reward_coin: Mapped[float] = mapped_column(Float, default=0.0, nullable=False)
+    status: Mapped[str] = mapped_column(String(32), default="issued", nullable=False)
+    session_token_hash: Mapped[str] = mapped_column(String(128), nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    impressed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    failed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    coin_log_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    result_json: Mapped[str] = mapped_column(Text, default="", nullable=False)
+
+
+class AppAdEvent(Base, TimestampMixin):
+    """Idempotency record for APP impression/complete/fail events."""
+
+    __tablename__ = "app_ad_events"
+    __table_args__ = (UniqueConstraint("event_id", name="uq_app_ad_event_id"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    event_id: Mapped[str] = mapped_column(String(128), index=True, nullable=False)
+    ad_session_id: Mapped[str] = mapped_column(String(80), index=True, nullable=False)
+    member_id: Mapped[int] = mapped_column(Integer, index=True, nullable=False)
+    event_type: Mapped[str] = mapped_column(String(32), nullable=False)
+    result_json: Mapped[str] = mapped_column(Text, default="", nullable=False)
+
+
 class AdImportBatch(Base, TimestampMixin):
     __tablename__ = "ad_import_batches"
 
@@ -1540,6 +1599,7 @@ def create_access_token(item: AdminUser) -> str:
     return jwt.encode(
         {
             "sub": str(item.id),
+            "typ": "admin",
             "username": item.username,
             "role": item.role,
             "iat": issued_at,
@@ -1565,6 +1625,8 @@ def require_admin(
         raise authentication_error("鐠囧嘲鍘涢惂璇茬秿")
     try:
         payload = jwt.decode(credentials.credentials, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        if payload.get("typ", "admin") != "admin":
+            raise ValueError("not an admin token")
         admin_id = int(payload["sub"])
     except (InvalidTokenError, KeyError, TypeError, ValueError) as exc:
         raise authentication_error() from exc
@@ -2167,6 +2229,427 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="广告会员后台", version="0.1.0", lifespan=lifespan)
+
+# ---------------------------------------------------------------------------
+# Public user APP API
+# ---------------------------------------------------------------------------
+
+app_api = APIRouter(prefix="/api/app/v1", tags=["User APP"])
+app_bearer_scheme = HTTPBearer(auto_error=False)
+APP_ACCESS_MINUTES = int(os.getenv("APP_ACCESS_MINUTES", "120"))
+APP_REFRESH_DAYS = int(os.getenv("APP_REFRESH_DAYS", "30"))
+APP_AD_SESSION_MINUTES = int(os.getenv("APP_AD_SESSION_MINUTES", "5"))
+
+
+class AppClient(BaseModel):
+    app_id: str = Field(default="ad-member", min_length=1, max_length=64)
+    app_version: str = Field(default="", max_length=32)
+    platform: str = Field(default="", max_length=32)
+    device_id: str = Field(min_length=1, max_length=128)
+
+
+class AppRegisterRequest(AppClient):
+    username: str = Field(min_length=4, max_length=64)
+    password: str = Field(min_length=8, max_length=128)
+    invite_code: str = Field(default="", max_length=128)
+    agent_id: int | None = Field(default=None, ge=1)
+    game_id: int | None = Field(default=None, ge=1)
+
+
+class AppLoginRequest(AppClient):
+    username: str = Field(min_length=1, max_length=64)
+    password: str = Field(min_length=1, max_length=128)
+
+
+class AppRefreshRequest(BaseModel):
+    refresh_token: str = Field(min_length=20, max_length=512)
+    device_id: str = Field(min_length=1, max_length=128)
+
+
+class AppLogoutRequest(BaseModel):
+    refresh_token: str | None = Field(default=None, min_length=20, max_length=512)
+
+
+class AppProfileUpdate(BaseModel):
+    name: str | None = Field(default=None, max_length=128)
+    image_url: str | None = Field(default=None, max_length=255)
+    sex: int | None = Field(default=None, ge=0, le=2)
+    real_name: str | None = Field(default=None, max_length=64)
+    receive_name: str | None = Field(default=None, max_length=64)
+    address: str | None = Field(default=None, max_length=255)
+
+
+class AppPasswordChange(BaseModel):
+    current_password: str = Field(min_length=1, max_length=128)
+    new_password: str = Field(min_length=8, max_length=128)
+
+
+class AppAdRequest(AppClient):
+    game_id: int = Field(ge=1)
+    placement: str = Field(default="rewarded", min_length=1, max_length=64)
+    ad_type: str = Field(default="rewarded", min_length=1, max_length=64)
+    client_request_id: str = Field(default="", max_length=128)
+
+
+class AppAdEventRequest(BaseModel):
+    event_id: str = Field(min_length=1, max_length=128)
+    session_token: str = Field(min_length=20, max_length=512)
+    occurred_at: datetime | None = None
+    provider_event_id: str = Field(default="", max_length=128)
+    watched_seconds: float = Field(default=0, ge=0, le=86400)
+    reason: str = Field(default="", max_length=128)
+
+
+def _app_member_payload(member: Member, device: str = "") -> dict[str, Any]:
+    return {
+        "id": member.id,
+        "username": member.username,
+        "name": member.name,
+        "image_url": member.image_url,
+        "sex": member.sex,
+        "real_name": member.real_name,
+        "receive_name": member.receive_name,
+        "address": member.address,
+        "agent_id": member.agent_id,
+        "game_id": member.game_id,
+        "vip": member.vip,
+        "status": member.status,
+        "coin": member.coin,
+        "freeze_coin": member.freeze_coin,
+        "coin_user": member.coin_user,
+        "device_id": device or member.last_login_device_id or member.device_id,
+    }
+
+
+def _token_hash(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def _create_app_access_token(member: Member) -> str:
+    issued_at = now()
+    return jwt.encode({
+        "sub": str(member.id),
+        "typ": "app_user",
+        "iat": issued_at,
+        "exp": issued_at + timedelta(minutes=APP_ACCESS_MINUTES),
+    }, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+
+def _new_refresh_session(session: Session, member: Member, device_id: str) -> str:
+    raw = secrets.token_urlsafe(48)
+    session.add(AppRefreshSession(
+        member_id=member.id,
+        token_hash=_token_hash(raw),
+        device_id=device_id,
+        expires_at=now() + timedelta(days=APP_REFRESH_DAYS),
+    ))
+    return raw
+
+
+def _app_tokens(session: Session, member: Member, device_id: str) -> dict[str, Any]:
+    refresh = _new_refresh_session(session, member, device_id)
+    return {
+        "access_token": _create_app_access_token(member),
+        "refresh_token": refresh,
+        "expires_in": APP_ACCESS_MINUTES * 60,
+        "token_type": "bearer",
+    }
+
+
+def _app_auth_error(detail: str = "Invalid or expired user token") -> HTTPException:
+    return HTTPException(status_code=401, detail=detail, headers={"WWW-Authenticate": "Bearer"})
+
+
+def require_app_member(credentials: HTTPAuthorizationCredentials | None = Depends(app_bearer_scheme)) -> Member:
+    if credentials is None or credentials.scheme.lower() != "bearer":
+        raise _app_auth_error()
+    try:
+        payload = jwt.decode(credentials.credentials, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+        if payload.get("typ") != "app_user":
+            raise ValueError("wrong token type")
+        member_id = int(payload["sub"])
+    except (InvalidTokenError, KeyError, TypeError, ValueError) as exc:
+        raise _app_auth_error() from exc
+    with SessionLocal() as session:
+        member = session.get(Member, member_id)
+        if member is None or member.status != 1:
+            raise _app_auth_error("Account is disabled or does not exist")
+        session.expunge(member)
+        return member
+
+
+def _app_validate_password(password: str) -> None:
+    if len(password) < 8 or not re.search(r"[A-Za-z]", password) or not re.search(r"\d", password):
+        raise HTTPException(status_code=422, detail="Password must contain at least 8 characters, letters and numbers")
+
+
+def _app_game_for_member(session: Session, member: Member, game_id: int | None = None) -> Game:
+    selected_id = game_id or member.game_id
+    game = session.get(Game, selected_id) if selected_id else None
+    if game is None or game.status != 1 or game.ad_status != 1:
+        raise HTTPException(status_code=404, detail="Game is unavailable")
+    if game.agent_id != member.agent_id:
+        raise HTTPException(status_code=403, detail="Game does not belong to this account")
+    return game
+
+
+def _app_device(session: Session, member: Member, device_id: str, request: Request, app_version: str = "") -> None:
+    device = session.get(MemberDevice, member.id)
+    if device is None:
+        device = MemberDevice(user_id=member.id)
+        session.add(device)
+    device.device_id = device_id
+    device.app_version = app_version
+    device.ip_address = request.client.host if request.client else ""
+    member.device_id = device_id
+    member.last_login_device_id = device_id
+    member.last_login_ip = request.client.host if request.client else ""
+    member.last_login_time = now().isoformat()
+
+
+def _app_ad_result(item: AppAdSession, member: Member) -> dict[str, Any]:
+    return {
+        "ad_session_id": item.id,
+        "request_id": item.request_id,
+        "placement": item.placement,
+        "provider": item.provider,
+        "ad_unit_id": item.ad_unit_id,
+        "ad_type": item.ad_type,
+        "reward": {"enabled": item.reward_coin > 0, "coin": item.reward_coin, "currency": "coin"},
+        "session_token": "",
+        "expires_at": stringify(item.expires_at),
+        "status": item.status,
+    }
+
+
+@app_api.post("/auth/register", status_code=201)
+def app_register(payload: AppRegisterRequest, request: Request) -> dict[str, Any]:
+    _app_validate_password(payload.password)
+    username = payload.username.strip()
+    if not re.fullmatch(r"[A-Za-z0-9_.-]{4,64}", username):
+        raise HTTPException(status_code=422, detail="Username may contain letters, numbers, dot, underscore and hyphen")
+    with SessionLocal() as session:
+        if session.scalar(select(Member.id).where(Member.username == username)) is not None:
+            raise HTTPException(status_code=409, detail="Username already exists")
+        agent_id = payload.agent_id
+        game_id = payload.game_id
+        if game_id:
+            game = session.get(Game, game_id)
+            if game is None or game.status != 1:
+                raise HTTPException(status_code=422, detail="Game is unavailable")
+            if agent_id and game.agent_id != agent_id:
+                raise HTTPException(status_code=422, detail="Game does not belong to agent")
+            agent_id = game.agent_id
+        if not agent_id:
+            agent_id = session.scalar(select(Agent.id).where(Agent.status == 1).order_by(Agent.id).limit(1))
+        if not agent_id:
+            raise HTTPException(status_code=503, detail="No active registration channel")
+        if not game_id:
+            game_id = session.scalar(select(Game.id).where(Game.agent_id == agent_id, Game.status == 1).order_by(Game.id).limit(1))
+        if not game_id:
+            raise HTTPException(status_code=503, detail="No active game is available")
+        password_hash, password_salt = hash_password(payload.password)
+        member = Member(agent_id=agent_id, game_id=game_id, username=username, name=username,
+                        password_hash=password_hash, password_salt=password_salt, status=1)
+        session.add(member)
+        session.flush()
+        _app_device(session, member, payload.device_id, request, payload.app_version)
+        tokens = _app_tokens(session, member, payload.device_id)
+        session.commit()
+        session.refresh(member)
+        return {"data": {"user": _app_member_payload(member, payload.device_id), **tokens}, "request_id": secrets.token_urlsafe(12)}
+
+
+@app_api.post("/auth/login")
+def app_login(payload: AppLoginRequest, request: Request) -> dict[str, Any]:
+    with SessionLocal() as session:
+        member = session.scalar(select(Member).where(Member.username == payload.username.strip()))
+        if member is None or member.status != 1 or not member.password_hash or not verify_password(payload.password, member.password_hash, member.password_salt):
+            raise _app_auth_error("Invalid username or password")
+        device = session.get(MemberDevice, member.id)
+        if device and device.device_id and device.device_id != payload.device_id and device.device_id_ban:
+            raise HTTPException(status_code=403, detail="Device is blocked")
+        _app_device(session, member, payload.device_id, request, payload.app_version)
+        session.add(MemberLoginLog(user_id=member.id, game_id=member.game_id, device_id=payload.device_id, ip=request.client.host if request.client else ""))
+        tokens = _app_tokens(session, member, payload.device_id)
+        session.commit()
+        session.refresh(member)
+        return {"data": {"user": _app_member_payload(member, payload.device_id), **tokens}, "request_id": secrets.token_urlsafe(12)}
+
+
+@app_api.post("/auth/refresh")
+def app_refresh(payload: AppRefreshRequest) -> dict[str, Any]:
+    with SessionLocal() as session:
+        stored = session.scalar(select(AppRefreshSession).where(AppRefreshSession.token_hash == _token_hash(payload.refresh_token)))
+        if stored is None or stored.revoked_at is not None or stored.expires_at.replace(tzinfo=UTC) <= now() or stored.device_id != payload.device_id:
+            raise _app_auth_error("Refresh token is invalid or expired")
+        member = session.get(Member, stored.member_id)
+        if member is None or member.status != 1:
+            raise _app_auth_error("Account is disabled or does not exist")
+        stored.revoked_at = now(); stored.last_used_at = now()
+        result = _app_tokens(session, member, payload.device_id)
+        session.commit()
+        return {"data": {"user": _app_member_payload(member, payload.device_id), **result}, "request_id": secrets.token_urlsafe(12)}
+
+
+@app_api.post("/auth/logout", status_code=204)
+def app_logout(payload: AppLogoutRequest | None = None, member: Member = Depends(require_app_member)) -> Response:
+    if payload is not None and payload.refresh_token:
+        with SessionLocal() as session:
+            item = session.scalar(select(AppRefreshSession).where(AppRefreshSession.member_id == member.id, AppRefreshSession.token_hash == _token_hash(payload.refresh_token)))
+            if item: item.revoked_at = now(); session.commit()
+    return Response(status_code=204)
+
+
+@app_api.get("/me")
+def app_me(member: Member = Depends(require_app_member)) -> dict[str, Any]:
+    return {"data": _app_member_payload(member), "request_id": secrets.token_urlsafe(12)}
+
+
+@app_api.patch("/me")
+def app_update_me(payload: AppProfileUpdate, member: Member = Depends(require_app_member)) -> dict[str, Any]:
+    changes = payload.model_dump(exclude_unset=True)
+    with SessionLocal() as session:
+        stored = get_or_404(session, Member, member.id, "User")
+        for key, value in changes.items(): setattr(stored, key, value.strip() if isinstance(value, str) else value)
+        session.commit(); session.refresh(stored)
+        return {"data": _app_member_payload(stored), "request_id": secrets.token_urlsafe(12)}
+
+
+@app_api.post("/auth/change-password", status_code=204)
+def app_change_password(payload: AppPasswordChange, member: Member = Depends(require_app_member)) -> Response:
+    _app_validate_password(payload.new_password)
+    with SessionLocal() as session:
+        stored = get_or_404(session, Member, member.id, "User")
+        if not verify_password(payload.current_password, stored.password_hash, stored.password_salt):
+            raise _app_auth_error("Current password is incorrect")
+        stored.password_hash, stored.password_salt = hash_password(payload.new_password)
+        session.commit()
+    return Response(status_code=204)
+
+
+@app_api.get("/games")
+def app_games(member: Member = Depends(require_app_member)) -> dict[str, Any]:
+    with SessionLocal() as session:
+        rows = session.scalars(select(Game).where(Game.agent_id == member.agent_id, Game.status == 1, Game.ad_status == 1).order_by(Game.id)).all()
+        return {"data": {"items": [{"id": g.id, "name": g.name, "game_icon": g.game_icon, "game_key": g.game_key, "status": g.status, "ad_status": g.ad_status} for g in rows], "total": len(rows)}, "request_id": secrets.token_urlsafe(12)}
+
+
+@app_api.get("/bootstrap")
+def app_bootstrap(game_id: int | None = Query(None, ge=1), member: Member = Depends(require_app_member)) -> dict[str, Any]:
+    with SessionLocal() as session:
+        game = _app_game_for_member(session, member, game_id)
+        return {"data": {"user": _app_member_payload(member), "game": {"id": game.id, "name": game.name, "status": game.status, "ad_status": game.ad_status}, "ad_config": {"enabled": True, "placements": [{"placement": "rewarded", "ad_type": "rewarded", "ad_unit_id": game.game_key or str(game.id), "cooldown_seconds": 0, "reward_coin": float(game.star_coin or 0)}]}, "server_time": now().isoformat()}, "request_id": secrets.token_urlsafe(12)}
+
+
+@app_api.post("/ads/request", status_code=201)
+def app_ad_request(payload: AppAdRequest, request: Request, member: Member = Depends(require_app_member)) -> dict[str, Any]:
+    if APP_ENV == "production" and not configured_provider().available:
+        raise HTTPException(status_code=503, detail="Ad provider is unavailable")
+    with SessionLocal() as session:
+        game = _app_game_for_member(session, member, payload.game_id)
+        if payload.client_request_id:
+            existing = session.scalar(select(AppAdSession).where(AppAdSession.member_id == member.id, AppAdSession.client_request_id == payload.client_request_id, AppAdSession.status == "issued"))
+            if existing:
+                token = secrets.token_urlsafe(32)
+                existing.session_token_hash = _token_hash(token); session.commit()
+                result = _app_ad_result(existing, member); result["session_token"] = token
+                return {"data": result, "request_id": existing.request_id}
+        session_id = "ads_" + secrets.token_urlsafe(18)
+        request_id = "req_ad_" + secrets.token_urlsafe(14)
+        session_token = secrets.token_urlsafe(32)
+        item = AppAdSession(id=session_id, member_id=member.id, agent_id=member.agent_id, game_id=game.id, device_id=payload.device_id,
+                            client_request_id=payload.client_request_id, request_id=request_id, placement=payload.placement, ad_type=payload.ad_type,
+                            provider="internal", ad_unit_id=game.game_key or str(game.id), reward_coin=max(float(game.star_coin or 0), 0),
+                            status="issued", session_token_hash=_token_hash(session_token), expires_at=now() + timedelta(minutes=APP_AD_SESSION_MINUTES))
+        session.add(item); session.commit()
+        result = _app_ad_result(item, member); result["session_token"] = session_token
+        return {"data": result, "request_id": request_id}
+
+
+def _app_session(session: Session, session_id: str, member: Member, token: str) -> AppAdSession:
+    item = session.get(AppAdSession, session_id)
+    if item is None or item.member_id != member.id or not hmac.compare_digest(item.session_token_hash, _token_hash(token)):
+        raise HTTPException(status_code=404, detail="Ad session not found")
+    if item.expires_at.replace(tzinfo=UTC) <= now() and item.status not in ("rewarded", "failed", "expired"):
+        item.status = "expired"
+        raise HTTPException(status_code=409, detail="Ad session expired")
+    return item
+
+
+@app_api.post("/ads/{ad_session_id}/impression", status_code=202)
+def app_ad_impression(ad_session_id: str, payload: AppAdEventRequest, member: Member = Depends(require_app_member)) -> dict[str, Any]:
+    with SessionLocal() as session:
+        item = _app_session(session, ad_session_id, member, payload.session_token)
+        prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == payload.event_id))
+        if prior:
+            return {"data": json.loads(prior.result_json or "{}"), "request_id": item.request_id}
+        if item.status != "issued": raise HTTPException(status_code=409, detail="Ad session cannot be impressed")
+        item.status = "impressed"; item.impressed_at = now()
+        result = {"ad_session_id": item.id, "status": item.status}
+        session.add(AppAdEvent(event_id=payload.event_id, ad_session_id=item.id, member_id=member.id, event_type="impression", result_json=json.dumps(result)))
+        session.commit(); return {"data": result, "request_id": item.request_id}
+
+
+@app_api.post("/ads/{ad_session_id}/complete")
+def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Member = Depends(require_app_member)) -> dict[str, Any]:
+    with SessionLocal() as session:
+        item = _app_session(session, ad_session_id, member, payload.session_token)
+        prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == payload.event_id))
+        if prior:
+            return {"data": json.loads(prior.result_json or "{}"), "request_id": item.request_id}
+        if item.status not in ("issued", "impressed"): raise HTTPException(status_code=409, detail="Ad session has already been closed")
+        stored = get_or_404(session, Member, member.id, "User")
+        before = float(stored.coin or 0); reward = float(item.reward_coin or 0)
+        stored.coin = before + reward; stored.coin_user = float(stored.coin_user or 0) + reward
+        item.status = "rewarded"; item.completed_at = now()
+        log = CoinLog(user_id=stored.id, agent_id=stored.agent_id, game_id=item.game_id, coin_before=before, coin=reward, coin_after=stored.coin, type=1, remark="APP ad reward")
+        session.add(log); session.flush(); item.coin_log_id = log.id
+        result = {"ad_session_id": item.id, "status": "rewarded", "rewarded": True, "coin_added": reward, "coin_balance": stored.coin, "coin_log_id": log.id}
+        session.add(AppAdEvent(event_id=payload.event_id, ad_session_id=item.id, member_id=member.id, event_type="complete", result_json=json.dumps(result)))
+        session.commit(); return {"data": result, "request_id": item.request_id}
+
+
+@app_api.post("/ads/{ad_session_id}/fail", status_code=202)
+def app_ad_fail(ad_session_id: str, payload: AppAdEventRequest, member: Member = Depends(require_app_member)) -> dict[str, Any]:
+    with SessionLocal() as session:
+        item = _app_session(session, ad_session_id, member, payload.session_token)
+        prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == payload.event_id))
+        if prior:
+            return {"data": json.loads(prior.result_json or "{}"), "request_id": item.request_id}
+        if item.status in ("rewarded", "failed"): raise HTTPException(status_code=409, detail="Ad session has already been closed")
+        item.status = "failed"; item.failed_at = now()
+        result = {"ad_session_id": item.id, "status": "failed", "rewarded": False}
+        session.add(AppAdEvent(event_id=payload.event_id, ad_session_id=item.id, member_id=member.id, event_type="fail", result_json=json.dumps(result)))
+        session.commit(); return {"data": result, "request_id": item.request_id}
+
+
+@app_api.get("/ads/history")
+def app_ad_history(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0), game_id: int | None = Query(None, ge=1), member: Member = Depends(require_app_member)) -> dict[str, Any]:
+    with SessionLocal() as session:
+        conditions = [AppAdSession.member_id == member.id]
+        if game_id: conditions.append(AppAdSession.game_id == game_id)
+        stmt = select(AppAdSession).where(*conditions).order_by(AppAdSession.created_at.desc()).offset(offset).limit(limit)
+        items = session.scalars(stmt).all(); total = session.scalar(select(func.count()).select_from(AppAdSession).where(*conditions)) or 0
+        return {"data": {"items": [{"id": x.id, "game_id": x.game_id, "placement": x.placement, "ad_type": x.ad_type, "provider": x.provider, "status": x.status, "coin_added": x.reward_coin if x.status == "rewarded" else 0, "request_id": x.request_id, "watched_at": stringify(x.completed_at or x.impressed_at), "created_at": stringify(x.created_at)} for x in items], "total": int(total), "limit": limit, "offset": offset}, "request_id": secrets.token_urlsafe(12)}
+
+
+@app_api.get("/wallet")
+def app_wallet(member: Member = Depends(require_app_member)) -> dict[str, Any]:
+    with SessionLocal() as session:
+        item = get_or_404(session, Member, member.id, "User")
+        return {"data": {"coin": item.coin, "freeze_coin": item.freeze_coin, "coin_user": item.coin_user, "updated_at": stringify(item.updated_at)}, "request_id": secrets.token_urlsafe(12)}
+
+
+@app_api.get("/wallet/coin-logs")
+def app_coin_logs(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0), member: Member = Depends(require_app_member)) -> dict[str, Any]:
+    with SessionLocal() as session:
+        conditions = [CoinLog.user_id == member.id]
+        items = session.scalars(select(CoinLog).where(*conditions).order_by(CoinLog.created_at.desc()).offset(offset).limit(limit)).all()
+        total = session.scalar(select(func.count()).select_from(CoinLog).where(*conditions)) or 0
+        return {"data": {"items": [{"id": x.id, "type": x.type, "coin_before": x.coin_before, "coin": x.coin, "coin_after": x.coin_after, "remark": x.remark, "source_id": 0, "created_at": stringify(x.created_at)} for x in items], "total": int(total), "limit": limit, "offset": offset}, "request_id": secrets.token_urlsafe(12)}
+
+
 api = APIRouter(prefix="/api/v1", dependencies=[Depends(require_admin)])
 
 
@@ -4912,6 +5395,7 @@ def resource_detail(resource: str, item_id: int) -> dict[str, Any]:
         return serializer(get_or_404(session, model, item_id, "记录"))
 
 
+app.include_router(app_api)
 app.include_router(api)
 
 # Keep the standalone FastAPI entry point usable in development as well as
