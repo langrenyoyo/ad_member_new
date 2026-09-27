@@ -644,6 +644,8 @@ GAME_AD_EDITOR_FIELDS = [
     "ad_rewarded_unit_id",
     "ad_interstitial_unit_id",
     "ad_banner_unit_id",
+    "ad_splash_unit_id",
+    "ad_native_unit_id",
     "ad_reward_coin",
     "ad_cooldown_seconds",
     "ad_config_enabled",
@@ -831,6 +833,8 @@ def game_ad_config(item: Game) -> dict[str, Any]:
     rewarded = placement("rewarded", float(item.star_coin or 0.01))
     interstitial = placement("interstitial")
     banner = placement("banner")
+    splash = placement("splash")
+    native = placement("native")
     return {
         "enabled": bool(configured.get("enabled", item.ad_status == 1)),
         "provider": str(configured.get("provider") or "internal"),
@@ -839,6 +843,8 @@ def game_ad_config(item: Game) -> dict[str, Any]:
             "rewarded": rewarded,
             "interstitial": interstitial,
             "banner": banner,
+            "splash": splash,
+            "native": native,
         },
     }
 
@@ -852,6 +858,8 @@ def serialize_game_editor(item: Game) -> dict[str, Any]:
         "ad_rewarded_unit_id": config["placements"]["rewarded"]["unit_id"],
         "ad_interstitial_unit_id": config["placements"]["interstitial"]["unit_id"],
         "ad_banner_unit_id": config["placements"]["banner"]["unit_id"],
+        "ad_splash_unit_id": config["placements"]["splash"]["unit_id"],
+        "ad_native_unit_id": config["placements"]["native"]["unit_id"],
         "ad_reward_coin": config["placements"]["rewarded"]["reward_coin"],
         "ad_cooldown_seconds": config["placements"]["rewarded"]["cooldown_seconds"],
         "ad_config_enabled": 1 if config["enabled"] else 0,
@@ -882,7 +890,7 @@ def merge_game_ad_config(changes: dict[str, Any], existing_settings: str | None 
     if "ad_rewarded_unit_id" in ad_changes: rewarded["unit_id"] = str(ad_changes["ad_rewarded_unit_id"] or "").strip()
     if "ad_reward_coin" in ad_changes: rewarded["reward_coin"] = float(ad_changes["ad_reward_coin"] or 0)
     if "ad_cooldown_seconds" in ad_changes: rewarded["cooldown_seconds"] = int(ad_changes["ad_cooldown_seconds"] or 0)
-    for field, placement_name in (("ad_interstitial_unit_id", "interstitial"), ("ad_banner_unit_id", "banner")):
+    for field, placement_name in (("ad_interstitial_unit_id", "interstitial"), ("ad_banner_unit_id", "banner"), ("ad_splash_unit_id", "splash"), ("ad_native_unit_id", "native")):
         if field in ad_changes:
             placements.setdefault(placement_name, {})["unit_id"] = str(ad_changes[field] or "").strip()
     current["placements"] = placements
@@ -1860,6 +1868,8 @@ class GameCreate(BaseModel):
     ad_rewarded_unit_id: str = Field(default="", max_length=255)
     ad_interstitial_unit_id: str = Field(default="", max_length=255)
     ad_banner_unit_id: str = Field(default="", max_length=255)
+    ad_splash_unit_id: str = Field(default="", max_length=255)
+    ad_native_unit_id: str = Field(default="", max_length=255)
     ad_reward_coin: float = Field(default=0.01, ge=0, allow_inf_nan=False)
     ad_cooldown_seconds: int = Field(default=0, ge=0, le=86400)
     ad_config_enabled: Literal[0, 1] = 1
@@ -1901,6 +1911,8 @@ class GameUpdate(BaseModel):
     ad_rewarded_unit_id: str | None = Field(default=None, max_length=255)
     ad_interstitial_unit_id: str | None = Field(default=None, max_length=255)
     ad_banner_unit_id: str | None = Field(default=None, max_length=255)
+    ad_splash_unit_id: str | None = Field(default=None, max_length=255)
+    ad_native_unit_id: str | None = Field(default=None, max_length=255)
     ad_reward_coin: float | None = Field(default=None, ge=0, allow_inf_nan=False)
     ad_cooldown_seconds: int | None = Field(default=None, ge=0, le=86400)
     ad_config_enabled: Literal[0, 1] | None = None
@@ -4919,6 +4931,8 @@ class GameAdConfigUpdate(BaseModel):
     rewarded_unit_id: str = Field(default="", max_length=255)
     interstitial_unit_id: str = Field(default="", max_length=255)
     banner_unit_id: str = Field(default="", max_length=255)
+    splash_unit_id: str = Field(default="", max_length=255)
+    native_unit_id: str = Field(default="", max_length=255)
     reward_coin: float = Field(default=0.01, ge=0, allow_inf_nan=False)
     cooldown_seconds: int = Field(default=0, ge=0, le=86400)
 
@@ -4941,6 +4955,8 @@ def update_game_ad_config(game_id: int, payload: GameAdConfigUpdate) -> dict[str
             "ad_rewarded_unit_id": payload.rewarded_unit_id,
             "ad_interstitial_unit_id": payload.interstitial_unit_id,
             "ad_banner_unit_id": payload.banner_unit_id,
+            "ad_splash_unit_id": payload.splash_unit_id,
+            "ad_native_unit_id": payload.native_unit_id,
             "ad_reward_coin": payload.reward_coin,
             "ad_cooldown_seconds": payload.cooldown_seconds,
         }

@@ -7,6 +7,8 @@ const adSettingLabels={
   rewarded:'\u6fc0\u52b1\u5e7f\u544a\u4f4d ID',
   interstitial:'\u63d2\u5c4f\u5e7f\u544a\u4f4d ID',
   banner:'Banner \u5e7f\u544a\u4f4d ID',
+  splash:'\u5f00\u5c4f\u5e7f\u544a\u4f4d ID',
+  native:'\u4fe1\u606f\u6d41\u5e7f\u544a\u4f4d ID',
   rewardCoin:'\u6fc0\u52b1\u5956\u52b1\u91d1\u5e01',
   cooldown:'\u5e7f\u544a\u51b7\u5374\u79d2\u6570',
   enabled:'\u914d\u7f6e\u72b6\u6001',
@@ -25,7 +27,7 @@ function adSettingsField(label,name,value,type='text',extra=''){
 
 function adSettingsCard(game,config){
   const placements=config?.placements||{};
-  const rewarded=placements.rewarded||{},interstitial=placements.interstitial||{},banner=placements.banner||{};
+  const rewarded=placements.rewarded||{},interstitial=placements.interstitial||{},banner=placements.banner||{},splash=placements.splash||{},native=placements.native||{};
   const enabled=Boolean(config?.enabled);
   return `<form class="panel ad-settings-card" data-ad-game="${esc(game.id)}">
     <div class="panel-head"><div><h2>${esc(game.name||'-')}</h2><p class="muted">\u6e38\u620f ID: ${esc(game.id)} &middot; \u4e3b\u4f53 ID: ${esc(game.agent_id??'-')}</p></div><span class="ad-settings-status ${enabled?'enabled':'disabled'}">${enabled?adSettingLabels.on:adSettingLabels.off}</span></div>
@@ -36,6 +38,8 @@ function adSettingsCard(game,config){
       ${adSettingsField(adSettingLabels.rewarded,'rewarded_unit_id',rewarded.unit_id)}
       ${adSettingsField(adSettingLabels.interstitial,'interstitial_unit_id',interstitial.unit_id)}
       ${adSettingsField(adSettingLabels.banner,'banner_unit_id',banner.unit_id)}
+      ${adSettingsField(adSettingLabels.splash,'splash_unit_id',splash.unit_id)}
+      ${adSettingsField(adSettingLabels.native,'native_unit_id',native.unit_id)}
       ${adSettingsField(adSettingLabels.rewardCoin,'reward_coin',rewarded.reward_coin,'number','min="0" step="0.0001"')}
       ${adSettingsField(adSettingLabels.cooldown,'cooldown_seconds',rewarded.cooldown_seconds,'number','min="0" step="1"')}
     </div>

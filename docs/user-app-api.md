@@ -245,6 +245,8 @@ Authorization: Bearer <user_access_token>
     "ad_config": {
       "enabled": true,
       "placements": [
+        {"placement": "splash", "ad_unit_id": "splash-placement-id"},
+        {"placement": "native", "ad_unit_id": "native-placement-id"},
         {"placement": "rewarded", "ad_type": "rewarded", "ad_unit_id": "unit-rewarded", "cooldown_seconds": 30, "reward_coin": 10},
         {"placement": "interstitial", "ad_type": "interstitial", "ad_unit_id": "unit-interstitial", "cooldown_seconds": 10, "reward_coin": 0}
       ]
