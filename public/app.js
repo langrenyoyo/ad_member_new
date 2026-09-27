@@ -34,7 +34,8 @@ function lockAgentScopeFilter(form){
  const input=form.querySelector('[data-mf="agent_id"],[name="agent_id"]');
  if(input){input.value=String(state.agentScope);input.disabled=true;input.title='当前主体';}
 }
-async function api(path,opt={},prefix='/api/v1'){const h={'Content-Type':'application/json',...(opt.headers||{})};if(state.token)h.Authorization='Bearer '+state.token;const r=await fetch(prefix+path,{...opt,headers:h}),d=await r.json().catch(()=>({}));if(path.startsWith('/members?')&&d.permissions)state.memberPermissions=d.permissions;if(!r.ok)throw Error(d.detail||('HTTP '+r.status));return d}
+function apiErrorMessage(detail){if(Array.isArray(detail))return detail.map(item=>typeof item==='object'?(item.msg||item.message||JSON.stringify(item)):String(item)).join('; ');if(detail&&typeof detail==='object')return detail.message||detail.msg||JSON.stringify(detail);return detail?String(detail):''}
+async function api(path,opt={},prefix='/api/v1'){const h={'Content-Type':'application/json',...(opt.headers||{})};if(state.token)h.Authorization='Bearer '+state.token;const r=await fetch(prefix+path,{...opt,headers:h}),d=await r.json().catch(()=>({}));if(path.startsWith('/members?')&&d.permissions)state.memberPermissions=d.permissions;if(!r.ok)throw Error(apiErrorMessage(d.detail)||('HTTP '+r.status));return d}
 
 function nav(){
 
