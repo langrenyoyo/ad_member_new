@@ -638,6 +638,17 @@ GAME_EDITOR_FIELDS = [
     "updated_at",
 ]
 
+GAME_AD_EDITOR_FIELDS = [
+    "ad_provider",
+    "ad_app_id",
+    "ad_rewarded_unit_id",
+    "ad_interstitial_unit_id",
+    "ad_banner_unit_id",
+    "ad_reward_coin",
+    "ad_cooldown_seconds",
+    "ad_config_enabled",
+]
+
 MEMBER_FIELDS = [
     "raffle_open", "raffle_num", "star_countdown", "over_countdown", "down_load", "raffle_num2", "star_countdown2", "over_countdown2",
     "realname_enable",
@@ -791,6 +802,92 @@ def serialize_agent(item: Agent) -> dict[str, Any]:
 
 def serialize_game(item: Game) -> dict[str, Any]:
     return serialize(item, GAME_FIELDS + ["game_ad_status", "game_lottery_num"])
+
+
+def game_settings(item: Game) -> dict[str, Any]:
+    try:
+        value = json.loads(item.settings_json or "{}")
+    except (TypeError, json.JSONDecodeError):
+        value = {}
+    return value if isinstance(value, dict) else {}
+
+
+def game_ad_config(item: Game) -> dict[str, Any]:
+    settings = game_settings(item)
+    configured = settings.get("ad_config")
+    configured = configured if isinstance(configured, dict) else {}
+    placements = configured.get("placements")
+    placements = placements if isinstance(placements, dict) else {}
+
+    def placement(name: str, fallback_coin: float = 0.0) -> dict[str, Any]:
+        value = placements.get(name)
+        value = value if isinstance(value, dict) else {}
+        return {
+            "unit_id": str(value.get("unit_id") or ""),
+            "reward_coin": max(float(value.get("reward_coin", fallback_coin) or 0), 0),
+            "cooldown_seconds": max(int(value.get("cooldown_seconds", configured.get("cooldown_seconds", 0)) or 0), 0),
+        }
+
+    rewarded = placement("rewarded", float(item.star_coin or 0.01))
+    interstitial = placement("interstitial")
+    banner = placement("banner")
+    return {
+        "enabled": bool(configured.get("enabled", item.ad_status == 1)),
+        "provider": str(configured.get("provider") or "internal"),
+        "app_id": str(configured.get("app_id") or ""),
+        "placements": {
+            "rewarded": rewarded,
+            "interstitial": interstitial,
+            "banner": banner,
+        },
+    }
+
+
+def serialize_game_editor(item: Game) -> dict[str, Any]:
+    payload = serialize(item, GAME_EDITOR_FIELDS)
+    config = game_ad_config(item)
+    payload.update({
+        "ad_provider": config["provider"],
+        "ad_app_id": config["app_id"],
+        "ad_rewarded_unit_id": config["placements"]["rewarded"]["unit_id"],
+        "ad_interstitial_unit_id": config["placements"]["interstitial"]["unit_id"],
+        "ad_banner_unit_id": config["placements"]["banner"]["unit_id"],
+        "ad_reward_coin": config["placements"]["rewarded"]["reward_coin"],
+        "ad_cooldown_seconds": config["placements"]["rewarded"]["cooldown_seconds"],
+        "ad_config_enabled": 1 if config["enabled"] else 0,
+    })
+    return payload
+
+
+def merge_game_ad_config(changes: dict[str, Any], existing_settings: str | None = None) -> None:
+    keys = set(GAME_AD_EDITOR_FIELDS)
+    ad_changes = {key: changes.pop(key) for key in list(changes) if key in keys}
+    if not ad_changes:
+        return
+    raw = changes.get("settings_json", existing_settings or "{}")
+    try:
+        settings = json.loads(raw or "{}")
+    except (TypeError, json.JSONDecodeError) as exc:
+        raise HTTPException(status_code=422, detail="settings_json must be a JSON object") from exc
+    if not isinstance(settings, dict):
+        raise HTTPException(status_code=422, detail="settings_json must be a JSON object")
+    current = settings.get("ad_config")
+    current = dict(current) if isinstance(current, dict) else {}
+    placements = current.get("placements")
+    placements = {name: dict(value) for name, value in placements.items() if isinstance(value, dict)} if isinstance(placements, dict) else {}
+    if "ad_provider" in ad_changes: current["provider"] = str(ad_changes["ad_provider"] or "internal").strip()
+    if "ad_app_id" in ad_changes: current["app_id"] = str(ad_changes["ad_app_id"] or "").strip()
+    if "ad_config_enabled" in ad_changes: current["enabled"] = bool(ad_changes["ad_config_enabled"])
+    rewarded = placements.setdefault("rewarded", {})
+    if "ad_rewarded_unit_id" in ad_changes: rewarded["unit_id"] = str(ad_changes["ad_rewarded_unit_id"] or "").strip()
+    if "ad_reward_coin" in ad_changes: rewarded["reward_coin"] = float(ad_changes["ad_reward_coin"] or 0)
+    if "ad_cooldown_seconds" in ad_changes: rewarded["cooldown_seconds"] = int(ad_changes["ad_cooldown_seconds"] or 0)
+    for field, placement_name in (("ad_interstitial_unit_id", "interstitial"), ("ad_banner_unit_id", "banner")):
+        if field in ad_changes:
+            placements.setdefault(placement_name, {})["unit_id"] = str(ad_changes[field] or "").strip()
+    current["placements"] = placements
+    settings["ad_config"] = current
+    changes["settings_json"] = json.dumps(settings, ensure_ascii=False, separators=(",", ":"))
 
 
 def serialize_member(item: Member) -> dict[str, Any]:
@@ -1758,6 +1855,14 @@ class GameCreate(BaseModel):
     wx_secert: str = ""
     other_url: str = ""
     settings_json: str = "{}"
+    ad_provider: str = Field(default="internal", max_length=64)
+    ad_app_id: str = Field(default="", max_length=128)
+    ad_rewarded_unit_id: str = Field(default="", max_length=255)
+    ad_interstitial_unit_id: str = Field(default="", max_length=255)
+    ad_banner_unit_id: str = Field(default="", max_length=255)
+    ad_reward_coin: float = Field(default=0.01, ge=0, allow_inf_nan=False)
+    ad_cooldown_seconds: int = Field(default=0, ge=0, le=86400)
+    ad_config_enabled: Literal[0, 1] = 1
 
 
 class GameUpdate(BaseModel):
@@ -1791,6 +1896,14 @@ class GameUpdate(BaseModel):
     wx_secert: str | None = None
     other_url: str | None = None
     settings_json: str | None = None
+    ad_provider: str | None = Field(default=None, max_length=64)
+    ad_app_id: str | None = Field(default=None, max_length=128)
+    ad_rewarded_unit_id: str | None = Field(default=None, max_length=255)
+    ad_interstitial_unit_id: str | None = Field(default=None, max_length=255)
+    ad_banner_unit_id: str | None = Field(default=None, max_length=255)
+    ad_reward_coin: float | None = Field(default=None, ge=0, allow_inf_nan=False)
+    ad_cooldown_seconds: int | None = Field(default=None, ge=0, le=86400)
+    ad_config_enabled: Literal[0, 1] | None = None
 
 
 class MemberCreate(BaseModel):
@@ -2539,7 +2652,9 @@ def app_games(member: Member = Depends(require_app_member)) -> dict[str, Any]:
 def app_bootstrap(game_id: int | None = Query(None, ge=1), member: Member = Depends(require_app_member)) -> dict[str, Any]:
     with SessionLocal() as session:
         game = _app_game_for_member(session, member, game_id)
-        return {"data": {"user": _app_member_payload(member), "game": {"id": game.id, "name": game.name, "status": game.status, "ad_status": game.ad_status}, "ad_config": {"enabled": True, "placements": [{"placement": "rewarded", "ad_type": "rewarded", "ad_unit_id": game.game_key or str(game.id), "cooldown_seconds": 0, "reward_coin": float(game.star_coin or 0)}]}, "server_time": now().isoformat()}, "request_id": secrets.token_urlsafe(12)}
+        config = game_ad_config(game)
+        placements = [{"placement": name, "ad_type": name, "ad_unit_id": value["unit_id"], "cooldown_seconds": value["cooldown_seconds"], "reward_coin": value["reward_coin"]} for name, value in config["placements"].items() if value["unit_id"] or name == "rewarded"]
+        return {"data": {"user": _app_member_payload(member), "game": {"id": game.id, "name": game.name, "status": game.status, "ad_status": game.ad_status}, "ad_config": {"enabled": config["enabled"], "provider": config["provider"], "app_id": config["app_id"], "placements": placements}, "server_time": now().isoformat()}, "request_id": secrets.token_urlsafe(12)}
 
 
 @app_api.post("/ads/request", status_code=201)
@@ -2548,6 +2663,10 @@ def app_ad_request(payload: AppAdRequest, request: Request, member: Member = Dep
         raise HTTPException(status_code=503, detail="Ad provider is unavailable")
     with SessionLocal() as session:
         game = _app_game_for_member(session, member, payload.game_id)
+        config = game_ad_config(game)
+        placement = config["placements"].get(payload.placement) or config["placements"]["rewarded"]
+        if not config["enabled"] or (payload.placement != "rewarded" and not placement["unit_id"]):
+            raise HTTPException(status_code=503, detail="Ad placement is not configured")
         if payload.client_request_id:
             existing = session.scalar(select(AppAdSession).where(AppAdSession.member_id == member.id, AppAdSession.client_request_id == payload.client_request_id, AppAdSession.status == "issued"))
             if existing:
@@ -2560,7 +2679,7 @@ def app_ad_request(payload: AppAdRequest, request: Request, member: Member = Dep
         session_token = secrets.token_urlsafe(32)
         item = AppAdSession(id=session_id, member_id=member.id, agent_id=member.agent_id, game_id=game.id, device_id=payload.device_id,
                             client_request_id=payload.client_request_id, request_id=request_id, placement=payload.placement, ad_type=payload.ad_type,
-                            provider="internal", ad_unit_id=game.game_key or str(game.id), reward_coin=max(float(game.star_coin or 0), 0),
+                            provider=config["provider"], ad_unit_id=placement["unit_id"] or game.game_key or str(game.id), reward_coin=placement["reward_coin"],
                             status="issued", session_token_hash=_token_hash(session_token), expires_at=now() + timedelta(minutes=APP_AD_SESSION_MINUTES))
         session.add(item); session.commit()
         result = _app_ad_result(item, member); result["session_token"] = session_token
@@ -4730,7 +4849,7 @@ def delete_agent(agent_id: int) -> Response:
 @api.get("/games/{game_id}")
 def get_game(game_id: int) -> dict[str, Any]:
     with SessionLocal() as session:
-        return serialize(get_or_404(session, Game, game_id, "游戏"), GAME_EDITOR_FIELDS)
+        return serialize_game_editor(get_or_404(session, Game, game_id, "游戏"))
 
 
 @api.post(
@@ -4741,6 +4860,7 @@ def get_game(game_id: int) -> dict[str, Any]:
 def create_game(payload: GameCreate) -> dict[str, Any]:
     changes = payload.model_dump()
     require_nonblank(changes, "name", "游戏名称")
+    merge_game_ad_config(changes)
     validate_json_text(changes, "settings_json")
     with SessionLocal() as session:
         validate_game_agent(session, changes["agent_id"])
@@ -4779,9 +4899,10 @@ def update_game(game_id: int, payload: GameUpdate) -> dict[str, Any]:
             "tixian_wx",
         ],
     )
-    validate_json_text(changes, "settings_json")
     with SessionLocal() as session:
         item = get_or_404(session, Game, game_id, "游戏")
+        merge_game_ad_config(changes, item.settings_json)
+        validate_json_text(changes, "settings_json")
         if "agent_id" in changes:
             validate_game_agent(session, changes["agent_id"])
         for field, value in changes.items():
@@ -4789,6 +4910,45 @@ def update_game(game_id: int, payload: GameUpdate) -> dict[str, Any]:
         session.commit()
         session.refresh(item)
         return serialize_game(item)
+
+
+class GameAdConfigUpdate(BaseModel):
+    provider: str = Field(default="internal", max_length=64)
+    app_id: str = Field(default="", max_length=128)
+    enabled: Literal[0, 1] = 1
+    rewarded_unit_id: str = Field(default="", max_length=255)
+    interstitial_unit_id: str = Field(default="", max_length=255)
+    banner_unit_id: str = Field(default="", max_length=255)
+    reward_coin: float = Field(default=0.01, ge=0, allow_inf_nan=False)
+    cooldown_seconds: int = Field(default=0, ge=0, le=86400)
+
+
+@api.get("/games/{game_id}/ad-config")
+def get_game_ad_config(game_id: int) -> dict[str, Any]:
+    with SessionLocal() as session:
+        item = get_or_404(session, Game, game_id, "游戏")
+        return {"game_id": item.id, **game_ad_config(item)}
+
+
+@api.patch("/games/{game_id}/ad-config", dependencies=[Depends(allow_roles("operator"))])
+def update_game_ad_config(game_id: int, payload: GameAdConfigUpdate) -> dict[str, Any]:
+    with SessionLocal() as session:
+        item = get_or_404(session, Game, game_id, "游戏")
+        changes = {
+            "ad_provider": payload.provider,
+            "ad_app_id": payload.app_id,
+            "ad_config_enabled": payload.enabled,
+            "ad_rewarded_unit_id": payload.rewarded_unit_id,
+            "ad_interstitial_unit_id": payload.interstitial_unit_id,
+            "ad_banner_unit_id": payload.banner_unit_id,
+            "ad_reward_coin": payload.reward_coin,
+            "ad_cooldown_seconds": payload.cooldown_seconds,
+        }
+        merge_game_ad_config(changes, item.settings_json)
+        item.settings_json = changes["settings_json"]
+        session.commit()
+        session.refresh(item)
+        return {"game_id": item.id, **game_ad_config(item)}
 
 
 @api.delete(
