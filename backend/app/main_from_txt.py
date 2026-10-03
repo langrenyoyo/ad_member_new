@@ -245,6 +245,29 @@ class AdRecord(Base, TimestampMixin):
     trans_id: Mapped[str] = mapped_column(String(128), default="")
 
 
+class GameTakuConfig(Base):
+    """Server-only settings, deliberately excluded from game settings_json."""
+    __tablename__ = "game_taku_configs"
+    game_id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    enabled: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    sec_key: Mapped[str] = mapped_column(String(512), default="", nullable=False)
+
+
+def taku_credentials(session: Session, game_id: int) -> tuple[bool, str]:
+    config = session.get(GameTakuConfig, game_id)
+    if config is not None:
+        return bool(config.enabled), config.sec_key
+    # Preserve existing deployments until a game saves its own callback settings.
+    return bool(TAKU_SEC_KEY), TAKU_SEC_KEY
+
+
+def taku_admin_config(session: Session, game_id: int) -> dict[str, Any]:
+    enabled, key = taku_credentials(session, game_id)
+    return {"taku_callback_enabled": enabled, "taku_sec_key_configured": bool(key),
+            "taku_config_source": "game" if session.get(GameTakuConfig, game_id) else "environment",
+            "taku_callback_path": "/api/callbacks/taku/reward"}
+
+
 class AppRefreshSession(Base, TimestampMixin):
     """Rotating refresh tokens for the user APP.
 
@@ -2797,7 +2820,8 @@ def app_ad_request(payload: AppAdRequest, request: Request, member: Member = Dep
         config = game_ad_config(game)
         placement = config["placements"].get(payload.placement) or config["placements"]["rewarded"]
         if config["provider"].lower() == "taku":
-            if not TAKU_SEC_KEY or not placement["unit_id"]:
+            callback_enabled, callback_key = taku_credentials(session, game.id)
+            if not callback_enabled or not callback_key or not placement["unit_id"]:
                 raise HTTPException(status_code=503, detail="TAKU reward callback is not configured")
             if payload.placement != "rewarded" or payload.ad_type != "rewarded":
                 raise HTTPException(status_code=422, detail="TAKU reward sessions require rewarded placement and type")
@@ -2935,8 +2959,6 @@ def taku_reward_callback(
     if is_test == "1":
         # Console probes contain literal placeholders and never write anything.
         return reply(200)
-    if not TAKU_SEC_KEY:
-        return reply(503, "TAKU callback is not configured")
     required = ("user_id", "trans_id", "placement_id", "adsource_id", "reward_amount", "reward_name", "extra_data", "sign")
     if any(not request.query_params.get(k) for k in required) or any(len(request.query_params.getlist(k)) != 1 for k in required):
         return reply(602, "missing or duplicate parameters")
@@ -2944,7 +2966,15 @@ def taku_reward_callback(
         return reply(602, "duplicate parameters")
     if len(trans_id) > 128 or len(placement_id) > 128 or any(len(v) > 512 for k, v in request.query_params.items() if k != "ilrd") or len(ilrd) > 65536:
         return reply(602, "parameters too long")
-    parts = [f"trans_id={trans_id}", f"placement_id={placement_id}", f"adsource_id={adsource_id}", f"reward_amount={reward_amount}", f"reward_name={reward_name}", f"sec_key={TAKU_SEC_KEY}"]
+    # Resolve the server-issued session before selecting the game's private key.
+    with SessionLocal() as lookup:
+        target = lookup.get(AppAdSession, extra_data.split(".", 1)[0])
+        if target is None:
+            return reply(602, "ad session not found")
+        callback_enabled, callback_key = taku_credentials(lookup, target.game_id)
+        if not callback_enabled or not callback_key:
+            return reply(503, "TAKU callback is not configured for this game")
+    parts = [f"trans_id={trans_id}", f"placement_id={placement_id}", f"adsource_id={adsource_id}", f"reward_amount={reward_amount}", f"reward_name={reward_name}", f"sec_key={callback_key}"]
     if "ilrd" in request.query_params:
         parts.append(f"ilrd={ilrd}")
     expected = hashlib.md5("&".join(parts).encode("utf-8")).hexdigest()
@@ -2967,6 +2997,8 @@ def taku_reward_callback(
         if (ad_session is None or ad_session.member_id != item.id or ad_session.provider.lower() != "taku"
                 or ad_session.ad_unit_id != placement_id or not hmac.compare_digest(_taku_extra_data(ad_session).encode(), extra_data.encode())):
             return reply(602, "invalid ad session binding")
+        if taku_credentials(session, ad_session.game_id) != (True, callback_key):
+            return reply(503, "TAKU configuration changed; retry")
         event_key = "taku:" + hashlib.sha256(trans_id.encode()).hexdigest()
         prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == event_key))
         if prior:
@@ -5158,6 +5190,9 @@ def update_game(game_id: int, payload: GameUpdate) -> dict[str, Any]:
 
 
 class GameAdConfigUpdate(BaseModel):
+    taku_callback_enabled: Literal[0, 1] | None = None
+    taku_sec_key: str = Field(default="", max_length=512)
+    taku_clear_sec_key: bool = False
     provider: str = Field(default="internal", max_length=64)
     app_id: str = Field(default="", max_length=128)
     app_key: str = Field(default="", max_length=255)
@@ -5175,7 +5210,7 @@ class GameAdConfigUpdate(BaseModel):
 def get_game_ad_config(game_id: int) -> dict[str, Any]:
     with SessionLocal() as session:
         item = get_or_404(session, Game, game_id, "游戏")
-        return {"game_id": item.id, **game_ad_config(item)}
+        return {"game_id": item.id, **game_ad_config(item), **taku_admin_config(session, item.id)}
 
 
 @api.patch("/games/{game_id}/ad-config", dependencies=[Depends(allow_roles("operator"))])
@@ -5197,9 +5232,25 @@ def update_game_ad_config(game_id: int, payload: GameAdConfigUpdate) -> dict[str
         }
         merge_game_ad_config(changes, item.settings_json)
         item.settings_json = changes["settings_json"]
+        if payload.taku_callback_enabled is not None or payload.taku_sec_key or payload.taku_clear_sec_key:
+            callback = session.get(GameTakuConfig, game_id)
+            if callback is None:
+                enabled, key = taku_credentials(session, game_id)
+                callback = GameTakuConfig(game_id=game_id, enabled=int(enabled), sec_key=key)
+                session.add(callback)
+            if payload.taku_sec_key and payload.taku_clear_sec_key:
+                raise HTTPException(422, "Cannot set and clear TAKU key together")
+            if payload.taku_sec_key:
+                callback.sec_key = payload.taku_sec_key.strip()
+            if payload.taku_clear_sec_key:
+                callback.sec_key = ""
+            if payload.taku_callback_enabled is not None:
+                callback.enabled = payload.taku_callback_enabled
+            if callback.enabled and (not callback.sec_key or payload.provider.strip().lower() != "taku" or not payload.rewarded_unit_id.strip()):
+                raise HTTPException(422, "启用 TAKU 回调需要选择 taku、填写激励广告位及服务端密钥")
         session.commit()
         session.refresh(item)
-        return {"game_id": item.id, **game_ad_config(item)}
+        return {"game_id": item.id, **game_ad_config(item), **taku_admin_config(session, item.id)}
 
 
 @api.delete(

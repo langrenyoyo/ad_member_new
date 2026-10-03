@@ -37,6 +37,10 @@ function adSettingsCard(game,config){
       ${adSettingsField(adSettingLabels.provider,'provider',config?.provider||'internal')}
       ${adSettingsField(adSettingLabels.appId,'app_id',config?.app_id)}
       ${adSettingsField(adSettingLabels.appKey,'app_key',config?.app_key)}
+      <label class="ad-settings-field"><span>TAKU 服务端回调</span><select name="taku_callback_enabled"><option value="0" ${config?.taku_callback_enabled?'':'selected'}>停用</option><option value="1" ${config?.taku_callback_enabled?'selected':''}>启用</option></select></label>
+      ${adSettingsField('TAKU 服务端密钥（sec_key）','taku_sec_key','','password','autocomplete="new-password" placeholder="留空保留原密钥"')}
+      <label class="ad-settings-field"><span data-taku-key-status>${config?.taku_sec_key_configured?'密钥已配置':'密钥未配置'}${config?.taku_config_source==='environment'?'（继承服务器配置）':''}</span><span><input type="checkbox" name="taku_clear_sec_key"> 清除密钥（需停用回调）</span></label>
+      <label class="ad-settings-field"><span>TAKU 回调 URL（点击选中复制）</span><input readonly data-taku-url value="${esc(location.origin+'/api/callbacks/taku/reward?user_id={user_id}&trans_id={trans_id}&reward_amount={reward_amount}&reward_name={reward_name}&placement_id={placement_id}&extra_data={extra_data}&network_firm_id={network_firm_id}&adsource_id={adsource_id}&scenario_id={scenario_id}&sign={sign}')}"></label>
       ${adSettingsField(adSettingLabels.rewarded,'rewarded_unit_id',rewarded.unit_id)}
       ${adSettingsField(adSettingLabels.interstitial,'interstitial_unit_id',interstitial.unit_id)}
       ${adSettingsField(adSettingLabels.banner,'banner_unit_id',banner.unit_id)}
@@ -60,16 +64,22 @@ async function renderAdSettings(){
     if(generation!==adSettingsState.generation||state.view!=='ad-settings')return;
     $('#content').innerHTML=`<div class="ad-settings-page"><section class="panel ad-settings-intro"><div class="panel-head"><div><h2>${adSettingLabels.title}</h2><p class="muted">\u914d\u7f6e\u5b8c\u6210\u540e\uff0c\u7528\u6237 APP \u7684 bootstrap \u548c\u5e7f\u544a\u8bf7\u6c42\u4f1a\u4f7f\u7528\u5bf9\u5e94\u5e7f\u544a\u4f4d\u3002</p></div><button class="button ghost" id="adSettingsRefresh" type="button">${adSettingLabels.refresh}</button></div><div class="ad-settings-notice">\u8bf7\u586b\u5199\u771f\u5b9e\u8054\u76df\u5e7f\u544a\u4f4d ID\u3002\u672a\u914d\u7f6e\u771f\u5b9e\u6e20\u9053\u65f6\uff0c\u4e0d\u8981\u628a\u5185\u90e8\u6d4b\u8bd5\u503c\u7528\u4e8e\u751f\u4ea7\u6295\u653e\u3002</div></section>${rows.length?rows.map(([game,config])=>adSettingsCard(game,config)).join(''):'<section class="panel"><div class="empty">\u6682\u65e0\u6e38\u620f</div></section>'}</div>`;
     $('#adSettingsRefresh').onclick=()=>renderAdSettings();
+    document.querySelectorAll('[data-taku-url]').forEach(input=>input.onclick=()=>input.select());
     document.querySelectorAll('[data-ad-game]').forEach(form=>form.addEventListener('submit',async event=>{
       event.preventDefault();
       const button=form.querySelector('button[type="submit"]');
       const message=form.querySelector('.ad-settings-message');
       button.disabled=true; message.textContent=adSettingLabels.saving;
       const body=Object.fromEntries(new FormData(form));
+      body.taku_callback_enabled=Number(body.taku_callback_enabled);
+      body.taku_clear_sec_key=body.taku_clear_sec_key==='on';
       body.enabled=Number(body.enabled); body.reward_coin=Number(body.reward_coin||0); body.cooldown_seconds=Number(body.cooldown_seconds||0);
       try{
         const result=await api(`/games/${form.dataset.adGame}/ad-config`,{method:'PATCH',body:JSON.stringify(body)});
         message.textContent=adSettingLabels.saved;
+        form.querySelector('[name=taku_sec_key]').value='';
+        form.querySelector('[name=taku_clear_sec_key]').checked=false;
+        form.querySelector('[data-taku-key-status]').textContent=result.taku_sec_key_configured?'密钥已配置':'密钥未配置';
         const status=form.querySelector('.ad-settings-status');
         status.className=`ad-settings-status ${result.enabled?'enabled':'disabled'}`;
         status.textContent=result.enabled?adSettingLabels.on:adSettingLabels.off;

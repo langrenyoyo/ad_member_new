@@ -153,6 +153,43 @@ class TakuCallbackTests(unittest.TestCase):
         self.assertEqual(self.callback(pairs).status_code,602)
         self.assertEqual(self.balances(),(10,0,0))
 
+    def test_game_private_key_save_preserve_clear_and_no_leak(self):
+        data=dict(provider='taku',rewarded_unit_id='placement-test',taku_callback_enabled=1,taku_sec_key='private-game-key')
+        result=m.update_game_ad_config(1,m.GameAdConfigUpdate(**data))
+        self.assertTrue(result['taku_sec_key_configured'])
+        self.assertNotIn('private-game-key',str(result))
+        data['taku_sec_key']=''
+        m.update_game_ad_config(1,m.GameAdConfigUpdate(**data))
+        with self.factory() as s:
+            self.assertEqual(m.taku_credentials(s,1),(True,'private-game-key'))
+            self.assertNotIn('private-game-key',s.get(m.Game,1).settings_json)
+            self.assertNotIn('private-game-key',str(m.serialize_game_editor(s.get(m.Game,1))))
+        self.assertEqual(self.callback().status_code,601)  # Global key cannot override game key.
+        p=self.params()
+        raw='&'.join(f'{k}={p[k]}' for k in ['trans_id','placement_id','adsource_id','reward_amount','reward_name'])+'&sec_key=private-game-key'
+        p['sign']=hashlib.md5(raw.encode()).hexdigest()
+        self.assertEqual(self.callback(p).status_code,200)
+        data.update(taku_callback_enabled=0,taku_clear_sec_key=True)
+        result=m.update_game_ad_config(1,m.GameAdConfigUpdate(**data))
+        self.assertFalse(result['taku_sec_key_configured'])
+        self.assertEqual(self.callback(p).status_code,503)
+
+    def test_disabled_game_does_not_fall_back_to_global_key(self):
+        with self.factory() as s:
+            s.add(m.GameTakuConfig(game_id=1,enabled=0,sec_key='own-key'))
+            s.add(m.GameTakuConfig(game_id=2,enabled=1,sec_key='other-key'));s.commit()
+            self.assertEqual(m.taku_credentials(s,2),(True,'other-key'))
+        self.assertEqual(self.callback().status_code,503)
+        self.assertEqual(self.balances(),(10,0,0))
+
+    def test_cannot_enable_without_key_and_rolls_back(self):
+        from fastapi import HTTPException
+        with patch.object(m,'TAKU_SEC_KEY',''):
+            with self.assertRaises(HTTPException):
+                m.update_game_ad_config(1,m.GameAdConfigUpdate(provider='taku',rewarded_unit_id='placement-test',taku_callback_enabled=1))
+        with self.factory() as s:
+            self.assertIsNone(s.get(m.GameTakuConfig,1))
+
 
 if __name__ == '__main__':
     unittest.main()

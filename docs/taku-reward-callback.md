@@ -1,5 +1,17 @@
 # TAKU 服务端激励回调
 
+## 更新：每游戏独立配置
+
+后台「广告联盟设置」现在提供每个游戏的 TAKU 回调开关、服务端 sec_key、配置状态和完整回调 URL。广告联盟填写 `taku`，激励广告位填对应 TAKU placement ID。启用前须配置密钥和广告位，并完成下文 App 对接。
+
+密钥保存在独立 `game_taku_configs` 表，不放入可能返回客户端的 `settings_json`；GET/PATCH 均不返回原文。留空保留，勾选清除需同时停用。数据库备份需作为敏感配置保护。
+
+不同游戏可以配置不同密钥，所有游戏共用回调 URL。服务端通过已签发会话定位游戏再选择验签密钥。新配置保存后即时生效，无须重启；更换密钥会影响在途旧签名回调，应避开仍有未结算广告的时段。
+
+未配置独立记录的旧游戏仍兼容 `.env` 的 `TAKU_SEC_KEY`；已保存独立记录的游戏不再回退到全局密钥，停用也不会被全局配置重新启用。以下旧版环境变量配置步骤仅适用于兼容模式。
+
+数据库迁移：`alembic upgrade head`，新增迁移 `e925_game_taku_configs`。当前 development 启动模式也会自动创建缺失表。
+
 协议依据：https://help.takuad.com/docs/msbnkj ，2026-10-03 核对。
 
 ## 部署与启用顺序
@@ -7,8 +19,8 @@
 本次先部署接口，不切换现有游戏 provider，不追溯发放历史奖励。
 TAKU SDK 需 >= 5.7.56。客户端升级、服务端密钥和平台广告位配置全部就绪后，再将游戏广告联盟 provider 设置为 `taku`。
 
-1. 在服务器 `/www/wwwroot/ad_member_new/.env` 配置 `TAKU_SEC_KEY`，值为 TAKU 服务端激励签名的 `sec_key`。不要填入管理后台 App Key，该字段会下发客户端。当前实现使用一个密钥，接入的广告位必须使用该密钥；不同密钥的广告位需要先扩展密钥映射。
-2. 重启 `ad-member-new.service` 使环境变量生效。
+1. 推荐在后台按游戏填写 TAKU 服务端激励签名的 `sec_key`。兼容旧配置时可在服务器 `.env` 使用 `TAKU_SEC_KEY`。不要填入 App Key，该字段会下发客户端。
+2. 后台配置保存后即时生效；仅修改环境变量时需要重启 `ad-member-new.service`。
 3. 更新 App：请求广告会话后，在加载 SDK 广告前设置 `UserID = data.taku_user_id`、`UserCustomData = data.taku_extra_data`。透传值必须原样使用，不要只发送会话 ID，不要使用用户名或设备 ID 作为 UserID。
 4. App `/complete` 在 TAKU 模式只报告等待验证，不发金币。通过 `/ads/history` 和 `/wallet` 刷新状态和余额；平台回调先到时 `/complete` 返回已奖励。
 5. 确认游戏激励广告位 ID 正确，将 provider 切换为 `taku`，在 TAKU 激励视频广告位开启服务端激励，并填入下方完整 URL。部署接口本身不会替你修改 TAKU 控制台。
