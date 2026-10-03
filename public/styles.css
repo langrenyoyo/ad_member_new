@@ -215,7 +215,7 @@ button { border: 0; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .login-screen { background: linear-gradient(135deg,#f5f7fb 0%,#e9eefb 100%); position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; padding: 20px; background: #edf2f3; }
-.login-screen[hidden] { display: none; }
+.login-screen[hidden], .app-shell[hidden] { display: none; }
 .login-panel { width: min(390px, 100%); padding: 28px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); box-shadow: 0 20px 55px rgba(20, 52, 59, .13); }
 .login-brand { display: flex; align-items: center; gap: 11px; color: var(--ink); }
 .login-heading { margin: 34px 0 22px; }

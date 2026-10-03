@@ -35,7 +35,15 @@ function lockAgentScopeFilter(form){
  if(input){input.value=String(state.agentScope);input.disabled=true;input.title='当前主体';}
 }
 function apiErrorMessage(detail){if(Array.isArray(detail))return detail.map(item=>typeof item==='object'?(item.msg||item.message||JSON.stringify(item)):String(item)).join('; ');if(detail&&typeof detail==='object')return detail.message||detail.msg||JSON.stringify(detail);return detail?String(detail):''}
-async function api(path,opt={},prefix='/api/v1'){const h={'Content-Type':'application/json',...(opt.headers||{})};if(state.token)h.Authorization='Bearer '+state.token;const r=await fetch(prefix+path,{...opt,headers:h}),d=await r.json().catch(()=>({}));if(path.startsWith('/members?')&&d.permissions)state.memberPermissions=d.permissions;if(!r.ok)throw Error(apiErrorMessage(d.detail)||('HTTP '+r.status));return d}
+function expireSession(){
+ localStorage.removeItem('admin_access_token');sessionStorage.removeItem('admin_access_token');state.token='';
+ ++pageLoadGeneration;state.memberPermissions={};
+ document.querySelector('.app-shell').hidden=true;document.querySelector('#loginScreen').hidden=false;
+ document.querySelectorAll('.modal-backdrop').forEach(element=>element.hidden=true);
+ document.querySelector('#sidebarOverlay')?.classList.remove('open');document.title='登录';
+ const error=document.querySelector('#loginError');if(error)error.textContent='登录状态无效或已过期，请重新登录';
+}
+async function api(path,opt={},prefix='/api/v1'){const token=state.token,h={'Content-Type':'application/json',...(opt.headers||{})};if(token)h.Authorization='Bearer '+token;const r=await fetch(prefix+path,{...opt,headers:h}),d=await r.json().catch(()=>({}));if(r.status===401){if(token&&state.token===token)expireSession();throw Error(apiErrorMessage(d.detail)||'登录状态无效或已过期');}if(path.startsWith('/members?')&&d.permissions)state.memberPermissions=d.permissions;if(!r.ok)throw Error(apiErrorMessage(d.detail)||('HTTP '+r.status));return d}
 
 function nav(){
 

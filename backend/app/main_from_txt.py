@@ -43,6 +43,7 @@ JWT_ALGORITHM = "HS256"
 JWT_EXPIRE_MINUTES = int(os.getenv("JWT_EXPIRE_MINUTES", "480"))
 ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "Admin123!")
+TAKU_SEC_KEY = os.getenv("TAKU_SEC_KEY", "").strip()
 
 if APP_ENV == "production":
     if JWT_SECRET == "development-only-change-this-secret" or JWT_SECRET.startswith("replace-with") or len(JWT_SECRET) < 32:
@@ -2572,6 +2573,9 @@ def _app_ad_result(item: AppAdSession, member: Member) -> dict[str, Any]:
         "session_token": "",
         "expires_at": stringify(item.expires_at),
         "status": item.status,
+        "reward_verification": "server_callback" if item.provider.lower() == "taku" else "client",
+        "taku_user_id": str(member.id) if item.provider.lower() == "taku" else None,
+        "taku_extra_data": _taku_extra_data(item) if item.provider.lower() == "taku" else None,
     }
 
 
@@ -2788,16 +2792,21 @@ def app_bootstrap(game_id: int | None = Query(None, ge=1), member: Member = Depe
 
 @app_api.post("/ads/request", status_code=201)
 def app_ad_request(payload: AppAdRequest, request: Request, member: Member = Depends(require_app_member)) -> dict[str, Any]:
-    if APP_ENV == "production" and not configured_provider().available:
-        raise HTTPException(status_code=503, detail="Ad provider is unavailable")
     with SessionLocal() as session:
         game = _app_game_for_member(session, member, payload.game_id)
         config = game_ad_config(game)
         placement = config["placements"].get(payload.placement) or config["placements"]["rewarded"]
+        if config["provider"].lower() == "taku":
+            if not TAKU_SEC_KEY or not placement["unit_id"]:
+                raise HTTPException(status_code=503, detail="TAKU reward callback is not configured")
+            if payload.placement != "rewarded" or payload.ad_type != "rewarded":
+                raise HTTPException(status_code=422, detail="TAKU reward sessions require rewarded placement and type")
+        elif APP_ENV == "production":
+            raise HTTPException(status_code=503, detail="Ad provider is unavailable")
         if not config["enabled"] or (payload.placement != "rewarded" and not placement["unit_id"]):
             raise HTTPException(status_code=503, detail="Ad placement is not configured")
         if payload.client_request_id:
-            existing = session.scalar(select(AppAdSession).where(AppAdSession.member_id == member.id, AppAdSession.client_request_id == payload.client_request_id, AppAdSession.status == "issued"))
+            existing = session.scalar(select(AppAdSession).where(AppAdSession.member_id == member.id, AppAdSession.game_id == game.id, AppAdSession.client_request_id == payload.client_request_id, AppAdSession.status == "issued"))
             if existing:
                 token = secrets.token_urlsafe(32)
                 existing.session_token_hash = _token_hash(token); session.commit()
@@ -2816,7 +2825,10 @@ def app_ad_request(payload: AppAdRequest, request: Request, member: Member = Dep
 
 
 def _app_session(session: Session, session_id: str, member: Member, token: str) -> AppAdSession:
-    item = session.get(AppAdSession, session_id)
+    if session.bind.dialect.name == "sqlite":
+        session.execute(text("BEGIN IMMEDIATE"))
+    session.scalar(select(Member).where(Member.id == member.id).with_for_update())
+    item = session.scalar(select(AppAdSession).where(AppAdSession.id == session_id).with_for_update())
     if item is None or item.member_id != member.id or not hmac.compare_digest(item.session_token_hash, _token_hash(token)):
         raise HTTPException(status_code=404, detail="Ad session not found")
     if item.expires_at.replace(tzinfo=UTC) <= now() and item.status not in ("rewarded", "failed", "expired"):
@@ -2831,6 +2843,8 @@ def app_ad_impression(ad_session_id: str, payload: AppAdEventRequest, member: Me
         item = _app_session(session, ad_session_id, member, payload.session_token)
         prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == payload.event_id))
         if prior:
+            if prior.ad_session_id != item.id or prior.event_type != "impression":
+                raise HTTPException(status_code=409, detail="Event ID belongs to another operation")
             return {"data": json.loads(prior.result_json or "{}"), "request_id": item.request_id}
         if item.status != "issued": raise HTTPException(status_code=409, detail="Ad session cannot be impressed")
         item.status = "impressed"; item.impressed_at = now()
@@ -2843,8 +2857,17 @@ def app_ad_impression(ad_session_id: str, payload: AppAdEventRequest, member: Me
 def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Member = Depends(require_app_member)) -> dict[str, Any]:
     with SessionLocal() as session:
         item = _app_session(session, ad_session_id, member, payload.session_token)
+        if item.provider.lower() == "taku":
+            if item.status == "rewarded":
+                return {"data": {"ad_session_id": item.id, "status": "rewarded", "rewarded": True, "coin_added": item.reward_coin, "coin_log_id": item.coin_log_id}, "request_id": item.request_id}
+            if item.status not in ("issued", "impressed"):
+                raise HTTPException(status_code=409, detail="Ad session has already been closed")
+            # Client completion is advisory; only the verified provider callback settles.
+            return {"data": {"ad_session_id": item.id, "status": "pending_verification", "rewarded": False, "coin_added": 0}, "request_id": item.request_id}
         prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == payload.event_id))
         if prior:
+            if prior.ad_session_id != item.id or prior.event_type != "complete":
+                raise HTTPException(status_code=409, detail="Event ID belongs to another operation")
             return {"data": json.loads(prior.result_json or "{}"), "request_id": item.request_id}
         if item.status not in ("issued", "impressed"): raise HTTPException(status_code=409, detail="Ad session has already been closed")
         stored = get_or_404(session, Member, member.id, "User")
@@ -2864,6 +2887,8 @@ def app_ad_fail(ad_session_id: str, payload: AppAdEventRequest, member: Member =
         item = _app_session(session, ad_session_id, member, payload.session_token)
         prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == payload.event_id))
         if prior:
+            if prior.ad_session_id != item.id or prior.event_type != "fail":
+                raise HTTPException(status_code=409, detail="Event ID belongs to another operation")
             return {"data": json.loads(prior.result_json or "{}"), "request_id": item.request_id}
         if item.status in ("rewarded", "failed"): raise HTTPException(status_code=409, detail="Ad session has already been closed")
         item.status = "failed"; item.failed_at = now()
@@ -2880,6 +2905,97 @@ def app_ad_history(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, 
         stmt = select(AppAdSession).where(*conditions).order_by(AppAdSession.created_at.desc()).offset(offset).limit(limit)
         items = session.scalars(stmt).all(); total = session.scalar(select(func.count()).select_from(AppAdSession).where(*conditions)) or 0
         return {"data": {"items": [{"id": x.id, "game_id": x.game_id, "placement": x.placement, "ad_type": x.ad_type, "provider": x.provider, "status": x.status, "coin_added": x.reward_coin if x.status == "rewarded" else 0, "request_id": x.request_id, "watched_at": stringify(x.completed_at or x.impressed_at), "created_at": stringify(x.created_at)} for x in items], "total": int(total), "limit": limit, "offset": offset}, "request_id": secrets.token_urlsafe(12)}
+
+
+def _taku_extra_data(item: AppAdSession) -> str:
+    message = f"taku:{item.id}:{item.member_id}:{item.ad_unit_id}"
+    proof = hmac.new(JWT_SECRET.encode(), message.encode(), hashlib.sha256).hexdigest()
+    return item.id + "." + proof
+
+
+@app.get("/api/callbacks/taku/reward")
+def taku_reward_callback(
+    request: Request,
+    user_id: str = "",
+    trans_id: str = "",
+    reward_amount: str = "",
+    reward_name: str = "",
+    placement_id: str = "",
+    extra_data: str = "",
+    network_firm_id: str = "",
+    adsource_id: str = "",
+    scenario_id: str = "",
+    sign: str = "",
+    ilrd: str = "",
+    is_test: str = "",
+) -> Response:
+    """Taku S2S reward callback. Taku calls this endpoint with GET parameters."""
+    def reply(code: int, message: str = "ok") -> Response:
+        return Response(status_code=code, content=message, headers={"Cache-Control": "no-store"})
+    if is_test == "1":
+        # Console probes contain literal placeholders and never write anything.
+        return reply(200)
+    if not TAKU_SEC_KEY:
+        return reply(503, "TAKU callback is not configured")
+    required = ("user_id", "trans_id", "placement_id", "adsource_id", "reward_amount", "reward_name", "extra_data", "sign")
+    if any(not request.query_params.get(k) for k in required) or any(len(request.query_params.getlist(k)) != 1 for k in required):
+        return reply(602, "missing or duplicate parameters")
+    if any(len(request.query_params.getlist(k)) != 1 for k in request.query_params):
+        return reply(602, "duplicate parameters")
+    if len(trans_id) > 128 or len(placement_id) > 128 or any(len(v) > 512 for k, v in request.query_params.items() if k != "ilrd") or len(ilrd) > 65536:
+        return reply(602, "parameters too long")
+    parts = [f"trans_id={trans_id}", f"placement_id={placement_id}", f"adsource_id={adsource_id}", f"reward_amount={reward_amount}", f"reward_name={reward_name}", f"sec_key={TAKU_SEC_KEY}"]
+    if "ilrd" in request.query_params:
+        parts.append(f"ilrd={ilrd}")
+    expected = hashlib.md5("&".join(parts).encode("utf-8")).hexdigest()
+    if not hmac.compare_digest(expected.lower().encode(), sign.lower().encode()):
+        return reply(601, "invalid sign")
+    try:
+        member_id = int(user_id)
+    except (TypeError, ValueError):
+        return reply(602, "invalid user_id")
+    with SessionLocal() as session:
+        # SQLite has no row locks. Acquire its write reservation before reading;
+        # PostgreSQL serializes a user's settlements with a row lock instead.
+        if session.bind.dialect.name == "sqlite":
+            session.execute(text("BEGIN IMMEDIATE"))
+        item = session.scalar(select(Member).where(Member.id == member_id).with_for_update())
+        if item is None:
+            return reply(602, "user not found")
+        session_id = extra_data.split(".", 1)[0]
+        ad_session = session.scalar(select(AppAdSession).where(AppAdSession.id == session_id).with_for_update())
+        if (ad_session is None or ad_session.member_id != item.id or ad_session.provider.lower() != "taku"
+                or ad_session.ad_unit_id != placement_id or not hmac.compare_digest(_taku_extra_data(ad_session).encode(), extra_data.encode())):
+            return reply(602, "invalid ad session binding")
+        event_key = "taku:" + hashlib.sha256(trans_id.encode()).hexdigest()
+        prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == event_key))
+        if prior:
+            return reply(200) if prior.ad_session_id == ad_session.id and prior.event_type == "taku_reward" else reply(602, "transaction already used")
+        if ad_session.status == "rewarded" or ad_session.coin_log_id is not None:
+            return reply(602, "session already rewarded by another transaction")
+        # Provider delivery can arrive after the short client session timeout.
+        if ad_session.status not in ("issued", "impressed", "expired") or ad_session.created_at.replace(tzinfo=UTC) < now() - timedelta(hours=24):
+            return reply(602, "session is closed or too old")
+        before = float(item.coin or 0); reward = float(ad_session.reward_coin or 0)
+        item.coin = before + reward; item.coin_user = float(item.coin_user or 0) + reward
+        ad_session.status = "rewarded"; ad_session.completed_at = now()
+        log = CoinLog(user_id=item.id, agent_id=item.agent_id, game_id=ad_session.game_id, coin_before=before, coin=reward, coin_after=item.coin, type=1, remark="TAKU ad reward")
+        session.add(log)
+        # Reserve the globally unique provider transaction in the same transaction.
+        session.add(AppAdEvent(event_id=event_key, ad_session_id=ad_session.id, member_id=item.id, event_type="taku_reward", result_json=json.dumps({"trans_id": trans_id, "placement_id": placement_id, "network_firm_id": network_firm_id, "adsource_id": adsource_id, "scenario_id": scenario_id, "reward_amount": reward_amount, "reward_name": reward_name, "ilrd": ilrd}, ensure_ascii=False)))
+        try:
+            session.flush()
+        except IntegrityError:
+            session.rollback()
+            prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == event_key))
+            if prior is None:
+                raise
+            return reply(200) if prior.ad_session_id == session_id and prior.event_type == "taku_reward" else reply(602, "transaction already used")
+        ad_session.coin_log_id = log.id
+        game = session.get(Game, ad_session.game_id)
+        session.add(AdRecord(user_id=item.id, user_account=item.username, parent_id=item.parent_id, agent_id=item.agent_id, game_id=ad_session.game_id, game_name=game.name if game else "", receive_name=item.receive_name or "", coin=reward, estimate_income=reward, ad_network_platform_name="TAKU", ad_type="激励", status="成功", watched_at=ad_session.completed_at, ad_code=placement_id, request_id=ad_session.request_id, trans_id=trans_id))
+        session.commit()
+    return reply(200)
 
 
 @app_api.get("/wallet")
