@@ -327,6 +327,41 @@ class AppAdEvent(Base, TimestampMixin):
     result_json: Mapped[str] = mapped_column(Text, default="", nullable=False)
 
 
+class AdFlowLog(Base, TimestampMixin):
+    """Append-only audit trail for one APP rewarded-ad flow."""
+
+    __tablename__ = "ad_flow_logs"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    ad_session_id: Mapped[str] = mapped_column(String(80), index=True, default="", nullable=False)
+    request_id: Mapped[str] = mapped_column(String(128), index=True, default="", nullable=False)
+    member_id: Mapped[int] = mapped_column(Integer, index=True, default=0, nullable=False)
+    game_id: Mapped[int] = mapped_column(Integer, index=True, default=0, nullable=False)
+    event_type: Mapped[str] = mapped_column(String(64), index=True, nullable=False)
+    status: Mapped[str] = mapped_column(String(32), index=True, nullable=False)
+    provider: Mapped[str] = mapped_column(String(64), default="", nullable=False)
+    trans_id: Mapped[str] = mapped_column(String(128), index=True, default="", nullable=False)
+    error_code: Mapped[str] = mapped_column(String(64), default="", nullable=False)
+    detail_json: Mapped[str] = mapped_column(Text, default="{}", nullable=False)
+
+
+def _ad_flow_log(session: Session, item: AppAdSession | None, event_type: str, status: str = "ok",
+                 detail: dict[str, Any] | None = None, error_code: str = "", trans_id: str = "") -> None:
+    """Write a durable flow checkpoint in the same transaction as its state change."""
+    session.add(AdFlowLog(
+        ad_session_id=item.id if item else "",
+        request_id=item.request_id if item else "",
+        member_id=item.member_id if item else 0,
+        game_id=item.game_id if item else 0,
+        event_type=event_type,
+        status=status,
+        provider=item.provider if item else "taku",
+        trans_id=trans_id,
+        error_code=error_code,
+        detail_json=json.dumps(detail or {}, ensure_ascii=False, default=str),
+    ))
+
+
 class AdImportBatch(Base, TimestampMixin):
     __tablename__ = "ad_import_batches"
 
@@ -2844,6 +2879,10 @@ def app_ad_request(payload: AppAdRequest, request: Request, member: Member = Dep
                             provider=config["provider"], ad_unit_id=placement["unit_id"] or game.game_key or str(game.id), reward_coin=placement["reward_coin"],
                             status="issued", session_token_hash=_token_hash(session_token), expires_at=now() + timedelta(minutes=APP_AD_SESSION_MINUTES))
         session.add(item); session.commit()
+        with SessionLocal() as audit:
+            stored = audit.get(AppAdSession, item.id)
+            _ad_flow_log(audit, stored, "ad_requested", detail={"placement": payload.placement, "client_request_id": payload.client_request_id})
+            audit.commit()
         result = _app_ad_result(item, member); result["session_token"] = session_token
         return {"data": result, "request_id": request_id}
 
@@ -2874,6 +2913,7 @@ def app_ad_impression(ad_session_id: str, payload: AppAdEventRequest, member: Me
         item.status = "impressed"; item.impressed_at = now()
         result = {"ad_session_id": item.id, "status": item.status}
         session.add(AppAdEvent(event_id=payload.event_id, ad_session_id=item.id, member_id=member.id, event_type="impression", result_json=json.dumps(result)))
+        _ad_flow_log(session, item, "impression", detail={"event_id": payload.event_id})
         session.commit(); return {"data": result, "request_id": item.request_id}
 
 
@@ -2883,10 +2923,14 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
         item = _app_session(session, ad_session_id, member, payload.session_token)
         if item.provider.lower() == "taku":
             if item.status == "rewarded":
+                _ad_flow_log(session, item, "client_complete", detail={"event_id": payload.event_id, "already_rewarded": True})
+                session.commit()
                 return {"data": {"ad_session_id": item.id, "status": "rewarded", "rewarded": True, "coin_added": item.reward_coin, "coin_log_id": item.coin_log_id}, "request_id": item.request_id}
             if item.status not in ("issued", "impressed"):
                 raise HTTPException(status_code=409, detail="Ad session has already been closed")
             # Client completion is advisory; only the verified provider callback settles.
+            _ad_flow_log(session, item, "client_complete", status="pending", detail={"event_id": payload.event_id, "awaiting": "taku_reward"})
+            session.commit()
             return {"data": {"ad_session_id": item.id, "status": "pending_verification", "rewarded": False, "coin_added": 0}, "request_id": item.request_id}
         prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == payload.event_id))
         if prior:
@@ -2902,6 +2946,7 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
         session.add(log); session.flush(); item.coin_log_id = log.id
         result = {"ad_session_id": item.id, "status": "rewarded", "rewarded": True, "coin_added": reward, "coin_balance": stored.coin, "coin_log_id": log.id}
         session.add(AppAdEvent(event_id=payload.event_id, ad_session_id=item.id, member_id=member.id, event_type="complete", result_json=json.dumps(result)))
+        _ad_flow_log(session, item, "client_complete", detail={"event_id": payload.event_id, "coin_added": reward})
         session.commit(); return {"data": result, "request_id": item.request_id}
 
 
@@ -2918,6 +2963,7 @@ def app_ad_fail(ad_session_id: str, payload: AppAdEventRequest, member: Member =
         item.status = "failed"; item.failed_at = now()
         result = {"ad_session_id": item.id, "status": "failed", "rewarded": False}
         session.add(AppAdEvent(event_id=payload.event_id, ad_session_id=item.id, member_id=member.id, event_type="fail", result_json=json.dumps(result)))
+        _ad_flow_log(session, item, "client_fail", status="failed", detail={"event_id": payload.event_id})
         session.commit(); return {"data": result, "request_id": item.request_id}
 
 
@@ -2971,6 +3017,8 @@ def taku_reward_callback(
         target = lookup.get(AppAdSession, extra_data.split(".", 1)[0])
         if target is None:
             return reply(602, "ad session not found")
+        _ad_flow_log(lookup, target, "callback_received", detail={"trans_id": trans_id, "placement_id": placement_id, "adsource_id": adsource_id})
+        lookup.commit()
         callback_enabled, callback_key = taku_credentials(lookup, target.game_id)
         if not callback_enabled or not callback_key:
             return reply(503, "TAKU callback is not configured for this game")
@@ -2979,6 +3027,11 @@ def taku_reward_callback(
         parts.append(f"ilrd={ilrd}")
     expected = hashlib.md5("&".join(parts).encode("utf-8")).hexdigest()
     if not hmac.compare_digest(expected.lower().encode(), sign.lower().encode()):
+        with SessionLocal() as audit:
+            target = audit.get(AppAdSession, extra_data.split(".", 1)[0])
+            if target:
+                _ad_flow_log(audit, target, "callback_rejected", status="failed", error_code="invalid_sign", detail={"trans_id": trans_id})
+                audit.commit()
         return reply(601, "invalid sign")
     try:
         member_id = int(user_id)
@@ -2997,6 +3050,7 @@ def taku_reward_callback(
         if (ad_session is None or ad_session.member_id != item.id or ad_session.provider.lower() != "taku"
                 or ad_session.ad_unit_id != placement_id or not hmac.compare_digest(_taku_extra_data(ad_session).encode(), extra_data.encode())):
             return reply(602, "invalid ad session binding")
+        _ad_flow_log(session, ad_session, "callback_verified", detail={"trans_id": trans_id, "placement_id": placement_id})
         if taku_credentials(session, ad_session.game_id) != (True, callback_key):
             return reply(503, "TAKU configuration changed; retry")
         event_key = "taku:" + hashlib.sha256(trans_id.encode()).hexdigest()
@@ -3026,6 +3080,7 @@ def taku_reward_callback(
         ad_session.coin_log_id = log.id
         game = session.get(Game, ad_session.game_id)
         session.add(AdRecord(user_id=item.id, user_account=item.username, parent_id=item.parent_id, agent_id=item.agent_id, game_id=ad_session.game_id, game_name=game.name if game else "", receive_name=item.receive_name or "", coin=reward, estimate_income=reward, ad_network_platform_name="TAKU", ad_type="激励", status="成功", watched_at=ad_session.completed_at, ad_code=placement_id, request_id=ad_session.request_id, trans_id=trans_id))
+        _ad_flow_log(session, ad_session, "reward_granted", detail={"coin_added": reward, "coin_log_id": log.id}, trans_id=trans_id)
         session.commit()
     return reply(200)
 
@@ -3605,6 +3660,33 @@ def list_members(
                 "coin": can_manage,
             }
         return payload
+
+
+@api.get("/ads/flow-logs")
+def list_ad_flow_logs(
+    ad_session_id: str | None = None,
+    request_id: str | None = None,
+    event_type: str | None = None,
+    status: str | None = None,
+    limit: int = Query(100, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+) -> dict[str, Any]:
+    """Inspect the complete APP rewarded-ad lifecycle as an admin."""
+    with SessionLocal() as session:
+        conditions = []
+        if ad_session_id: conditions.append(AdFlowLog.ad_session_id == ad_session_id)
+        if request_id: conditions.append(AdFlowLog.request_id == request_id)
+        if event_type: conditions.append(AdFlowLog.event_type == event_type)
+        if status: conditions.append(AdFlowLog.status == status)
+        stmt = select(AdFlowLog).where(*conditions).order_by(AdFlowLog.created_at.desc()).offset(offset).limit(limit)
+        items = session.scalars(stmt).all()
+        total = session.scalar(select(func.count()).select_from(AdFlowLog).where(*conditions)) or 0
+        return {"items": [{"id": x.id, "ad_session_id": x.ad_session_id, "request_id": x.request_id,
+                           "member_id": x.member_id, "game_id": x.game_id, "event_type": x.event_type,
+                           "status": x.status, "provider": x.provider, "trans_id": x.trans_id,
+                           "error_code": x.error_code, "detail": json.loads(x.detail_json or "{}"),
+                           "created_at": stringify(x.created_at)} for x in items],
+                "total": int(total), "limit": limit, "offset": offset}
 
 
 @api.get("/ads")
