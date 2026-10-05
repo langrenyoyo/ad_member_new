@@ -93,6 +93,8 @@ class TakuCallbackTests(unittest.TestCase):
         r=self.client.post('/api/app/v1/ads/ads_test/complete',json=payload,headers=headers)
         self.assertEqual(r.status_code,200,r.text)
         self.assertFalse(r.json()['data']['rewarded'])
+        self.assertEqual(r.json()['data']['message'],'奖励确认中')
+        self.assertNotIn('coin_added',r.json()['data'])
         self.assertEqual(self.balances(),(10,0,0))
         self.assertEqual(self.callback().status_code,200)
         r=self.client.post('/api/app/v1/ads/ads_test/complete',json=payload,headers=headers)

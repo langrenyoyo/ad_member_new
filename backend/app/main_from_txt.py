@@ -2931,7 +2931,8 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
             # Client completion is advisory; only the verified provider callback settles.
             _ad_flow_log(session, item, "client_complete", status="pending", detail={"event_id": payload.event_id, "awaiting": "taku_reward"})
             session.commit()
-            return {"data": {"ad_session_id": item.id, "status": "pending_verification", "rewarded": False, "coin_added": 0}, "request_id": item.request_id}
+            return {"data": {"ad_session_id": item.id, "status": "pending_verification", "rewarded": False,
+                              "message": "奖励确认中"}, "request_id": item.request_id}
         prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == payload.event_id))
         if prior:
             if prior.ad_session_id != item.id or prior.event_type != "complete":
