@@ -2944,6 +2944,14 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
         item.status = "rewarded"; item.completed_at = now()
         log = CoinLog(user_id=stored.id, agent_id=stored.agent_id, game_id=item.game_id, coin_before=before, coin=reward, coin_after=stored.coin, type=1, remark="APP ad reward")
         session.add(log); session.flush(); item.coin_log_id = log.id
+        game = session.get(Game, item.game_id)
+        session.add(AdRecord(
+            user_id=stored.id, user_account=stored.username, parent_id=stored.parent_id,
+            agent_id=stored.agent_id, game_id=item.game_id, game_name=game.name if game else "",
+            receive_name=stored.receive_name or "", coin=reward, estimate_income=reward,
+            ad_network_platform_name=item.provider.upper(), ad_type="激励", status="成功",
+            watched_at=item.completed_at, ad_code=item.ad_unit_id, request_id=item.request_id,
+        ))
         result = {"ad_session_id": item.id, "status": "rewarded", "rewarded": True, "coin_added": reward, "coin_balance": stored.coin, "coin_log_id": log.id}
         session.add(AppAdEvent(event_id=payload.event_id, ad_session_id=item.id, member_id=member.id, event_type="complete", result_json=json.dumps(result)))
         _ad_flow_log(session, item, "client_complete", detail={"event_id": payload.event_id, "coin_added": reward})
