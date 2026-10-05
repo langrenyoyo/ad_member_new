@@ -3046,6 +3046,15 @@ def taku_reward_callback(
         member_id = int(user_id)
     except (TypeError, ValueError):
         return reply(602, "invalid user_id")
+    try:
+        # TAKU sends the provider ECPM in reward_amount. Convert ECPM to
+        # member coins using the configured rule: ECPM / 1000.
+        ecpm_value = float(reward_amount)
+        if not math.isfinite(ecpm_value) or ecpm_value < 0:
+            raise ValueError
+        reward_from_ecpm = ecpm_value / 1000.0
+    except (TypeError, ValueError):
+        return reply(602, "invalid reward_amount")
     with SessionLocal() as session:
         # SQLite has no row locks. Acquire its write reservation before reading;
         # PostgreSQL serializes a user's settlements with a row lock instead.
@@ -3071,7 +3080,7 @@ def taku_reward_callback(
         # Provider delivery can arrive after the short client session timeout.
         if ad_session.status not in ("issued", "impressed", "expired") or ad_session.created_at.replace(tzinfo=UTC) < now() - timedelta(hours=24):
             return reply(602, "session is closed or too old")
-        before = float(item.coin or 0); reward = float(ad_session.reward_coin or 0)
+        before = float(item.coin or 0); reward = reward_from_ecpm
         item.coin = before + reward; item.coin_user = float(item.coin_user or 0) + reward
         ad_session.status = "rewarded"; ad_session.completed_at = now()
         log = CoinLog(user_id=item.id, agent_id=item.agent_id, game_id=ad_session.game_id, coin_before=before, coin=reward, coin_after=item.coin, type=1, remark="TAKU ad reward")
@@ -3088,7 +3097,7 @@ def taku_reward_callback(
             return reply(200) if prior.ad_session_id == session_id and prior.event_type == "taku_reward" else reply(602, "transaction already used")
         ad_session.coin_log_id = log.id
         game = session.get(Game, ad_session.game_id)
-        session.add(AdRecord(user_id=item.id, user_account=item.username, parent_id=item.parent_id, agent_id=item.agent_id, game_id=ad_session.game_id, game_name=game.name if game else "", receive_name=item.receive_name or "", coin=reward, estimate_income=reward, ad_network_platform_name="TAKU", ad_type="激励", status="成功", watched_at=ad_session.completed_at, ad_code=placement_id, request_id=ad_session.request_id, trans_id=trans_id))
+        session.add(AdRecord(user_id=item.id, user_account=item.username, parent_id=item.parent_id, agent_id=item.agent_id, game_id=ad_session.game_id, game_name=game.name if game else "", receive_name=item.receive_name or "", ecpm=ecpm_value, coin=reward, estimate_income=reward, ad_network_platform_name="TAKU", ad_type="激励", status="成功", watched_at=ad_session.completed_at, ad_code=placement_id, request_id=ad_session.request_id, trans_id=trans_id))
         _ad_flow_log(session, ad_session, "reward_granted", detail={"coin_added": reward, "coin_log_id": log.id}, trans_id=trans_id)
         session.commit()
     return reply(200)

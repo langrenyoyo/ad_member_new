@@ -41,7 +41,7 @@ class TakuCallbackTests(unittest.TestCase):
 
     def params(self, **changes):
         p = dict(user_id=str(self.uid), trans_id='transaction-1', placement_id='placement-test',
-                 adsource_id='123', reward_amount='9999', reward_name='coin', extra_data=self.extra)
+                 adsource_id='123', reward_amount='2000', reward_name='coin', extra_data=self.extra)
         p.update(changes)
         raw = '&'.join(f'{k}={p[k]}' for k in ['trans_id','placement_id','adsource_id','reward_amount','reward_name'])
         raw += '&sec_key=test-taku-key'
@@ -65,7 +65,7 @@ class TakuCallbackTests(unittest.TestCase):
             row=s.scalar(select(m.AdRecord))
             self.assertEqual(row.trans_id,'transaction-1')
             self.assertEqual(row.request_id,'req-test')
-            self.assertEqual(row.ecpm,0)  # Never invent provider revenue from reward amount.
+            self.assertEqual(row.ecpm,2000)
         self.assertEqual(self.callback(self.params(trans_id='transaction-2')).status_code,602)
         self.assertEqual(self.balances(),(12,1,1))
 
