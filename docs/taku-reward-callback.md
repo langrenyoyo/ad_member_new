@@ -49,11 +49,11 @@ trans_id=...&placement_id=...&adsource_id=...&reward_amount=...&reward_name=...&
 
 验证用户、provider、广告位和服务端生成的会话透传凭据。平台签名不包含 user_id 和 extra_data；额外的 HMAC 仅保护本系统会话上下文，不能改变平台签名覆盖范围。不能把客户端自行提供的回调 URL 或内容当作平台验签结果。平台交易 ID 全局唯一，已处理交易不能绑定另一会话，同一会话不能用另一交易再次发奖。
 
-TAKU 回调在数据库事务中锁定会员/会话、写唯一事件、金币流水和广告列表记录；SQLite 使用 BEGIN IMMEDIATE，PostgreSQL 使用行锁。奖励使用创建会话时服务端确定的 reward_coin，忽略回调中的 reward_amount 作为发奖金额。TAKU 模式从客户端完成接口移除发奖，避免双渠道重复结算。
+TAKU 回调在数据库事务中锁定会员/会话、写唯一事件、金币流水和广告列表记录；SQLite 使用 BEGIN IMMEDIATE，PostgreSQL 使用行锁。当前实现将签名回调中的 reward_amount 读取为 ECPM，实际奖励按 ECPM / 1000 计算；不使用申请时的 reward_coin 快照结算。TAKU 模式的客户端完成接口不发奖。注意当前会话 reward_coin 尚未在回调结算时同步更新，APP 应以钱包及金币流水确认实际金额，不能用历史/complete 的配置快照金额替代到账流水。
 
 有效平台通知允许在会话创建后 24 小时内结算（即使客户端短会话已超时）；已失败会话不结算。过期时间窗口是本项目策略，不是 TAKU 官方参数。
 
-广告列表记录关联 request_id、trans_id、会员、游戏和广告位，状态为“成功”。金币采用实际奖励；ECPM 保持 0，不把客户端 ILRD 或奖励金币伪装成广告收入。ILRD（如有）保存于回调事件作分析参考，不用于奖励计算。
+广告列表记录关联 request_id、trans_id、会员、游戏和广告位，状态为“成功”。金币采用实际奖励；ECPM 保存解析后的回调 reward_amount。ILRD（如有）保存于回调事件作分析参考，不用于奖励计算。
 
 ## 验证
 

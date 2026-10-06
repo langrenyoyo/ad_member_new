@@ -442,7 +442,21 @@ Authorization: Bearer <user_access_token>
 }
 ```
 
-成功 `200`：
+TAKU 未收到有效发奖回调时返回 `200`：
+
+```json
+{
+  "data": {
+    "ad_session_id": "ads_01J...",
+    "status": "pending_verification",
+    "rewarded": false,
+    "message": "奖励确认中"
+  },
+  "request_id": "req_ad_01J..."
+}
+```
+
+若 TAKU 回调已成功结算，则返回 `200`：
 
 ```json
 {
@@ -450,14 +464,18 @@ Authorization: Bearer <user_access_token>
     "ad_session_id": "ads_01J...",
     "status": "rewarded",
     "rewarded": true,
-    "coin_added": 10,
-    "coin_balance": 130,
+    "coin_added": 2,
     "coin_log_id": 88001
-  }
+  },
+  "request_id": "req_ad_01J..."
 }
 ```
 
-奖励发放条件：广告会话有效、展示事件存在、观看时长达到配置、provider 回调或签名校验通过、事件未结算。任一条件不满足返回 `422` 或 `409`，不增加金币。
+TAKU 分支不返回 coin_balance；余额通过 `/wallet` 查询。`pending_verification` 是完成接口的响应状态，不会直接把数据库会话状态改为该值：历史查询可能仍为 issued 或 impressed。APP 应按会话 ID 轮询 `/ads/history`，看到 rewarded 后刷新钱包/流水；等待期间不要再创建广告会话来查询原广告，也不要把广告关闭上报为 fail，否则原会话会被关闭。
+
+`event_id` 和 `session_token` 必填；其余字段可选，provider_event_id 最长 128 字符、watched_seconds 范围 0–86400，occurred_at 为日期时间。当前上报观看时长不参与奖励认证；客户端完成上报、HTTP 200 或自报 user_id/extra_data 都不能发奖。这两个附加字段不属于完成接口业务模型，即使请求日志记录了它们，也不会传给 TAKU 或参与结算。
+
+TAKU 奖励只由 `/api/callbacks/taku/reward` 的有效验签回调结算。当前代码将回调 reward_amount 按 ECPM 值读取，实际奖励 = ECPM / 1000；申请响应中的 reward.coin 是配置快照，不能用来显示最终到账值。以金币流水及钱包为最终依据；目前会话 reward_coin 未在回调时同步为实际奖励，所以历史 coin_added 和已奖励 complete 的 coin_added 可能仍为配置值，该差异尚待修复。
 
 ### 5.4 广告失败/关闭
 
@@ -466,7 +484,7 @@ POST /api/app/v1/ads/{ad_session_id}/fail
 Authorization: Bearer <user_access_token>
 ```
 
-请求：`{ "event_id": "fail-01J...", "reason": "NO_FILL" }`。成功 `202`，只结束广告会话，不发放奖励。客户端关闭广告不能调用 `complete`。
+请求：`{ "event_id": "fail-01J...", "session_token": "<本次广告会话凭证>", "reason": "NO_FILL" }`。成功 `202`，只结束广告会话，不发放奖励。仅在加载失败或确实未达成激励条件时调用；正常完成后的关闭事件不能再调用 fail。
 
 ### 5.5 广告记录查询
 
