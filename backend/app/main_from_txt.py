@@ -2433,7 +2433,21 @@ async def lifespan(_: FastAPI):
     yield
 
 
-app = FastAPI(title="广告会员后台", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="广告会员后台", version="0.1.0", lifespan=lifespan, docs_url=None)
+from .request_audit import AppRequestAudit
+app.add_middleware(AppRequestAudit)
+
+
+@app.get("/docs", include_in_schema=False)
+def api_documentation():
+    from fastapi.openapi.docs import get_swagger_ui_html
+    return get_swagger_ui_html(
+        openapi_url=app.openapi_url,
+        title="广告会员后台 - API 文档",
+        swagger_js_url="/vendor/swagger-ui/swagger-ui-bundle.js",
+        swagger_css_url="/vendor/swagger-ui/swagger-ui.css",
+        swagger_favicon_url="/vendor/swagger-ui/favicon-32x32.png",
+    )
 
 # ---------------------------------------------------------------------------
 # Public user APP API
