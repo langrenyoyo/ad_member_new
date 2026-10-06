@@ -1,7 +1,8 @@
 const deviceRiskState={tableState:null,controller:null};
 async function renderRiskDevices(){
  if(state.view!=='risk-devices')return;deviceRiskState.controller?.destroy();
- $('#content').innerHTML='<div id="deviceRiskHost"></div>';
+ $('#content').innerHTML='<div id="aliyunRiskHost"></div><div id="deviceRiskHost"></div>';
+ mountAliyunRisk(document.querySelector('#aliyunRiskHost'));
  const tab={endpoint:'/risk/devices',absolute:true,state:deviceRiskState.tableState,
   columns:whitelistColumns.map(column=>column[0]==='game_name'?[column[0],'',...column.slice(2)]:column),cell:whitelistCell,
   mountActions(panel,s,refresh){

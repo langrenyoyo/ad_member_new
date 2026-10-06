@@ -13,12 +13,27 @@ function attachWithdrawalSelection(items,summary={},permissions={}){
  const panel=document.querySelector('.withdrawal-panel'),table=panel.querySelector('table');
  const sourceState=reviewStates.withdrawals,generation=sourceState.generation;
  const active=()=>panel.isConnected&&state.view==='withdrawals'&&reviewStates.withdrawals===sourceState&&sourceState.generation===generation;
+ panel.querySelectorAll('[data-payout-action]').forEach(button=>button.onclick=async()=>{
+  const action=button.dataset.payoutAction,id=button.dataset.payoutId;
+  button.disabled=true;
+  try{
+   if(action!=='query-transfer'&&!await withdrawalConfirm('确认执行支付宝转账操作吗？重试会保持原订单号。'))return;
+   if(!active())return;
+   await api('/withdrawals/'+id+'/'+action,{method:'POST'});
+   if(active())await renderReviewPage('withdrawals');
+  }catch(error){if(active())panel.querySelector('#reviewError').textContent=error.message;}
+  finally{button.disabled=false;}
+ });
+ const status=document.createElement('p');status.textContent='正在检查支付宝配置…';panel.prepend(status);
+ api('/payment-status').then(result=>{if(active())status.textContent=result.available?'支付宝已配置（'+result.environment+'），仅以渠道确认结果标记到账。':result.detail||'支付宝尚未配置，不能发起提现或转账。';}).catch(error=>{if(active())status.textContent=error.message;});
  table.tHead.rows[0].insertAdjacentHTML('afterbegin','<th><input id="withdrawalSelectAll" type="checkbox" aria-label="全选本页提现"></th>');
  [...table.tBodies[0].rows].forEach((row,index)=>{
   if(!items.length){row.cells[0].colSpan++;return;}
   row.insertAdjacentHTML('afterbegin',`<td><input type="checkbox" data-withdrawal-select="${items[index].id}" aria-label="选择提现 ${items[index].id}"></td>`);
  });
  const amount=key=>summary[key]!=null&&Number.isFinite(Number(summary[key]))?esc(Number(summary[key])/10)+'元':'-';
+ const alipaySummary=document.createElement('p');
+ alipaySummary.textContent='支付宝新提现：已确认到账 '+((summary.alipay_paid_cents||0)/100).toFixed(2)+'元；处理中 '+((summary.alipay_pending_cents||0)/100).toFixed(2)+'元。下方旧统计仅包含历史导入记录。';panel.prepend(alipaySummary);
  panel.querySelector('.withdrawal-toolbar').insertAdjacentHTML('beforeend',`<button id="withdrawalBatchRefuse" ${permissions.review===false?'hidden ':''}disabled><i class="shell-icon" aria-hidden="true">&#xf0d6;</i> 批量拒绝</button><button id="withdrawalBatchTransfer" ${permissions.transfer===false?'hidden ':''}disabled><i class="shell-icon" aria-hidden="true">&#xf0d6;</i> 批量支付宝转账(实时)</button>${[['withdrawn','已提现'],['pending','提现中'],['blacklisted','拉黑已提现']].map(([key,label])=>`<span class="withdrawal-summary" data-withdrawal-summary="${key}">${label}：${amount(key)}</span>`).join('')}`);
  const boxes=[...table.querySelectorAll('[data-withdrawal-select]')],all=panel.querySelector('#withdrawalSelectAll'),buttons=[panel.querySelector('#withdrawalBatchRefuse'),panel.querySelector('#withdrawalBatchTransfer')];
  const blacklist=document.createElement('button');blacklist.id='withdrawalBlacklist';blacklist.hidden=permissions.blacklist===false;blacklist.innerHTML='<i class="shell-icon" aria-hidden="true">&#xf007;</i> 黑名单';
@@ -48,8 +63,11 @@ function attachWithdrawalSelection(items,summary={},permissions={}){
   try{
    if(!await withdrawalConfirm(transfer?'确认批量支付宝转账(实时)吗':'确认批量拒绝吗')||!active())return;
    panel.querySelector('#reviewError').textContent='';
-   await api('/withdrawals/'+(transfer?'batch-transfer':'batch-refuse'),{method:'POST',body:JSON.stringify({ids})});
-   if(active())await renderReviewPage('withdrawals');
+   const result=await api('/withdrawals/'+(transfer?'batch-transfer':'batch-refuse'),{method:'POST',body:JSON.stringify({ids})});
+   if(active()){
+    await renderReviewPage('withdrawals');
+    if(state.view==='withdrawals'&&result.errors?.length)document.querySelector('#reviewError').textContent=result.errors.map(x=>'#'+x.id+' '+x.detail).join('；');
+   }
   }catch(error){if(active())panel.querySelector('#reviewError').textContent=error.message;}
   finally{busy=false;update();}
  });

@@ -1,8 +1,10 @@
 # 用户 APP API 接口文档
 
+更新日期：2026-10-07。新增完整设备风控调用契约见第 12 节。
+
 本文档面向用户 APP，范围是用户注册、登录、会话恢复、APP 初始化和广告拉取/奖励回调。接口命名空间与管理端隔离，建议统一使用 `/api/app/v1`。
 
-> **当前实现状态**：`/api/app/v1` 已在后端实现并部署。接口包含用户注册、登录、刷新、退出、当前用户、游戏配置、广告会话与奖励幂等结算、广告历史、钱包和金币流水。在线 OpenAPI 可在 `/docs` 的 `User APP` 标签查看。
+> **当前实现状态**：`/api/app/v1` 已在后端实现。接口包含用户注册、登录、刷新、退出、当前用户、游戏配置、广告会话与奖励幂等结算、广告历史、钱包、金币流水，以及补贴申请、凭证上传和审核结果查询。在线 OpenAPI 可在 `/docs` 的 `User APP` 标签查看。
 
 ## 1. 基本信息
 
@@ -71,16 +73,13 @@ Authorization: Bearer <user_access_token>
 
 ```json
 {
-  "error": {
-    "code": "AD_SESSION_EXPIRED",
-    "message": "广告会话已过期",
-    "details": {}
-  },
-  "request_id": "req_01J..."
+  "detail": "Ad session expired"
 }
 ```
 
-| HTTP | 错误码示例 | APP 处理 |
+当前业务错误使用 `detail` 字符串；参数校验错误 `422` 的 `detail` 是包含 `loc`、`msg`、`type` 等字段的数组。下面的错误码仅是客户端分类建议，服务端没有统一返回这些字符串，也不保证错误响应带 `request_id` 或 `Retry-After`。
+
+| HTTP | 客户端分类建议 | APP 处理 |
 |---:|---|---|
 | 400 | `INVALID_ARGUMENT` | 提示字段错误 |
 | 401 | `TOKEN_INVALID`、`TOKEN_EXPIRED` | 尝试 refresh；失败后回到登录页 |
@@ -319,7 +318,8 @@ Authorization: Bearer <user_access_token>
   "placement": "rewarded",
   "ad_type": "rewarded",
   "device_id": "install-uuid",
-  "client_request_id": "client-20260921-0001"
+  "client_request_id": "client-20260921-0001",
+  "risk_check_id": "<device-risk-check-id>"
 }
 ```
 
@@ -341,7 +341,7 @@ Authorization: Bearer <user_access_token>
 }
 ```
 
-服务端必须校验：用户状态、游戏归属、广告开关、设备状态、冷却时间、频控和渠道配置。`coin`、`ecpm`、`reward` 等结算值由服务端决定，APP 不得自行修改。
+服务端必须校验：用户状态、游戏归属、广告开关、设备状态、冷却时间、频控和渠道配置。开启指定游戏的设备风控后，`risk_check_id` 必填且只能使用一次；同一 `client_request_id` 重试时必须原样携带同一个 `risk_check_id`。`coin`、`ecpm`、`reward` 等结算值由服务端决定，APP 不得自行修改。
 
 ### 5.2 广告展示/曝光事件
 
@@ -416,7 +416,129 @@ Authorization: Bearer <user_access_token>
 
 只返回当前用户自己的记录：`id、game_id、placement、ad_type、provider、status、coin_added、request_id、watched_at、created_at`。不得接受客户端传入其他 `user_id`。
 
-## 6. 金币余额和流水
+## 6. 补贴申请
+
+### 6.1 活动、每日名额与资格
+
+后台入口：`http://localhost:3000/#subsidies` → **补贴活动与每日名额**。
+运营/超级管理员可新建、编辑、启停活动；审核员可查看活动和审核申请。
+新建表单预填每日 50 名、提现门槛 500 分、充值条件 600 分、补贴 1200 分、24 小时审核；这些是截图参考值，活动默认关闭，保存开放后才对 APP 展示。
+
+```http
+GET /api/app/v1/subsidy-campaigns?game_id=237
+GET /api/app/v1/subsidy-campaigns/{campaign_id}
+Authorization: Bearer <user_access_token>
+```
+
+列表返回 `data.items/total`，详情返回 `data`。字段包含 `id/title/game_id/enabled`、`daily_quota/used/remaining/quota_date`、
+`withdrawal_cents/recharge_cents/reward_cents`（整数分）、`review_hours/instructions`、
+`confirmed_withdrawal_cents/eligible/reasons/required_images`。
+
+规则：
+
+- 每日按北京时间 00:00 重置。活动行锁（PostgreSQL）或写事务（SQLite）保护最后一个名额，防止并发超额。
+- 同一用户每天每个活动最多申请一次；同一游戏有待审申请时不能再申请。驳回或删除申请不返还当日名额，保留配额记录供追溯。
+- 提现门槛只累计该用户、主体、游戏中 `status=1`、`plan_status=1` 且 `transferred_at` 落在当天的金额。创建时间、待审金额、客户端上报金额均不计入。
+- 当前提现模型没有广告收益来源标签，因此核验的是同游戏已确认提现总额，不能单独证明这些提现全部来自“当日看广告”；需要严格限定来源时应补充提现来源关联。
+- 充值金额、安装来源、应用类型和保留应用要求由审核人员核验凭证，当前没有第三方充值核验或安装存续证明。
+
+提交活动申请：
+
+```http
+POST /api/app/v1/subsidy-campaigns/{campaign_id}/applications
+Authorization: Bearer <user_access_token>
+Content-Type: application/json
+```
+
+```json
+{
+  "request_key": "每次新申请生成的UUID，重试时保持不变",
+  "download_image": "/api/member-images/<下载截图文件名>.png",
+  "install_image": "/api/member-images/<安装来源截图文件名>.png",
+  "recharge_image": "/api/member-images/<充值截图文件名>.png",
+  "receive_name": "收件人",
+  "receive_tel": "联系方式"
+}
+```
+
+三张图均必填、必须是已上传的不同地址。金额、会员、主体和游戏由服务端设置。成功返回 `201` 和申请记录；相同用户、请求编号和内容重试返回原记录，相同编号更换内容返回 `409`；原记录已被后台删除时重试返回 `410`。
+资格不满足、名额用尽、已申请返回 `409`。用户越权活动返回 `404`，主体/游戏停用返回 `403`。
+
+申请与原有补贴列表共用记录，APP 可通过下述 `/subsidies` 列表及详情查询结果。
+响应增加 `campaign`：申请时规则快照、三类 `evidence`、`review_due_at`、`overdue`。历史普通申请的该字段为 `null`。
+后台修改活动不改变已有申请金额，活动申请的条件金额、补贴金额和三张凭证不允许编辑；可审核通过或驳回。
+超时为页面提示，不会自动审核或打款。
+
+管理接口：`GET/POST /api/v1/subsidy-campaigns`，`PUT /api/v1/subsidy-campaigns/{id}`（提交完整配置）。
+活动不提供删除入口，关闭后保留历史；每日名额不能调整到小于当天已用数量。
+
+### 6.2 图片上传与兼容申请
+
+APP 用户只能访问自己的补贴记录。提交前可用图片上传接口上传凭证，再把返回的 URL 放到 `pics` 中。支持 PNG/JPEG/WebP/GIF，单张原图不超过 2MB，宽高各不超过 4096 像素；服务端统一转换为 PNG。请求体是图片二进制，不是 multipart 表单。上传成功返回 `201`。
+
+```http
+POST /api/app/v1/subsidies/images
+Authorization: Bearer <user_access_token>
+Content-Type: image/png
+
+<图片二进制>
+```
+
+```json
+{"data":{"url":"/api/member-images/<随机文件名>.png"},"request_id":"req_01J..."}
+```
+
+未配置活动的游戏仍可使用旧版普通申请；一旦该游戏配置过活动，下面的普通申请入口返回 `409`，必须改用活动申请接口，关闭活动也不能绕过规则。
+
+提交普通申请：
+
+```http
+POST /api/app/v1/subsidies
+Authorization: Bearer <user_access_token>
+Content-Type: application/json
+```
+
+```json
+{
+  "game_id": 237,
+  "tx_price": 10.25,
+  "pics": ["/api/member-images/<随机文件名>.png"],
+  "receive_name": "收款人",
+  "receive_tel": "收款账号"
+}
+```
+
+字段约定：
+
+| 字段 | 约束 |
+|---|---|
+| `game_id` | 可选，默认当前用户绑定的游戏；必须是同主体的启用游戏 |
+| `tx_price` | 必填，提现金额条件（元）；大于 0，最多两位小数、十二位有效数字 |
+| `pics` | 可选，最多 9 张；仅接受上传接口返回且仍存在的图片地址 |
+| `receive_name` | 必填，收件人，去除首尾空格后 1–64 字符 |
+| `receive_tel` | 必填，联系方式，去除首尾空格后 1–64 字符 |
+
+成功返回 `201`，结构为 `{"data":{...申请记录...},"request_id":"..."}`。用户、主体和审核状态由服务端设置；`price` 初始为 0，由后台填写到账金额；`sub_msg` 初始为空，由后台填写审核备注。请求中传入 `price`、`status`、`user_id`、`agent_id` 或其他未定义字段返回 `422`。
+
+同一用户和游戏只能同时存在一条待审核申请，重复或并发提交返回 `409`；此规则不是基于请求键的永久幂等，已处理后允许新申请。停用用户返回 `401`；停用主体或跨主体游戏返回 `403`；不存在或停用游戏返回 `404`；字段或图片不合法返回 `422`。广告开关不影响申请，也不影响查询历史记录。
+
+查询自己的申请：
+
+```http
+GET /api/app/v1/subsidies?status=0&limit=20&offset=0
+GET /api/app/v1/subsidies/{subsidy_id}
+Authorization: Bearer <user_access_token>
+```
+
+列表可按 `game_id`、`status` 筛选，`limit` 为 1–100（默认 20），`offset` 默认 0。按申请 ID 倒序，返回 `data.items/total/limit/offset`。详情返回 `data` 单对象；其他用户的记录与不存在的记录均返回 `404`。管理员 token 不能访问 APP 接口，用户 token 不能调用后台审核接口。
+
+状态 `0` 为待审核、`1` 为通过、`2` 为驳回；筛选使用 `status`，兼容字段 `target_status=4` 也表示驳回。`sub_msg` 为后台审核备注，`audited_at` 为审核时间。响应 `pics` 沿用后台的逗号分隔字符串格式（无图为空字符串）。后台列表可直接看到 APP 提交的记录和凭证，修改到账金额、通过或驳回后，APP 查询立即读取同一条记录的最新结果。
+
+审核通过仅代表审核完成；当前补贴模块不调用打款渠道，也不自动增加金币。APP 不应把状态 `1` 展示为支付渠道已确认到账。
+
+## 7. 金币余额和流水
+
+支付宝收款绑定、提现档位、申请、查询及资金冻结规则见 [支付宝提现接口与配置](./alipay-withdrawals.md)。客户端应以 `payout.state=succeeded` 判断到账。
 
 广告奖励需要可核对的余额接口：
 
@@ -445,7 +567,7 @@ Authorization: Bearer <user_access_token>
 
 每条流水必须返回 `id、type、coin_before、coin、coin_after、remark、source_id、created_at`。APP 端只读，不能直接修改余额或流水。
 
-## 7. 服务端状态机和幂等要求
+## 8. 服务端状态机和幂等要求
 
 广告会话状态建议为：
 
@@ -461,29 +583,29 @@ issued/impressed -> expired
 - APP 传入的金额、ECPM、广告类型、奖励金币只能作为上下文，不能作为结算依据。
 - 广告 provider 的服务端回调应单独校验签名；不能只信任 APP 上报的 `watched_seconds`。
 
-## 8. 与当前后端的差异
+## 9. 当前后端接口状态
 
 | APP 需求 | 当前代码状态 | 处理结论 |
 |---|---|---|
-| 用户注册 | 只有管理员可调用的 `POST /api/v1/members` | 需要新增 APP 注册接口和用户鉴权 |
-| 用户登录 | `/api/auth/login` 只校验 `AdminUser` | 不能复用，需要用户 JWT |
-| 用户 token 刷新/退出 | 没有用户会话接口 | 需要新增 refresh token 撤销机制 |
-| APP 拉广告 | `/api/v1/ads` 受管理员鉴权保护，返回历史明细 | 需要新增广告会话和广告 provider 适配层 |
-| 广告曝光/完成 | 当前没有 APP 事件接口 | 需要新增幂等事件和奖励结算 |
-| 用户金币余额 | 管理端可读会员字段 | 需要增加用户自助只读接口 |
-| 用户广告历史 | 管理端可按 `user_id` 筛选 | 需要服务端从 token 固定用户范围 |
+| 用户注册、登录 | 已实现 `/api/app/v1/auth/register`、`/auth/login` | 使用用户 JWT |
+| 用户 token 刷新/退出 | 已实现 `/api/app/v1/auth/refresh`、`/auth/logout` | 按用户会话调用 |
+| APP 拉广告 | 已实现 `/api/app/v1/ads/request` | 开启风控时提交 `risk_check_id` |
+| 广告曝光/完成 | 已实现广告会话事件接口 | TAKU 奖励以服务端验签回调为准 |
+| 用户金币余额、流水 | 已实现 `/api/app/v1/wallet`、`/wallet/coin-logs` | 从用户 token 确定范围 |
+| 用户广告历史 | 已实现 `/api/app/v1/ads/history` | 仅查询本人记录 |
+| 补贴、支付宝提现 | 已实现 APP 申请、账号绑定和状态查询接口 | 真实支付宝支付仍需生产联调 |
+| 设备风控 | 已实现 config、challenge、verify 和广告准入校验 | 尚需部署及阿里云真机联调 |
 
-## 9. 实施顺序
+## 10. 对接与发布顺序
 
-1. 增加用户认证模型或明确复用 `Member` 的密码字段，并增加用户 JWT 的 `sub/type/aud` 声明。
-2. 增加用户注册、登录、refresh、退出和当前用户接口。
-3. 增加用户与主体/游戏/设备绑定校验。
-4. 建立广告会话、广告事件、provider 回调和金币流水幂等表。
-5. 实现广告配置、请求、曝光、完成、失败和历史接口。
-6. 增加重复事件、越权用户、停用账号、设备切换、频控和 provider 异常测试。
-7. 将 `/api/app/v1/openapi.json` 发布给 APP 开发，不把管理端 OpenAPI 当作用户 APP 契约。
+1. 对接用户登录、刷新 token、初始化和原有业务接口。
+2. 按第 12 节接入设备校验及广告请求参数，识别关闭时兼容原流程。
+3. 部署数据库迁移、后端及静态资源，配置阿里云增强版设备风控凭据。
+4. 真机验证 token 与 biz_id、设备关联、重装信号、限次及 TAKU 发奖回调。
+5. 完成验证后按游戏开启风控。代码实现和模拟测试通过不等于线上已启用。
+6. 在线文档为 `/docs`，完整 OpenAPI 为 `/openapi.json`；只对接其中 `/api/app/v1` 路径。当前没有独立 `/api/app/v1/openapi.json` 路由。
 
-## 10. APP 联调验收清单
+## 11. APP 联调验收清单
 
 - 注册成功后能直接获得用户 token，用户名重复返回 `409`。
 - 管理员 token 不能访问用户 APP 接口，用户 token 不能访问管理端接口。
@@ -496,3 +618,144 @@ issued/impressed -> expired
 - 金币余额和流水在奖励事务提交后保持一致。
 
 文档生成依据：当前 `Member`、`AdRecord`、`CoinLog` 数据模型、管理端路由鉴权逻辑和广告字段定义。新增 APP 路由后，应重新导出 OpenAPI 并同步本文件。
+
+
+## 12. 清机 / 双清设备风控接口
+
+本节是 Android APP 必须使用的完整调用契约。阿里云 SDK 集成本身不会自动完成服务端校验，调用顺序必须是：
+
+`config → challenge → Aliyun getDeviceToken(biz_id) → verify → ads/request(risk_check_id)`。
+
+### 12.1 查询风控配置
+
+```http
+GET /api/app/v1/device-risk/config?game_id=238
+Authorization: Bearer <user_access_token>
+```
+
+响应 `200`：
+
+```json
+{
+  "data": {"enabled": true, "limit_enabled": true, "daily_limit": 10},
+  "request_id": "req_01J..."
+}
+```
+
+`enabled=false` 时无需调用 challenge/verify，按普通广告流程请求。`limit_enabled=true` 一定要求 `enabled=true`。
+
+### 12.2 获取一次性校验挑战
+
+```http
+POST /api/app/v1/device-risk/challenge
+Authorization: Bearer <user_access_token>
+Content-Type: application/json
+
+{"game_id":238,"install_id":"install-uuid-created-on-first-launch"}
+```
+
+`install_id` 为 APP 本地持久化的随机 UUID，长度 16–128；正常启动和升级不能重新生成。接口返回 `201`：
+
+```json
+{
+  "data": {
+    "challenge_id": "<challenge-id>",
+    "biz_id": "<challenge-id>",
+    "expires_at": "2026-10-07T08:05:00Z"
+  },
+  "request_id": "<challenge-id>"
+}
+```
+
+`biz_id` 必须原样传给 Android SDK 的 `getDeviceToken(biz_id)`。SDK 调用应在工作线程，并遵守阿里云 SDK 初始化后的等待要求。挑战有效期 5 分钟，每个会员每分钟最多创建 10 次。
+
+### 12.3 提交阿里云设备 token
+
+```http
+POST /api/app/v1/device-risk/verify
+Authorization: Bearer <user_access_token>
+Content-Type: application/json
+
+{"challenge_id":"<challenge-id>","aliyun_device_token":"<SDK-device-token>"}
+```
+
+响应 `200`：
+
+```json
+{
+  "data": {
+    "risk_check_id": "<challenge-id>",
+    "device_id": 12,
+    "suspected_reset": false,
+    "limited": false,
+    "daily_limit": 10,
+    "used": 0,
+    "remaining": null
+  },
+  "request_id": "<aliyun-request-id>"
+}
+```
+
+`remaining=null` 表示当前设备不受限次规则限制；风险设备限次时返回剩余批准次数。服务端只保存设备标识和 token 的哈希，不把原始 token 返回或写入日志。
+
+| 字段 | 类型 / 约束 | 说明 |
+|---|---|---|
+| 请求 challenge_id | 字符串，20–64 字符 | 必须属于当前登录用户 |
+| 请求 aliyun_device_token | 字符串，10–16384 字符 | SDK 原样返回，不能使用客户端设备 ID 代替 |
+| 返回 risk_check_id | 字符串 | 服务端广告准入凭证，与 challenge_id 相同 |
+| 返回 device_id | 整数 | 后台内部设备记录 ID，不能替代广告请求中的客户端 device_id |
+| 返回 suspected_reset | 布尔 | 当前有效风险状态，包含人工处置结果，不是物理双清证明 |
+| 返回 limited | 布尔 | 当前风险状态和限次开关共同决定 |
+| 返回 used | 整数 | 当前游戏当天设备次数与当前账号次数的较大值 |
+| 返回 remaining | 整数或 null | 校验时快照，最终准入以广告申请结果为准 |
+
+有效期从 challenge 创建起算 5 分钟，verify 成功不会延长有效期，也不会消费广告次数。一次 challenge 只能尝试一次云端验证；失败后或验证响应丢失时重新申请 challenge，不要反复提交同一个 verify。
+
+### 12.4 携带校验凭证申请广告
+
+在原 `POST /api/app/v1/ads/request` 请求中增加：
+
+```json
+{"risk_check_id":"<risk_check_id>"}
+```
+
+完整示例：
+
+```json
+{
+  "game_id": 238,
+  "placement": "rewarded",
+  "ad_type": "rewarded",
+  "device_id": "install-uuid",
+  "client_request_id": "client-20261007-0001",
+  "risk_check_id": "<risk_check_id>"
+}
+```
+
+校验凭证只能批准一个新的广告会话。客户端超时重试必须使用原 `client_request_id` 和 `risk_check_id`，服务端不会重复扣除广告次数。挑战过期、校验失败或限次用尽时，不得继续展示新广告。
+
+### 12.5 风控错误处理
+
+当前后端错误响应使用 FastAPI 标准格式 `{"detail":"..."}`：
+
+| HTTP | 典型原因 | APP 处理 |
+|---:|---|---|
+| 401 | 用户 token 无效或过期 | refresh，失败后重新登录 |
+| 403 | 广告校验凭证缺失、过期、已消费、归属错误或重试凭证不匹配 | 新申请重新校验；原会话重试须保留原凭证 |
+| 404 | challenge 不存在或不属于当前用户 | 丢弃本地凭证，重新申请 |
+| 409 | challenge 已使用、已过期或游戏未开启识别 | 刷新配置后重新申请 |
+| 422 | 请求字段不符合长度/格式要求 | 修正参数，不要重试原请求 |
+| 429 | challenge 频率超限 | 等待一分钟后再尝试，不要循环请求 |
+| 429 | 风险设备达到每日上限 | 当天停止新广告申请；北京时间零点刷新额度，配置为 0 时仍禁止 |
+| 503 | 阿里云凭据未配置、调用失败或未返回设备标识 | 暂停新广告申请，稍后重试；不能伪造设备码 |
+
+服务端限次按北京时间自然日统计“已批准广告会话”，同一游戏同一设备跨账号共享额度；失败广告不退还次数，已批准广告的 TAKU 回调发奖不受影响。
+
+### 12.6 APP 联调检查
+
+- 确认请求头携带用户 `Authorization`，不能使用管理端 token。
+- 确认每次 token 都使用本次 challenge 返回的 `biz_id`，不能用固定 bizId 或复用其他游戏的 token。
+- 确认 APP 清数据/重装时按产品策略生成新的 `install_id`，并接受服务端只返回“疑似清数据或重装”的风险信号。
+- 确认广告申请、曝光、完成仍按第 5 节接口执行；设备风控只负责新广告会话准入，不替代 TAKU 服务端回调签名验证。
+
+完整部署、阿里云权限和限制说明见 [设备风控部署说明](device-risk.md)。

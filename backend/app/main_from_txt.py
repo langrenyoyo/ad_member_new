@@ -23,7 +23,7 @@ from fastapi.responses import FileResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi.staticfiles import StaticFiles
 from jwt import InvalidTokenError
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from .payment import configured_provider
 from .member_images import MAX_UPLOAD_BYTES, image_directory, save_image
 from starlette.concurrency import run_in_threadpool
@@ -1660,14 +1660,15 @@ def summarize_ad_alerts(alerts: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def serialize_withdrawal(item: Withdrawal) -> dict[str, Any]:
-    payload = serialize(item, list(item.__table__.columns.keys()))
-    payload["target_status"] = 4 if item.status == 2 else item.status
-    return payload
+    with SessionLocal() as session:
+        return payouts.withdrawal_payload(session, item)
 
 
 def serialize_subsidy(item: Subsidy) -> dict[str, Any]:
     payload = serialize(item, list(item.__table__.columns.keys()))
     payload["target_status"] = 4 if item.status == 2 else item.status
+    with SessionLocal() as session:
+        payload['campaign'] = subsidy_campaigns.application_snapshot(session, item)
     return payload
 
 
@@ -2491,6 +2492,16 @@ class AppProfileUpdate(BaseModel):
     address: str | None = Field(default=None, max_length=255)
 
 
+class AppSubsidyCreate(BaseModel):
+    """Client submits the withdrawal condition; the reviewer sets price."""
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+    game_id: int | None = Field(default=None, ge=1)
+    tx_price: Decimal = Field(gt=0, max_digits=12, decimal_places=2)
+    pics: list[str] = Field(default_factory=list, max_length=9)
+    receive_name: str = Field(min_length=1, max_length=64)
+    receive_tel: str = Field(min_length=1, max_length=64)
+
+
 class AppPasswordChange(BaseModel):
     current_password: str = Field(min_length=1, max_length=128)
     new_password: str = Field(min_length=8, max_length=128)
@@ -2498,6 +2509,7 @@ class AppPasswordChange(BaseModel):
 
 class AppAdRequest(AppClient):
     game_id: int = Field(ge=1)
+    risk_check_id: str = Field(default="", max_length=64)
     placement: str = Field(default="rewarded", min_length=1, max_length=64)
     ad_type: str = Field(default="rewarded", min_length=1, max_length=64)
     client_request_id: str = Field(default="", max_length=128)
@@ -2634,6 +2646,30 @@ def _app_ad_result(item: AppAdSession, member: Member) -> dict[str, Any]:
         "reward_verification": "server_callback" if item.provider.lower() == "taku" else "client",
         "taku_user_id": str(member.id) if item.provider.lower() == "taku" else None,
         "taku_extra_data": _taku_extra_data(item) if item.provider.lower() == "taku" else None,
+    }
+
+
+def _app_subsidy_payload(item: Subsidy) -> dict[str, Any]:
+    """Return the user-safe view of a subsidy application."""
+    with SessionLocal() as session:
+        campaign = subsidy_campaigns.application_snapshot(session, item)
+    return {
+        "campaign": campaign,
+        "id": item.id,
+        "user_id": item.user_id,
+        "agent_id": item.agent_id,
+        "game_id": item.game_id,
+        "tx_price": item.tx_price,
+        "price": item.price,
+        "pics": item.pics,
+        "receive_name": item.receive_name,
+        "receive_tel": item.receive_tel,
+        "status": item.status,
+        "target_status": 4 if item.status == 2 else item.status,
+        "sub_msg": item.sub_msg,
+        "created_at": stringify(item.created_at),
+        "updated_at": stringify(item.updated_at),
+        "audited_at": stringify(item.audited_at),
     }
 
 
@@ -2851,6 +2887,7 @@ def app_bootstrap(game_id: int | None = Query(None, ge=1), member: Member = Depe
 @app_api.post("/ads/request", status_code=201)
 def app_ad_request(payload: AppAdRequest, request: Request, member: Member = Depends(require_app_member)) -> dict[str, Any]:
     with SessionLocal() as session:
+        device_risk.game_lock(session, payload.game_id)
         game = _app_game_for_member(session, member, payload.game_id)
         config = game_ad_config(game)
         placement = config["placements"].get(payload.placement) or config["placements"]["rewarded"]
@@ -2867,6 +2904,9 @@ def app_ad_request(payload: AppAdRequest, request: Request, member: Member = Dep
         if payload.client_request_id:
             existing = session.scalar(select(AppAdSession).where(AppAdSession.member_id == member.id, AppAdSession.game_id == game.id, AppAdSession.client_request_id == payload.client_request_id, AppAdSession.status == "issued"))
             if existing:
+                if existing.expires_at.replace(tzinfo=UTC) <= now():
+                    raise HTTPException(409, "Ad session expired; use a new client_request_id")
+                device_risk.authorize_retry(session, payload, existing)
                 token = secrets.token_urlsafe(32)
                 existing.session_token_hash = _token_hash(token); session.commit()
                 result = _app_ad_result(existing, member); result["session_token"] = token
@@ -2874,6 +2914,7 @@ def app_ad_request(payload: AppAdRequest, request: Request, member: Member = Dep
         session_id = "ads_" + secrets.token_urlsafe(18)
         request_id = "req_ad_" + secrets.token_urlsafe(14)
         session_token = secrets.token_urlsafe(32)
+        device_risk.authorize_ad(session, payload, member, session_id)
         item = AppAdSession(id=session_id, member_id=member.id, agent_id=member.agent_id, game_id=game.id, device_id=payload.device_id,
                             client_request_id=payload.client_request_id, request_id=request_id, placement=payload.placement, ad_type=payload.ad_type,
                             provider=config["provider"], ad_unit_id=placement["unit_id"] or game.game_key or str(game.id), reward_coin=placement["reward_coin"],
@@ -3101,6 +3142,84 @@ def taku_reward_callback(
         _ad_flow_log(session, ad_session, "reward_granted", detail={"coin_added": reward, "coin_log_id": log.id}, trans_id=trans_id)
         session.commit()
     return reply(200)
+
+
+@app_api.post("/subsidies", status_code=201)
+def app_create_subsidy(payload: AppSubsidyCreate, member: Member = Depends(require_app_member)) -> dict[str, Any]:
+    for picture in payload.pics:
+        match = re.fullmatch(r"/api/member-images/([a-f0-9]{48}\.png)", picture)
+        if match is None or not (image_directory() / match.group(1)).is_file():
+            raise HTTPException(status_code=422, detail="请先上传申请图片，再提交返回的图片地址")
+    with SessionLocal() as session:
+        # SQLite ignores FOR UPDATE; reserve its write transaction before
+        # checking pending applications. PostgreSQL uses the member row lock.
+        if session.get_bind().dialect.name == "sqlite":
+            session.execute(text("BEGIN IMMEDIATE"))
+        stored = session.scalar(select(Member).where(Member.id == member.id).with_for_update())
+        if stored is None or stored.status != 1:
+            raise _app_auth_error("Account is disabled or does not exist")
+        game = session.get(Game, payload.game_id or stored.game_id)
+        if game is None or game.status != 1:
+            raise HTTPException(status_code=404, detail="游戏不可用")
+        if game.agent_id != stored.agent_id:
+            raise HTTPException(status_code=403, detail="游戏不属于当前用户主体")
+        agent = session.get(Agent, stored.agent_id)
+        if agent is None or agent.status != 1:
+            raise HTTPException(status_code=403, detail="当前用户主体不可用")
+        if session.scalar(select(subsidy_campaigns.SubsidyCampaign.id).where(
+            subsidy_campaigns.SubsidyCampaign.game_id == game.id)) is not None:
+            raise HTTPException(409, '该游戏已配置补贴活动，请通过活动申请接口提交')
+        pending = session.scalar(select(Subsidy).where(
+            Subsidy.user_id == stored.id, Subsidy.game_id == game.id, Subsidy.status == 0,
+        ).order_by(Subsidy.id.desc()).limit(1))
+        if pending is not None:
+            raise HTTPException(status_code=409, detail="该游戏已有待审核的补贴申请，请勿重复提交")
+        item = Subsidy(user_id=stored.id, agent_id=stored.agent_id, game_id=game.id,
+                       tx_price=float(payload.tx_price), price=0, pics=",".join(payload.pics),
+                       receive_name=payload.receive_name, receive_tel=payload.receive_tel, sub_msg="", status=0)
+        session.add(item)
+        session.commit()
+        session.refresh(item)
+        return {"data": _app_subsidy_payload(item), "request_id": secrets.token_urlsafe(12)}
+
+
+@app_api.post("/subsidies/images", status_code=201)
+async def app_upload_subsidy_image(request: Request, member: Member = Depends(require_app_member)) -> dict[str, Any]:
+    content = bytearray()
+    async for chunk in request.stream():
+        if len(content) + len(chunk) > MAX_UPLOAD_BYTES:
+            raise HTTPException(status_code=413, detail="图片不能超过 2MB")
+        content.extend(chunk)
+    url = await run_in_threadpool(save_image, bytes(content))
+    return {"data": {"url": url}, "request_id": secrets.token_urlsafe(12)}
+
+
+@app_api.get("/subsidies")
+def app_list_subsidies(
+    game_id: int | None = Query(None, ge=1),
+    status: int | None = Query(None, ge=0, le=2),
+    limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0),
+    member: Member = Depends(require_app_member),
+) -> dict[str, Any]:
+    with SessionLocal() as session:
+        conditions = [Subsidy.user_id == member.id]
+        if game_id is not None:
+            conditions.append(Subsidy.game_id == game_id)
+        if status is not None:
+            conditions.append(Subsidy.status == status)
+        rows = session.scalars(select(Subsidy).where(*conditions).order_by(Subsidy.id.desc()).offset(offset).limit(limit)).all()
+        total = session.scalar(select(func.count()).select_from(Subsidy).where(*conditions)) or 0
+        return {"data": {"items": [_app_subsidy_payload(x) for x in rows], "total": int(total),
+                         "limit": limit, "offset": offset}, "request_id": secrets.token_urlsafe(12)}
+
+
+@app_api.get("/subsidies/{subsidy_id}")
+def app_get_subsidy(subsidy_id: int, member: Member = Depends(require_app_member)) -> dict[str, Any]:
+    with SessionLocal() as session:
+        item = session.scalar(select(Subsidy).where(Subsidy.id == subsidy_id, Subsidy.user_id == member.id))
+        if item is None:
+            raise HTTPException(status_code=404, detail="补贴申请不存在")
+        return {"data": _app_subsidy_payload(item), "request_id": secrets.token_urlsafe(12)}
 
 
 @app_api.get("/wallet")
@@ -4200,6 +4319,9 @@ def list_withdrawals(
         )
         enrich_review_members(session, payload)
         base = select(func.coalesce(func.sum(Withdrawal.exchange_value), 0.0)).select_from(Withdrawal)
+        # Historical imported values use the reference UI's amount scale.
+        # New Alipay orders are counted separately in integer cents.
+        base = base.where(~Withdrawal.id.in_(select(payouts.Payout.withdrawal_id)))
         if game_id is not None:
             base = base.where(Withdrawal.game_id == game_id)
         if agent_id is not None:
@@ -4215,6 +4337,13 @@ def list_withdrawals(
             "blacklisted": None,
         }
         payload["summary_unavailable"] = {"blacklisted": "blacklist_source_unverified"}
+        payout_base = select(func.coalesce(func.sum(payouts.Payout.amount_cents), 0)).join(
+            Withdrawal, Withdrawal.id == payouts.Payout.withdrawal_id)
+        for field, value in [('game_id', game_id), ('agent_id', agent_id), ('user_id', user_id)]:
+            if value is not None: payout_base = payout_base.where(getattr(Withdrawal, field) == value)
+        payload['summary']['alipay_paid_cents'] = int(session.scalar(payout_base.where(payouts.Payout.state == 'succeeded')) or 0)
+        payload['summary']['alipay_pending_cents'] = int(session.scalar(payout_base.where(
+            payouts.Payout.state.in_(['pending_review', 'queued', 'processing']))) or 0)
         payload["permissions"] = {
             "edit": admin.role in ("superadmin", "reviewer"),
             "review": admin.role in ("superadmin", "reviewer"),
@@ -4317,36 +4446,27 @@ def require_payment_integration() -> None:
 
 
 def _batch_withdrawal_update(ids: list[int], target_status: int | None = None, plan_status: int | None = None, reason: str = "", admin: AdminUser | None = None, allow_reasonless: bool = False) -> dict[str, Any]:
+    if plan_status is not None:
+        return payouts.batch_transfer(ids, admin, scheduled=plan_status == 2)
     if not ids:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="至少需要一条提现记录")
     if target_status == 2 and not allow_reasonless and not reason.strip():
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="拒绝提现时必须填写原因")
     with SessionLocal() as session:
-        rows = session.scalars(select(Withdrawal).where(Withdrawal.id.in_(ids))).all()
+        payouts.lock(session)
+        rows = session.scalars(select(Withdrawal).where(Withdrawal.id.in_(ids)).order_by(Withdrawal.id).with_for_update()).all()
         if len(rows) != len(set(ids)):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="提现记录不存在")
-        if plan_status is not None:
-            for item in rows:
-                if item.status != 1 or item.plan_status != 0:
-                    raise HTTPException(status_code=409, detail="只能转账已审核通过且尚未转账的提现记录")
-            require_payment_integration()
         for item in rows:
             if target_status is not None:
                 if item.status != 0:
                     raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="只能处理申请中的提现记录")
                 item.status = target_status
                 if target_status == 2:
+                    payouts.release_funds(session, item)
                     item.reason = reason.strip()
                 if admin:
                     mark_audit(item, admin)
-            if plan_status is not None:
-                if item.status != 1 or item.plan_status != 0:
-                    raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="只能转账已审核通过且尚未转账的提现记录")
-                item.plan_status = plan_status
-                if plan_status == 1 and admin:
-                    item.transfer_operator_id = admin.id
-                    item.transfer_operator_name = operator_display_name(admin)
-                    item.transferred_at = now()
         session.commit()
         return {"updated": len(rows), "items": [serialize_withdrawal(item) for item in rows]}
 
@@ -4373,18 +4493,12 @@ def refuse_withdrawal(withdrawal_id: int, admin: AdminUser = Depends(allow_roles
 
 @api.post("/withdrawals/batch-transfer")
 def batch_transfer_withdrawals(payload: WithdrawalBatch, admin: AdminUser = Depends(allow_roles("reviewer"))) -> dict[str, Any]:
-    result = _batch_withdrawal_update(payload.ids, plan_status=1, admin=admin)
-    payment = configured_provider().transfer(payload.ids)
-    result.update(payment_provider=payment.provider, payment_confirmed=payment.confirmed)
-    return result
+    return payouts.batch_transfer(payload.ids, admin)
 
 
 @api.post("/withdrawals/batch-transfer-scheduled")
 def batch_transfer_withdrawals_scheduled(payload: WithdrawalBatch, admin: AdminUser = Depends(allow_roles("reviewer"))) -> dict[str, Any]:
-    result = _batch_withdrawal_update(payload.ids, plan_status=1, admin=admin)
-    payment = configured_provider().transfer(payload.ids)
-    result.update(payment_provider=payment.provider, payment_confirmed=payment.confirmed)
-    return result
+    return payouts.batch_transfer(payload.ids, admin, scheduled=True)
 
 
 @api.get("/subsidies")
@@ -5641,13 +5755,19 @@ def update_withdrawal(
     if "plan_status" in changes and changes["plan_status"] not in (0, 1, 2):
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="转账状态无效")
     with SessionLocal() as session:
-        item = get_or_404(session, Withdrawal, withdrawal_id, "提现记录")
+        payouts.lock(session)
+        item = session.scalar(select(Withdrawal).where(Withdrawal.id == withdrawal_id).with_for_update())
+        if item is None: raise HTTPException(404, '提现不存在')
+        payout = session.scalar(select(payouts.Payout).where(payouts.Payout.withdrawal_id == item.id))
+        if payout and set(changes).intersection({'exchange_value', 'exchange_type', 'receive_name', 'receive_tel'}):
+            raise HTTPException(422, '已冻结提现的金额和收款信息不可修改')
         if set(changes).intersection(editable_fields) and item.status != 0:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="已处理的提现记录不能编辑")
         if "status" in changes and changes["status"] != item.status:
             if item.status != 0:
                 raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="提现记录已处理，不能重复审核")
             if changes["status"] in (1, 2):
+                if changes['status'] == 2: payouts.release_funds(session, item)
                 mark_audit(item, admin)
         if "plan_status" in changes and changes["plan_status"] != item.plan_status:
             if item.status != 1:
@@ -5656,9 +5776,7 @@ def update_withdrawal(
                 raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="提现记录已处理转账状态，不能重复转账")
             if changes["plan_status"] in (1, 2):
                 require_payment_integration()
-                item.transfer_operator_id = admin.id
-                item.transfer_operator_name = operator_display_name(admin)
-                item.transferred_at = now()
+                raise HTTPException(409, '请使用支付宝转账接口，不能手工标记到账')
         for field, value in changes.items():
             setattr(item, field, value)
         session.add(AdminOperation(admin_id=admin.id, title=f"编辑提现记录（{withdrawal_id}）", path=request.url.path,
@@ -5675,7 +5793,9 @@ def approve_withdrawal(
     admin: AdminUser = Depends(allow_roles("reviewer")),
 ) -> dict[str, Any]:
     with SessionLocal() as session:
-        item = get_or_404(session, Withdrawal, withdrawal_id, "提现记录")
+        payouts.lock(session)
+        item = session.scalar(select(Withdrawal).where(Withdrawal.id == withdrawal_id).with_for_update())
+        if item is None: raise HTTPException(404, '提现不存在')
         if item.status != 0:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="提现记录已处理，不能重复审核")
         item.status = 1
@@ -5697,9 +5817,12 @@ def reject_withdrawal(
     if not reason:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="拒绝原因不能为空")
     with SessionLocal() as session:
-        item = get_or_404(session, Withdrawal, withdrawal_id, "提现记录")
+        payouts.lock(session)
+        item = session.scalar(select(Withdrawal).where(Withdrawal.id == withdrawal_id).with_for_update())
+        if item is None: raise HTTPException(404, '提现不存在')
         if item.status != 0:
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="提现记录已处理，不能重复审核")
+        payouts.release_funds(session, item)
         item.status = 2
         item.reason = reason
         mark_audit(item, admin)
@@ -5713,20 +5836,7 @@ def transfer_withdrawal(
     withdrawal_id: int,
     admin: AdminUser = Depends(allow_roles("reviewer")),
 ) -> dict[str, Any]:
-    with SessionLocal() as session:
-        item = get_or_404(session, Withdrawal, withdrawal_id, "提现记录")
-        if item.status != 1:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="提现记录必须先审核")
-        if item.plan_status != 0:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="提现记录已处理转账状态，不能重复转账")
-        require_payment_integration()
-        item.plan_status = 1
-        item.transfer_operator_id = admin.id
-        item.transfer_operator_name = operator_display_name(admin)
-        item.transferred_at = now()
-        session.commit()
-        session.refresh(item)
-        return serialize_withdrawal(item)
+    return payouts.transfer(withdrawal_id, admin)
 
 
 @api.patch("/subsidies/{subsidy_id}")
@@ -5752,6 +5862,11 @@ def update_subsidy(
         item = session.scalar(select(Subsidy).where(Subsidy.id == subsidy_id).with_for_update())
         if item is None:
             raise HTTPException(status_code=404, detail="补贴记录不存在")
+        campaign_snapshot = subsidy_campaigns.application_snapshot(session, item)
+        if campaign_snapshot is not None:
+            for field in ('tx_price', 'price', 'pics'):
+                if field in changes and changes[field] != getattr(item, field):
+                    raise HTTPException(422, '活动申请的条件金额、补贴金额和凭证不可修改，请审核通过或驳回')
         if "status" in changes and changes["status"] != item.status:
             if item.status != 0:
                 raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="补贴记录已处理，不能重复审核")
@@ -5935,6 +6050,12 @@ def get_kuaishou_risk(assessment_id: int, admin: AdminUser = Depends(require_adm
         response["game_name"] = game.name if game else ""
         response["permissions"] = {"can_write": admin.role == "superadmin" or admin.role == "operator"}
         return response
+
+
+# Register campaign routes before the generic detail route and static mount.
+from . import subsidy_campaigns
+from . import payouts
+from . import device_risk
 
 
 @api.get("/{resource}/{item_id}")

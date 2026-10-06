@@ -33,3 +33,7 @@
 #modal:has(.subsidy-form-fields) .modal-actions{justify-content:flex-start;padding:12px 22px;border-top:1px solid #e5e7eb}
 #modal:has(.subsidy-form-fields) #cancelModal{display:none}
 @media(max-width:640px){.subsidy-form-fields{grid-template-columns:1fr;padding:16px}.subsidy-form-full{grid-column:auto}#modal:has(.subsidy-form-fields) .modal-actions{padding-left:16px}}
+.subsidy-campaigns{background:#fff;border:1px solid #ddd;border-radius:4px;padding:14px;margin-bottom:14px}
+.subsidy-campaigns summary{cursor:pointer;font-weight:600;color:#225c92}
+.campaign-content{padding-top:12px}.campaign-form{border-top:1px solid #ddd;margin-top:16px;padding-top:12px}.campaign-error{color:#b42318}
+.campaign-review-snapshot{padding:16px 22px;background:#f3f7fb}.campaign-evidence{display:flex;gap:16px;flex-wrap:wrap}.campaign-evidence>div{display:flex;flex-direction:column;gap:8px}.campaign-evidence img{width:100px;height:100px;object-fit:contain}

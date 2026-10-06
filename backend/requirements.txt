@@ -5,3 +5,4 @@ psycopg[binary]
 PyJWT
 alembic
 Pillow
+cryptography>=43

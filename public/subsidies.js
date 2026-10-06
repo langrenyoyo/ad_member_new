@@ -1,5 +1,38 @@
 async function renderSubsidies(){await renderReviewPage('subsidies');}
 
+function attachSubsidyCampaigns(){
+ const host=document.createElement('details');host.className='subsidy-campaigns';
+ host.innerHTML='<summary>补贴活动与每日名额</summary><div class="campaign-content"></div>';
+ document.querySelector('#content').prepend(host);
+ const content=host.querySelector('.campaign-content');let loaded=false;
+ host.addEventListener('toggle',()=>{if(host.open&&!loaded){loaded=true;loadCampaigns();}});
+ const current=()=>host.isConnected&&state.view==='subsidies';
+ async function loadCampaigns(){
+  content.textContent='正在加载活动…';
+  try{
+   const result=await api('/subsidy-campaigns');if(!current())return;
+   content.innerHTML=`<p>每日名额按北京时间重置；拒绝或删除申请不退回当日名额。活动默认关闭，开启前请核对条件。</p>${result.can_write?'<button type="button" data-campaign-new>新建补贴活动</button>':''}<div class="table-wrap"><table class="table"><thead><tr><th>活动</th><th>游戏 ID</th><th>状态</th><th>今日已用 / 总名额</th><th>剩余</th><th>提现门槛</th><th>充值条件</th><th>补贴金额</th><th>审核时限</th><th>操作</th></tr></thead><tbody>${result.items.map(x=>`<tr><td>${esc(x.title)}</td><td>${x.game_id}</td><td>${x.enabled?'开放':'关闭'}</td><td>${x.used} / ${x.daily_quota}</td><td>${x.remaining}</td><td>${(x.withdrawal_cents/100).toFixed(2)}元</td><td>${(x.recharge_cents/100).toFixed(2)}元</td><td>${(x.reward_cents/100).toFixed(2)}元</td><td>${x.review_hours}小时</td><td>${result.can_write?`<button type="button" data-campaign-edit="${x.id}">编辑</button>`:'只读'}</td></tr>`).join('')}</tbody></table></div><div class="campaign-editor"></div>`;
+   content.querySelector('[data-campaign-new]')?.addEventListener('click',()=>editCampaign(null));
+   content.querySelectorAll('[data-campaign-edit]').forEach(b=>b.onclick=()=>editCampaign(result.items.find(x=>x.id===Number(b.dataset.campaignEdit))));
+  }catch(error){if(current()){content.textContent=error.message;const retry=document.createElement('button');retry.textContent='重试';retry.onclick=loadCampaigns;content.append(retry);}}
+ }
+ function editCampaign(row){
+  const defaults={game_id:'',title:'充值补贴',enabled:0,daily_quota:50,withdrawal_cents:500,recharge_cents:600,reward_cents:1200,review_hours:24,instructions:'请上传下载截图、安装来源截图和充值截图；领取补贴前请保留应用。',...row};
+  const holder=content.querySelector('.campaign-editor');
+  holder.innerHTML=`<form class="campaign-form"><h3>${row?'编辑':'新建'}补贴活动</h3><div class="subsidy-form-fields">${[['title','活动名称','text'],['game_id','游戏 ID','number'],['daily_quota','每日总名额','number'],['withdrawal_cents','当日已确认提现门槛（分）','number'],['recharge_cents','充值条件（分）','number'],['reward_cents','补贴金额（分）','number'],['review_hours','审核时限（小时）','number']].map(([key,label,type])=>`<label class="subsidy-form-field"><span>${label}</span><input name="${key}" type="${type}" value="${esc(defaults[key])}" ${type==='number'?'min="1" step="1"':''} ${key==='title'?'maxlength="128"':''} ${key==='game_id'&&row?'readonly':''} required></label>`).join('')}<label class="subsidy-form-field"><span>活动状态</span><select name="enabled"><option value="0" ${defaults.enabled?'':'selected'}>关闭</option><option value="1" ${defaults.enabled?'selected':''}>开放</option></select></label><label class="subsidy-form-field subsidy-form-full"><span>领取说明</span><textarea name="instructions" maxlength="4000">${esc(defaults.instructions)}</textarea></label></div><p>金额以分填写：500 分 = 5 元；提现资格以服务端已确认转账记录计算。充值条件由审核人员核对截图。</p><p class="campaign-error" role="alert"></p><button type="submit">保存</button> <button type="button" data-campaign-cancel>取消</button></form>`;
+  const form=holder.querySelector('form');let busy=false;
+  form.querySelector('[data-campaign-cancel]').onclick=()=>{if(!busy)holder.replaceChildren();};
+  form.onsubmit=async event=>{
+   event.preventDefault();if(busy)return;const body=Object.fromEntries(new FormData(form));
+   for(const key of ['game_id','enabled','daily_quota','withdrawal_cents','recharge_cents','reward_cents','review_hours'])body[key]=Number(body[key]);
+   busy=true;form.querySelectorAll('button,input,select,textarea').forEach(el=>el.disabled=true);
+   try{await api('/subsidy-campaigns'+(row?'/'+row.id:''),{method:row?'PUT':'POST',body:JSON.stringify(body)});if(current())await loadCampaigns();}
+   catch(error){if(current()&&form.isConnected)form.querySelector('.campaign-error').textContent=error.message;}
+   finally{busy=false;if(form.isConnected)form.querySelectorAll('button,input,select,textarea').forEach(el=>el.disabled=false);}
+  };
+ }
+}
+
 function attachSubsidyPictures(){
  document.querySelectorAll('.subsidy-picture').forEach(link=>link.onclick=event=>{
   if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
@@ -113,11 +146,18 @@ async function openSubsidyForm(record){
  try{
   const row=await api('/subsidies/'+record.id,{signal:session.request.signal});if(!current())return;
   $('#formFields').innerHTML=`<div class="subsidy-form-fields">${subsidyFormField('tx_price','提现金额条件（元）',row.tx_price,'number')}${subsidyFormField('price','到账金额（元）',row.price,'number')}${subsidyFormField('receive_name','收件人',row.receive_name)}${subsidyFormField('receive_tel','联系方式',row.receive_tel)}${subsidyFormField('status','状态',row.status)}${subsidyFormField('pics','申请图片',row.pics)}<label class="subsidy-form-field subsidy-form-full"><span>失败原因</span><textarea name="sub_msg" rows="4">${esc(row.sub_msg||'')}</textarea></label></div><div class="subsidy-form-error" role="alert"></div><div class="modal-actions"><button type="submit" class="button primary">保存</button><button type="button" class="button ghost" data-subsidy-form-cancel>取消</button></div>`;
+  if(row.campaign){
+   const snapshot=document.createElement('section');snapshot.className='campaign-review-snapshot';
+   snapshot.innerHTML=`<h3>${esc(row.campaign.title)}</h3><p>申请日：${esc(row.campaign.quota_date)}；当日已确认提现：${(row.campaign.confirmed_withdrawal_cents/100).toFixed(2)}元；充值条件：${(row.campaign.recharge_cents/100).toFixed(2)}元；补贴：${(row.campaign.reward_cents/100).toFixed(2)}元。</p><p>审核截止：${esc(new Date(row.campaign.review_due_at).toLocaleString())} ${row.campaign.overdue?'（已超时）':''}</p><p>${esc(row.campaign.instructions)}</p><div class="campaign-evidence">${[['download_image','下载截图'],['install_image','安装来源截图'],['recharge_image','充值截图']].map(([key,label])=>`<div><strong>${label}</strong>${subsidyPictures(row.campaign.evidence[key])}</div>`).join('')}</div><p>请核对充值金额、应用及安装来源。审核通过不等于支付渠道已确认到账。</p>`;
+   form.querySelector('.subsidy-form-fields').before(snapshot);
+   for(const key of ['tx_price','price','pics'])form.querySelector(`[name="${key}"]`).readOnly=true;
+  }
   session.fields=form.querySelector('.subsidy-form-fields');session.initial=Object.fromEntries(new FormData(form));
  }catch(error){if(current()&&error.name!=='AbortError'){$('#formFields').innerHTML=`<div class="subsidy-form-error" role="alert">${esc(error.message)}</div><button type="button" data-subsidy-retry>重试</button>`;form.querySelector('[data-subsidy-retry]').onclick=()=>openSubsidyForm(record);}}
 }
 
 function attachSubsidyCrud(items,s,permissions){
+ if(state.view==='subsidies'&&!document.querySelector('.subsidy-campaigns'))attachSubsidyCampaigns();
  const toolbar=document.querySelector('.withdrawal-toolbar'),table=document.querySelector('.withdrawal-panel table');if(!toolbar||!table)return;
  const generation=s.generation,active=()=>table.isConnected&&state.view==='subsidies'&&reviewStates.subsidies===s&&s.generation===generation;let busy=false;
  const edit=document.createElement('button');edit.id='subsidyEdit';edit.disabled=true;edit.innerHTML='<i class="shell-icon" aria-hidden="true">&#xf040;</i> 编辑';edit.hidden=permissions?.edit===false;

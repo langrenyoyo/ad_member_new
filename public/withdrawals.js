@@ -3,8 +3,13 @@ async function renderWithdrawals(){await renderReviewPage('withdrawals');}
 
 function withdrawalRowActions(row,permissions={}){
  const editable=permissions.edit!==false&&Number(row.status)===0;
- const review=permissions.row_review===true&&Number(row.status)===0;
+ const review=(permissions.row_review===true||(row.payout&&permissions.review!==false))&&Number(row.status)===0;
  const blacklist=permissions.blacklist!==false;
+ if(row.payout&&Number(row.status)===1&&permissions.transfer!==false){
+  const processing=row.payout.state==='processing';
+  if(processing)return `<button data-payout-action="query-transfer" data-payout-id="${row.id}">查询支付宝结果</button><button data-payout-action="retry-transfer" data-payout-id="${row.id}">查询并重试原订单</button>`;
+  if(['pending_review','queued'].includes(row.payout.state))return `<button data-payout-action="transfer" data-payout-id="${row.id}">支付宝转账</button>`;
+ }
  return `${blacklist?`<button class="withdraw-blacklist" data-withdrawal-blacklist="${esc(row.id)}" aria-label="拉黑">拉黑</button>`:''}${editable?`<button class="review-edit" data-withdrawal-edit="${esc(row.id)}" aria-label="编辑" title="编辑"><i class="shell-icon" aria-hidden="true">&#xf040;</i></button>`:''}${review?`<button class="withdraw-approve" data-review-action="approve" data-review-id="${esc(row.id)}">同意</button><button class="withdraw-reject" data-review-action="refuse" data-review-id="${esc(row.id)}">拒绝</button><button class="withdraw-reject" data-review-action="reject" data-review-id="${esc(row.id)}">有理由拒绝</button>`:''}`;
 }
 
@@ -94,6 +99,9 @@ async function renderReviewPage(kind){
  if(s.page>lastPage){s.page=lastPage;return renderReviewPage(kind);}
  function cell(row,key){
   if(kind==='subsidies'&&key==='review_actions')return subsidyRowActions(row,d.permissions);
+  if(kind==='withdrawals'&&row.payout&&key==='plan_status')return esc(({pending_review:'待审核 / 待打款',queued:'排队中',processing:'结果待确认',succeeded:'支付宝已确认到账',failed:'转账失败，已退金币',rejected:'已驳回，已退金币'})[row.payout.state]||row.payout.state);
+  if(kind==='withdrawals'&&row.payout&&key==='exchange_value')return (row.payout.amount_cents/100).toFixed(2)+'元';
+  if(kind==='subsidies'&&key==='campaign')return row.campaign?`${esc(row.campaign.title)}<br>${esc(row.campaign.quota_date)}<br>${row.campaign.overdue?'<strong style="color:#b42318">审核已超时</strong>':Number(row.status)===0?'待审核':'已处理'}`:'历史申请';
   if(kind==='withdrawals'&&key==='review_actions')return withdrawalRowActions(row,d.permissions);
   if((kind==='withdrawals'||kind==='subsidies')&&key==='behavior')return `<button class="review-behavior" data-member-behavior="single" data-member-id="${esc(row.user_id)}" data-game-id="${esc(row.game_id)}">单APP行为</button>`;
   if((kind==='withdrawals'&&['user_id','username','game_name','receive_name','receive_tel'].includes(key))||(kind==='subsidies'&&['user_id','username','receive_name','receive_tel'].includes(key)))return `<button class="review-search-value" data-review-search="${key==='game_name'?'game_id':key}" data-review-value="${esc(key==='game_name'?row.game_id:row[key])}">${esc(row[key]??'')}</button>`;
@@ -107,6 +115,7 @@ async function renderReviewPage(kind){
  cols.splice(2,0,['username','\u8d26\u53f7'],['vip','VIP'],['parent_name','\u4e0a\u7ea7\u6635\u79f0'],['game_name','\u6e38\u620f\u540d\u79f0']);
  if(kind==='withdrawals')cols.splice(cols.findIndex(([key])=>key==='game_name'),0,['behavior','用户行为']);
  if(kind==='subsidies')cols.splice(cols.findIndex(([key])=>key==='price')+1,0,['behavior','用户行为']);
+ if(kind==='subsidies'&&d.items.some(row=>row.campaign))cols.push(['campaign','补贴活动 / 审核时限']);
  if(kind==='subsidies')cols.splice(cols.findIndex(([key])=>key==='tx_price')+1,0,['pics','\u7533\u8bf7\u56fe\u7247']);
  if(kind==='subsidies'){
   cols.splice(cols.findIndex(([key])=>key==='price'),0,['receive_name','收件人'],['receive_tel','联系方式']);
