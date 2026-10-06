@@ -316,16 +316,30 @@ Authorization: Bearer <user_access_token>
 
 ```json
 {
-  "game_id": 237,
+  "game_id": 238,
   "placement": "rewarded",
   "ad_type": "rewarded",
   "device_id": "install-uuid",
-  "client_request_id": "client-20260921-0001",
+  "client_request_id": "android-ad-unique-request-id",
   "risk_check_id": "<device-risk-check-id>"
 }
 ```
 
-成功 `201`：
+请求字段（JSON 正文，`Content-Type: application/json`）：
+
+| 字段 | 类型 / 必填 | 约束和用途 |
+|---|---|---|
+| game_id | 整数，必填 | ≥1，当前用户所属主体下可用的游戏 |
+| device_id | 字符串，必填 | 1–128 字符，客户端设备 ID；不代表阿里云可信设备标识 |
+| placement | 字符串，可选 | 默认 rewarded，1–64 字符；TAKU 当前只支持 rewarded |
+| ad_type | 字符串，可选 | 默认 rewarded，1–64 字符；TAKU 当前必须为 rewarded |
+| client_request_id | 字符串，强烈建议每次新广告必填 | 最长 128 字符，默认空；用于尚未展示会话的超时重试 |
+| risk_check_id | 字符串，条件必填 | 最长 64 字符；游戏开启设备识别时传 verify 返回值，否则可省略 |
+| app_id | 字符串，可选 | 默认 ad-member，1–64 字符 |
+| app_version | 字符串，可选 | 默认空，最长 32 字符 |
+| platform | 字符串，可选 | 默认空，最长 32 字符，如 android |
+
+以下为 TAKU 成功响应 `201`（示例标识仅作说明，必须使用服务器实际返回值）：
 
 ```json
 {
@@ -333,17 +347,62 @@ Authorization: Bearer <user_access_token>
     "ad_session_id": "ads_01J...",
     "request_id": "req_ad_01J...",
     "placement": "rewarded",
-    "provider": "ad-network",
+    "provider": "taku",
     "ad_unit_id": "unit-rewarded",
     "ad_type": "rewarded",
     "reward": {"enabled": true, "coin": 10, "currency": "coin"},
     "session_token": "<short_lived_session_token>",
-    "expires_at": "2026-09-21T12:05:00Z"
-  }
+    "expires_at": "2026-10-07T01:05:00Z",
+    "status": "issued",
+    "reward_verification": "server_callback",
+    "taku_user_id": "695017",
+    "taku_extra_data": "ads_01J....<server-generated-proof>"
+  },
+  "request_id": "req_ad_01J..."
 }
 ```
 
-服务端必须校验：用户状态、游戏归属、广告开关、设备状态、冷却时间、频控和渠道配置。开启指定游戏的设备风控后，`risk_check_id` 必填且只能使用一次；同一 `client_request_id` 重试时必须原样携带同一个 `risk_check_id`。`coin`、`ecpm`、`reward` 等结算值由服务端决定，APP 不得自行修改。
+| 响应字段（data 内） | 类型 | APP 处理 |
+|---|---|---|
+| ad_session_id | 字符串 | 保存并用于 impression/complete/fail 路径，不自行生成 |
+| request_id | 字符串 | 后端业务请求编号，与顶层 request_id 相同 |
+| provider | 字符串 | 渠道；taku 时执行下述 SDK 透传步骤 |
+| placement / ad_type | 字符串 | 本次广告位置和类型 |
+| ad_unit_id | 字符串 | 本次 TAKU placement ID，SDK 加载使用对应广告位 |
+| reward | 对象 | enabled、coin、currency；申请时配置快照，不是最终到账证明 |
+| session_token | 字符串 | 本后端广告事件接口凭证；不是 TAKU UserCustomData，也不是用户登录 JWT |
+| expires_at | 日期字符串 | 广告会话事件凭证的 UTC 到期时间，默认有效期 5 分钟，可由服务器配置 |
+| status | 字符串 | 新申请及可重试会话为 issued |
+| reward_verification | 字符串 | TAKU 为 server_callback；内部测试渠道为 client |
+| taku_user_id | 字符串或 null | TAKU 时为用户 ID 字符串，传给 SDK 的 UserID；其他渠道为 null |
+| taku_extra_data | 字符串或 null | TAKU 时为服务端生成的会话透传值，传给 SDK 的 UserCustomData；其他渠道为 null |
+
+**TAKU SDK 参数设置（必须在本次 load 广告之前）**：
+
+| 从哪个接口取值 | JSON 字段 | 传给谁 | 对应名称 |
+|---|---|---|---|
+| POST /api/app/v1/ads/request | data.taku_user_id | TAKU SDK | UserID |
+| POST /api/app/v1/ads/request | data.taku_extra_data | TAKU SDK | UserCustomData |
+
+调用顺序：读取风控配置 → 开启时完成第 12 节校验 → 申请广告会话 → 保存返回数据 → 设置 TAKU SDK UserID / UserCustomData → 用 ad_unit_id 加载并展示 → 上报曝光和完成 → 等待 TAKU 服务端回调 → 查询历史/钱包确认到账。这里是字段语义映射，具体 SDK 方法或常量名称应按 Android 当前 SDK 版本使用，不是把这两个字段拼到任意 TAKU HTTP 地址。
+
+两个值须原样使用，不截断、不重新编码、不只取会话 ID、不复用上一条广告。预加载也必须先绑定本次会话；不能拿旧缓存广告配新会话。APP 不需要自己生成或签名 taku_extra_data，更不能获取后台 sec_key。
+
+TAKU 服务端回调本项目 `/api/callbacks/taku/reward` 时，使用的参数名是 `user_id`、`extra_data`，不同于申请接口的 `taku_user_id`、`taku_extra_data`。只把它们发给本后端 `/complete` 不会让 TAKU SDK 获得这些值，也不会补齐平台回调。
+
+**重试边界**：仅当同一会员、游戏、client_request_id 对应的会话仍为 issued 且未过期时，后端返回原会话，HTTP 仍为 201，同时刷新 session_token；后续事件必须使用最新返回的 token。开启风控时还须保留原 risk_check_id，此时不重复扣次数。禁止并发重试同一申请。已有曝光或完成后，不应再次调用申请接口重试；当前幂等查询不覆盖这些状态。每次真正的新广告使用新的 client_request_id，并在开启风控时重新校验。
+
+| HTTP | 广告申请失败原因 | APP 处理 |
+|---|---|---|
+| 401 | 用户凭证失效或账号不可用 | 刷新登录状态 |
+| 403 | 游戏归属错误、风控凭证无效或重试凭证不匹配 | 检查游戏/校验流程；不要加载广告 |
+| 404 | 游戏不存在或不可用 | 刷新游戏配置 |
+| 409 | 原 issued 会话已过期 | 新申请编号及新校验凭证 |
+| 422 | 参数不合法，或 TAKU 不是 rewarded 类型 | 修正字段 |
+| 429 | 风险设备当日额度已满 | 停止当天新广告申请 |
+| 503 | 广告关闭、广告位/TAKU 回调密钥未配置或渠道不可用 | 暂停加载，等待配置恢复 |
+
+业务错误正文为 `{"detail":"原因"}`，422 参数校验错误可能为 detail 数组；响应头 X-App-Audit-Id 可定位请求日志。当前已实现用户状态、游戏归属、渠道配置及开启后的阿里云准入限次。**冷却秒数和旧设备封禁尚未在此入口强制执行**，不能因 bootstrap 返回配置就认为服务端已拦截，详见闭环检查报告。
 
 ### 5.2 广告展示/曝光事件
 
