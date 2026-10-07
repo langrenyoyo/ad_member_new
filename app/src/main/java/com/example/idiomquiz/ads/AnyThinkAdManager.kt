@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.anythink.banner.api.ATBannerListener
 import com.anythink.banner.api.ATBannerView
 import com.anythink.core.api.ATAdInfo
+import com.anythink.core.api.ATShowConfig
 import com.anythink.core.api.ATSDK
 import com.anythink.core.api.AdError
 import com.anythink.splashad.api.ATSplashAd
@@ -25,6 +26,7 @@ import com.anythink.nativead.api.ATNativeNetworkListener
 import com.example.idiomquiz.BuildConfig
 import com.example.idiomquiz.data.AdPlacement
 import com.example.idiomquiz.data.AppBootstrap
+import org.json.JSONObject
 
 object AnyThinkAdManager {
     private const val TAG = "IdiomQuizAds"
@@ -34,7 +36,7 @@ object AnyThinkAdManager {
     private var interstitialAd: ATInterstitial? = null
     private var interstitialOnClosed: (() -> Unit)? = null
     private var rewardedAd: ATRewardVideoAd? = null
-    private var rewardedOnReward: (() -> Unit)? = null
+    private var rewardedOnReward: ((Map<String, Any?>) -> Unit)? = null
     private var rewardedOnClosed: (() -> Unit)? = null
     private var rewardedOnShown: (() -> Unit)? = null
 
@@ -196,9 +198,16 @@ object AnyThinkAdManager {
         return false
     }
 
-    fun loadRewarded(context: Context, placement: AdPlacement) {
+    fun loadRewarded(
+        context: Context,
+        placement: AdPlacement,
+        takuUserId: String? = null,
+        takuExtraData: Any? = null
+    ) {
         if (!initialized || placement.adUnitId.isBlank()) return
         val ad = ATRewardVideoAd(context, placement.adUnitId)
+        val takuExtra = buildTakuExtra(takuUserId, takuExtraData)
+        if (takuExtra.isNotEmpty()) ad.setLocalExtra(takuExtra)
         ad.setAdListener(object : ATRewardVideoListener {
             override fun onRewardedVideoAdLoaded() { Log.d(TAG, "Rewarded loaded") }
             override fun onRewardedVideoAdFailed(error: AdError) { Log.w(TAG, "Rewarded failed: ${error.fullErrorInfo}") }
@@ -213,10 +222,14 @@ object AnyThinkAdManager {
                 rewardedOnClosed?.invoke()
                 rewardedOnClosed = null
                 rewardedOnShown = null
-                loadRewarded(context, placement)
+                loadRewarded(context, placement, takuUserId, takuExtraData)
             }
             override fun onRewardedVideoAdPlayClicked(adInfo: ATAdInfo) = Unit
-            override fun onReward(adInfo: ATAdInfo) { Log.d(TAG, "Reward granted"); rewardedOnReward?.invoke(); rewardedOnReward = null }
+            override fun onReward(adInfo: ATAdInfo) {
+                Log.d(TAG, "Reward granted")
+                rewardedOnReward?.invoke(adInfo.toRewardExtra())
+                rewardedOnReward = null
+            }
         })
         rewardedAd = ad
         ad.load()
@@ -227,22 +240,65 @@ object AnyThinkAdManager {
     }
 
     fun showRewarded(activity: Activity, placement: AdPlacement, onReward: () -> Unit, onClosed: () -> Unit) {
-        showRewarded(activity, placement, onReward, onClosed, {})
+        showRewarded(activity, placement, { onReward() }, onClosed, {})
     }
 
     fun showRewarded(
         activity: Activity,
         placement: AdPlacement,
-        onReward: () -> Unit,
+        onReward: (Map<String, Any?>) -> Unit,
         onClosed: () -> Unit,
         onShown: () -> Unit
+    ) {
+        showRewarded(activity, placement, onReward, onClosed, onShown, null, null)
+    }
+
+    fun showRewarded(
+        activity: Activity,
+        placement: AdPlacement,
+        onReward: (Map<String, Any?>) -> Unit,
+        onClosed: () -> Unit,
+        onShown: () -> Unit,
+        takuUserId: String?,
+        takuExtraData: Any?
     ) {
         if (!initialized || placement.adUnitId.isBlank()) return
         rewardedOnReward = onReward
         rewardedOnClosed = onClosed
         rewardedOnShown = onShown
         val ad = rewardedAd
-        if (ad?.isAdReady == true) ad.show(activity) else loadRewarded(activity, placement)
+        if (ad?.isAdReady == true) {
+            val ext = buildTakuShowExt(takuUserId, takuExtraData)
+            val config = ATShowConfig.Builder().showCustomExt(ext).build()
+            ad.show(activity, config)
+        } else {
+            loadRewarded(activity, placement, takuUserId, takuExtraData)
+        }
+    }
+
+    private fun buildTakuExtra(userId: String?, extraData: Any?): Map<String, Any?> = buildMap {
+        userId?.takeIf { it.isNotBlank() }?.let {
+            put("userID", it)
+            put("user_id", it)
+        }
+        extraData?.let { put("md5", it.toString()) }
+    }
+
+    private fun buildTakuShowExt(userId: String?, extraData: Any?): String =
+        JSONObject(buildTakuExtra(userId, extraData)).toString()
+
+    private fun ATAdInfo.toRewardExtra(): Map<String, Any?> = buildMap {
+        put("id", getShowId())
+        put("request_id", getRequestId())
+        put("placement_id", getPlacementId())
+        put("network_placement_id", getNetworkPlacementId())
+        put("adsource_id", getAdsourceId())
+        put("network_name", getNetworkName())
+        put("ad_network_type", getAdNetworkType())
+        put("ecpm", getEcpm())
+        put("currency", getCurrency())
+        put("reward_user_custom_data", getRewardUserCustomData())
+        put("ext_info_map", getExtInfoMap())
     }
 
     fun loadNative(context: Context, placement: AdPlacement, onReady: (ATNativeAdView) -> Unit) {

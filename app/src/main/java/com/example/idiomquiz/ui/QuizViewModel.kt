@@ -21,7 +21,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import com.example.idiomquiz.security.AliyunDeviceRiskManager
 import com.example.idiomquiz.security.SecurityGuard
+import org.json.JSONObject
+import java.util.UUID
 
 class QuizViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = QuizRepository(application)
@@ -127,7 +130,8 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             runCatching {
                 authRepository.adHistory(
-                    state.appBootstrap?.gameId ?: AppBootstrap.DEFAULT_GAME_ID
+                    state.appBootstrap?.gameId ?: authRepository.serverGameId()
+                    ?: error("服务端未返回游戏 ID")
                 )
             }.onSuccess { records ->
                 _uiState.update { it.copy(adHistory = records, isBusy = false) }
@@ -139,14 +143,87 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun openWallet() {
+        if (_uiState.value.currentUser == null) {
+            openLogin()
+            return
+        }
+        _uiState.update { it.copy(screen = AppScreen.WALLET, isBusy = true, message = null) }
+        viewModelScope.launch {
+            val gameId = _uiState.value.appBootstrap?.gameId ?: authRepository.serverGameId()
+                ?: error("服务端未返回游戏 ID")
+            val failures = mutableListOf<String>()
+            runCatching { authRepository.walletBalance() }
+                .onSuccess { balance -> _uiState.update { it.copy(serverCoin = balance) } }
+                .onFailure { failures += "余额：${it.message}" }
+            runCatching { authRepository.alipayAccount() }
+                .onSuccess { account -> _uiState.update { it.copy(alipayAccount = account) } }
+                .onFailure { failures += "支付宝资料：${it.message}" }
+            runCatching { authRepository.withdrawalOptions(gameId) }
+                .onSuccess { options -> _uiState.update { it.copy(withdrawalOptions = options) } }
+                .onFailure { failures += "提现档位：${it.message}" }
+            runCatching { authRepository.withdrawals() }
+                .onSuccess { withdrawals -> _uiState.update { it.copy(withdrawals = withdrawals) } }
+                .onFailure { failures += "提现记录：${it.message}" }
+            _uiState.update {
+                it.copy(
+                    isBusy = false,
+                    message = failures.takeIf { errors -> errors.isNotEmpty() }
+                        ?.joinToString("；", prefix = "钱包部分数据加载失败：")
+                )
+            }
+        }
+    }
+
+    fun bindAlipay(account: String, realName: String, currentPassword: String) {
+        _uiState.update { it.copy(isBusy = true, message = null) }
+        viewModelScope.launch {
+            runCatching { authRepository.bindAlipay(account.trim(), realName.trim(), currentPassword) }
+                .onSuccess { value -> _uiState.update { it.copy(alipayAccount = value, isBusy = false, message = "支付宝绑定成功") } }
+                .onFailure { error -> _uiState.update { it.copy(isBusy = false, message = "支付宝绑定失败：${error.message}") } }
+        }
+    }
+
+    fun createWithdrawal(amountCents: Long) {
+        _uiState.update { it.copy(isBusy = true, message = null) }
+        viewModelScope.launch {
+            val gameId = _uiState.value.appBootstrap?.gameId ?: authRepository.serverGameId()
+                ?: error("服务端未返回游戏 ID")
+            runCatching {
+                authRepository.createWithdrawal(gameId, amountCents, UUID.randomUUID().toString())
+            }.onSuccess { record ->
+                _uiState.update { it.copy(withdrawals = listOf(record) + it.withdrawals, isBusy = false, message = "提现申请已提交") }
+                runCatching { authRepository.walletBalance() }.getOrNull()?.let { balance ->
+                    _uiState.update { it.copy(serverCoin = balance) }
+                }
+            }.onFailure { error -> _uiState.update { it.copy(isBusy = false, message = "提现申请失败：${error.message}") } }
+        }
+    }
+
     fun showRewardedAd(activity: Activity, placement: AdPlacement, onClosed: () -> Unit = {}) {
         val snapshot = _uiState.value
         viewModelScope.launch {
             runCatching {
+                val gameId = snapshot.appBootstrap?.gameId ?: authRepository.serverGameId()
+                    ?: error("服务端未返回游戏 ID")
+                val riskConfig = authRepository.deviceRiskConfig(gameId)
+                val riskCheckId = if (!riskConfig.enabled) {
+                    null
+                } else {
+                    val challenge = authRepository.deviceRiskChallenge(gameId)
+                    val aliyunToken = AliyunDeviceRiskManager.getDeviceToken(challenge.bizId)
+                        ?: error("设备风控 SDK 未返回设备 Token，请稍后重试")
+                    val verification = authRepository.deviceRiskVerify(challenge.challengeId, aliyunToken)
+                    if (verification.limited) {
+                        error("当前设备已达到今日广告次数限制")
+                    }
+                    verification.riskCheckId
+                }
                 val session = authRepository.requestAd(
-                    snapshot.appBootstrap?.gameId ?: AppBootstrap.DEFAULT_GAME_ID,
+                    gameId,
                     placement.placement,
-                    placement.adType
+                    placement.adType,
+                    riskCheckId
                 ) ?: error("请先登录后再请求广告")
                 if (session.expiresAtEpochMillis != null &&
                     session.expiresAtEpochMillis <= System.currentTimeMillis()
@@ -159,7 +236,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 AnyThinkAdManager.showRewarded(
                     activity,
                     placement.copy(adUnitId = session.adUnitId),
-                    onReward = {
+                    onReward = { sdkExtra ->
                         rewarded = true
                         val watchedSeconds = if (shownAtMillis == 0L) {
                             0
@@ -170,7 +247,20 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                                 .toInt()
                         }
                         viewModelScope.launch {
-                            runCatching { authRepository.adComplete(session, watchedSeconds) }
+                            val userId = authRepository.currentUser()?.id.orEmpty()
+                            val extraData = JSONObject().apply {
+                                sdkExtra.forEach { (key, value) ->
+                                    if (value != null) put(key, value)
+                                }
+                            }
+                            runCatching {
+                                authRepository.adComplete(
+                                    session = session,
+                                    watchedSeconds = watchedSeconds,
+                                    userId = userId,
+                                    extraData = extraData
+                                )
+                            }
                                 .onSuccess { response ->
                                     val data = response.optJSONObject("data") ?: response
                                     val coinBalance = data.opt("coin_balance")
@@ -201,7 +291,9 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                                     }
                                 }
                         }
-                    }
+                    },
+                    takuUserId = session.takuUserId,
+                    takuExtraData = session.takuExtraData
                 )
             }.onFailure { error ->
                 _uiState.update { it.copy(message = "广告请求失败：${error.message}") }
@@ -471,7 +563,14 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     private suspend fun initializeApp() {
         if (authRepository.currentUser() == null) return
         _uiState.update { it.copy(bootstrapBusy = true, bootstrapError = null) }
-        val result = authRepository.initializeApp(AppBootstrap.DEFAULT_GAME_ID)
+        val gameId = authRepository.serverGameId()
+        if (gameId == null) {
+            _uiState.update {
+                it.copy(bootstrapBusy = false, bootstrapError = "服务端未返回游戏 ID")
+            }
+            return
+        }
+        val result = authRepository.initializeApp(gameId)
         val bootstrap = result.bootstrap
         val serverCoin = if (result.sessionInvalid) {
             null

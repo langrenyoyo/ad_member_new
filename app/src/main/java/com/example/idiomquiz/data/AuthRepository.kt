@@ -77,6 +77,9 @@ class AuthRepository(context: Context) {
         }
     }
 
+    /** Game selection comes from the authenticated account returned by the server. */
+    fun serverGameId(): Int? = preferences.getInt(KEY_GAME_ID, 0).takeIf { it > 0 }
+
     suspend fun walletBalance(): Long {
         val token = accessToken() ?: error("请先登录后再获取金币余额")
         return api.wallet(token, deviceId())
@@ -87,9 +90,59 @@ class AuthRepository(context: Context) {
         return api.adHistory(token, deviceId(), gameId)
     }
 
+    suspend fun alipayAccount(): AlipayAccount {
+        val token = accessToken() ?: error("请先登录后再查看支付宝绑定")
+        return api.getAlipay(token, deviceId())
+    }
+
+    suspend fun bindAlipay(account: String, realName: String, currentPassword: String): AlipayAccount {
+        val token = accessToken() ?: error("请先登录后再绑定支付宝")
+        return api.bindAlipay(token, deviceId(), account, realName, currentPassword)
+    }
+
+    suspend fun withdrawalOptions(gameId: Int): List<WithdrawalOption> {
+        val token = accessToken() ?: error("请先登录后再获取提现档位")
+        return api.withdrawalOptions(token, deviceId(), gameId)
+    }
+
+    suspend fun createWithdrawal(gameId: Int, amountCents: Long, requestKey: String): WithdrawalRecord {
+        val token = accessToken() ?: error("请先登录后再申请提现")
+        return api.createWithdrawal(token, deviceId(), gameId, amountCents, requestKey)
+    }
+
+    suspend fun withdrawals(): List<WithdrawalRecord> {
+        val token = accessToken() ?: error("请先登录后再查看提现记录")
+        return api.withdrawals(token, deviceId())
+    }
+
     suspend fun requestAd(gameId: Int, placement: String, adType: String): AdSession? {
         val token = accessToken() ?: return null
         return api.requestAd(token, deviceId(), gameId, placement, adType)
+    }
+
+    suspend fun deviceRiskConfig(gameId: Int): DeviceRiskConfig {
+        val token = accessToken() ?: error("请先登录后再获取设备风控配置")
+        return api.deviceRiskConfig(token, deviceId(), gameId)
+    }
+
+    suspend fun deviceRiskChallenge(gameId: Int): DeviceRiskChallenge {
+        val token = accessToken() ?: error("请先登录后再获取设备风控挑战")
+        return api.deviceRiskChallenge(token, deviceId(), gameId, deviceId())
+    }
+
+    suspend fun deviceRiskVerify(challengeId: String, aliyunDeviceToken: String): DeviceRiskVerification {
+        val token = accessToken() ?: error("请先登录后再校验设备风险")
+        return api.deviceRiskVerify(token, deviceId(), challengeId, aliyunDeviceToken)
+    }
+
+    suspend fun requestAd(
+        gameId: Int,
+        placement: String,
+        adType: String,
+        riskCheckId: String?
+    ): AdSession? {
+        val token = accessToken() ?: return null
+        return api.requestAd(token, deviceId(), gameId, placement, adType, riskCheckId)
     }
 
     suspend fun adImpression(session: AdSession) {
@@ -97,9 +150,14 @@ class AuthRepository(context: Context) {
         api.adImpression(token, deviceId(), session)
     }
 
-    suspend fun adComplete(session: AdSession, watchedSeconds: Int): JSONObject {
+    suspend fun adComplete(
+        session: AdSession,
+        watchedSeconds: Int,
+        userId: String,
+        extraData: JSONObject
+    ): JSONObject {
         val token = accessToken() ?: return org.json.JSONObject()
-        return api.adComplete(token, deviceId(), session, watchedSeconds)
+        return api.adComplete(token, deviceId(), session, watchedSeconds, userId, extraData)
     }
 
     suspend fun adFail(session: AdSession, reason: String) {
@@ -262,6 +320,9 @@ class AuthRepository(context: Context) {
             .putString(KEY_ACCESS_TOKEN, session.accessToken)
             .putString(KEY_REFRESH_TOKEN, session.refreshToken)
             .putLong(KEY_EXPIRES_AT, System.currentTimeMillis() + session.expiresInSeconds * 1000L)
+            .apply {
+                session.user?.gameId?.let { putInt(KEY_GAME_ID, it) }
+            }
             .apply()
     }
 
@@ -295,6 +356,7 @@ class AuthRepository(context: Context) {
             .remove(KEY_USER_NAME)
             .remove(KEY_USER_LABEL)
             .remove(KEY_PROVIDER)
+            .remove(KEY_GAME_ID)
             .apply()
     }
 
@@ -333,6 +395,7 @@ class AuthRepository(context: Context) {
         private const val KEY_USER_NAME = "user_name"
         private const val KEY_USER_LABEL = "user_label"
         private const val KEY_PROVIDER = "provider"
+        private const val KEY_GAME_ID = "game_id"
         private val PHONE_PATTERN = Regex("1[3-9]\\d{9}")
 
         fun validatePhoneAndPassword(phone: String, password: String): String? {

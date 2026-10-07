@@ -3,11 +3,14 @@ package com.example.idiomquiz.ui
 import com.example.idiomquiz.data.AppSettings
 import com.example.idiomquiz.data.AppBootstrap
 import com.example.idiomquiz.data.AdHistoryRecord
+import com.example.idiomquiz.data.AlipayAccount
 import com.example.idiomquiz.data.AuthUser
 import com.example.idiomquiz.data.IdiomEntity
 import com.example.idiomquiz.data.QuizMode
 import com.example.idiomquiz.data.QuizQuestion
 import com.example.idiomquiz.data.UserStatsEntity
+import com.example.idiomquiz.data.WithdrawalOption
+import com.example.idiomquiz.data.WithdrawalRecord
 
 enum class AppScreen {
     HOME,
@@ -19,6 +22,7 @@ enum class AppScreen {
     SETTINGS,
     AD_DEMO,
     AD_HISTORY,
+    WALLET,
     DETAIL,
     PROFILE,
     LOGIN
@@ -51,6 +55,9 @@ data class UiState(
     val appBootstrap: AppBootstrap? = null,
     val serverCoin: Long? = null,
     val adHistory: List<AdHistoryRecord> = emptyList(),
+    val alipayAccount: AlipayAccount? = null,
+    val withdrawalOptions: List<WithdrawalOption> = emptyList(),
+    val withdrawals: List<WithdrawalRecord> = emptyList(),
     val bootstrapBusy: Boolean = false,
     val bootstrapError: String? = null,
     val adSdkReady: Boolean = false,

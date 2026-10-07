@@ -140,7 +140,9 @@ import com.example.idiomquiz.data.QuizMode
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 import java.time.Instant
+import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.math.roundToInt
@@ -202,6 +204,7 @@ fun IdiomQuizApp(state: UiState, viewModel: QuizViewModel) {
                     AppScreen.SETTINGS -> SettingsScreen(state, viewModel)
                     AppScreen.AD_DEMO -> AdDemoScreen(state, viewModel)
                     AppScreen.AD_HISTORY -> AdHistoryScreen(state, viewModel)
+                    AppScreen.WALLET -> WalletScreen(state, viewModel)
                     AppScreen.DETAIL -> DetailScreen(state, viewModel)
                     AppScreen.PROFILE -> ProfileScreen(state, viewModel)
                     AppScreen.LOGIN -> LoginScreen(state, viewModel)
@@ -1069,8 +1072,19 @@ private fun ProfileScreen(state: UiState, viewModel: QuizViewModel) {
                         contentDescription = "金币",
                         modifier = Modifier.size(100.dp)
                     )
+                    Spacer(Modifier.weight(1f))
+                    IconButton(
+                        onClick = viewModel::openWallet,
+                        modifier = Modifier.size(48.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.AccountBalanceWallet,
+                            contentDescription = "钱包",
+                            tint = Color.White,
+                            modifier = Modifier.size(28.dp)
+                        )
+                    }
                     if (user == null) {
-                        Spacer(Modifier.weight(1f))
                         TextButton(onClick = viewModel::openLogin) {
                             Text("立即登录", color = Color.White)
                         }
@@ -1486,6 +1500,133 @@ private fun AdHistoryScreen(state: UiState, viewModel: QuizViewModel) {
     }
 }
 
+@Composable
+private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
+    var showBindDialog by remember { mutableStateOf(false) }
+    var showWithdrawDialog by remember { mutableStateOf(false) }
+    val balance = state.serverCoin ?: state.appBootstrap?.coin ?: 0L
+    Box(Modifier.fillMaxSize().background(Color(0xFFF4EBDD))) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            AppTopBar(title = "钱包", onBack = viewModel::openProfile)
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(28.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFFFD4C9))
+            ) {
+                Column(Modifier.padding(22.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text("可用金币", style = MaterialTheme.typography.bodyLarge)
+                    Text(balance.toString(), style = MaterialTheme.typography.displaySmall, fontWeight = FontWeight.Bold)
+                    Text("冻结金币：${state.appBootstrap?.freezeCoin ?: 0L}", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Button(
+                        onClick = { showWithdrawDialog = true },
+                        enabled = state.withdrawalOptions.isNotEmpty() && balance > 0L,
+                        modifier = Modifier.fillMaxWidth()
+                    ) { Text("提现") }
+                }
+            }
+            Card(modifier = Modifier.fillMaxWidth(), shape = CardShape) {
+                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text("支付宝收款", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    val account = state.alipayAccount
+                    if (account?.bound == true) {
+                        Text(account.accountMasked ?: "已绑定账号")
+                        Text(account.realNameMasked ?: "", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(if (account.identityVerified) "已完成身份校验" else "待服务端校验", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    } else {
+                        Text("尚未绑定支付宝账号", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                    OutlinedButton(onClick = { showBindDialog = true }, modifier = Modifier.fillMaxWidth()) {
+                        Text(if (account?.bound == true) "修改绑定" else "绑定支付宝")
+                    }
+                }
+            }
+            Text("提现记录", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+            if (state.withdrawals.isEmpty()) {
+                Text("暂无提现记录", color = MaterialTheme.colorScheme.onSurfaceVariant)
+            } else {
+                state.withdrawals.forEach { record ->
+                    Card(modifier = Modifier.fillMaxWidth(), shape = CardShape) {
+                        Row(Modifier.fillMaxWidth().padding(14.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                            Column(Modifier.weight(1f)) {
+                                Text("¥${record.amountCents / 100.0}", fontWeight = FontWeight.Bold)
+                                Text(record.payoutState ?: record.state, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text(formatAdRecordTime(record.createdAt), style = MaterialTheme.typography.bodySmall)
+                            }
+                            Text(if (record.payoutState == "succeeded") "已到账" else "处理中")
+                        }
+                    }
+                }
+            }
+            Spacer(Modifier.height(20.dp))
+        }
+    }
+    if (showBindDialog) {
+        BindAlipayDialog(
+            onDismiss = { showBindDialog = false },
+            onSubmit = { account, realName, password ->
+                showBindDialog = false
+                viewModel.bindAlipay(account, realName, password)
+            }
+        )
+    }
+    if (showWithdrawDialog) {
+        AlertDialog(
+            onDismissRequest = { showWithdrawDialog = false },
+            title = { Text("选择提现金额") },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    state.withdrawalOptions.forEach { option ->
+                        OutlinedButton(
+                            onClick = {
+                                showWithdrawDialog = false
+                                viewModel.createWithdrawal(option.amountCents)
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) { Text(option.title) }
+                    }
+                    if (state.withdrawalOptions.isEmpty()) Text("暂无可用提现档位")
+                }
+            },
+            confirmButton = { TextButton(onClick = { showWithdrawDialog = false }) { Text("取消") } }
+        )
+    }
+}
+
+@Composable
+private fun BindAlipayDialog(
+    onDismiss: () -> Unit,
+    onSubmit: (String, String, String) -> Unit
+) {
+    var account by remember { mutableStateOf("") }
+    var realName by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("绑定支付宝") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(account, { account = it }, label = { Text("支付宝账号") }, singleLine = true)
+                OutlinedTextField(realName, { realName = it }, label = { Text("真实姓名") }, singleLine = true)
+                OutlinedTextField(password, { password = it }, label = { Text("当前登录密码") }, singleLine = true)
+            }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("取消") } },
+        confirmButton = {
+            TextButton(
+                onClick = { onSubmit(account, realName, password) },
+                enabled = account.isNotBlank() && realName.isNotBlank() && password.isNotBlank()
+            ) { Text("保存") }
+        }
+    )
+}
+
 private val adRecordDateFormatter: DateTimeFormatter = DateTimeFormatter
     .ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA)
     .withZone(ZoneId.of("Asia/Shanghai"))
@@ -1507,6 +1648,10 @@ private fun formatAdRecordTime(value: String): String {
         .recoverCatching {
             // Accept ISO strings with an explicit offset that Instant.parse may reject on older runtimes.
             java.time.OffsetDateTime.parse(raw).toInstant().let(adRecordDateFormatter::format)
+        }
+        .recoverCatching {
+            // The API contract stores UTC. Treat a missing-offset ISO value as UTC before localizing it.
+            LocalDateTime.parse(raw).toInstant(ZoneOffset.UTC).let(adRecordDateFormatter::format)
         }
         .getOrDefault(raw)
 }

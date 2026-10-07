@@ -12,6 +12,7 @@ android {
     val anythinkAppId = providers.gradleProperty("anythinkAppId").getOrElse("")
     val anythinkAppKey = providers.gradleProperty("anythinkAppKey").getOrElse("")
     val anythinkSplashPlacement = providers.gradleProperty("anythinkSplashPlacement").getOrElse("")
+    val aliyunDeviceRiskAppKey = providers.gradleProperty("aliyunDeviceRiskAppKey").getOrElse("")
     val wechatAppId = providers.gradleProperty("wechatAppId")
         .getOrElse("wx91cfc0d66f031470")
     val androidApplicationId = providers.gradleProperty("androidApplicationId")
@@ -28,6 +29,7 @@ android {
         buildConfigField("String", "ANYTHINK_APP_KEY", "\"$anythinkAppKey\"")
         buildConfigField("String", "ANYTHINK_SPLASH_PLACEMENT", "\"$anythinkSplashPlacement\"")
         buildConfigField("String", "WECHAT_APP_ID", "\"$wechatAppId\"")
+        buildConfigField("String", "ALIYUN_DEVICE_RISK_APP_KEY", "\"$aliyunDeviceRiskAppKey\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -117,6 +119,15 @@ dependencies {
     // AnyThink Kuying (Adx)
     implementation("com.anythink.sdk:adapter-taku-sdm:6.5.80.1.0")
     implementation("com.smartdigimkttech.sdk:sdm-sdk-cn:6.5.80")
+
+    // Aliyun device risk SDK is distributed as an AAR from the Aliyun console.
+    // Put Android-AliyunDevice-<version>.aar in app/libs when the backend AppKey is available.
+    val aliyunDeviceRiskAars = fileTree("libs") {
+        include("Android-AliyunDevice-*.aar")
+    }
+    if (!aliyunDeviceRiskAars.isEmpty) {
+        implementation(files(aliyunDeviceRiskAars))
+    }
 
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
