@@ -1,6 +1,7 @@
 package com.example.idiomquiz.data
 
 import com.example.idiomquiz.BuildConfig
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -93,6 +94,7 @@ internal class UserApiException(
 
 internal class UserAppApi(context: android.content.Context) {
     private val appContext = context.applicationContext
+
     suspend fun register(username: String, password: String, deviceId: String): UserApiSession =
         requestJson(
             method = "POST",
@@ -293,13 +295,18 @@ internal class UserAppApi(context: android.content.Context) {
         watchedSeconds: Int,
         userId: String,
         extraData: JSONObject
-    ): JSONObject =
-        requestJson("POST", "ads/${session.id}/complete", deviceId, accessToken, JSONObject()
+    ): JSONObject {
+        val requestBody = JSONObject()
             .put("event_id", "complete-${System.currentTimeMillis()}").put("session_token", session.sessionToken)
             .put("provider_event_id", "android-${System.currentTimeMillis()}").put("watched_seconds", watchedSeconds)
             .put("occurred_at", java.time.Instant.now().toString())
             .put("user_id", userId)
-            .put("extra_data", extraData))
+            .put("extra_data", extraData)
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "POST ads/${session.id}/complete params=$requestBody")
+        }
+        return requestJson("POST", "ads/${session.id}/complete", deviceId, accessToken, requestBody)
+    }
 
     suspend fun adFail(accessToken: String, deviceId: String, session: AdSession, reason: String) {
         requestJson("POST", "ads/${session.id}/fail", deviceId, accessToken, JSONObject()
@@ -543,6 +550,7 @@ internal class UserAppApi(context: android.content.Context) {
         }
 
     companion object {
+        const val TAG = "UserAppApi"
         const val BASE_URL = "https://admember.yunjizhilian.asia/api/app/v1/"
         const val APP_ID = "ad-member"
         private const val CONNECT_TIMEOUT_MS = 15_000

@@ -5,6 +5,7 @@ package com.example.idiomquiz.ui
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -1670,6 +1671,14 @@ private fun AdDemoScreen(state: UiState, viewModel: QuizViewModel) {
     var cooldownPaused by remember { mutableStateOf(false) }
     var interstitialShownForCooldown by remember { mutableStateOf(false) }
     val cooldownTotal = rewardedPlacement?.cooldownSeconds ?: 0L
+    LaunchedEffect(rewardedPlacement?.adUnitId, cooldownRemaining, activity != null) {
+        Log.d(
+            "AdFlow",
+            "Ad demo state: hasRewardedPlacement=${rewardedPlacement != null}, " +
+                "rewardedAdUnit=${rewardedPlacement?.adUnitId}, hasActivity=${activity != null}, " +
+                "cooldown=$cooldownRemaining, enabled=${rewardedPlacement != null && activity != null && cooldownRemaining <= 0L}"
+        )
+    }
 
     LaunchedEffect(cooldownRemaining, cooldownPaused) {
         if (!cooldownPaused && cooldownRemaining > 0L) {
@@ -1693,7 +1702,6 @@ private fun AdDemoScreen(state: UiState, viewModel: QuizViewModel) {
     LaunchedEffect(bootstrap) {
         if (bootstrap != null) {
             interstitialPlacement?.let { AnyThinkAdManager.loadInterstitial(context, it) }
-            rewardedPlacement?.let { AnyThinkAdManager.loadRewarded(context, it) }
             nativePlacement?.let { AnyThinkAdManager.loadNative(context, it) { nativeView = it } }
         }
     }
@@ -1714,6 +1722,11 @@ private fun AdDemoScreen(state: UiState, viewModel: QuizViewModel) {
         Spacer(Modifier.weight(1f))
         Button(
             onClick = {
+                Log.d(
+                    "AdFlow",
+                    "Rewarded button clicked: hasPlacement=${rewardedPlacement != null}, " +
+                        "hasActivity=${activity != null}, cooldown=$cooldownRemaining"
+                )
                 if (activity != null) rewardedPlacement?.let {
                     viewModel.showRewardedAd(activity, it) {
                         if (it.cooldownSeconds > 0L) {

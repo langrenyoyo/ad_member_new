@@ -2,6 +2,7 @@ package com.example.idiomquiz.ui
 
 import android.app.Application
 import android.app.Activity
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -204,6 +205,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         val snapshot = _uiState.value
         viewModelScope.launch {
             runCatching {
+                Log.d(AD_FLOW_TAG, "Requesting rewarded ad: placement=${placement.placement}, type=${placement.adType}")
                 val gameId = snapshot.appBootstrap?.gameId ?: authRepository.serverGameId()
                     ?: error("服务端未返回游戏 ID")
                 val riskConfig = authRepository.deviceRiskConfig(gameId)
@@ -225,6 +227,11 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                     placement.adType,
                     riskCheckId
                 ) ?: error("请先登录后再请求广告")
+                Log.d(
+                    AD_FLOW_TAG,
+                    "Ad session received: id=${session.id}, adUnit=${session.adUnitId}, " +
+                        "hasTakuUserId=${!session.takuUserId.isNullOrBlank()}, hasTakuExtra=${session.takuExtraData != null}"
+                )
                 if (session.expiresAtEpochMillis != null &&
                     session.expiresAtEpochMillis <= System.currentTimeMillis()
                 ) {
@@ -238,6 +245,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                     placement.copy(adUnitId = session.adUnitId),
                     onReward = { sdkExtra ->
                         rewarded = true
+                        Log.d(AD_FLOW_TAG, "Reward callback received")
                         val watchedSeconds = if (shownAtMillis == 0L) {
                             0
                         } else {
@@ -254,6 +262,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                                 }
                             }
                             runCatching {
+                                Log.d(AD_FLOW_TAG, "Submitting ad complete: session=${session.id}, watchedSeconds=$watchedSeconds")
                                 authRepository.adComplete(
                                     session = session,
                                     watchedSeconds = watchedSeconds,
@@ -262,6 +271,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                                 )
                             }
                                 .onSuccess { response ->
+                                    Log.d(AD_FLOW_TAG, "Ad complete succeeded: session=${session.id}")
                                     val data = response.optJSONObject("data") ?: response
                                     val coinBalance = data.opt("coin_balance")
                                         ?.toString()?.toLongOrNull()
@@ -272,19 +282,30 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                                         )
                                     }
                                 }
-                                .onFailure { _uiState.update { it.copy(message = "奖励结算失败：${it.message}") } }
+                                .onFailure {
+                                    Log.w(AD_FLOW_TAG, "Ad complete failed: session=${session.id}, error=${it.message}")
+                                    _uiState.update { state -> state.copy(message = "奖励结算失败：${it.message}") }
+                                }
                         }
                     },
                     onClosed = {
+                        Log.d(AD_FLOW_TAG, "Rewarded closed: session=${session.id}, rewarded=$rewarded")
                         if (!rewarded) viewModelScope.launch {
-                            runCatching { authRepository.adFail(session, "CLOSED_BEFORE_REWARD") }
+                            runCatching {
+                                Log.d(AD_FLOW_TAG, "Submitting ad fail: session=${session.id}, reason=CLOSED_BEFORE_REWARD")
+                                authRepository.adFail(session, "CLOSED_BEFORE_REWARD")
+                            }
                         }
                         onClosed()
                     },
                     onShown = {
+                        Log.d(AD_FLOW_TAG, "Rewarded shown: session=${session.id}")
                         shownAtMillis = System.currentTimeMillis()
                         viewModelScope.launch {
-                            runCatching { authRepository.adImpression(session) }
+                            runCatching {
+                                Log.d(AD_FLOW_TAG, "Submitting ad impression: session=${session.id}")
+                                authRepository.adImpression(session)
+                            }
                                 .onFailure {
                                     _uiState.update { state ->
                                         state.copy(message = "广告曝光上报失败：" + it.message)
@@ -296,6 +317,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                     takuExtraData = session.takuExtraData
                 )
             }.onFailure { error ->
+                Log.w(AD_FLOW_TAG, "Rewarded flow failed: ${error.message}")
                 _uiState.update { it.copy(message = "广告请求失败：${error.message}") }
             }
         }
@@ -613,6 +635,8 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     companion object {
+        private const val AD_FLOW_TAG = "AdFlow"
+
         fun factory(application: Application): ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")

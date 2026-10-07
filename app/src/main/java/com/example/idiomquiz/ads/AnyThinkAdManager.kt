@@ -36,6 +36,7 @@ object AnyThinkAdManager {
     private var interstitialAd: ATInterstitial? = null
     private var interstitialOnClosed: (() -> Unit)? = null
     private var rewardedAd: ATRewardVideoAd? = null
+    private var rewardedAdExtraKey: String? = null
     private var rewardedOnReward: ((Map<String, Any?>) -> Unit)? = null
     private var rewardedOnClosed: (() -> Unit)? = null
     private var rewardedOnShown: (() -> Unit)? = null
@@ -44,7 +45,11 @@ object AnyThinkAdManager {
         get() = initialized
 
     fun initialize(context: Context, bootstrap: AppBootstrap): Boolean {
-        Log.i(TAG, "Ad bootstrap: gameStatus=${bootstrap.gameStatus}, adStatus=${bootstrap.adStatus}, enabled=${bootstrap.adsEnabled}, placements=${bootstrap.placements.size}")
+        Log.i(
+            TAG,
+            "Ad bootstrap: gameStatus=${bootstrap.gameStatus}, adStatus=${bootstrap.adStatus}, " +
+                "enabled=${bootstrap.adsEnabled}, placements=${bootstrap.placements.joinToString { "${it.placement}/${it.adType}/${it.adUnitId}" }}"
+        )
         if (!bootstrap.isAdAvailable()) {
             Log.i(TAG, "Ads skipped: game or ad configuration is disabled")
             return false
@@ -207,18 +212,30 @@ object AnyThinkAdManager {
         if (!initialized || placement.adUnitId.isBlank()) return
         val ad = ATRewardVideoAd(context, placement.adUnitId)
         val takuExtra = buildTakuExtra(takuUserId, takuExtraData)
-        if (takuExtra.isNotEmpty()) ad.setLocalExtra(takuExtra)
+        val extraKey = JSONObject(takuExtra).toString()
+        Log.d(TAG, "Rewarded load requested: placement=${placement.adUnitId}, hasLocalExtra=${takuExtra.isNotEmpty()}")
+        if (takuExtra.isNotEmpty()) {
+            ad.setLocalExtra(takuExtra)
+            Log.d(TAG, "Rewarded local extra set: keys=${takuExtra.keys.joinToString()}")
+        }
         ad.setAdListener(object : ATRewardVideoListener {
             override fun onRewardedVideoAdLoaded() { Log.d(TAG, "Rewarded loaded") }
-            override fun onRewardedVideoAdFailed(error: AdError) { Log.w(TAG, "Rewarded failed: ${error.fullErrorInfo}") }
+            override fun onRewardedVideoAdFailed(error: AdError) { Log.w(TAG, "Rewarded load failed: ${error.fullErrorInfo}") }
             override fun onRewardedVideoAdPlayStart(adInfo: ATAdInfo) {
+                if (rewardedAd !== ad) return
+                Log.d(TAG, "Rewarded play started")
                 rewardedOnShown?.invoke()
                 rewardedOnShown = null
             }
             override fun onRewardedVideoAdPlayEnd(adInfo: ATAdInfo) = Unit
-            override fun onRewardedVideoAdPlayFailed(error: AdError, adInfo: ATAdInfo) = Unit
+            override fun onRewardedVideoAdPlayFailed(error: AdError, adInfo: ATAdInfo) {
+                Log.w(TAG, "Rewarded play failed: ${error.fullErrorInfo}")
+            }
             override fun onRewardedVideoAdClosed(adInfo: ATAdInfo) {
+                if (rewardedAd !== ad) return
+                Log.d(TAG, "Rewarded closed")
                 rewardedAd = null
+                rewardedAdExtraKey = null
                 rewardedOnClosed?.invoke()
                 rewardedOnClosed = null
                 rewardedOnShown = null
@@ -226,12 +243,14 @@ object AnyThinkAdManager {
             }
             override fun onRewardedVideoAdPlayClicked(adInfo: ATAdInfo) = Unit
             override fun onReward(adInfo: ATAdInfo) {
+                if (rewardedAd !== ad) return
                 Log.d(TAG, "Reward granted")
                 rewardedOnReward?.invoke(adInfo.toRewardExtra())
                 rewardedOnReward = null
             }
         })
         rewardedAd = ad
+        rewardedAdExtraKey = extraKey
         ad.load()
     }
 
@@ -266,12 +285,22 @@ object AnyThinkAdManager {
         rewardedOnReward = onReward
         rewardedOnClosed = onClosed
         rewardedOnShown = onShown
+        val requestedExtraKey = JSONObject(buildTakuExtra(takuUserId, takuExtraData)).toString()
         val ad = rewardedAd
-        if (ad?.isAdReady == true) {
+        if (ad != null && rewardedAdExtraKey != requestedExtraKey) {
+            Log.d(TAG, "Discarding rewarded cache because session extra changed")
+            ad.destroyAd()
+            rewardedAd = null
+            rewardedAdExtraKey = null
+        }
+        val currentAd = rewardedAd
+        if (currentAd?.isAdReady == true) {
+            Log.d(TAG, "Showing cached rewarded ad")
             val ext = buildTakuShowExt(takuUserId, takuExtraData)
             val config = ATShowConfig.Builder().showCustomExt(ext).build()
-            ad.show(activity, config)
+            currentAd.show(activity, config)
         } else {
+            Log.d(TAG, "No matching rewarded cache; loading with session extra")
             loadRewarded(activity, placement, takuUserId, takuExtraData)
         }
     }
