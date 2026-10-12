@@ -64,6 +64,7 @@ async function renderAdSettings(){
     if(generation!==adSettingsState.generation||state.view!=='ad-settings')return;
     $('#content').innerHTML=`<div class="ad-settings-page"><section class="panel ad-settings-intro"><div class="panel-head"><div><h2>${adSettingLabels.title}</h2><p class="muted">\u914d\u7f6e\u5b8c\u6210\u540e\uff0c\u7528\u6237 APP \u7684 bootstrap \u548c\u5e7f\u544a\u8bf7\u6c42\u4f1a\u4f7f\u7528\u5bf9\u5e94\u5e7f\u544a\u4f4d\u3002</p></div><button class="button ghost" id="adSettingsRefresh" type="button">${adSettingLabels.refresh}</button></div><div class="ad-settings-notice">\u8bf7\u586b\u5199\u771f\u5b9e\u8054\u76df\u5e7f\u544a\u4f4d ID\u3002\u672a\u914d\u7f6e\u771f\u5b9e\u6e20\u9053\u65f6\uff0c\u4e0d\u8981\u628a\u5185\u90e8\u6d4b\u8bd5\u503c\u7528\u4e8e\u751f\u4ea7\u6295\u653e\u3002</div></section>${rows.length?rows.map(([game,config])=>adSettingsCard(game,config)).join(''):'<section class="panel"><div class="empty">\u6682\u65e0\u6e38\u620f</div></section>'}</div>`;
     $('#adSettingsRefresh').onclick=()=>renderAdSettings();
+    mountTakuGlobalKeys(document.querySelector('.ad-settings-intro'),generation);
     document.querySelectorAll('[data-taku-url]').forEach(input=>input.onclick=()=>input.select());
     document.querySelectorAll('[data-ad-game]').forEach(form=>form.addEventListener('submit',async event=>{
       event.preventDefault();
@@ -89,5 +90,34 @@ async function renderAdSettings(){
   }catch(error){
     if(generation!==adSettingsState.generation||state.view!=='ad-settings')return;
     $('#content').innerHTML=`<section class="panel"><div class="panel-head"><h2>${adSettingLabels.title}</h2></div><div class="empty">${esc(error.message||'\u52a0\u8f7d\u5931\u8d25')}</div></section>`;
+  }
+}
+
+async function mountTakuGlobalKeys(host,generation){
+  try{
+    const current=await api('/settings/taku-keys');
+    if(!host.isConnected||generation!==adSettingsState.generation)return;
+    const form=document.createElement('form');
+    form.innerHTML=`<h3>TAKU 全局密钥</h3><p>适用于此服务器的 TAKU 账号。仅超级管理员可编辑；留空保留原值，保存后不回显密钥。游戏专用密钥优先。客户端 eCPM Key 同样只保存在服务端。</p>
+      ${adSettingsField('Publisher Key（回调 sec_key）','publisher_key','','password','autocomplete="new-password"')}
+      ${['server','client'].map(kind=>`<fieldset><legend>${kind==='server'?'服务端':'客户端'} eCPM Key</legend>
+      ${adSettingsField('Key ID（TAKU s_id）',kind+'_ecpm_key_id','')}
+      <label class="ad-settings-field"><span>RSA 私钥（完整 PEM）</span><textarea name="${kind}_ecpm_key" rows="5" autocomplete="off" spellcheck="false"></textarea></label></fieldset>`).join('')}
+      <p data-global-status role="status"></p><button type="submit" class="button primary">保存全局密钥</button>`;
+    host.append(form);
+    const status=form.querySelector('[data-global-status]');
+    const show=result=>{status.textContent=`Publisher Key：${result.publisher_key_configured?'已配置':'未配置'}；服务端 eCPM：${result.server_ecpm_key_configured?'已配置':'未配置'}（${result.server_ecpm_key_ids.join(', ')}）；客户端 eCPM：${result.client_ecpm_key_configured?'已配置':'未配置'}（${result.client_ecpm_key_ids.join(', ')}）`;};
+    show(current);
+    form.onsubmit=async event=>{
+      event.preventDefault();const button=form.querySelector('button');button.disabled=true;
+      try{
+        const result=await api('/settings/taku-keys',{method:'PATCH',body:JSON.stringify(Object.fromEntries(new FormData(form)))});
+        form.reset();show(result);
+      }catch(error){status.textContent=error.message||'保存失败';}
+      finally{button.disabled=false;}
+    };
+  }catch(error){
+    if(!host.isConnected||generation!==adSettingsState.generation)return;
+    const message=document.createElement('p');message.textContent='全局密钥仅超级管理员可查看或编辑。加载失败时请刷新重试。';host.append(message);
   }
 }

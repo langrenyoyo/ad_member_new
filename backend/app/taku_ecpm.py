@@ -60,9 +60,18 @@ def _decrypt(ciphertext, private_key, currency):
         raise EcpmValidationError() from exc
 
 
+def _game_keys(game_id):
+    configured = _keyring().get(str(game_id))
+    if configured is not None:
+        return configured
+    from .taku_settings import global_ecpm_keys
+    keys = global_ecpm_keys()
+    return {'keys': keys} if keys else None
+
+
 def require_configuration(game_id, required=False):
     """Validate deployment readiness without disclosing keys or promising provider delivery."""
-    game = _keyring().get(str(game_id))
+    game = _game_keys(game_id)
     if game is None and not required:
         return False
     try:
@@ -86,7 +95,7 @@ def verify_ecpm(game_id, adsource_id, e_c, e_c_cny, s_id):
     Unconfigured games retain legacy behavior only when no proof is supplied.
     Supports multiple key IDs for server/client bidding keys and key rotation.
     """
-    game = _keyring().get(str(game_id))
+    game = _game_keys(game_id)
     supplied = bool(e_c or e_c_cny or s_id)
     if game is None:
         if supplied:

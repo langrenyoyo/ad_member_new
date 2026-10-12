@@ -261,12 +261,23 @@ class GameTakuConfig(Base):
     sec_key: Mapped[str] = mapped_column(String(512), default="", nullable=False)
 
 
+class TakuGlobalConfig(Base, TimestampMixin):
+    """Global TAKU credentials; secret values are never returned by admin GET."""
+    __tablename__ = "taku_global_configs"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, default=1)
+    publisher_key: Mapped[str] = mapped_column(String(512), default="", nullable=False)
+    server_ecpm_key: Mapped[str] = mapped_column(Text, default="", nullable=False)
+    client_ecpm_key: Mapped[str] = mapped_column(Text, default="", nullable=False)
+
+
 def taku_credentials(session: Session, game_id: int) -> tuple[bool, str]:
     config = session.get(GameTakuConfig, game_id)
+    global_config = session.get(TakuGlobalConfig, 1)
+    fallback = (global_config.publisher_key if global_config else "") or TAKU_SEC_KEY
     if config is not None:
         return bool(config.enabled), config.sec_key
     # Preserve existing deployments until a game saves its own callback settings.
-    return bool(TAKU_SEC_KEY), TAKU_SEC_KEY
+    return bool(fallback), fallback
 
 
 def taku_admin_config(session: Session, game_id: int) -> dict[str, Any]:
@@ -6236,6 +6247,7 @@ from . import device_risk
 from . import member_policy
 from . import sms_auth
 from . import member_insights
+from . import taku_settings
 
 
 @api.get("/{resource}/{item_id}")

@@ -22,6 +22,36 @@ from cryptography.hazmat.primitives.asymmetric import rsa, padding
 
 
 class TakuCallbackTests(unittest.TestCase):
+    def test_global_keys_permissions_preservation_and_real_decryption(self):
+        from app.taku_settings import global_ecpm_keys
+        admin = m.AdminUser(id=99, username='key-admin', role='superadmin', status=1)
+        self.client.app.dependency_overrides[m.require_admin] = lambda: admin
+        try:
+            key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+            pem = key.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8,
+                                    serialization.NoEncryption()).decode()
+            payload = {'publisher_key': 'global-publisher-secret', 'server_ecpm_key': pem,
+                       'server_ecpm_key_id': 'server-1', 'client_ecpm_key': pem, 'client_ecpm_key_id': 'client-1'}
+            response = self.client.patch('/api/v1/settings/taku-keys', json=payload)
+            self.assertEqual(response.status_code, 200, response.text)
+            self.assertNotIn(pem, response.text)
+            self.assertNotIn('global-publisher-secret', response.text)
+            self.assertEqual(self.client.patch('/api/v1/settings/taku-keys', json={}).json(), response.json())
+            self.assertEqual(set(global_ecpm_keys()), {'server-1', 'client-1'})
+            with self.factory() as s:
+                self.assertEqual(m.taku_credentials(s, 1), (True, 'global-publisher-secret'))
+                s.add(m.GameTakuConfig(game_id=1, enabled=1, sec_key='test-taku-key')); s.commit()
+            cipher = base64.b64encode(key.public_key().encrypt(b'123_2.5_sdk-global', padding.PKCS1v15())).decode()
+            self.assertEqual(self.callback(self.params(e_c_cny=cipher, s_id='client-1')).status_code, 200)
+            bad = self.client.patch('/api/v1/settings/taku-keys', json={'server_ecpm_key':'bad-private', 'server_ecpm_key_id':'bad'})
+            self.assertEqual(bad.status_code, 422)
+            self.assertNotIn('bad-private', bad.text)
+            admin.role = 'operator'
+            self.assertEqual(self.client.get('/api/v1/settings/taku-keys').status_code, 403)
+            self.assertEqual(self.client.patch('/api/v1/settings/taku-keys', json=payload).status_code, 403)
+        finally:
+            self.client.app.dependency_overrides.pop(m.require_admin, None)
+
     def test_entire_commission_loss_is_detected_from_settlement_outcome(self):
         from app.wallet_audit import reconcile
         from app import member_policy as p
