@@ -9,7 +9,10 @@ import android.widget.TextView
 import com.anythink.banner.api.ATBannerListener
 import com.anythink.banner.api.ATBannerView
 import com.anythink.core.api.ATAdInfo
-import com.anythink.core.api.ATShowConfig
+import com.anythink.core.api.ATAdConst
+import android.os.Handler
+import android.os.Looper
+import com.example.idiomquiz.data.AdSession
 import com.anythink.core.api.ATSDK
 import com.anythink.core.api.AdError
 import com.anythink.splashad.api.ATSplashAd
@@ -36,10 +39,7 @@ object AnyThinkAdManager {
     private var interstitialAd: ATInterstitial? = null
     private var interstitialOnClosed: (() -> Unit)? = null
     private var rewardedAd: ATRewardVideoAd? = null
-    private var rewardedAdExtraKey: String? = null
-    private var rewardedOnReward: ((Map<String, Any?>) -> Unit)? = null
-    private var rewardedOnClosed: (() -> Unit)? = null
-    private var rewardedOnShown: (() -> Unit)? = null
+    private val mainHandler = Handler(Looper.getMainLooper())
 
     val isInitialized: Boolean
         get() = initialized
@@ -203,139 +203,122 @@ object AnyThinkAdManager {
         return false
     }
 
-    fun loadRewarded(
-        context: Context,
-        placement: AdPlacement,
-        takuUserId: String? = null,
-        takuExtraData: Any? = null
+    /** One request owns one SDK instance; never preload with a finished session. */
+    fun showRewarded(
+        activity: Activity,
+        session: AdSession,
+        onReward: () -> Unit,
+        onClosed: () -> Unit,
+        onShown: () -> Unit,
+        onFailure: (String) -> Unit,
+        onMetadata: (String, org.json.JSONObject) -> Unit = { _, _ -> }
     ) {
-        if (!initialized || placement.adUnitId.isBlank()) return
-        val ad = ATRewardVideoAd(context, placement.adUnitId)
-        val takuExtra = buildTakuExtra(takuUserId, takuExtraData)
-        val extraKey = JSONObject(takuExtra).toString()
-        Log.d(TAG, "Rewarded load requested: placement=${placement.adUnitId}, hasLocalExtra=${takuExtra.isNotEmpty()}")
-        if (takuExtra.isNotEmpty()) {
-            ad.setLocalExtra(takuExtra)
-            Log.d(TAG, "Rewarded local extra set: keys=${takuExtra.keys.joinToString()}")
+        if (!initialized || rewardedAd != null) {
+            onFailure("广告尚未就绪或正在加载")
+            return
         }
+        val userId = session.takuUserId
+        val extraData = session.takuExtraData
+        if (userId.isNullOrBlank() || extraData.isNullOrBlank()) {
+            onFailure("服务器未返回广告奖励验证参数")
+            return
+        }
+        val ad = ATRewardVideoAd(activity, session.adUnitId)
+        rewardedAd = ad
+        val lifecycle = RewardedLifecycle()
+        fun metadata(event: String, info: ATAdInfo) {
+            runCatching {
+                val extra = info.extInfoMap.orEmpty()
+                fun field(vararg names: String): String = names.firstNotNullOfOrNull { key ->
+                    (extra[key] as? String)?.takeIf { it.isNotBlank() }?.take(255)
+                } ?: ""
+                val payload = org.json.JSONObject().put("network", info.networkName.orEmpty().take(128))
+                    .put("source_id", info.adsourceId.orEmpty().take(128)).put("format", info.format.orEmpty().take(64))
+                    .put("title", field("title", "ad_title")).put("app_name", field("app_name", "appName"))
+                    .put("creative_id", field("creative_id", "creativeId"))
+                    .put("extension_keys", org.json.JSONArray(extra.keys.take(50).map { it.take(100) }))
+                onMetadata(event, payload)
+            }
+        }
+        lateinit var timeout: Runnable
+        fun release() {
+            lifecycle.end()
+            mainHandler.removeCallbacks(timeout)
+            if (rewardedAd === ad) rewardedAd = null
+            ad.destroyAd()
+        }
+        fun fail(message: String) {
+            if (lifecycle.ended) return
+            release()
+            onFailure(message)
+        }
+        timeout = Runnable { fail("广告加载超时，请重试") }
+        ad.setLocalExtra(mapOf(
+            ATAdConst.KEY.USER_ID to userId,
+            ATAdConst.KEY.USER_CUSTOM_DATA to extraData
+        ))
         ad.setAdListener(object : ATRewardVideoListener {
-            override fun onRewardedVideoAdLoaded() { Log.d(TAG, "Rewarded loaded") }
-            override fun onRewardedVideoAdFailed(error: AdError) { Log.w(TAG, "Rewarded load failed: ${error.fullErrorInfo}") }
+            override fun onRewardedVideoAdLoaded() {
+                mainHandler.post {
+                    if (rewardedAd !== ad || !lifecycle.loaded()) return@post
+                    if (activity.isFinishing || activity.isDestroyed) {
+                        fail("页面已关闭")
+                        return@post
+                    }
+                    if (session.expiresAtEpochMillis?.let { it <= System.currentTimeMillis() } == true) {
+                        fail("广告会话已过期，请重试")
+                        return@post
+                    }
+                    mainHandler.removeCallbacks(timeout)
+                    runCatching { ad.show(activity) }.onFailure { fail("广告展示失败") }
+                }
+            }
+            override fun onRewardedVideoAdFailed(error: AdError) {
+                mainHandler.post { fail("广告加载失败：${error.fullErrorInfo}") }
+            }
             override fun onRewardedVideoAdPlayStart(adInfo: ATAdInfo) {
-                if (rewardedAd !== ad) return
-                Log.d(TAG, "Rewarded play started")
-                rewardedOnShown?.invoke()
-                rewardedOnShown = null
+                mainHandler.post { if (lifecycle.impression()) { metadata("shown", adInfo); onShown() } }
             }
             override fun onRewardedVideoAdPlayEnd(adInfo: ATAdInfo) = Unit
             override fun onRewardedVideoAdPlayFailed(error: AdError, adInfo: ATAdInfo) {
-                Log.w(TAG, "Rewarded play failed: ${error.fullErrorInfo}")
+                mainHandler.post { fail("广告播放失败：${error.fullErrorInfo}") }
             }
             override fun onRewardedVideoAdClosed(adInfo: ATAdInfo) {
-                if (rewardedAd !== ad) return
-                Log.d(TAG, "Rewarded closed")
-                rewardedAd = null
-                rewardedAdExtraKey = null
-                rewardedOnClosed?.invoke()
-                rewardedOnClosed = null
-                rewardedOnShown = null
-                loadRewarded(context, placement, takuUserId, takuExtraData)
+                mainHandler.post {
+                    if (lifecycle.ended) return@post
+                    metadata("closed", adInfo)
+                    release()
+                    onClosed()
+                }
             }
-            override fun onRewardedVideoAdPlayClicked(adInfo: ATAdInfo) = Unit
+            override fun onRewardedVideoAdPlayClicked(adInfo: ATAdInfo) {
+                mainHandler.post { if (!lifecycle.ended) metadata("clicked", adInfo) }
+            }
             override fun onReward(adInfo: ATAdInfo) {
-                if (rewardedAd !== ad) return
-                Log.d(TAG, "Reward granted")
-                rewardedOnReward?.invoke(adInfo.toRewardExtra())
-                rewardedOnReward = null
+                mainHandler.post {
+                    if (lifecycle.reward()) {
+                        metadata("reward", adInfo)
+                        onReward()
+                    }
+                }
             }
         })
-        rewardedAd = ad
-        rewardedAdExtraKey = extraKey
-        ad.load()
+        mainHandler.postDelayed(timeout, 60_000L)
+        runCatching { ad.load() }.onFailure { fail("广告加载失败") }
     }
 
-    fun showRewarded(activity: Activity, placement: AdPlacement) {
-        showRewarded(activity, placement, {}, {})
-    }
-
-    fun showRewarded(activity: Activity, placement: AdPlacement, onReward: () -> Unit, onClosed: () -> Unit) {
-        showRewarded(activity, placement, { onReward() }, onClosed, {})
-    }
-
-    fun showRewarded(
-        activity: Activity,
-        placement: AdPlacement,
-        onReward: (Map<String, Any?>) -> Unit,
-        onClosed: () -> Unit,
-        onShown: () -> Unit
-    ) {
-        showRewarded(activity, placement, onReward, onClosed, onShown, null, null)
-    }
-
-    fun showRewarded(
-        activity: Activity,
-        placement: AdPlacement,
-        onReward: (Map<String, Any?>) -> Unit,
-        onClosed: () -> Unit,
-        onShown: () -> Unit,
-        takuUserId: String?,
-        takuExtraData: Any?
-    ) {
-        if (!initialized || placement.adUnitId.isBlank()) return
-        rewardedOnReward = onReward
-        rewardedOnClosed = onClosed
-        rewardedOnShown = onShown
-        val requestedExtraKey = JSONObject(buildTakuExtra(takuUserId, takuExtraData)).toString()
-        val ad = rewardedAd
-        if (ad != null && rewardedAdExtraKey != requestedExtraKey) {
-            Log.d(TAG, "Discarding rewarded cache because session extra changed")
-            ad.destroyAd()
-            rewardedAd = null
-            rewardedAdExtraKey = null
+    fun loadNative(context: Context, placement: AdPlacement, onFailure: (String) -> Unit,
+                   onReady: (ATNativeAdView) -> Unit) {
+        if (!initialized || placement.adUnitId.isBlank()) {
+            onFailure("原生广告服务暂不可用")
+            return
         }
-        val currentAd = rewardedAd
-        if (currentAd?.isAdReady == true) {
-            Log.d(TAG, "Showing cached rewarded ad")
-            val ext = buildTakuShowExt(takuUserId, takuExtraData)
-            val config = ATShowConfig.Builder().showCustomExt(ext).build()
-            currentAd.show(activity, config)
-        } else {
-            Log.d(TAG, "No matching rewarded cache; loading with session extra")
-            loadRewarded(activity, placement, takuUserId, takuExtraData)
-        }
-    }
-
-    private fun buildTakuExtra(userId: String?, extraData: Any?): Map<String, Any?> = buildMap {
-        userId?.takeIf { it.isNotBlank() }?.let {
-            put("userID", it)
-            put("user_id", it)
-        }
-        extraData?.let { put("md5", it.toString()) }
-    }
-
-    private fun buildTakuShowExt(userId: String?, extraData: Any?): String =
-        JSONObject(buildTakuExtra(userId, extraData)).toString()
-
-    private fun ATAdInfo.toRewardExtra(): Map<String, Any?> = buildMap {
-        put("id", getShowId())
-        put("request_id", getRequestId())
-        put("placement_id", getPlacementId())
-        put("network_placement_id", getNetworkPlacementId())
-        put("adsource_id", getAdsourceId())
-        put("network_name", getNetworkName())
-        put("ad_network_type", getAdNetworkType())
-        put("ecpm", getEcpm())
-        put("currency", getCurrency())
-        put("reward_user_custom_data", getRewardUserCustomData())
-        put("ext_info_map", getExtInfoMap())
-    }
-
-    fun loadNative(context: Context, placement: AdPlacement, onReady: (ATNativeAdView) -> Unit) {
-        if (!initialized || placement.adUnitId.isBlank()) return
         lateinit var native: ATNative
         native = ATNative(context, placement.adUnitId, object : ATNativeNetworkListener {
             override fun onNativeAdLoaded() {
-                val ad = native.getNativeAd() ?: return
+                mainHandler.post {
+                runCatching {
+                val ad = native.getNativeAd() ?: error("No native ad returned")
                 val adView = ATNativeAdView(context)
                 ad.setNativeEventListener(object : ATNativeEventListener {
                     override fun onAdImpressed(view: ATNativeAdView, info: ATAdInfo) = Unit
@@ -362,10 +345,14 @@ object AnyThinkAdManager {
                 )
                 ad.renderAdContainer(adView, container)
                 onReady(adView)
+                }.onFailure { onFailure("原生广告展示失败，请稍后重试") }
+                }
             }
-            override fun onNativeAdLoadFail(error: AdError) { Log.w(TAG, "Native failed: ${error.fullErrorInfo}") }
+            override fun onNativeAdLoadFail(error: AdError) {
+                mainHandler.post { onFailure("原生广告加载失败，请稍后重试") }
+            }
         })
-        native.makeAdRequest()
+        runCatching { native.makeAdRequest() }.onFailure { onFailure("原生广告请求失败，请稍后重试") }
     }
 
     private fun showSplash(activity: Activity, ad: ATSplashAd) {

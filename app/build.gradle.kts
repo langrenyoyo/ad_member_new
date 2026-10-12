@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -12,7 +14,22 @@ android {
     val anythinkAppId = providers.gradleProperty("anythinkAppId").getOrElse("")
     val anythinkAppKey = providers.gradleProperty("anythinkAppKey").getOrElse("")
     val anythinkSplashPlacement = providers.gradleProperty("anythinkSplashPlacement").getOrElse("")
-    val aliyunDeviceRiskAppKey = providers.gradleProperty("aliyunDeviceRiskAppKey").getOrElse("")
+    val localConfig = Properties().apply {
+        val configFile = rootProject.file("local.properties")
+        if (configFile.exists()) configFile.inputStream().use { load(it) }
+    }
+    val aliyunDeviceRiskAppKey = providers.gradleProperty("aliyunDeviceRiskAppKey")
+        .getOrElse(localConfig.getProperty("aliyunDeviceRiskAppKey", ""))
+    val riskAars = fileTree("libs") { include("Android-AliyunDevice-*.aar") }
+    require(riskAars.files.size <= 1) { "Keep exactly one Aliyun device SDK version in app/libs" }
+    require(aliyunDeviceRiskAppKey.all { it.isLetterOrDigit() || it in "-_." }) {
+        "aliyunDeviceRiskAppKey contains invalid characters"
+    }
+    if (aliyunDeviceRiskAppKey.isNotBlank() || providers.gradleProperty("requireAliyunDeviceRisk").orNull == "true") {
+        require(aliyunDeviceRiskAppKey.isNotBlank() && riskAars.files.size == 1) {
+            "Aliyun device risk requires an AppKey and app/libs/Android-AliyunDevice-<version>.aar"
+        }
+    }
     val wechatAppId = providers.gradleProperty("wechatAppId")
         .getOrElse("wx91cfc0d66f031470")
     val androidApplicationId = providers.gradleProperty("androidApplicationId")
@@ -24,6 +41,15 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+
+        val apiBaseUrl = providers.gradleProperty("userApiBaseUrl")
+            .getOrElse("https://admember.yunjizhilian.asia/api/app/v1/").trimEnd('/') + "/"
+        require(apiBaseUrl.startsWith("https://")) { "userApiBaseUrl must use HTTPS" }
+        require(!apiBaseUrl.contains('"') && !apiBaseUrl.contains('\\') && !apiBaseUrl.contains('\n'))
+        val registrationGameId = providers.gradleProperty("registrationGameId").getOrElse("238").toInt()
+        require(registrationGameId > 0)
+        buildConfigField("String", "USER_API_BASE_URL", "\"$apiBaseUrl\"")
+        buildConfigField("int", "REGISTRATION_GAME_ID", registrationGameId.toString())
 
         buildConfigField("String", "ANYTHINK_APP_ID", "\"$anythinkAppId\"")
         buildConfigField("String", "ANYTHINK_APP_KEY", "\"$anythinkAppKey\"")
@@ -38,6 +64,13 @@ android {
     }
 
     buildTypes {
+        create("deviceTest") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".devtest"
+            matchingFallbacks += "debug"
+            buildConfigField("String", "USER_API_BASE_URL", "\"http://127.0.0.1:18080/api/app/v1/\"")
+            buildConfigField("int", "REGISTRATION_GAME_ID", "1")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -134,6 +167,7 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
 
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.json:json:20240303")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")

@@ -1,5 +1,7 @@
 # 成语问答 Android APP
 
+> 2026-10-09：用户端已新增会员服务（资料、改密、金币流水、分页记录、提现详情和补贴申请），当前能力与限制以 [APP-COMPLETION.md](APP-COMPLETION.md) 为准。下文早期“微信仅授权、不提交后台”描述已过时，当前代码调用 `/auth/wechat`。
+
 一个离线优先的成语学习与答题 Android MVP，使用 Kotlin、Jetpack Compose、Room 和 MVVM 架构实现。
 
 ## 已实现功能

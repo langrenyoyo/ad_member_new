@@ -13,6 +13,7 @@ import com.example.idiomquiz.data.WithdrawalOption
 import com.example.idiomquiz.data.WithdrawalRecord
 
 enum class AppScreen {
+    FAVORITES,
     HOME,
     MODE_SELECTION,
     QUIZ,
@@ -25,6 +26,7 @@ enum class AppScreen {
     WALLET,
     DETAIL,
     PROFILE,
+    MEMBER_CENTER,
     LOGIN
 }
 
@@ -44,6 +46,7 @@ data class QuizResult(
 }
 
 data class UiState(
+    val detailOrigin: AppScreen = AppScreen.HOME,
     val initialized: Boolean = false,
     val screen: AppScreen = AppScreen.HOME,
     val idioms: List<IdiomEntity> = emptyList(),
@@ -52,15 +55,26 @@ data class UiState(
     val mistakeCount: Int = 0,
     val settings: AppSettings = AppSettings(),
     val currentUser: AuthUser? = null,
+    val onboarding: org.json.JSONObject? = null,
+    val onboardingBusy: Boolean = false,
+    val onboardingError: String? = null,
+    val onboardingBlockCode: String? = null,
+    val blockedUntil: String? = null,
+    val smsChallenge: String? = null,
+    val smsPhone: String? = null,
+    val smsRetryAt: Long = 0,
     val appBootstrap: AppBootstrap? = null,
-    val serverCoin: Long? = null,
+    val serverCoin: java.math.BigDecimal? = null,
     val adHistory: List<AdHistoryRecord> = emptyList(),
     val alipayAccount: AlipayAccount? = null,
+    val paymentAvailable: Boolean = false,
     val withdrawalOptions: List<WithdrawalOption> = emptyList(),
     val withdrawals: List<WithdrawalRecord> = emptyList(),
     val bootstrapBusy: Boolean = false,
     val bootstrapError: String? = null,
     val adSdkReady: Boolean = false,
+    val adBusy: Boolean = false,
+    val showRiskConsent: Boolean = false,
     val authMode: AuthMode = AuthMode.LOGIN,
     val authError: String? = null,
     val authBusy: Boolean = false,

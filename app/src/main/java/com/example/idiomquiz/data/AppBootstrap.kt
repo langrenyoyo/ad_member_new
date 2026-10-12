@@ -1,10 +1,12 @@
 package com.example.idiomquiz.data
 
+import java.math.BigDecimal
+
 data class AppBootstrap(
     val userId: String?,
     val username: String?,
-    val coin: Long?,
-    val freezeCoin: Long?,
+    val coin: BigDecimal?,
+    val freezeCoin: BigDecimal?,
     val gameId: Int,
     val gameName: String,
     val gameStatus: Int,
@@ -34,9 +36,9 @@ data class AppBootstrap(
             adAppId = "a699037ab10b8d",
             adAppKey = "a099bd334103ce88aef9025470a783672",
             placements = listOf(
-                AdPlacement("native", "native", "b69908e6c8e2e7", 0, 0),
-                AdPlacement("rewarded", "rewarded", "b699091dbe11a0", 0, 0),
-                AdPlacement("banner", "banner", "b6990935885f50", 0, 0)
+                AdPlacement("native", "native", "b69908e6c8e2e7", 0, BigDecimal.ZERO),
+                AdPlacement("rewarded", "rewarded", "b699091dbe11a0", 0, BigDecimal.ZERO),
+                AdPlacement("banner", "banner", "b6990935885f50", 0, BigDecimal.ZERO)
             ),
             serverTime = null
         )
@@ -48,7 +50,7 @@ data class AdPlacement(
     val adType: String,
     val adUnitId: String,
     val cooldownSeconds: Long,
-    val rewardCoin: Long
+    val rewardCoin: BigDecimal
 )
 
 data class BootstrapResult(

@@ -7,6 +7,8 @@ import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
+import java.math.BigDecimal
+import java.util.UUID
 import java.net.HttpURLConnection
 import java.net.URL
 import java.time.Instant
@@ -29,10 +31,10 @@ internal data class UserApiSession(
 
 data class AdSession(
     val id: String, val requestId: String, val adUnitId: String,
-    val sessionToken: String, val rewardEnabled: Boolean, val rewardCoin: Long,
+    val sessionToken: String, val rewardEnabled: Boolean, val rewardCoin: BigDecimal,
     val expiresAtEpochMillis: Long?,
     val takuUserId: String?,
-    val takuExtraData: Any?
+    val takuExtraData: String?
 )
 
 data class DeviceRiskConfig(
@@ -60,20 +62,23 @@ data class AlipayAccount(
     val identityVerified: Boolean
 )
 
+data class WithdrawalAvailability(val options: List<WithdrawalOption>, val paymentAvailable: Boolean, val alipayBound: Boolean)
+
 data class WithdrawalOption(
     val id: String,
     val amountCents: Long,
-    val coin: Long,
+    val coin: BigDecimal,
     val title: String
 )
 
 data class WithdrawalRecord(
     val id: String,
     val amountCents: Long,
-    val coin: Long,
+    val coin: BigDecimal,
     val state: String,
     val createdAt: String,
-    val payoutState: String?
+    val payoutState: String?,
+    val statusLabel: String = "状态待确认"
 )
 
 data class AdHistoryRecord(
@@ -81,7 +86,7 @@ data class AdHistoryRecord(
     val placement: String,
     val adType: String,
     val status: String,
-    val coinAdded: Long,
+    val coinAdded: BigDecimal,
     val watchedAt: String?,
     val createdAt: String
 )
@@ -89,10 +94,19 @@ data class AdHistoryRecord(
 internal class UserApiException(
     val statusCode: Int,
     val errorCode: String? = null,
-    override val message: String
+    override val message: String,
+    val blockedUntil: String? = null
 ) : IOException(message)
 
 internal class UserAppApi(context: android.content.Context) {
+    suspend fun sendSms(phone: String, deviceId: String): String = requestJson("POST", "auth/sms/send", deviceId,
+        body = JSONObject().put("phone", phone).put("game_id", BuildConfig.REGISTRATION_GAME_ID))
+        .getJSONObject("data").getString("challenge_id")
+
+    suspend fun smsLogin(phone: String, code: String, challenge: String, password: String, deviceId: String): UserApiSession =
+        requestJson("POST", "auth/sms/login", deviceId, body = JSONObject().put("phone", phone).put("code", code)
+            .put("challenge_id", challenge).put("device_id", deviceId).put("game_id", BuildConfig.REGISTRATION_GAME_ID)
+            .apply { if (password.isNotEmpty()) put("new_password", password) }).toSession()
     private val appContext = context.applicationContext
 
     suspend fun register(username: String, password: String, deviceId: String): UserApiSession =
@@ -100,7 +114,7 @@ internal class UserAppApi(context: android.content.Context) {
             method = "POST",
             path = "auth/register",
             deviceId = deviceId,
-            body = credentialsBody(username, password, deviceId)
+            body = credentialsBody(username, password, deviceId).put("game_id", BuildConfig.REGISTRATION_GAME_ID)
         ).toSession()
 
     suspend fun login(username: String, password: String, deviceId: String): UserApiSession =
@@ -121,6 +135,13 @@ internal class UserAppApi(context: android.content.Context) {
                 .put("device_id", deviceId)
         ).toSession()
 
+    suspend fun wechatLogin(code: String, deviceId: String, gameId: Int): UserApiSession =
+        requestJson("POST", "auth/wechat", deviceId, body = JSONObject()
+            .put("code", code).put("provider", "app").put("game_id", gameId)
+            .put("device_id", deviceId).put("app_id", APP_ID)
+            .put("app_version", BuildConfig.VERSION_NAME).put("platform", "android")
+        ).toSession()
+
     suspend fun me(accessToken: String, deviceId: String): UserApiUser =
         requestJson(
             method = "GET",
@@ -137,14 +158,14 @@ internal class UserAppApi(context: android.content.Context) {
             accessToken = accessToken
         ).toBootstrap()
 
-    suspend fun wallet(accessToken: String, deviceId: String): Long {
+    suspend fun wallet(accessToken: String, deviceId: String): BigDecimal {
         val data = requestJson(
             method = "GET",
             path = "wallet",
             deviceId = deviceId,
             accessToken = accessToken
         ).optJSONObject("data")
-        return data?.optLong("coin") ?: throw UserApiException(502, "INVALID_RESPONSE", "服务器未返回金币余额")
+        return data?.decimal("coin") ?: throw UserApiException(502, "INVALID_RESPONSE", "服务器未返回金币余额")
     }
 
     suspend fun logout(accessToken: String, refreshToken: String?, deviceId: String) {
@@ -205,38 +226,20 @@ internal class UserAppApi(context: android.content.Context) {
 
     suspend fun getAlipay(accessToken: String, deviceId: String): AlipayAccount {
         val data = requestJson("GET", "me/alipay", deviceId, accessToken).optJSONObject("data") ?: JSONObject()
-        return AlipayAccount(
-            bound = data.booleanOrFalse("bound") || !data.stringOrNull("account").isNullOrBlank(),
-            accountMasked = data.stringOrNull("account") ?: data.stringOrNull("account_masked"),
-            realNameMasked = data.stringOrNull("real_name") ?: data.stringOrNull("real_name_masked"),
-            identityVerified = data.booleanOrFalse("identity_verified")
-        )
+        return parseAlipay(data.takeIf { it.has("account_masked") })
     }
 
     suspend fun bindAlipay(accessToken: String, deviceId: String, account: String, realName: String, currentPassword: String): AlipayAccount {
-        val data = requestJson(
-            "PUT", "me/alipay", deviceId, accessToken,
+        val data = requestJson("PUT", "me/alipay", deviceId, accessToken,
             JSONObject().put("account", account).put("real_name", realName).put("current_password", currentPassword)
-        ).optJSONObject("data") ?: JSONObject()
-        return AlipayAccount(
-            bound = true,
-            accountMasked = data.stringOrNull("account") ?: data.stringOrNull("account_masked") ?: account,
-            realNameMasked = data.stringOrNull("real_name") ?: data.stringOrNull("real_name_masked") ?: realName,
-            identityVerified = data.booleanOrFalse("identity_verified")
-        )
+        ).optJSONObject("data")
+        return parseAlipay(data)
     }
 
-    suspend fun withdrawalOptions(accessToken: String, deviceId: String, gameId: Int): List<WithdrawalOption> {
-        val data = requestJson("GET", "withdrawal-options?game_id=$gameId", deviceId, accessToken).optJSONObject("data") ?: return emptyList()
-        val items = data.optJSONArray("items") ?: data.optJSONArray("options") ?: return emptyList()
-        return buildList {
-            for (index in 0 until items.length()) {
-                val item = items.optJSONObject(index) ?: continue
-                val amount = item.optLong("amount_cents", item.optLong("amount", 0L))
-                val coin = item.optLong("coin", item.optLong("tixian_coin", 0L))
-                add(WithdrawalOption(item.opt("id").toString(), amount, coin, item.stringOrNull("title") ?: "提现 ${amount / 100.0} 元"))
-            }
-        }
+    suspend fun withdrawalOptions(accessToken: String, deviceId: String, gameId: Int): WithdrawalAvailability {
+        val data = requestJson("GET", "withdrawal-options?game_id=$gameId", deviceId, accessToken)
+            .getJSONObject("data")
+        return WithdrawalAvailability(parseWithdrawalOptions(data), data.optBoolean("payment_available", false), data.optBoolean("alipay_bound", false))
     }
 
     suspend fun createWithdrawal(accessToken: String, deviceId: String, gameId: Int, amountCents: Long, requestKey: String): WithdrawalRecord {
@@ -255,17 +258,7 @@ internal class UserAppApi(context: android.content.Context) {
         }
     }
 
-    private fun JSONObject.toWithdrawalRecord(): WithdrawalRecord {
-        val payout = optJSONObject("payout")
-        return WithdrawalRecord(
-            id = opt("id").toString(),
-            amountCents = optLong("amount_cents", optLong("amount", 0L)),
-            coin = optLong("coin", optLong("coin_amount", 0L)),
-            state = stringOrNull("status") ?: stringOrNull("state") ?: "unknown",
-            createdAt = stringOrNull("created_at").orEmpty(),
-            payoutState = payout?.stringOrNull("state")
-        )
-    }
+    private fun JSONObject.toWithdrawalRecord(): WithdrawalRecord = parseWithdrawal(this)
 
     suspend fun requestAd(
         accessToken: String,
@@ -274,17 +267,24 @@ internal class UserAppApi(context: android.content.Context) {
         placement: String,
         adType: String,
         riskCheckId: String? = null,
-        clientRequestId: String = "android-${System.currentTimeMillis()}"
-    ): AdSession =
-        requestJson("POST", "ads/request", deviceId, accessToken, JSONObject()
+        clientRequestId: String = UUID.randomUUID().toString()
+    ): AdSession {
+        val body = JSONObject()
             .put("game_id", gameId).put("placement", placement).put("ad_type", adType)
             .put("device_id", deviceId).put("client_request_id", clientRequestId)
-            .apply { if (!riskCheckId.isNullOrBlank()) put("risk_check_id", riskCheckId) })
-            .toAdSession()
+            .apply { if (!riskCheckId.isNullOrBlank()) put("risk_check_id", riskCheckId) }
+        return try {
+            requestJson("POST", "ads/request", deviceId, accessToken, body).toAdSession()
+        } catch (error: IOException) {
+            if (error is UserApiException) throw error
+            // Sequential transport retry uses the same admission and idempotency key.
+            requestJson("POST", "ads/request", deviceId, accessToken, body).toAdSession()
+        }
+    }
 
     suspend fun adImpression(accessToken: String, deviceId: String, session: AdSession) {
         requestJson("POST", "ads/${session.id}/impression", deviceId, accessToken, JSONObject()
-            .put("event_id", "imp-${System.currentTimeMillis()}").put("session_token", session.sessionToken)
+            .put("event_id", "imp-${session.id}").put("session_token", session.sessionToken)
             .put("occurred_at", java.time.Instant.now().toString()))
     }
 
@@ -292,25 +292,21 @@ internal class UserAppApi(context: android.content.Context) {
         accessToken: String,
         deviceId: String,
         session: AdSession,
-        watchedSeconds: Int,
-        userId: String,
-        extraData: JSONObject
+        watchedSeconds: Int
     ): JSONObject {
         val requestBody = JSONObject()
-            .put("event_id", "complete-${System.currentTimeMillis()}").put("session_token", session.sessionToken)
-            .put("provider_event_id", "android-${System.currentTimeMillis()}").put("watched_seconds", watchedSeconds)
+            .put("event_id", "complete-${session.id}").put("session_token", session.sessionToken)
+            .put("watched_seconds", watchedSeconds)
             .put("occurred_at", java.time.Instant.now().toString())
-            .put("user_id", userId)
-            .put("extra_data", extraData)
         if (BuildConfig.DEBUG) {
-            Log.d(TAG, "POST ads/${session.id}/complete params=$requestBody")
+            Log.d(TAG, "Submitting completion for session=${session.id}")
         }
         return requestJson("POST", "ads/${session.id}/complete", deviceId, accessToken, requestBody)
     }
 
     suspend fun adFail(accessToken: String, deviceId: String, session: AdSession, reason: String) {
-        requestJson("POST", "ads/${session.id}/fail", deviceId, accessToken, JSONObject()
-            .put("event_id", "fail-${System.currentTimeMillis()}").put("reason", reason))
+        requestJson("POST", "ads/${session.id}/fail", deviceId, accessToken,
+            adEventBody(session, "fail-${session.id}").put("reason", reason))
     }
 
     suspend fun adHistory(accessToken: String, deviceId: String, gameId: Int): List<AdHistoryRecord> {
@@ -330,7 +326,7 @@ internal class UserAppApi(context: android.content.Context) {
                         placement = item.optString("placement"),
                         adType = item.optString("ad_type"),
                         status = item.optString("status"),
-                        coinAdded = item.optLong("coin_added", 0L),
+                        coinAdded = item.decimal("coin_added"),
                         watchedAt = item.optString("watched_at").takeIf { it.isNotBlank() },
                         createdAt = item.optString("created_at")
                     )
@@ -339,12 +335,14 @@ internal class UserAppApi(context: android.content.Context) {
         }
     }
 
-    private suspend fun requestJson(
+    internal suspend fun requestJson(
         method: String,
         path: String,
         deviceId: String,
         accessToken: String? = null,
-        body: JSONObject? = null
+        body: JSONObject? = null,
+        rawBody: ByteArray? = null,
+        contentType: String = "application/json; charset=utf-8"
     ): JSONObject = withContext(Dispatchers.IO) {
         val connection = (URL("$BASE_URL$path").openConnection() as HttpURLConnection).apply {
             requestMethod = method
@@ -354,7 +352,7 @@ internal class UserAppApi(context: android.content.Context) {
             useCaches = false
             instanceFollowRedirects = true
             setRequestProperty("Accept", "application/json")
-            setRequestProperty("Content-Type", "application/json; charset=utf-8")
+            setRequestProperty("Content-Type", contentType)
             setRequestProperty("X-App-Id", APP_ID)
             setRequestProperty("X-App-Version", BuildConfig.VERSION_NAME)
             setRequestProperty("X-Platform", "android")
@@ -365,11 +363,13 @@ internal class UserAppApi(context: android.content.Context) {
             if (!accessToken.isNullOrBlank()) {
                 setRequestProperty("Authorization", "Bearer $accessToken")
             }
-            if (body != null) doOutput = true
+            if (body != null || rawBody != null) doOutput = true
         }
 
         try {
-            if (body != null) {
+            if (rawBody != null) {
+                connection.outputStream.use { it.write(rawBody) }
+            } else if (body != null) {
                 connection.outputStream.bufferedWriter(Charsets.UTF_8).use { writer ->
                     writer.write(body.toString())
                 }
@@ -381,6 +381,10 @@ internal class UserAppApi(context: android.content.Context) {
                 throw responseError(statusCode, responseBody)
             }
             if (responseBody.isBlank()) JSONObject() else JSONObject(responseBody)
+        } catch (error: UserApiException) {
+            throw error
+        } catch (error: IOException) {
+            throw IOException("网络连接失败，请检查网络后重试。若已提交申请，请先确认原申请结果。", error)
         } finally {
             connection.disconnect()
         }
@@ -407,11 +411,11 @@ internal class UserAppApi(context: android.content.Context) {
     private fun responseError(statusCode: Int, body: String): UserApiException {
         val root = runCatching { JSONObject(body) }.getOrNull()
         val error = root?.optJSONObject("error")
-        val errorCode = error?.stringOrNull("code")
+        val errorCode = error?.stringOrNull("code") ?: root?.optJSONObject("detail")?.stringOrNull("code")
         val detail = root?.opt("detail")?.let { value ->
             when (value) {
                 is String -> value
-                is JSONObject -> value.optString("msg").takeIf { it.isNotBlank() }
+                is JSONObject -> value.optString("message").takeIf { it.isNotBlank() } ?: value.optString("msg").takeIf { it.isNotBlank() }
                 is org.json.JSONArray -> value.optJSONObject(0)?.optString("msg")?.takeIf { it.isNotBlank() }
                 else -> null
             }
@@ -424,7 +428,7 @@ internal class UserAppApi(context: android.content.Context) {
                 429 -> "请求太频繁，请稍后再试"
                 else -> "服务器请求失败（$statusCode）"
             }
-        return UserApiException(statusCode, errorCode, message)
+        return UserApiException(statusCode, errorCode, message, root?.optJSONObject("detail")?.stringOrNull("blocked_until"))
     }
 
     private fun JSONObject.toSession(): UserApiSession {
@@ -468,8 +472,8 @@ internal class UserAppApi(context: android.content.Context) {
         return AppBootstrap(
             userId = user?.stringOrNull("id"),
             username = user?.stringOrNull("username"),
-            coin = user?.longOrNull("coin"),
-            freezeCoin = user?.longOrNull("freeze_coin"),
+            coin = user?.decimal("coin"),
+            freezeCoin = user?.decimal("freeze_coin"),
             gameId = gameId,
             gameName = game.stringOrNull("name").orEmpty(),
             gameStatus = game.intOrNull("status") ?: 0,
@@ -484,6 +488,10 @@ internal class UserAppApi(context: android.content.Context) {
 
     private fun JSONObject.toAdSession(): AdSession {
         val data = optJSONObject("data") ?: this
+        if (data.optString("provider").lowercase() != "taku" ||
+            data.optString("reward_verification") != "server_callback") {
+            throw UserApiException(502, "INVALID_RESPONSE", "广告渠道或奖励验证方式不匹配")
+        }
         val reward = data.optJSONObject("reward")
         return AdSession(
             id = data.stringOrNull("ad_session_id") ?: throw UserApiException(502, "INVALID_RESPONSE", "服务器未返回广告会话"),
@@ -491,13 +499,10 @@ internal class UserAppApi(context: android.content.Context) {
             adUnitId = data.stringOrNull("ad_unit_id") ?: throw UserApiException(502, "INVALID_RESPONSE", "服务器未返回广告位"),
             sessionToken = data.stringOrNull("session_token") ?: throw UserApiException(502, "INVALID_RESPONSE", "服务器未返回广告会话凭证"),
             rewardEnabled = reward?.optBoolean("enabled", false) ?: false,
-            rewardCoin = reward?.optLong("coin", 0L) ?: 0L,
-            expiresAtEpochMillis = data.stringOrNull("expires_at")?.let {
-                runCatching { Instant.parse(it).toEpochMilli() }.getOrNull()
-            },
+            rewardCoin = reward?.decimal("coin") ?: BigDecimal.ZERO,
+            expiresAtEpochMillis = parseServerTime(data.stringOrNull("expires_at")),
             takuUserId = data.stringOrNull("taku_user_id"),
-            takuExtraData = data.opt("taku_extra_data")
-                ?.takeIf { it != JSONObject.NULL }
+            takuExtraData = data.stringOrNull("taku_extra_data")
         )
     }
 
@@ -513,7 +518,7 @@ internal class UserAppApi(context: android.content.Context) {
                     adType = adType,
                     adUnitId = adUnitId,
                     cooldownSeconds = placement.longOrNull("cooldown_seconds") ?: 0L,
-                    rewardCoin = placement.longOrNull("reward_coin") ?: 0L
+                    rewardCoin = placement.decimal("reward_coin")
                 )
             )
         }
@@ -551,7 +556,7 @@ internal class UserAppApi(context: android.content.Context) {
 
     companion object {
         const val TAG = "UserAppApi"
-        const val BASE_URL = "https://admember.yunjizhilian.asia/api/app/v1/"
+        val BASE_URL = BuildConfig.USER_API_BASE_URL
         const val APP_ID = "ad-member"
         private const val CONNECT_TIMEOUT_MS = 15_000
         private const val READ_TIMEOUT_MS = 20_000

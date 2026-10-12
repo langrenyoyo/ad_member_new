@@ -2,6 +2,8 @@
 
 package com.example.idiomquiz.ui
 
+import androidx.lifecycle.repeatOnLifecycle
+
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
@@ -155,6 +157,50 @@ private const val SPLASH_AD_ENABLED = false
 fun IdiomQuizApp(state: UiState, viewModel: QuizViewModel) {
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
+    val onboarding = state.onboarding
+    val policy = onboarding?.optJSONObject("policy")
+    val needsInvite = policy?.optBoolean("require_invite") == true && onboarding.optInt("parent_id") == 0
+    val needsUsage = policy?.optBoolean("require_usage") == true && onboarding.optBoolean("usage_granted") != true
+    val needsAlipay = policy?.optBoolean("require_alipay") == true && onboarding.optBoolean("alipay_bound") != true
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
+    LaunchedEffect(state.currentUser?.id, lifecycleOwner) {
+        if (state.currentUser != null) {
+            lifecycleOwner.lifecycle.repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.RESUMED) {
+                try {
+                    while (true) {
+                        viewModel.checkUsageOnResume()
+                        viewModel.refreshOnboarding()
+                        kotlinx.coroutines.delay(60_000)
+                    }
+                } finally { viewModel.pauseOnboardingRefresh() }
+            }
+        }
+    }
+    val recoveryWallet = state.onboardingBlockCode == "DEVICE_COOLDOWN" && state.screen == AppScreen.WALLET
+    if (state.currentUser != null && !recoveryWallet && onboardingBlocks(onboarding != null,
+            state.onboardingBlockCode, needsInvite, needsUsage, needsAlipay)) {
+        OnboardingScreen(state, viewModel, needsInvite, needsUsage, needsAlipay)
+        return
+    }
+
+    if (state.showRiskConsent) {
+        val uriHandler = androidx.compose.ui.platform.LocalUriHandler.current
+        AlertDialog(
+            onDismissRequest = { viewModel.respondToRiskConsent(false) },
+            title = { Text("设备安全检测") },
+            text = {
+                Column {
+                    Text("为识别异常设备和广告作弊，本功能使用阿里云风险识别 SDK。在您同意并再次点击观看广告时，将采集设备型号、系统版本、屏幕信息，以及可获取的 Android ID、OAID、广告标识，并通过网络交由阿里云检测。当前配置关闭不可变设备标识及应用列表、Wi-Fi 等扩展信息采集。不另行申请电话或存储权限。拒绝不影响学习功能。")
+                    TextButton(onClick = {
+                        runCatching { uriHandler.openUri("https://terms.aliyun.com/legal-agreement/terms/suit_bu1_ali_cloud/suit_bu1_ali_cloud202111120818_92724.html") }
+                            .onFailure { viewModel.showMessage("无法打开隐私政策，请检查浏览器") }
+                    }) { Text("阿里云风险识别 SDK 隐私政策") }
+                }
+            },
+            confirmButton = { TextButton(onClick = { viewModel.respondToRiskConsent(true) }) { Text("同意") } },
+            dismissButton = { TextButton(onClick = { viewModel.respondToRiskConsent(false) }) { Text("暂不开启") } }
+        )
+    }
 
     LaunchedEffect(state.appBootstrap, state.adSdkReady) {
         if (!SPLASH_AD_ENABLED) return@LaunchedEffect
@@ -201,6 +247,7 @@ fun IdiomQuizApp(state: UiState, viewModel: QuizViewModel) {
                     AppScreen.QUIZ -> QuizScreen(state, viewModel)
                     AppScreen.RESULT -> ResultScreen(state, viewModel)
                     AppScreen.MISTAKES -> MistakesScreen(state, viewModel)
+                    AppScreen.FAVORITES -> FavoritesScreen(state, viewModel)
                     AppScreen.STATS -> StatsScreen(state, viewModel)
                     AppScreen.SETTINGS -> SettingsScreen(state, viewModel)
                     AppScreen.AD_DEMO -> AdDemoScreen(state, viewModel)
@@ -208,6 +255,10 @@ fun IdiomQuizApp(state: UiState, viewModel: QuizViewModel) {
                     AppScreen.WALLET -> WalletScreen(state, viewModel)
                     AppScreen.DETAIL -> DetailScreen(state, viewModel)
                     AppScreen.PROFILE -> ProfileScreen(state, viewModel)
+                    AppScreen.MEMBER_CENTER -> {
+                        val memberModel = viewModel.memberCenterModel(state.currentUser?.id)
+                        MemberCenterScreen(memberModel, viewModel::openProfile)
+                    }
                     AppScreen.LOGIN -> LoginScreen(state, viewModel)
                 }
             }
@@ -358,6 +409,10 @@ private fun HomeScreen(state: UiState, viewModel: QuizViewModel) {
             }
         }
 
+        state.onboarding?.optJSONObject("policy")?.optString("announcement")?.takeIf { it.isNotBlank() }?.let {
+            Card(Modifier.fillMaxWidth()) { Column(Modifier.padding(16.dp)) { Text("公告", fontWeight = FontWeight.Bold); Text(it) } }
+        }
+        state.onboarding?.optString("invite_code")?.takeIf { it.isNotBlank() && it != "null" }?.let { Text("我的邀请码：$it") }
         SectionTitle("学习概览")
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -409,6 +464,14 @@ private fun HomeScreen(state: UiState, viewModel: QuizViewModel) {
                 subtitle = "查看答题表现",
                 tint = MaterialTheme.colorScheme.tertiary,
                 onClick = viewModel::openStats
+            )
+            QuickAction(
+                modifier = Modifier.fillMaxWidth(),
+                iconRes = R.drawable.icon_trophy,
+                title = "我的收藏",
+                subtitle = "${state.idioms.count { it.isFavorite }} 个成语",
+                tint = MaterialTheme.colorScheme.tertiary,
+                onClick = viewModel::openFavorites
             )
         }
 
@@ -862,6 +925,31 @@ private fun MistakesScreen(state: UiState, viewModel: QuizViewModel) {
 }
 
 @Composable
+private fun FavoritesScreen(state: UiState, viewModel: QuizViewModel) {
+    val favorites = state.idioms.filter { it.isFavorite }
+    androidx.activity.compose.BackHandler { viewModel.goHome() }
+    Column(Modifier.fillMaxSize().statusBarsPadding()) {
+        AppTopBar(title = "我的收藏", onBack = viewModel::goHome)
+        if (favorites.isEmpty()) {
+            EmptyState(Modifier.fillMaxSize().padding(24.dp), Icons.Filled.Star,
+                "还没有收藏", "在成语详情中点击星标收藏，清除学习记录不会删除收藏。")
+        } else {
+            LazyColumn(contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                items(favorites, key = { it.id }) { idiom ->
+                    Card(onClick = { viewModel.openDetail(idiom.id) }, modifier = Modifier.fillMaxWidth()) {
+                        Column(Modifier.padding(16.dp)) {
+                            Text(idiom.word, style = MaterialTheme.typography.titleLarge)
+                            Text(idiom.pinyin, style = MaterialTheme.typography.bodySmall)
+                            Text(idiom.explanation)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
 private fun StatsScreen(state: UiState, viewModel: QuizViewModel) {
     val stats = state.stats
     val accuracy = if (stats.totalAnswered == 0) 0 else {
@@ -987,7 +1075,7 @@ private fun StatsScreen(state: UiState, viewModel: QuizViewModel) {
 private fun ProfileScreen(state: UiState, viewModel: QuizViewModel) {
     var showClearDialog by remember { mutableStateOf(false) }
     val user = state.currentUser
-    val coinBalance = state.serverCoin ?: state.appBootstrap?.coin ?: 0L
+    val coinBalance = state.serverCoin ?: state.appBootstrap?.coin ?: java.math.BigDecimal.ZERO
 
     Box(Modifier.fillMaxSize().background(Color(0xFFF4EBDD))) {
         Column(
@@ -1012,6 +1100,12 @@ private fun ProfileScreen(state: UiState, viewModel: QuizViewModel) {
             )
         )
 
+        if (user != null) {
+            OutlinedButton(onClick = viewModel::openMemberCenter, modifier = Modifier.fillMaxWidth()) {
+                Text("会员资料 · 改密 · 流水 · 补贴")
+            }
+        }
+
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(30.dp),
@@ -1035,11 +1129,7 @@ private fun ProfileScreen(state: UiState, viewModel: QuizViewModel) {
                         border = BorderStroke(5.dp, Color.White)
                     ) {
                         Box(contentAlignment = Alignment.Center) {
-                            Image(
-                                painter = painterResource(R.drawable.icon_avatar),
-                                contentDescription = "头像",
-                                modifier = Modifier.size(68.dp)
-                            )
+                            MemberAvatar(user?.id, Modifier.size(68.dp))
                         }
                     }
                     Spacer(Modifier.width(16.dp))
@@ -1199,7 +1289,9 @@ private fun ProfileMenuRow(icon: Int, title: String, onClick: () -> Unit) {
 @Composable
 private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
     var phone by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var smsCode by remember { mutableStateOf("") }
+    var smsMode by rememberSaveable { mutableStateOf(true) }
     val context = LocalContext.current
     val isRegister = state.authMode == AuthMode.REGISTER
 
@@ -1212,6 +1304,10 @@ private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         AppTopBar(title = if (isRegister) "注册账号" else "登录", onBack = viewModel::openProfile)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FilterChip(selected = smsMode, onClick = { smsMode = true; password = ""; viewModel.clearAuthError() }, label = { Text("短信登录") })
+            FilterChip(selected = !smsMode, onClick = { smsMode = false; smsCode = ""; viewModel.clearAuthError() }, label = { Text("密码登录") })
+        }
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
                 if (isRegister) "创建你的学习账号" else "欢迎回来",
@@ -1225,7 +1321,7 @@ private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
             )
         }
 
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        if (!smsMode) Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             FilterChip(
                 selected = !isRegister,
                 onClick = { viewModel.switchAuthMode(AuthMode.LOGIN) },
@@ -1250,7 +1346,13 @@ private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
         )
-        OutlinedTextField(
+        if (smsMode) {
+            OutlinedTextField(smsCode, { smsCode = it.filter(Char::isDigit).take(6); viewModel.clearAuthError() },
+                modifier = Modifier.fillMaxWidth(), label = { Text("短信验证码") }, singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+            SmsSendButton(state, enabled = !state.authBusy, onClick = { viewModel.sendSms(phone) })
+            Text("未注册的手机号将自动创建账号；绑定支付宝时可通过短信验证设置密码。")
+        } else OutlinedTextField(
             value = password,
             onValueChange = {
                 password = it
@@ -1288,7 +1390,7 @@ private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
         }
 
         Button(
-            onClick = { viewModel.loginWithPhone(phone, password) },
+            onClick = { if (smsMode) viewModel.loginWithSms(phone, smsCode, "") else viewModel.loginWithPhone(phone, password) },
             enabled = !state.authBusy,
             modifier = Modifier
                 .fillMaxWidth()
@@ -1301,7 +1403,7 @@ private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             } else {
-                Text(if (isRegister) "注册并登录" else "登录")
+                Text(if (smsMode) "验证码注册 / 登录" else if (isRegister) "注册并登录" else "登录")
             }
         }
 
@@ -1334,7 +1436,7 @@ private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
             Text("微信登录")
         }
         Text(
-            "当前仅调起微信 SDK，授权 code 会显示在提示中，暂不提交后端。",
+            "微信授权后将登录并同步账号。",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -1406,7 +1508,7 @@ private fun SettingsScreen(state: UiState, viewModel: QuizViewModel) {
 
 @Composable
 private fun AdHistoryScreen(state: UiState, viewModel: QuizViewModel) {
-    val balance = state.serverCoin ?: state.appBootstrap?.coin ?: 0L
+    val balance = state.serverCoin ?: state.appBootstrap?.coin ?: java.math.BigDecimal.ZERO
     Box(Modifier.fillMaxSize().background(Color(0xFFF4EBDD))) {
         Column(
             modifier = Modifier
@@ -1488,8 +1590,8 @@ private fun AdHistoryScreen(state: UiState, viewModel: QuizViewModel) {
                                 )
                             }
                             Text(
-                                if (record.coinAdded > 0) "+" + record.coinAdded else "0",
-                                color = if (record.coinAdded > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                if (record.status == "rewarded") "已结算" else "待确认",
+                                color = if (record.status == "rewarded") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -1503,9 +1605,11 @@ private fun AdHistoryScreen(state: UiState, viewModel: QuizViewModel) {
 
 @Composable
 private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
+    val context = LocalContext.current
+    var showPasswordDialog by remember { mutableStateOf(false) }
     var showBindDialog by remember { mutableStateOf(false) }
     var showWithdrawDialog by remember { mutableStateOf(false) }
-    val balance = state.serverCoin ?: state.appBootstrap?.coin ?: 0L
+    val balance = state.serverCoin ?: state.appBootstrap?.coin ?: java.math.BigDecimal.ZERO
     Box(Modifier.fillMaxSize().background(Color(0xFFF4EBDD))) {
         Column(
             modifier = Modifier
@@ -1516,6 +1620,12 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             AppTopBar(title = "钱包", onBack = viewModel::openProfile)
+            TextButton(onClick = viewModel::openWallet, enabled = !state.isBusy) { Text("刷新钱包") }
+            viewModel.pendingWithdrawalAmount()?.let { amount ->
+                Button(onClick = { viewModel.createWithdrawal(amount) }, enabled = !state.isBusy) {
+                    Text("确认上次 ${amount / 100.0} 元提现结果")
+                }
+            }
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(28.dp),
@@ -1527,9 +1637,11 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
                     Text("冻结金币：${state.appBootstrap?.freezeCoin ?: 0L}", color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Button(
                         onClick = { showWithdrawDialog = true },
-                        enabled = state.withdrawalOptions.isNotEmpty() && balance > 0L,
+                        enabled = !state.isBusy && state.paymentAvailable && state.alipayAccount?.bound == true && state.withdrawalOptions.isNotEmpty() && balance.signum() > 0,
                         modifier = Modifier.fillMaxWidth()
                     ) { Text("提现") }
+                    if (!state.paymentAvailable) Text("提现服务暂不可用，请稍后刷新")
+                    else if (state.alipayAccount?.bound != true) Text("请先绑定支付宝收款账号")
                 }
             }
             Card(modifier = Modifier.fillMaxWidth(), shape = CardShape) {
@@ -1543,8 +1655,12 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
                     } else {
                         Text("尚未绑定支付宝账号", color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
-                    OutlinedButton(onClick = { showBindDialog = true }, modifier = Modifier.fillMaxWidth()) {
+                    OutlinedButton(onClick = { showBindDialog = true }, enabled = !state.isBusy, modifier = Modifier.fillMaxWidth()) {
                         Text(if (account?.bound == true) "修改绑定" else "绑定支付宝")
+                    }
+                    if (state.currentUser?.provider == com.example.idiomquiz.data.AuthProvider.WECHAT) {
+                        Text("首次绑定前请通过微信授权设置登录密码")
+                        TextButton(onClick = { showPasswordDialog = true }, enabled = !state.isBusy) { Text("微信验证并设置密码") }
                     }
                 }
             }
@@ -1557,16 +1673,33 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
                         Row(Modifier.fillMaxWidth().padding(14.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                             Column(Modifier.weight(1f)) {
                                 Text("¥${record.amountCents / 100.0}", fontWeight = FontWeight.Bold)
-                                Text(record.payoutState ?: record.state, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 Text(formatAdRecordTime(record.createdAt), style = MaterialTheme.typography.bodySmall)
                             }
-                            Text(if (record.payoutState == "succeeded") "已到账" else "处理中")
+                            Text(record.statusLabel)
                         }
                     }
                 }
             }
             Spacer(Modifier.height(20.dp))
         }
+    }
+    if (showPasswordDialog) {
+        var password by remember { mutableStateOf("") }
+        var confirmation by remember { mutableStateOf("") }
+        AlertDialog(
+            onDismissRequest = { showPasswordDialog = false },
+            title = { Text("设置登录密码") },
+            text = { Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("输入 8–128 位字母和数字组合密码，再授权当前账号绑定的微信。")
+                OutlinedTextField(password, { password = it }, label = { Text("新密码") }, singleLine = true, visualTransformation = PasswordVisualTransformation())
+                OutlinedTextField(confirmation, { confirmation = it }, label = { Text("确认密码") }, singleLine = true, visualTransformation = PasswordVisualTransformation())
+            } },
+            confirmButton = { TextButton(onClick = {
+                showPasswordDialog = false
+                viewModel.setPasswordWithWeChat(context, password, confirmation)
+            }) { Text("微信验证") } },
+            dismissButton = { TextButton(onClick = { showPasswordDialog = false }) { Text("取消") } }
+        )
     }
     if (showBindDialog) {
         BindAlipayDialog(
@@ -1615,7 +1748,7 @@ private fun BindAlipayDialog(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(account, { account = it }, label = { Text("支付宝账号") }, singleLine = true)
                 OutlinedTextField(realName, { realName = it }, label = { Text("真实姓名") }, singleLine = true)
-                OutlinedTextField(password, { password = it }, label = { Text("当前登录密码") }, singleLine = true)
+                OutlinedTextField(password, { password = it }, label = { Text("当前登录密码") }, singleLine = true, visualTransformation = PasswordVisualTransformation())
             }
         },
         dismissButton = { TextButton(onClick = onDismiss) { Text("取消") } },
@@ -1663,10 +1796,12 @@ private fun AdDemoScreen(state: UiState, viewModel: QuizViewModel) {
     val activity = context.findActivity()
     val bootstrap = state.appBootstrap
     val bannerPlacement = bootstrap?.let(AnyThinkAdManager::bannerPlacement)
-    val nativePlacement = bootstrap?.let(AnyThinkAdManager::nativePlacement)
+    val nativePlacement = bootstrap?.let(AnyThinkAdManager::nativePlacement)?.takeIf { it.adUnitId.isNotBlank() }
     val interstitialPlacement = bootstrap?.let(AnyThinkAdManager::interstitialPlacement)
-    val rewardedPlacement = bootstrap?.let(AnyThinkAdManager::rewardedPlacement)
+    val rewardedPlacement = bootstrap?.let(AnyThinkAdManager::rewardedPlacement)?.takeIf { it.adUnitId.isNotBlank() }
     var nativeView by remember { mutableStateOf<android.view.View?>(null) }
+    var nativeError by remember { mutableStateOf<String?>(null) }
+    var nativeRetry by remember { mutableStateOf(0) }
     var cooldownRemaining by remember { mutableStateOf(0L) }
     var cooldownPaused by remember { mutableStateOf(false) }
     var interstitialShownForCooldown by remember { mutableStateOf(false) }
@@ -1699,11 +1834,32 @@ private fun AdDemoScreen(state: UiState, viewModel: QuizViewModel) {
             if (!shown) cooldownPaused = false
         }
     }
-    LaunchedEffect(bootstrap) {
-        if (bootstrap != null) {
+    LaunchedEffect(bootstrap, state.adSdkReady) {
+        if (bootstrap != null && state.adSdkReady) {
             interstitialPlacement?.let { AnyThinkAdManager.loadInterstitial(context, it) }
-            nativePlacement?.let { AnyThinkAdManager.loadNative(context, it) { nativeView = it } }
         }
+    }
+    LaunchedEffect(nativePlacement, state.adSdkReady, nativeRetry) {
+        nativeView = null
+        nativeError = null
+        val placement = nativePlacement ?: return@LaunchedEffect
+        if (!state.adSdkReady) return@LaunchedEffect
+        val loaded = kotlinx.coroutines.withTimeoutOrNull(60_000L) {
+            kotlinx.coroutines.suspendCancellableCoroutine<Boolean> { continuation ->
+                fun complete(view: android.view.View?, error: String?) {
+                    if (continuation.isActive) {
+                        nativeView = view
+                        nativeError = error
+                        continuation.resumeWith(Result.success(true))
+                    }
+                }
+                runCatching {
+                    AnyThinkAdManager.loadNative(context, placement,
+                        onFailure = { complete(null, it) }, onReady = { complete(it, null) })
+                }.onFailure { complete(null, "原生广告加载失败，请稍后重试") }
+            }
+        }
+        if (loaded == null) nativeError = "原生广告加载超时，请重试"
     }
     Column(
         modifier = Modifier.fillMaxSize().statusBarsPadding().padding(horizontal = 16.dp),
@@ -1737,13 +1893,15 @@ private fun AdDemoScreen(state: UiState, viewModel: QuizViewModel) {
                     }
                 }
             },
-            enabled = rewardedPlacement != null && activity != null && cooldownRemaining <= 0L,
+            enabled = state.adSdkReady && !state.adBusy && rewardedPlacement != null && activity != null && cooldownRemaining <= 0L,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(60.dp)
         ) {
             Text(
                 if (cooldownRemaining > 0L) "激励视频冷却中（" + cooldownRemaining + "秒）"
+                else if (rewardedPlacement == null) "暂无可用激励广告"
+                else if (!state.adSdkReady) "广告服务暂不可用"
                 else "获取更多金币"
             )
         }
@@ -1757,7 +1915,15 @@ private fun AdDemoScreen(state: UiState, viewModel: QuizViewModel) {
                     .wrapContentHeight()
             )
         } else {
-            Text("原生广告加载中…", color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(when {
+                nativePlacement == null -> "未配置原生广告"
+                !state.adSdkReady -> "广告服务暂不可用"
+                nativeError != null -> nativeError!!
+                else -> "原生广告加载中…"
+            }, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            if (nativeError != null && state.adSdkReady && nativePlacement != null) {
+                TextButton(onClick = { nativeRetry++ }) { Text("重试原生广告") }
+            }
         }
         Spacer(Modifier.navigationBarsPadding())
     }
@@ -1767,11 +1933,14 @@ private fun AdDemoScreen(state: UiState, viewModel: QuizViewModel) {
 @Composable
 private fun DetailScreen(state: UiState, viewModel: QuizViewModel) {
     val idiom = state.idioms.firstOrNull { it.id == state.detailId } ?: return
-    val backAction = if (state.mistakes.any { it.id == idiom.id }) {
+    val backAction = if (state.detailOrigin == AppScreen.FAVORITES) {
+        viewModel::openFavorites
+    } else if (state.detailOrigin == AppScreen.MISTAKES) {
         viewModel::openMistakes
     } else {
         viewModel::goHome
     }
+    androidx.activity.compose.BackHandler(onBack = backAction)
 
     Column(
         modifier = Modifier

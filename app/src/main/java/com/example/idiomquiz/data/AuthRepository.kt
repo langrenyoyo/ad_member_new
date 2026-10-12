@@ -2,9 +2,15 @@ package com.example.idiomquiz.data
 
 import android.content.Context
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.withTimeoutOrNull
 import java.io.IOException
 import java.util.UUID
 import org.json.JSONObject
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 enum class AuthProvider {
     PHONE,
@@ -30,6 +36,76 @@ class AuthRepository(context: Context) {
     )
     private val api = UserAppApi(context)
 
+    fun sessionEpoch(): Long = sessions.snapshot()
+    fun pendingCampaign(): JSONObject? = preferences.getString("pending_campaign", null)?.let { JSONObject(it) }
+    fun savePendingCampaign(value: JSONObject?, epoch: Long) = sessions.withCurrent(epoch) {
+        val editor = preferences.edit()
+        if (value == null) editor.remove("pending_campaign") else editor.putString("pending_campaign", value.toString())
+        check(editor.commit()) { "无法保存申请恢复记录，请重试" }
+    }
+    fun checkSession(epoch: Long) = sessions.withCurrent(epoch) { }
+    suspend fun sendSms(phone: String): String = api.sendSms(phone.trim(), deviceId())
+    suspend fun loginWithSms(phone: String, code: String, challenge: String, password: String): AuthResult =
+        authenticate(sms = true) { api.smsLogin(phone.trim(), code.trim(), challenge, password, deviceId()) }
+
+    private suspend fun validAccessToken(epoch: Long, rejected: String? = null): String? = refreshMutex.withLock {
+        val current = sessions.withCurrent(epoch) { accessToken() }
+        if (current != null && ((rejected != null && current != rejected) ||
+                (rejected == null && preferences.getLong(KEY_EXPIRES_AT, 0) > System.currentTimeMillis() + 60_000))) {
+            return@withLock current
+        }
+        val refresh = sessions.withCurrent(epoch) { refreshToken() } ?: return@withLock current
+        try {
+            val session = api.refresh(refresh, deviceId())
+            sessions.withCurrent(epoch) { saveTokens(session) }
+            session.accessToken
+        } catch (e: UserApiException) {
+            sessions.withCurrent(epoch) {
+                if (e.statusCode in listOf(401, 403)) clearSession()
+            }
+            throw e
+        }
+    }
+
+    suspend fun loginWithWeChatCode(code: String): AuthResult = authenticate {
+        api.wechatLogin(code, deviceId(), com.example.idiomquiz.BuildConfig.REGISTRATION_GAME_ID)
+    }
+
+    private suspend fun <T> authenticated(request: suspend (String) -> T): T =
+        authenticatedInSession(sessions.snapshot(), request)
+
+    private suspend fun <T> authenticatedInSession(epoch: Long, request: suspend (String) -> T): T {
+        try {
+        val token = validAccessToken(epoch) ?: throw UserApiException(401, "SESSION_EXPIRED", "Please sign in again")
+        val result = try {
+            request(token)
+        } catch (e: UserApiException) {
+            sessions.withCurrent(epoch) { }
+            // A business 401 (wrong password/code) is not permission to replay a mutation.
+            if (e.statusCode != 401 || e.errorCode != "TOKEN_EXPIRED") throw e
+            val renewed = validAccessToken(epoch, token) ?: throw e
+            request(renewed)
+        }
+        return sessions.withCurrent(epoch) { result }
+        } catch (error: Exception) {
+            sessions.withCurrent(epoch) { }
+            throw error
+        }
+    }
+
+    internal suspend fun memberRequest(method: String, path: String, body: JSONObject? = null): JSONObject =
+        authenticated { token -> api.requestJson(method, path, deviceId(), token, body) }
+
+    internal suspend fun uploadEvidence(bytes: ByteArray, mime: String): String {
+        require(bytes.isNotEmpty() && bytes.size <= 2 * 1024 * 1024) { "图片不能超过 2MB" }
+        return authenticated { token ->
+            api.requestJson("POST", "subsidies/images", deviceId(), token,
+                rawBody = bytes, contentType = mime).getJSONObject("data").getString("url")
+        }
+    }
+
+    suspend fun refreshWallet(): JSONObject = memberRequest("GET", "wallet").getJSONObject("data")
+
     fun currentUser(): AuthUser? {
         if (!preferences.getBoolean(KEY_LOGGED_IN, false)) return null
         if (accessToken().isNullOrBlank() && refreshToken().isNullOrBlank()) return null
@@ -47,92 +123,73 @@ class AuthRepository(context: Context) {
 
     suspend fun loginWithPhone(phone: String, password: String): AuthResult {
         val normalizedPhone = phone.trim()
-        val validationError = validatePhoneAndPassword(normalizedPhone, password)
-        if (validationError != null) return AuthResult(error = validationError)
+        if (!normalizedPhone.matches(PHONE_PATTERN) || password.isEmpty()) {
+            return AuthResult(error = "请输入有效手机号和密码")
+        }
         return authenticate {
             api.login(normalizedPhone, password, deviceId())
         }
     }
 
-    suspend fun initializeApp(gameId: Int): BootstrapResult {
-        val accessToken = accessToken()
-        if (accessToken.isNullOrBlank()) {
-            return BootstrapResult(error = "请先登录后再初始化应用")
-        }
-        val deviceId = deviceId()
-        return try {
-            BootstrapResult(bootstrap = api.bootstrap(accessToken, deviceId, gameId))
-        } catch (error: UserApiException) {
-            if (error.statusCode != 401) {
-                if (error.statusCode == 403) clearSession()
-                return bootstrapFailure(error)
-            }
-            refreshAndBootstrap(gameId, deviceId)
-        } catch (error: IOException) {
-            BootstrapResult(error = "初始化服务连接失败，请稍后重试")
-        } catch (error: CancellationException) {
-            throw error
-        } catch (_: Exception) {
-            BootstrapResult(error = "服务器返回了无法识别的初始化数据")
-        }
+    suspend fun initializeApp(gameId: Int): BootstrapResult = try {
+        scheduleImpressions()
+        BootstrapResult(bootstrap = authenticated { api.bootstrap(it, deviceId(), gameId) })
+    } catch (error: UserApiException) {
+        bootstrapFailure(error).copy(sessionInvalid = currentUser() == null)
+    } catch (error: IOException) {
+        BootstrapResult(error = "初始化服务连接失败，请稍后重试")
+    } catch (error: CancellationException) {
+        throw error
+    } catch (_: Exception) {
+        BootstrapResult(error = "服务器返回了无法识别的初始化数据")
     }
 
     /** Game selection comes from the authenticated account returned by the server. */
     fun serverGameId(): Int? = preferences.getInt(KEY_GAME_ID, 0).takeIf { it > 0 }
 
-    suspend fun walletBalance(): Long {
-        val token = accessToken() ?: error("请先登录后再获取金币余额")
-        return api.wallet(token, deviceId())
+    suspend fun walletBalance(): java.math.BigDecimal {
+        scheduleImpressions()
+        return authenticated { token -> api.wallet(token, deviceId()) }
     }
 
     suspend fun adHistory(gameId: Int): List<AdHistoryRecord> {
-        val token = accessToken() ?: error("请先登录后再查看广告记录")
-        return api.adHistory(token, deviceId(), gameId)
+        return authenticated { token -> api.adHistory(token, deviceId(), gameId) }
     }
 
     suspend fun alipayAccount(): AlipayAccount {
-        val token = accessToken() ?: error("请先登录后再查看支付宝绑定")
-        return api.getAlipay(token, deviceId())
+        return authenticated { token -> api.getAlipay(token, deviceId()) }
     }
 
     suspend fun bindAlipay(account: String, realName: String, currentPassword: String): AlipayAccount {
-        val token = accessToken() ?: error("请先登录后再绑定支付宝")
-        return api.bindAlipay(token, deviceId(), account, realName, currentPassword)
+        return authenticated { token -> api.bindAlipay(token, deviceId(), account, realName, currentPassword) }
     }
 
-    suspend fun withdrawalOptions(gameId: Int): List<WithdrawalOption> {
-        val token = accessToken() ?: error("请先登录后再获取提现档位")
-        return api.withdrawalOptions(token, deviceId(), gameId)
+    suspend fun withdrawalOptions(gameId: Int): WithdrawalAvailability {
+        return authenticated { token -> api.withdrawalOptions(token, deviceId(), gameId) }
     }
 
     suspend fun createWithdrawal(gameId: Int, amountCents: Long, requestKey: String): WithdrawalRecord {
-        val token = accessToken() ?: error("请先登录后再申请提现")
-        return api.createWithdrawal(token, deviceId(), gameId, amountCents, requestKey)
+        return authenticated { token -> api.createWithdrawal(token, deviceId(), gameId, amountCents, requestKey) }
     }
 
     suspend fun withdrawals(): List<WithdrawalRecord> {
-        val token = accessToken() ?: error("请先登录后再查看提现记录")
-        return api.withdrawals(token, deviceId())
+        return authenticated { token -> api.withdrawals(token, deviceId()) }
     }
 
     suspend fun requestAd(gameId: Int, placement: String, adType: String): AdSession? {
-        val token = accessToken() ?: return null
-        return api.requestAd(token, deviceId(), gameId, placement, adType)
+        return authenticated { token -> api.requestAd(token, deviceId(), gameId, placement, adType) }
     }
 
     suspend fun deviceRiskConfig(gameId: Int): DeviceRiskConfig {
-        val token = accessToken() ?: error("请先登录后再获取设备风控配置")
-        return api.deviceRiskConfig(token, deviceId(), gameId)
+        return authenticated { token -> api.deviceRiskConfig(token, deviceId(), gameId) }
     }
 
     suspend fun deviceRiskChallenge(gameId: Int): DeviceRiskChallenge {
-        val token = accessToken() ?: error("请先登录后再获取设备风控挑战")
-        return api.deviceRiskChallenge(token, deviceId(), gameId, deviceId())
+        return authenticated { token -> api.deviceRiskChallenge(token, deviceId(), gameId, deviceId()) }
     }
 
     suspend fun deviceRiskVerify(challengeId: String, aliyunDeviceToken: String): DeviceRiskVerification {
-        val token = accessToken() ?: error("请先登录后再校验设备风险")
-        return api.deviceRiskVerify(token, deviceId(), challengeId, aliyunDeviceToken)
+        return authenticated { token -> api.deviceRiskVerify(token, deviceId(), challengeId, aliyunDeviceToken) }
     }
 
     suspend fun requestAd(
@@ -141,122 +198,117 @@ class AuthRepository(context: Context) {
         adType: String,
         riskCheckId: String?
     ): AdSession? {
-        val token = accessToken() ?: return null
-        return api.requestAd(token, deviceId(), gameId, placement, adType, riskCheckId)
+        return authenticated { token -> api.requestAd(token, deviceId(), gameId, placement, adType, riskCheckId) }
     }
 
     suspend fun adImpression(session: AdSession) {
-        val token = accessToken() ?: return
-        api.adImpression(token, deviceId(), session)
+        val epoch = sessions.snapshot()
+        sessions.withCurrent(epoch) {
+            val record = JSONObject().put("id", session.id).put("token", session.sessionToken)
+                .put("created", System.currentTimeMillis())
+            check(preferences.edit().putString("pending_impression_" + session.id, record.toString()).commit())
+        }
+        scheduleImpressions()
+    }
+
+    private fun scheduleImpressions() {
+        val epoch = sessions.snapshot()
+        impressionWorker.schedule { withTimeoutOrNull(45_000) { retryImpressions(epoch) } }
+    }
+
+    private suspend fun retryImpressions(epoch: Long) {
+        val entries = sessions.withCurrent(epoch) { preferences.all.filterKeys { it.startsWith("pending_impression_") }.toList().take(20) }
+        for ((key, raw) in entries) {
+            val record = JSONObject(raw as String)
+            var done = System.currentTimeMillis() - record.getLong("created") >= 24 * 60 * 60 * 1000L
+            if (!done) try {
+                authenticatedInSession(epoch) { token -> api.requestJson("POST",
+                    "ads/${record.getString("id")}/impression", deviceId(), token, JSONObject()
+                        .put("session_token", record.getString("token"))
+                        .put("event_id", "imp-${record.getString("id")}")) }
+                done = true
+            } catch (e: CancellationException) { throw e }
+            catch (e: UserApiException) {
+                done = e.statusCode in listOf(404, 409, 422)
+                if (!done) return
+            }
+            catch (_: IOException) { return }
+            if (done) sessions.withCurrent(epoch) { preferences.edit().remove(key).commit() }
+        }
     }
 
     suspend fun adComplete(
         session: AdSession,
-        watchedSeconds: Int,
-        userId: String,
-        extraData: JSONObject
+        watchedSeconds: Int
     ): JSONObject {
-        val token = accessToken() ?: return org.json.JSONObject()
-        return api.adComplete(token, deviceId(), session, watchedSeconds, userId, extraData)
+        return authenticated { token -> api.adComplete(token, deviceId(), session, watchedSeconds) }
     }
 
     suspend fun adFail(session: AdSession, reason: String) {
-        val token = accessToken() ?: return
-        api.adFail(token, deviceId(), session, reason)
+        return authenticated { token -> api.adFail(token, deviceId(), session, reason) }
     }
 
-    /** The user API document does not define a WeChat authorization endpoint yet. */
-    fun loginWithWeChat(): AuthResult = AuthResult(
-        error = "用户接口暂未提供微信登录，请先使用手机号和密码登录"
-    )
-
     suspend fun restoreSession(): AuthUser? {
-        val cachedUser = currentUser()
-        val accessToken = accessToken()
-        val refreshToken = refreshToken()
-        if (accessToken.isNullOrBlank() && refreshToken.isNullOrBlank()) {
-            clearSession()
-            return null
+        val epoch = sessions.snapshot()
+        val cached = currentUser()
+        if (accessToken() == null && refreshToken() == null) return null
+        return try {
+            val user = authenticatedInSession(epoch) { api.me(it, deviceId()).toAuthUser() }
+            sessions.withCurrent(epoch) { saveUser(user) }
+            user
+        } catch (error: CancellationException) {
+            throw error
+        } catch (error: UserApiException) {
+            sessions.withCurrent(epoch) {
+                if (error.statusCode == 403 && error.errorCode in listOf("DEVICE_COOLDOWN", "RECOVERY_ONLY")) cached
+                else if (error.statusCode in listOf(401, 403, 404)) {
+                    sessions.replace { clearSession() }
+                    null
+                } else cached
+            }
+        } catch (_: Exception) {
+            sessions.withCurrent(epoch) { cached }
         }
+    }
 
-        if (!accessToken.isNullOrBlank()) {
+    /** Invalidate locally immediately; remote revocation always uses the old credentials. */
+    fun prepareLogout(): suspend () -> Unit {
+        val credentials = sessions.replace {
+            val old = accessToken() to refreshToken()
+            clearSession()
+            old
+        }
+        return {
             try {
-                val user = api.me(accessToken, deviceId()).toAuthUser()
-                saveUser(user)
-                return user
-            } catch (error: UserApiException) {
-                if (error.statusCode != 401) {
-                    if (error.statusCode in listOf(403, 404)) clearSession()
-                    return cachedUser
-                }
-            } catch (error: IOException) {
-                return cachedUser
+                credentials.first?.let { api.logout(it, credentials.second, deviceId()) }
             } catch (error: CancellationException) {
                 throw error
             } catch (_: Exception) {
-                return cachedUser
+                // Local logout already completed.
             }
         }
+    }
 
-        if (refreshToken.isNullOrBlank()) {
-            clearSession()
-            return null
-        }
+    suspend fun logout() = prepareLogout().invoke()
 
+    private suspend fun authenticate(sms: Boolean = false, request: suspend () -> UserApiSession): AuthResult {
+        val epoch = sessions.replace { clearSession(); sessions.snapshot() }
         return try {
-            val session = api.refresh(refreshToken, deviceId())
-            saveTokens(session)
+            val session = request()
             val user = session.user?.toAuthUser()
                 ?: api.me(session.accessToken, deviceId()).toAuthUser()
-            saveUser(user)
-            user
+            sessions.withCurrent(epoch) { saveTokens(session); saveUser(user) }
+            AuthResult(user = user)
         } catch (error: UserApiException) {
-            if (error.statusCode == 401 || error.statusCode == 403 || error.statusCode == 404) {
-                clearSession()
-                null
-            } else {
-                cachedUser
-            }
+            sessions.withCurrent(epoch) { AuthResult(error = if (sms && error.statusCode == 401)
+                "验证码错误、已过期或已使用，请检查后重试" else readableError(error)) }
         } catch (error: IOException) {
-            cachedUser
+            sessions.withCurrent(epoch) { AuthResult(error = "网络连接失败，请检查网络后重试") }
         } catch (error: CancellationException) {
             throw error
         } catch (_: Exception) {
-            cachedUser
+            sessions.withCurrent(epoch) { AuthResult(error = "服务器返回了无法识别的数据，请稍后重试") }
         }
-    }
-
-    suspend fun logout() {
-        val accessToken = accessToken()
-        val refreshToken = refreshToken()
-        try {
-            if (!accessToken.isNullOrBlank()) {
-                api.logout(accessToken, refreshToken, deviceId())
-            }
-        } catch (error: CancellationException) {
-            throw error
-        } catch (_: Exception) {
-            // The local session must still be removed when the network is unavailable.
-        } finally {
-            clearSession()
-        }
-    }
-
-    private suspend fun authenticate(request: suspend () -> UserApiSession): AuthResult = try {
-        val session = request()
-        saveTokens(session)
-        val user = session.user?.toAuthUser()
-            ?: api.me(session.accessToken, deviceId()).toAuthUser()
-        saveUser(user)
-        AuthResult(user = user)
-    } catch (error: UserApiException) {
-        AuthResult(error = readableError(error))
-    } catch (error: IOException) {
-        AuthResult(error = "网络连接失败，请检查网络后重试")
-    } catch (error: CancellationException) {
-        throw error
-    } catch (_: Exception) {
-        AuthResult(error = "服务器返回了无法识别的数据，请稍后重试")
     }
 
     private fun readableError(error: UserApiException): String = when {
@@ -270,34 +322,6 @@ class AuthRepository(context: Context) {
         error.statusCode == 429 -> "请求太频繁，请稍后再试"
         error.statusCode == 503 -> "服务暂时不可用，请稍后重试"
         else -> error.message.ifBlank { "登录失败，请稍后重试" }
-    }
-
-    private suspend fun refreshAndBootstrap(gameId: Int, deviceId: String): BootstrapResult {
-        val refreshToken = refreshToken() ?: run {
-            clearSession()
-            return BootstrapResult(error = "登录凭证已失效，请重新登录", sessionInvalid = true)
-        }
-        return try {
-            val session = api.refresh(refreshToken, deviceId)
-            saveTokens(session)
-            BootstrapResult(bootstrap = api.bootstrap(session.accessToken, deviceId, gameId))
-        } catch (error: UserApiException) {
-            if (error.statusCode == 401 || error.statusCode == 403) {
-                clearSession()
-                bootstrapFailure(error).copy(
-                    error = "登录凭证已失效，请重新登录",
-                    sessionInvalid = true
-                )
-            } else {
-                bootstrapFailure(error)
-            }
-        } catch (error: IOException) {
-            BootstrapResult(error = "初始化服务连接失败，请稍后重试")
-        } catch (error: CancellationException) {
-            throw error
-        } catch (_: Exception) {
-            BootstrapResult(error = "服务器返回了无法识别的初始化数据")
-        }
     }
 
     private fun bootstrapFailure(error: UserApiException): BootstrapResult =
@@ -347,6 +371,10 @@ class AuthRepository(context: Context) {
     }
 
     private fun clearSession() {
+        impressionWorker.cancel()
+        val pending = preferences.edit().remove("pending_campaign")
+        preferences.all.keys.filter { it.startsWith("pending_impression_") }.forEach { pending.remove(it) }
+        pending.commit()
         preferences.edit()
             .putBoolean(KEY_LOGGED_IN, false)
             .remove(KEY_ACCESS_TOKEN)
@@ -378,7 +406,7 @@ class AuthRepository(context: Context) {
             id = id,
             displayName = displayName,
             accountLabel = if (account.matches(PHONE_PATTERN)) maskPhone(account) else account,
-            provider = AuthProvider.PHONE
+            provider = if (username.startsWith("wx_")) AuthProvider.WECHAT else AuthProvider.PHONE
         )
     }
 
@@ -386,6 +414,11 @@ class AuthRepository(context: Context) {
         "${phone.take(3)}****${phone.takeLast(4)}"
 
     companion object {
+        internal val campaignRequests = CampaignRequests()
+        private val impressionWorker = BackgroundRetry(CoroutineScope(SupervisorJob() + Dispatchers.IO))
+        // Both the quiz and member screens share rotating refresh credentials.
+        private val refreshMutex = Mutex()
+        private val sessions = SessionFence()
         private const val KEY_LOGGED_IN = "logged_in"
         private const val KEY_ACCESS_TOKEN = "access_token"
         private const val KEY_REFRESH_TOKEN = "refresh_token"

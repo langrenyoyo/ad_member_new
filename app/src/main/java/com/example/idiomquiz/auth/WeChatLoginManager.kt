@@ -32,6 +32,10 @@ object WeChatLoginManager {
     private val _events = MutableSharedFlow<WeChatLoginEvent>(extraBufferCapacity = 1)
     val events = _events.asSharedFlow()
 
+    fun cancelAuthorization() {
+        expectedState = null
+    }
+
     fun startLogin(context: Context): String? {
         val appId = BuildConfig.WECHAT_APP_ID.trim()
         if (appId.isBlank()) {
@@ -80,7 +84,7 @@ object WeChatLoginManager {
         val state = authResponse.state.orEmpty()
         val expected = expectedState
         expectedState = null
-        if (expected != null && expected != state) {
+        if (expected == null || expected != state) {
             emitFailure(-1, "微信登录 state 校验失败")
             return
         }
@@ -100,7 +104,7 @@ object WeChatLoginManager {
             return
         }
 
-        Log.i(TAG, "WeChat login authorized, code=$code, state=$state")
+        Log.i(TAG, "WeChat login authorized")
         _events.tryEmit(WeChatLoginEvent.Authorized(code = code, state = state))
     }
 

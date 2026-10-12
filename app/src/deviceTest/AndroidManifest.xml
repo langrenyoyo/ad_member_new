@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+    <application android:label="会员隔离测试" android:networkSecurityConfig="@xml/device_test_network" tools:replace="android:label" />
+</manifest>
