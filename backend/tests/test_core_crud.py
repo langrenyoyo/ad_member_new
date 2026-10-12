@@ -428,23 +428,22 @@ class CoreCrudTestCase(unittest.TestCase):
 
     def test_member_relation_fields_atomic_roundtrip(self) -> None:
         operator=self.login_headers('operator-test','Operator-Test-123!')
-        created=self.client.post('/api/v1/members',json={'username':'relation-'+uuid4().hex,'parent_id':11,'ht_id':22,'ht_top_id':33},headers=operator)
+        created=self.client.post('/api/v1/members',json={'username':'relation-'+uuid4().hex,'parent_id':0,'ht_id':22,'ht_top_id':33},headers=operator)
         self.assertEqual(created.status_code,201,created.text)
         uid=created.json()['id'];path=f'/api/v1/members/{uid}'
         try:
             original=self.client.get(path).json()
             risk=self.login_headers('risk-test','Risk-Test-123!')
-            self.assertEqual(self.client.patch(path,json={'parent_id':0,'ht_id':66,'ht_top_id':77},headers=risk).status_code,403)
+            self.assertEqual(self.client.patch(path,json={'parent_id':11,'ht_id':66,'ht_top_id':77},headers=risk).status_code,403)
             for invalid in (None,1.5,'not-an-id'):
-                result=self.client.patch(path,json={'parent_id':0,'ht_id':66,'ht_top_id':invalid},headers=operator)
+                result=self.client.patch(path,json={'parent_id':11,'ht_id':66,'ht_top_id':invalid},headers=operator)
                 self.assertEqual(result.status_code,422,result.text)
                 self.assertEqual(self.client.get(path).json(),original)
-            result=self.client.patch(path,json={'parent_id':0,'ht_id':66,'ht_top_id':77},headers=operator)
-            self.assertEqual(result.status_code,200,result.text)
+            result=self.client.patch(path,json={'parent_id':11,'ht_id':66,'ht_top_id':77},headers=operator)
+            self.assertEqual(result.status_code,409,result.text)
             with SessionLocal() as session:
                 row=session.get(Member,uid)
-                self.assertEqual((row.parent_id,row.ht_id,row.ht_top_id),(0,66,77))
-            self.assertEqual(self.client.get(path).json()['ht_top_id'],77)
+                self.assertEqual((row.parent_id,row.ht_id,row.ht_top_id),(0,22,33))
         finally:
             with SessionLocal() as session:session.execute(delete(Member).where(Member.id==uid));session.commit()
 
@@ -866,9 +865,9 @@ class CoreCrudTestCase(unittest.TestCase):
             with SessionLocal() as session:
                 member=session.get(Member,uid);self.assertEqual((member.coin,member.freeze_coin),(12.5,3))
             result=self.client.patch(path,json={'coin':25.75,'freeze_coin':4.5},headers=operator)
-            self.assertEqual(result.status_code,200)
+            self.assertEqual(result.status_code,409)
             with SessionLocal() as session:
-                member=session.get(Member,uid);self.assertEqual((member.coin,member.freeze_coin),(25.75,4.5))
+                member=session.get(Member,uid);self.assertEqual((member.coin,member.freeze_coin),(12.5,3))
         finally:
             with SessionLocal() as session:session.execute(delete(Member).where(Member.id==uid));session.commit()
 
@@ -2297,10 +2296,10 @@ class CoreCrudTestCase(unittest.TestCase):
 
         update_response = self.client.patch(
             f"/api/v1/members/{member['id']}",
-            json={"coin": 88.5, "vip": 2},
+            json={"vip": 2},
         )
         self.assertEqual(update_response.status_code, 200)
-        self.assertEqual(update_response.json()["coin"], 88.5)
+        self.assertEqual(update_response.json()["vip"], 2)
         self.assertEqual(self.client.get(f"/api/v1/members/{member['id']}").status_code, 200)
 
         protected_delete = self.client.delete(f"/api/v1/agents/{agent['id']}")

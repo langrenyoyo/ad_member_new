@@ -238,8 +238,12 @@ def verify(payload:CheckInput,member:m.Member=Depends(m.require_app_member)):
         device.tags=json.dumps(tags);device.last_member_id=member.id;device.last_checked_at=m.now()
         item.device_id=device.id;item.token_hash=m._token_hash(payload.aliyun_device_token)
         item.provider_request_id=request_id;item.verified_at=m.now();item.status='verified'
+        member_rule = m.member_policy.policy(session, gid)
+        if rule.limit_enabled and risky(device) and member_rule.reset_login_block and rule.daily_limit == 0:
+            m.member_policy.admit_rolling(session, device, member, 0)
         session.commit()
-        used=usage(session,device,member.id)
+        m.member_policy.check_cooldown(session, member)
+        used = m.member_policy.rolling_usage(session, device) if m.member_policy.policy(session, gid).reset_login_block else usage(session,device,member.id)
         return {'data':{'risk_check_id':item.id,'device_id':device.id,'suspected_reset':risky(device),
             'limited':bool(rule.limit_enabled and risky(device)),'daily_limit':rule.daily_limit,'used':used,
             'remaining':max(0,rule.daily_limit-used) if rule.limit_enabled and risky(device) else None},'request_id':request_id}
@@ -253,7 +257,9 @@ def authorize_ad(session,payload,member,ad_id):
         or check.expires_at.replace(tzinfo=UTC)<=m.now()):
         raise HTTPException(403,'请先完成阿里云设备校验')
     device=session.get(RiskDevice,check.device_id)
-    if rule.limit_enabled and risky(device) and usage(session,device,member.id)>=rule.daily_limit:
+    m.member_policy.check_cooldown(session, member)
+    rolling = m.member_policy.admit_rolling(session, device, member, rule.daily_limit) if rule.limit_enabled and risky(device) else False
+    if rule.limit_enabled and risky(device) and not rolling and usage(session,device,member.id)>=rule.daily_limit:
         session.add(m.AdFlowLog(member_id=member.id,game_id=payload.game_id,event_type='device_limit_rejected',
             status='blocked',provider='aliyun',detail_json=json.dumps({'device_id':device.id,'daily_limit':rule.daily_limit})))
         session.commit()

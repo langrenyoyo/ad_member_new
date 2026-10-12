@@ -36,3 +36,6 @@ __pycache__/
 *.py[cod]
 backend/app.db
 *.db
+serverdata.md
+/secrets/
+backend/uploads/

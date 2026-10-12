@@ -173,24 +173,25 @@ def apply_withdrawal(payload: WithdrawalApply, member: m.Member = Depends(m.requ
             item = session.get(m.Withdrawal, prior.withdrawal_id)
             if item is None: raise HTTPException(410, '原提现记录已不存在')
             return {'data': app_payload(session, item), 'request_id': secrets.token_urlsafe(12)}
+        m.member_policy.check_cooldown(session, user)
         m.require_payment_integration()
         game = require_game(session, user, payload.game_id)
         tier = next((x for x in tiers(game) if x['amount_cents'] == payload.amount_cents), None)
         if tier is None: raise HTTPException(422, '请选择有效的提现档位')
         account = session.get(AlipayAccount, user.id)
-        if account is None: raise HTTPException(409, '请先绑定支付宝账号')
+        if account is None: raise HTTPException(409, {'code': 'WITHDRAWAL_NOT_CREATED', 'message': '请先绑定支付宝账号'})
         _, day_start, day_end = m.subsidy_campaigns.day_bounds()
         count = session.scalar(select(func.count()).select_from(Payout).where(Payout.member_id == user.id,
             Payout.game_id == game.id, Payout.created_at >= day_start, Payout.created_at < day_end)) or 0
-        if game.exchange_num <= 0 or count >= game.exchange_num: raise HTTPException(409, '已达到今日提现次数限制')
+        if game.exchange_num <= 0 or count >= game.exchange_num: raise HTTPException(409, {'code': 'WITHDRAWAL_NOT_CREATED', 'message': '已达到今日提现次数限制'})
         if session.scalar(select(m.WithdrawalBlacklist.id).where(m.WithdrawalBlacklist.receive_name == account.real_name,
             m.WithdrawalBlacklist.receive_tel == account.account, m.WithdrawalBlacklist.status == 1)):
-            raise HTTPException(403, '收款账号暂不支持提现')
+            raise HTTPException(403, {'code': 'WITHDRAWAL_NOT_CREATED', 'message': '收款账号暂不支持提现'})
         cost = Decimal(tier['coin_cost'])
         before = decimal_coin(user.coin)
-        if before < cost: raise HTTPException(409, '可用金币不足')
-        user.coin = float(before - cost)
-        user.freeze_coin = float(decimal_coin(user.freeze_coin) + cost)
+        if before < cost: raise HTTPException(409, {'code': 'WITHDRAWAL_NOT_CREATED', 'message': '可用金币不足'})
+        user.coin = before - cost
+        user.freeze_coin = decimal_coin(user.freeze_coin) + cost
         item = m.Withdrawal(user_id=user.id, agent_id=user.agent_id, game_id=game.id,
             receive_name=account.real_name, receive_tel=account.account, exchange_value=payload.amount_cents / 100,
             exchange_type=1, status=0, plan_status=0, good_name='金币提现')
@@ -201,7 +202,7 @@ def apply_withdrawal(payload: WithdrawalApply, member: m.Member = Depends(m.requ
             real_name=account.real_name, out_biz_no='AM' + secrets.token_hex(20),
             provider_scope=getattr(m.configured_provider(), 'scope', ''), state='pending_review'))
         session.add(m.CoinLog(user_id=user.id, agent_id=user.agent_id, game_id=game.id,
-            coin_before=float(before), coin=-float(cost), coin_after=user.coin, type=200, remark=f'提现冻结 #{item.id}'))
+            coin_before=before, coin=-cost, coin_after=user.coin, type=200, remark=f'提现冻结 #{item.id}'))
         session.commit()
         return {'data': app_payload(session, item), 'request_id': secrets.token_urlsafe(12)}
 
@@ -233,11 +234,11 @@ def release_funds(session, item, state='rejected'):
     user = session.scalar(select(m.Member).where(m.Member.id == payout.member_id).with_for_update())
     frozen, before = decimal_coin(user.freeze_coin), decimal_coin(user.coin)
     if frozen < payout.coin_cost: raise HTTPException(409, '冻结余额异常，需人工核对')
-    user.freeze_coin = float(frozen - payout.coin_cost)
-    user.coin = float(before + payout.coin_cost)
+    user.freeze_coin = frozen - payout.coin_cost
+    user.coin = before + payout.coin_cost
     payout.state = state
     session.add(m.CoinLog(user_id=user.id, agent_id=item.agent_id, game_id=item.game_id,
-        coin_before=float(before), coin=float(payout.coin_cost), coin_after=user.coin, type=201, remark=f'提现退回 #{item.id}'))
+        coin_before=before, coin=payout.coin_cost, coin_after=user.coin, type=201, remark=f'提现退回 #{item.id}'))
 
 
 def record_result(withdrawal_id, result):
@@ -252,7 +253,7 @@ def record_result(withdrawal_id, result):
             user = session.scalar(select(m.Member).where(m.Member.id == payout.member_id).with_for_update())
             frozen = decimal_coin(user.freeze_coin)
             if frozen < payout.coin_cost: raise HTTPException(409, '冻结余额异常，需人工核对')
-            user.freeze_coin = float(frozen - payout.coin_cost)
+            user.freeze_coin = frozen - payout.coin_cost
             payout.state = 'succeeded'
             payout.provider_order_id = result.order_id
             item.plan_status = 1

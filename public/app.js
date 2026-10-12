@@ -305,6 +305,7 @@ async function openMemberValueDialog(id,kind){
  const route=location.hash,generation=pageLoadGeneration,dialog=document.createElement('dialog');dialog.id=rebind?'memberRebindDialog':'memberCoinDialog';dialog.className='member-coin-dialog';
  dialog.innerHTML=`<header><strong>${rebind?'改绑关系':'修改金币'}</strong><button type="button" data-close aria-label="关闭">×</button></header><form>${fields.map(([key,label])=>`<label><span>${label}:</span><input name="${key}" inputmode="${rebind?'numeric':'decimal'}" ${key==='id'?'disabled':'required'}></label>`).join('')}<div role="alert"></div><footer><button type="submit" class="button primary" disabled>确定</button><button type="reset" class="button ghost" disabled>重置</button></footer></form>`;
  document.body.append(dialog);dialog.showModal();
+ if(!rebind){const label=document.createElement('label');label.innerHTML='<span>调账原因:</span><input name="reason" required maxlength="200"><small>余额范围 0–10 亿金币，最多 6 位小数；冻结资金需通过提现流程处理。</small>';dialog.querySelector('form footer').before(label);}
  const maximize=document.createElement('button');maximize.type='button';maximize.className='member-coin-maximize';maximize.setAttribute('aria-label','最大化');maximize.textContent='□';dialog.querySelector('header').insertBefore(maximize,dialog.querySelector('[data-close]'));
  const minimize=document.createElement('button');minimize.type='button';minimize.className='member-coin-minimize';minimize.setAttribute('aria-label','最小化');minimize.textContent='−';dialog.querySelector('header').insertBefore(minimize,maximize);
  const updateWindowButtons=()=>{const restore=dialog.classList.contains('expanded')||dialog.classList.contains('minimized');maximize.setAttribute('aria-label',restore?'还原':'最大化');maximize.textContent=restore?'▣':'□';};
@@ -328,9 +329,11 @@ async function openMemberValueDialog(id,kind){
  const close=()=>dialog.close();window.addEventListener('hashchange',close);dialog.querySelector('[data-close]').onclick=close;
  dialog.addEventListener('close',()=>{if(dialog.open)return;window.removeEventListener('hashchange',close);dialog.remove();});
  const current=()=>dialog.isConnected&&dialog.open&&location.hash===route&&generation===pageLoadGeneration;
- let busy=false;
+ let busy=false,original=null;
  try{
   const row=await api('/members/'+encodeURIComponent(id));if(!current()){close();return;}
+  original=row;
+  if(!rebind)form.elements.freeze_coin.readOnly=true;
   for(const [key] of fields){const input=form.elements[key];input.value=String(row[key]??0);input.defaultValue=input.value;}
   submit.disabled=false;reset.disabled=false;
  }catch(error){if(current())errorBox.textContent=error.message;return;}
@@ -339,8 +342,9 @@ async function openMemberValueDialog(id,kind){
   event.preventDefault();if(busy)return;if(!current()){close();return;}
   const values=Object.fromEntries(keys.map(key=>[key,form.elements[key].value.trim()]));
   if(Object.values(values).some(value=>value===''||!Number.isFinite(Number(value))||(rebind&&!Number.isSafeInteger(Number(value))))){errorBox.textContent=rebind?'请输入有效的整数ID':'请输入有效的金币数值';return;}
+  if(!rebind&&(!/^\d+(\.\d{1,6})?$/.test(values.coin)||Number(values.coin)>1000000000)){errorBox.textContent='金币须在 0–10 亿之间，最多 6 位小数';return;}
   busy=true;submit.disabled=true;reset.disabled=true;errorBox.textContent='';
-  try{await api('/members/'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify(Object.fromEntries(Object.entries(values).map(([key,value])=>[key,Number(value)])))});const refresh=current();close();if(refresh)await load();}
+  try{const body=Object.fromEntries(Object.entries(values).map(([key,value])=>[key,rebind?Number(value):value]));if(rebind){body.expected_parent_id=Number(original.parent_id||0);}else{body.expected_coin=String(original.coin||0);body.expected_freeze_coin=String(original.freeze_coin||0);body.reason=form.elements.reason.value.trim();}await api('/members/'+encodeURIComponent(id)+(rebind?'/rebind':'/adjust-balance'),{method:'POST',body:JSON.stringify(body)});const refresh=current();close();if(refresh)await load();}
   catch(error){if(current())errorBox.textContent=error.message;}
   finally{busy=false;submit.disabled=false;reset.disabled=false;}
  };
@@ -432,7 +436,7 @@ function attachMemberToolbar(){
  table?.querySelectorAll('tbody tr').forEach(row=>{
   const cell=row.querySelector('[data-field="operate"]'),behavior=cell?.querySelector('[data-member-behavior]');if(!cell)return;if(!behavior){cell.replaceChildren();return;}
   const id=behavior.dataset.memberId,gameId=behavior.dataset.gameId;
-  cell.innerHTML=`<button type="button" class="button member-action-warning" data-member-rebind="${esc(id)}">改绑关系</button> <button type="button" class="button member-action-success" data-member-behavior="single" data-member-id="${esc(id)}" data-game-id="${esc(gameId)}">单APP行为</button> <button type="button" class="button member-action-warning" data-coin="${esc(id)}">修改金币</button> <button type="button" class="button member-action-success member-action-edit" data-edit="${esc(id)}" aria-label="编辑" title="编辑"></button>`;
+  cell.innerHTML=`<button type="button" class="button" data-member-insights="${esc(id)}">&#20250;&#21592;&#26723;&#26696;</button> <button type="button" class="button member-action-warning" data-member-rebind="${esc(id)}">改绑关系</button> <button type="button" class="button member-action-success" data-member-behavior="single" data-member-id="${esc(id)}" data-game-id="${esc(gameId)}">单APP行为</button> <button type="button" class="button member-action-warning" data-coin="${esc(id)}">修改金币</button> <button type="button" class="button member-action-success member-action-edit" data-edit="${esc(id)}" aria-label="编辑" title="编辑"></button>`;
  });
  if(memberPermissions.behavior===false)table?.querySelectorAll('[data-member-behavior]').forEach(button=>button.closest('[data-field="operate"]')?.replaceChildren());
  if(memberPermissions.edit===false)table?.querySelectorAll('[data-edit]').forEach(button=>button.remove());

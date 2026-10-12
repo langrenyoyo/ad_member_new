@@ -26,7 +26,8 @@ def redact(value, depth=0):
             private = (any(x in normalized for x in ('password', 'passwd', 'secret', 'token', 'authorization', 'privatekey'))
                        or normalized in {'code', 'account', 'alipayaccount', 'realname', 'receivename',
                                          'receivetel', 'phone', 'mobile', 'email', 'idcard', 'sign', 'signature',
-                                         'extradata', 'takuextradata'})
+                                         'extradata', 'takuextradata', 'packagename', 'durationms', 'opens',
+                                         'latitude', 'longitude', 'accuracy', 'battery', 'charging', 'locationageseconds'})
             result[key] = '[REDACTED]' if private else redact(item, depth + 1)
         return result
     if isinstance(value, list):

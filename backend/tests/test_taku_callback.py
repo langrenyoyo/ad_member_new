@@ -1,11 +1,14 @@
 """TAKU callbacks exercise a temporary database; never contact the live provider."""
 import hashlib
+import base64
+import json
 import os
 import sys
 import tempfile
 import unittest
 from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
+from decimal import Decimal
 from pathlib import Path
 from unittest.mock import patch
 
@@ -14,9 +17,171 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, select, func
 from sqlalchemy.orm import sessionmaker
 from app import main_from_txt as m
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
 
 
 class TakuCallbackTests(unittest.TestCase):
+    def test_entire_commission_loss_is_detected_from_settlement_outcome(self):
+        from app.wallet_audit import reconcile
+        from app import member_policy as p
+        with self.factory() as s:
+            s.get(m.Game,1).settings_json=json.dumps({'member_policy':{'reward_enabled':True,
+                'reward_basis':'fixed_ecpm','fixed_ecpm':'1000','commission_rates':['0','.1','0','0']}})
+            parent=m.Member(username='missing-commission-parent',game_id=1,agent_id=1,coin=0)
+            s.add(parent);s.flush()
+            parent_id=parent.id
+            p.enrollment(s,parent).level=1
+            p.enrollment(s,s.get(m.Member,self.uid)).parent_id=parent_id
+            s.commit()
+        self.assertEqual(self.callback().status_code,200)
+        self.assertEqual(self.callback().status_code,200)
+        with self.factory() as s:
+            self.assertTrue(reconcile(s)['passed'])
+            ledger=s.scalar(select(p.RewardLedger).where(p.RewardLedger.kind=='reward'))
+            outcome=json.loads(ledger.rule_json)['commission_outcomes'][0]
+            self.assertEqual((outcome['beneficiary_id'],outcome['eligible']), (parent_id,True))
+            self.assertEqual(Decimal(outcome['amount']), Decimal('.1'))
+            # Restore the original balance as well: neither the balance nor a
+            # surviving commission/log can reveal this complete loss on its own.
+            s.query(p.RewardLedger).filter(p.RewardLedger.kind=='commission_1').delete()
+            s.query(m.CoinLog).filter(m.CoinLog.type==301).delete()
+            s.get(m.Member,parent_id).coin=0
+            s.commit()
+            report=reconcile(s)
+            self.assertFalse(report['passed'])
+            self.assertEqual([f['kind'] for f in report['findings']], ['expected_commission_missing'])
+            self.assertEqual(report['findings'][0]['beneficiary_id'], parent_id)
+            self.assertFalse(s.dirty)
+
+    def test_settlement_links_are_auditable_and_corruption_is_detected(self):
+        from app.wallet_audit import reconcile
+        from app import member_policy as p
+        with self.factory() as s:
+            s.get(m.Game,1).settings_json=json.dumps({'member_policy':{'reward_enabled':True,
+                'reward_basis':'fixed_ecpm','fixed_ecpm':'1000','commission_rates':['0','.1','0','0']}})
+            parent=m.Member(username='audit-parent',game_id=1,agent_id=1,coin=0)
+            s.add(parent);s.flush()
+            p.enrollment(s,parent).level=1
+            p.enrollment(s,s.get(m.Member,self.uid)).parent_id=parent.id
+            s.commit()
+        self.assertEqual(self.callback().status_code,200)
+        with self.factory() as s:
+            rows=s.scalars(select(p.RewardLedger)).all()
+            self.assertTrue(all(r.coin_log_id for r in rows))
+            self.assertTrue(reconcile(s)['passed'])
+            commission=next(r for r in rows if r.kind=='commission_1')
+            commission.amount=Decimal('10');s.commit()
+            self.assertIn('reward_credit_mismatch',{x['kind'] for x in reconcile(s)['findings']})
+            commission.amount=Decimal('.1');commission.coin_log_id=None;s.commit()
+            self.assertTrue(reconcile(s)['passed']) # legacy exact business-key matching
+            s.query(m.CoinLog).filter(m.CoinLog.type==301).delete();s.commit()
+            self.assertIn('reward_missing_credit',{x['kind'] for x in reconcile(s)['findings']})
+    def test_missing_ecpm_configuration_blocks_admission(self):
+        with self.factory() as s:
+            s.get(m.Game,1).settings_json=json.dumps({'ad_config':{'provider':'taku','enabled':True,
+                'placements':{'rewarded':{'unit_id':'placement-test'}}},'member_policy':{
+                'reward_enabled':True,'tier_enabled':True,'ecpm_tiers':[{'upper':50,'percent':200}]}})
+            s.commit()
+        with patch.dict(os.environ, TAKU_ECPM_KEYRING_FILE=''):
+            r=self.client.post('/api/app/v1/ads/request',headers={'Authorization':'Bearer '+self.access},
+                json={'game_id':1,'device_id':'test-device','client_request_id':'missing-config'})
+        self.assertEqual(r.status_code,503,r.text)
+        with self.factory() as s:
+            self.assertEqual(s.scalar(select(func.count()).select_from(m.AppAdSession)),1)
+
+    def test_ecpm_readiness_valid_and_invalid_keyring(self):
+        from app.taku_ecpm import require_configuration, EcpmConfigurationError
+        self.configure_ecpm()
+        self.assertTrue(require_configuration(1,required=True))
+        with self.assertRaises(EcpmConfigurationError): require_configuration(2,required=True)
+        with patch.dict(os.environ,TAKU_ECPM_KEYRING_FILE=str(Path(self.temp.name)/'missing.json')):
+            with self.assertRaises(EcpmConfigurationError): require_configuration(1)
+
+    def test_provider_first_impression_retry_preserves_money_and_status(self):
+        self.assertEqual(self.callback().status_code,200)
+        headers={'Authorization':'Bearer '+self.access}
+        body={'session_token':self.token,'event_id':'late-impression'}
+        for _ in range(2):
+            r=self.client.post('/api/app/v1/ads/ads_test/impression',headers=headers,json=body)
+            self.assertEqual(r.status_code,202,r.text)
+        with self.factory() as s:
+            ad=s.get(m.AppAdSession,'ads_test')
+            self.assertEqual(ad.status,'rewarded')
+            self.assertIsNotNone(ad.impressed_at)
+            self.assertEqual(s.scalar(select(func.count()).select_from(m.AppAdEvent).where(m.AppAdEvent.event_id=='late-impression')),1)
+        self.assertEqual(self.balances(),(12,1,1))
+
+    def test_policy_commission_retry_settles_once(self):
+        from app import member_policy as policy
+        with self.factory() as s:
+            game=s.get(m.Game,1)
+            game.settings_json=json.dumps({'member_policy':{'reward_enabled':True,'reward_basis':'fixed_ecpm',
+                'fixed_ecpm':'1000','commission_rates':['0','.1','0','0']}})
+            parent=m.Member(username='parent',game_id=1,agent_id=1,coin=0)
+            s.add(parent);s.flush();pid=parent.id
+            policy.enrollment(s,parent).level=1
+            policy.enrollment(s,s.get(m.Member,self.uid)).parent_id=pid
+            s.commit()
+        params=self.params()
+        self.assertEqual(self.callback(params).status_code,200)
+        self.assertEqual(self.callback(params).status_code,200)
+        with self.factory() as s:
+            self.assertEqual(s.get(m.Member,self.uid).coin,11)
+            self.assertEqual(s.get(m.Member,pid).coin,Decimal(".1"))
+            self.assertEqual(len(s.scalars(select(policy.RewardLedger)).all()),2)
+
+    def configure_ecpm(self):
+        key = rsa.generate_private_key(public_exponent=65537, key_size=1024)
+        pem = key.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8,
+                                serialization.NoEncryption()).decode()
+        filename = Path(self.temp.name) / 'keyring.json'
+        filename.write_text(json.dumps({'1': {'keys': {'test-key': pem}}}), encoding='utf-8')
+        env = patch.dict(os.environ, TAKU_ECPM_KEYRING_FILE=str(filename))
+        env.start(); self.addCleanup(env.stop)
+        return lambda plain: base64.b64encode(key.public_key().encrypt(plain.encode(), padding.PKCS1v15())).decode()
+
+    def test_encrypted_ecpm_callback_and_retry(self):
+        encrypt = self.configure_ecpm()
+        p = self.params(e_c=encrypt('123_20.25_sdk-request'),
+                        e_c_cny=encrypt('123_140.75_sdk-request'), s_id='test-key')
+        self.assertEqual(self.callback(p).status_code, 200)
+        self.assertEqual(self.callback(p).status_code, 200)
+        with self.factory() as s:
+            event = s.scalar(select(m.AppAdEvent).where(m.AppAdEvent.event_type == 'taku_reward'))
+            proof = json.loads(event.result_json)['ecpm_verification']
+            self.assertEqual([x['ecpm'] for x in proof['prices']], ['20.25', '140.75'])
+            self.assertEqual(proof['prices'][0]['sdk_request_id'], 'sdk-request')
+        self.assertEqual(self.balances(), (12, 1, 1))
+
+    def test_encrypted_ecpm_invalid_missing_and_wrong_source(self):
+        encrypt = self.configure_ecpm()
+        for changes in [{}, {'e_c': 'invalid', 's_id': 'test-key'},
+                        {'e_c': encrypt('999_1'), 's_id': 'test-key'},
+                        {'e_c': encrypt('123_1'), 's_id': 'wrong-key'},
+                        {'e_c': encrypt('123_NaN'), 's_id': 'test-key'},
+                        {'e_c': encrypt('123_1_a'), 'e_c_cny': encrypt('123_7_b'), 's_id': 'test-key'}]:
+            self.assertEqual(self.callback(self.params(**changes)).status_code, 602)
+            self.assertEqual(self.balances(), (10, 0, 0))
+
+    def test_fixed_price_encrypted_ecpm_without_request_id(self):
+        encrypt = self.configure_ecpm()
+        self.assertEqual(self.callback(self.params(e_c=encrypt('123_0'), s_id='test-key')).status_code, 200)
+
+    def test_ecpm_request_cannot_be_reused_for_another_session(self):
+        encrypt = self.configure_ecpm()
+        self.assertEqual(self.callback(self.params(e_c=encrypt('123_5_sdk-one'), s_id='test-key')).status_code, 200)
+        with self.factory() as s:
+            ad = m.AppAdSession(id='ads_second', member_id=self.uid, agent_id=1, game_id=1,
+                provider='taku', ad_unit_id='placement-test', reward_coin=2, request_id='req-second',
+                session_token_hash=m._token_hash(self.token), expires_at=m.now()+timedelta(minutes=5))
+            s.add(ad); s.commit(); extra = m._taku_extra_data(ad)
+        # A fresh encryption of the same provider request must still be rejected.
+        response = self.callback(self.params(trans_id='second', extra_data=extra,
+            e_c=encrypt('123_5_sdk-one'), s_id='test-key'))
+        self.assertEqual(response.status_code, 602)
+        self.assertEqual(self.balances(), (12, 1, 1))
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.engine = create_engine('sqlite:///' + str(Path(self.temp.name) / 'test.db'), connect_args={'check_same_thread': False})
@@ -100,6 +265,16 @@ class TakuCallbackTests(unittest.TestCase):
         r=self.client.post('/api/app/v1/ads/ads_test/complete',json=payload,headers=headers)
         self.assertTrue(r.json()['data']['rewarded'])
         self.assertEqual(self.balances(),(12,1,1))
+
+    def test_actual_settlement_overrides_configured_reward_in_responses(self):
+        self.assertEqual(self.callback(self.params(reward_amount='1')).status_code, 200)
+        headers = {'Authorization': 'Bearer ' + self.access}
+        history = self.client.get('/api/app/v1/ads/history', headers=headers)
+        self.assertEqual(history.json()['data']['items'][0]['coin_added'], 0.001)
+        complete = self.client.post('/api/app/v1/ads/ads_test/complete',
+            json=dict(event_id='settled-complete', session_token=self.token), headers=headers)
+        self.assertEqual(complete.json()['data']['coin_added'], 0.001)
+        self.assertEqual(self.balances()[0], Decimal('10.001000'))
 
     def test_concurrent_callbacks_only_settle_once(self):
         with ThreadPoolExecutor(max_workers=5) as pool:

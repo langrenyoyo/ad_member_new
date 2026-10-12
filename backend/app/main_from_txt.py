@@ -5,12 +5,13 @@ import hmac
 import csv
 import json
 import math
+from .taku_ecpm import verify_ecpm, EcpmConfigurationError, EcpmValidationError
 import os
 import re
 import secrets
 from contextlib import asynccontextmanager
 from datetime import UTC, date, datetime, timedelta
-from decimal import Decimal, InvalidOperation
+from decimal import Decimal, InvalidOperation, ROUND_DOWN
 from io import StringIO
 from pathlib import Path
 from typing import Any, Callable, Literal
@@ -27,7 +28,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from .payment import configured_provider
 from .member_images import MAX_UPLOAD_BYTES, image_directory, save_image
 from starlette.concurrency import run_in_threadpool
-from sqlalchemy import Date, DateTime, Float, Integer, String, Text, and_, case, create_engine, func, inspect, or_, select, text
+from sqlalchemy import Date, DateTime, Float, Numeric, Integer, String, Text, and_, case, create_engine, func, inspect, or_, select, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 from sqlalchemy import cast
 from sqlalchemy import UniqueConstraint
@@ -67,6 +68,13 @@ class Base(DeclarativeBase):
 
 def now() -> datetime:
     return datetime.now(UTC)
+
+
+def coin_amount(value) -> Decimal:
+    amount = Decimal(str(value or 0))
+    if not amount.is_finite() or abs(amount) >= Decimal('1000000000000000000'):
+        raise HTTPException(409, '金币金额超出可结算范围')
+    return amount.quantize(Decimal('.000001'), rounding=ROUND_DOWN)
 
 
 class TimestampMixin:
@@ -176,11 +184,11 @@ class Member(Base, TimestampMixin):
     receive_name: Mapped[str] = mapped_column(String(64), default="", server_default="")
     card_no: Mapped[str] = mapped_column(String(64), default="")
     address: Mapped[str] = mapped_column(String(255), default="")
-    coin: Mapped[float] = mapped_column(Float, default=0.0)
-    freeze_coin: Mapped[float] = mapped_column(Float, default=0.0)
-    coin_user: Mapped[float] = mapped_column(Float, default=0.0)
-    coin_user_month: Mapped[float] = mapped_column(Float, default=0.0)
-    coin_user_day: Mapped[float] = mapped_column(Float, default=0.0)
+    coin: Mapped[Decimal] = mapped_column(Numeric(24, 6), default=Decimal(0))
+    freeze_coin: Mapped[Decimal] = mapped_column(Numeric(24, 6), default=Decimal(0))
+    coin_user: Mapped[Decimal] = mapped_column(Numeric(24, 6), default=Decimal(0))
+    coin_user_month: Mapped[Decimal] = mapped_column(Numeric(24, 6), default=Decimal(0))
+    coin_user_day: Mapped[Decimal] = mapped_column(Numeric(24, 6), default=Decimal(0))
     vip: Mapped[int] = mapped_column(Integer, default=0)
     status: Mapped[int] = mapped_column(Integer, default=1)
     exchange_enable: Mapped[int] = mapped_column(Integer, default=1)
@@ -302,7 +310,7 @@ class AppAdSession(Base, TimestampMixin):
     ad_type: Mapped[str] = mapped_column(String(64), default="rewarded", nullable=False)
     provider: Mapped[str] = mapped_column(String(64), default="internal", nullable=False)
     ad_unit_id: Mapped[str] = mapped_column(String(255), default="", nullable=False)
-    reward_coin: Mapped[float] = mapped_column(Float, default=0.0, nullable=False)
+    reward_coin: Mapped[Decimal] = mapped_column(Numeric(24, 6), default=Decimal(0), nullable=False)
     status: Mapped[str] = mapped_column(String(32), default="issued", nullable=False)
     session_token_hash: Mapped[str] = mapped_column(String(128), nullable=False)
     expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
@@ -452,9 +460,9 @@ class CoinLog(Base, TimestampMixin):
     user_id: Mapped[int] = mapped_column(Integer, default=0)
     agent_id: Mapped[int] = mapped_column(Integer, default=0)
     game_id: Mapped[int] = mapped_column(Integer, default=0)
-    coin_before: Mapped[float] = mapped_column(Float, default=0.0)
-    coin: Mapped[float] = mapped_column(Float, default=0.0)
-    coin_after: Mapped[float] = mapped_column(Float, default=0.0)
+    coin_before: Mapped[Decimal] = mapped_column(Numeric(24, 6), default=Decimal(0))
+    coin: Mapped[Decimal] = mapped_column(Numeric(24, 6), default=Decimal(0))
+    coin_after: Mapped[Decimal] = mapped_column(Numeric(24, 6), default=Decimal(0))
     type: Mapped[int] = mapped_column(Integer, default=100)
     remark: Mapped[str] = mapped_column(String(255), default="")
 
@@ -597,6 +605,8 @@ class KuaishouRiskAssessment(Base, TimestampMixin):
 
 
 def stringify(value: Any) -> Any:
+    if isinstance(value, Decimal):
+        return float(value)  # Preserve legacy numeric JSON; calculations remain Decimal.
     if isinstance(value, datetime):
         return value.isoformat(timespec="seconds")
     if isinstance(value, date):
@@ -2295,8 +2305,9 @@ def ensure_development_schema() -> None:
 
 
 def seed_data() -> None:
-    Base.metadata.create_all(engine)
-    ensure_development_schema()
+    if APP_ENV != "production":
+        Base.metadata.create_all(engine)
+        ensure_development_schema()
 
     with SessionLocal() as session:
         admin = session.scalar(select(AdminUser).where(AdminUser.username == ADMIN_USERNAME))
@@ -2313,11 +2324,13 @@ def seed_data() -> None:
                 )
             )
 
-        phone_admin = session.scalar(select(AdminUser).where(AdminUser.username == "18532306918"))
-        if phone_admin is None:
-            phone_hash, phone_salt = hash_password("123456")
-            session.add(AdminUser(username="18532306918", password_hash=phone_hash, password_salt=phone_salt, display_name="涓夋渤甯傛懇缇骇缃戠粶绉戞妧鏈夐檺鍏徃", role="superadmin", status=1))
+        # Disable the legacy seeded account if it still uses the bundled weak password.
+        legacy = session.scalar(select(AdminUser).where(AdminUser.username == "18532306918"))
+        if legacy and verify_password("123456", legacy.password_hash, legacy.password_salt):
+            legacy.status = 0
         session.commit()
+        if APP_ENV == "production":
+            return
         if session.scalar(select(Agent.id).limit(1)) is not None:
             return
 
@@ -2430,7 +2443,15 @@ def seed_data() -> None:
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     seed_data()
-    yield
+    import asyncio
+    from contextlib import suppress
+    task = asyncio.create_task(member_insights.retention_loop())
+    try:
+        yield
+    finally:
+        task.cancel()
+        with suppress(asyncio.CancelledError):
+            await task
 
 
 app = FastAPI(title="广告会员后台", version="0.1.0", lifespan=lifespan, docs_url=None)
@@ -2552,9 +2573,9 @@ def _app_member_payload(member: Member, device: str = "") -> dict[str, Any]:
         "game_id": member.game_id,
         "vip": member.vip,
         "status": member.status,
-        "coin": member.coin,
-        "freeze_coin": member.freeze_coin,
-        "coin_user": member.coin_user,
+        "coin": float(member.coin),
+        "freeze_coin": float(member.freeze_coin),
+        "coin_user": float(member.coin_user),
         "device_id": device or member.last_login_device_id or member.device_id,
     }
 
@@ -2563,11 +2584,12 @@ def _token_hash(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 
-def _create_app_access_token(member: Member) -> str:
+def _create_app_access_token(member: Member, recovery: bool = False) -> str:
     issued_at = now()
     return jwt.encode({
         "sub": str(member.id),
         "typ": "app_user",
+        "recovery": recovery,
         "iat": issued_at,
         "exp": issued_at + timedelta(minutes=APP_ACCESS_MINUTES),
     }, JWT_SECRET, algorithm=JWT_ALGORITHM)
@@ -2584,10 +2606,17 @@ def _new_refresh_session(session: Session, member: Member, device_id: str) -> st
     return raw
 
 
-def _app_tokens(session: Session, member: Member, device_id: str) -> dict[str, Any]:
+def _app_tokens(session: Session, member: Member, device_id: str, allow_recovery: bool = False) -> dict[str, Any]:
+    recovery = False
+    try:
+        member_policy.check_cooldown(session, member, device_id)
+    except HTTPException as error:
+        if not allow_recovery or not isinstance(error.detail, dict) or error.detail.get('code') != 'DEVICE_COOLDOWN':
+            raise
+        recovery = True
     refresh = _new_refresh_session(session, member, device_id)
     return {
-        "access_token": _create_app_access_token(member),
+        "access_token": _create_app_access_token(member, recovery),
         "refresh_token": refresh,
         "expires_in": APP_ACCESS_MINUTES * 60,
         "token_type": "bearer",
@@ -2598,7 +2627,7 @@ def _app_auth_error(detail: str = "Invalid or expired user token") -> HTTPExcept
     return HTTPException(status_code=401, detail=detail, headers={"WWW-Authenticate": "Bearer"})
 
 
-def require_app_member(credentials: HTTPAuthorizationCredentials | None = Depends(app_bearer_scheme)) -> Member:
+def require_app_member(request: Request, credentials: HTTPAuthorizationCredentials | None = Depends(app_bearer_scheme)) -> Member:
     if credentials is None or credentials.scheme.lower() != "bearer":
         raise _app_auth_error()
     try:
@@ -2606,12 +2635,23 @@ def require_app_member(credentials: HTTPAuthorizationCredentials | None = Depend
         if payload.get("typ") != "app_user":
             raise ValueError("wrong token type")
         member_id = int(payload["sub"])
+    except jwt.ExpiredSignatureError as exc:
+        raise HTTPException(401, {'code': 'TOKEN_EXPIRED', 'message': '???????'}) from exc
     except (InvalidTokenError, KeyError, TypeError, ValueError) as exc:
         raise _app_auth_error() from exc
     with SessionLocal() as session:
         member = session.get(Member, member_id)
         if member is None or member.status != 1:
             raise _app_auth_error("Account is disabled or does not exist")
+        recovery_allowed = (
+            request.method == 'GET' and (request.url.path in {
+                '/api/app/v1/me', '/api/app/v1/onboarding', '/api/app/v1/wallet', '/api/app/v1/withdrawals'
+            } or re.fullmatch(r'/api/app/v1/withdrawals/[0-9]+', request.url.path))
+        ) or (request.method == 'POST' and request.url.path in {'/api/app/v1/withdrawals', '/api/app/v1/auth/logout'})
+        recovery_allowed = recovery_allowed or (request.method == 'DELETE' and request.url.path == '/api/app/v1/device-observations')
+        if payload.get('recovery') and not recovery_allowed:
+            raise HTTPException(403, {'code': 'RECOVERY_ONLY', 'message': '?????????????????????????'})
+        member_policy.check_access(session, member, request)
         session.expunge(member)
         return member
 
@@ -2632,6 +2672,9 @@ def _app_game_for_member(session: Session, member: Member, game_id: int | None =
 
 
 def _app_device(session: Session, member: Member, device_id: str, request: Request, app_version: str = "") -> None:
+    policy = member_policy.policy(session, member.game_id)
+    if not (member.is_white and policy.whitelist_risk_exempt) and set(request.headers.get('X-Device-Risk', '').split(',')) & set(policy.block_signals):
+        raise HTTPException(403, '设备状态不符合当前使用规则')
     device = session.get(MemberDevice, member.id)
     if device is None:
         device = MemberDevice(user_id=member.id)
@@ -2841,7 +2884,7 @@ def app_refresh(payload: AppRefreshRequest) -> dict[str, Any]:
         if member is None or member.status != 1:
             raise _app_auth_error("Account is disabled or does not exist")
         stored.revoked_at = now(); stored.last_used_at = now()
-        result = _app_tokens(session, member, payload.device_id)
+        result = _app_tokens(session, member, payload.device_id, allow_recovery=True)
         session.commit()
         return {"data": {"user": _app_member_payload(member, payload.device_id), **result}, "request_id": secrets.token_urlsafe(12)}
 
@@ -2868,6 +2911,34 @@ def app_update_me(payload: AppProfileUpdate, member: Member = Depends(require_ap
         for key, value in changes.items(): setattr(stored, key, value.strip() if isinstance(value, str) else value)
         session.commit(); session.refresh(stored)
         return {"data": _app_member_payload(stored), "request_id": secrets.token_urlsafe(12)}
+
+
+class AppWechatPasswordRequest(BaseModel):
+    code: str = Field(min_length=1, max_length=1024)
+    new_password: str = Field(min_length=8, max_length=128)
+
+
+@app_api.post("/auth/wechat-password", status_code=204)
+def app_wechat_password(payload: AppWechatPasswordRequest, member: Member = Depends(require_app_member)) -> Response:
+    """Require a fresh App OAuth code belonging to this member before changing a password."""
+    _app_validate_password(payload.new_password)
+    with SessionLocal() as session:
+        stored = session.scalar(select(Member).where(Member.id == member.id).with_for_update())
+        if stored is None or stored.status != 1:
+            raise _app_auth_error("Account unavailable")
+        game = _wechat_game(session, stored.game_id)
+        identity = _wechat_exchange_code("app", payload.code.strip(), game.wx_appid.strip(), game.wx_secert.strip())
+        linked = session.scalar(select(WechatIdentity).where(
+            WechatIdentity.member_id == stored.id,
+            WechatIdentity.provider == "app",
+            WechatIdentity.app_id == game.wx_appid.strip(),
+            WechatIdentity.openid == identity["openid"],
+        ))
+        if linked is None:
+            raise HTTPException(status_code=403, detail="Please authorize the WeChat account linked to this member")
+        stored.password_hash, stored.password_salt = hash_password(payload.new_password)
+        session.commit()
+    return Response(status_code=204)
 
 
 @app_api.post("/auth/change-password", status_code=204)
@@ -2906,6 +2977,7 @@ def app_ad_request(payload: AppAdRequest, request: Request, member: Member = Dep
         config = game_ad_config(game)
         placement = config["placements"].get(payload.placement) or config["placements"]["rewarded"]
         if config["provider"].lower() == "taku":
+            member_policy.check_reward_configuration(game.id, member_policy.policy(session, game.id))
             callback_enabled, callback_key = taku_credentials(session, game.id)
             if not callback_enabled or not callback_key or not placement["unit_id"]:
                 raise HTTPException(status_code=503, detail="TAKU reward callback is not configured")
@@ -2918,6 +2990,10 @@ def app_ad_request(payload: AppAdRequest, request: Request, member: Member = Dep
         if payload.client_request_id:
             existing = session.scalar(select(AppAdSession).where(AppAdSession.member_id == member.id, AppAdSession.game_id == game.id, AppAdSession.client_request_id == payload.client_request_id, AppAdSession.status == "issued"))
             if existing:
+                snapshot = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == 'policy:'+existing.id))
+                if snapshot:
+                    captured = json.loads(snapshot.result_json)
+                    member_policy.check_reward_configuration(game.id, member_policy.Policy.model_validate(captured.get('rule', captured)))
                 if existing.expires_at.replace(tzinfo=UTC) <= now():
                     raise HTTPException(409, "Ad session expired; use a new client_request_id")
                 device_risk.authorize_retry(session, payload, existing)
@@ -2933,7 +3009,10 @@ def app_ad_request(payload: AppAdRequest, request: Request, member: Member = Dep
                             client_request_id=payload.client_request_id, request_id=request_id, placement=payload.placement, ad_type=payload.ad_type,
                             provider=config["provider"], ad_unit_id=placement["unit_id"] or game.game_key or str(game.id), reward_coin=placement["reward_coin"],
                             status="issued", session_token_hash=_token_hash(session_token), expires_at=now() + timedelta(minutes=APP_AD_SESSION_MINUTES))
-        session.add(item); session.commit()
+        session.add(item)
+        session.add(AppAdEvent(event_id='policy:'+item.id, ad_session_id=item.id, member_id=member.id,
+            event_type='policy_snapshot', result_json=json.dumps(member_policy.settlement_snapshot(session, member, game.id))))
+        session.commit()
         with SessionLocal() as audit:
             stored = audit.get(AppAdSession, item.id)
             _ad_flow_log(audit, stored, "ad_requested", detail={"placement": payload.placement, "client_request_id": payload.client_request_id})
@@ -2961,14 +3040,19 @@ def app_ad_impression(ad_session_id: str, payload: AppAdEventRequest, member: Me
         item = _app_session(session, ad_session_id, member, payload.session_token)
         prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == payload.event_id))
         if prior:
-            if prior.ad_session_id != item.id or prior.event_type != "impression":
+            if prior.ad_session_id != item.id or prior.event_type not in ("impression", "late_impression"):
                 raise HTTPException(status_code=409, detail="Event ID belongs to another operation")
             return {"data": json.loads(prior.result_json or "{}"), "request_id": item.request_id}
-        if item.status != "issued": raise HTTPException(status_code=409, detail="Ad session cannot be impressed")
-        item.status = "impressed"; item.impressed_at = now()
+        if item.status not in ('issued', 'impressed', 'rewarded') or item.created_at.replace(tzinfo=UTC) < now()-timedelta(hours=24):
+            raise HTTPException(status_code=409, detail="Ad session cannot be impressed")
+        late = item.status == 'rewarded'
+        if item.impressed_at is None: item.impressed_at = now()
+        if item.status == 'issued': item.status = 'impressed'
         result = {"ad_session_id": item.id, "status": item.status}
-        session.add(AppAdEvent(event_id=payload.event_id, ad_session_id=item.id, member_id=member.id, event_type="impression", result_json=json.dumps(result)))
-        _ad_flow_log(session, item, "impression", detail={"event_id": payload.event_id})
+        event_type = 'late_impression' if late else 'impression'
+        result['status'] = item.status
+        session.add(AppAdEvent(event_id=payload.event_id, ad_session_id=item.id, member_id=member.id, event_type=event_type, result_json=json.dumps(result)))
+        _ad_flow_log(session, item, "impression", detail={"event_id": payload.event_id, 'source':'client_reported', 'received_after_reward':late, 'timestamp_basis':'server_received_at'})
         session.commit(); return {"data": result, "request_id": item.request_id}
 
 
@@ -2980,7 +3064,7 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
             if item.status == "rewarded":
                 _ad_flow_log(session, item, "client_complete", detail={"event_id": payload.event_id, "already_rewarded": True})
                 session.commit()
-                return {"data": {"ad_session_id": item.id, "status": "rewarded", "rewarded": True, "coin_added": item.reward_coin, "coin_log_id": item.coin_log_id}, "request_id": item.request_id}
+                return {"data": {"ad_session_id": item.id, "status": "rewarded", "rewarded": True, "coin_added": float(session.get(CoinLog, item.coin_log_id).coin) if item.coin_log_id else 0, "coin_log_id": item.coin_log_id}, "request_id": item.request_id}
             if item.status not in ("issued", "impressed"):
                 raise HTTPException(status_code=409, detail="Ad session has already been closed")
             # Client completion is advisory; only the verified provider callback settles.
@@ -2995,8 +3079,8 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
             return {"data": json.loads(prior.result_json or "{}"), "request_id": item.request_id}
         if item.status not in ("issued", "impressed"): raise HTTPException(status_code=409, detail="Ad session has already been closed")
         stored = get_or_404(session, Member, member.id, "User")
-        before = float(stored.coin or 0); reward = float(item.reward_coin or 0)
-        stored.coin = before + reward; stored.coin_user = float(stored.coin_user or 0) + reward
+        before = coin_amount(stored.coin); reward = coin_amount(item.reward_coin)
+        stored.coin = coin_amount(before + reward); stored.coin_user = coin_amount(coin_amount(stored.coin_user) + reward)
         item.status = "rewarded"; item.completed_at = now()
         log = CoinLog(user_id=stored.id, agent_id=stored.agent_id, game_id=item.game_id, coin_before=before, coin=reward, coin_after=stored.coin, type=1, remark="APP ad reward")
         session.add(log); session.flush(); item.coin_log_id = log.id
@@ -3008,8 +3092,8 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
             ad_network_platform_name=item.provider.upper(), ad_type="激励", status="成功",
             watched_at=item.completed_at, ad_code=item.ad_unit_id, request_id=item.request_id,
         ))
-        result = {"ad_session_id": item.id, "status": "rewarded", "rewarded": True, "coin_added": reward, "coin_balance": stored.coin, "coin_log_id": log.id}
-        session.add(AppAdEvent(event_id=payload.event_id, ad_session_id=item.id, member_id=member.id, event_type="complete", result_json=json.dumps(result)))
+        result = {"ad_session_id": item.id, "status": "rewarded", "rewarded": True, "coin_added": float(reward), "coin_balance": float(stored.coin), "coin_log_id": log.id}
+        session.add(AppAdEvent(event_id=payload.event_id, ad_session_id=item.id, member_id=member.id, event_type="complete", result_json=json.dumps(result, default=str)))
         _ad_flow_log(session, item, "client_complete", detail={"event_id": payload.event_id, "coin_added": reward})
         session.commit(); return {"data": result, "request_id": item.request_id}
 
@@ -3038,7 +3122,9 @@ def app_ad_history(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, 
         if game_id: conditions.append(AppAdSession.game_id == game_id)
         stmt = select(AppAdSession).where(*conditions).order_by(AppAdSession.created_at.desc()).offset(offset).limit(limit)
         items = session.scalars(stmt).all(); total = session.scalar(select(func.count()).select_from(AppAdSession).where(*conditions)) or 0
-        return {"data": {"items": [{"id": x.id, "game_id": x.game_id, "placement": x.placement, "ad_type": x.ad_type, "provider": x.provider, "status": x.status, "coin_added": x.reward_coin if x.status == "rewarded" else 0, "request_id": x.request_id, "watched_at": stringify(x.completed_at or x.impressed_at), "created_at": stringify(x.created_at)} for x in items], "total": int(total), "limit": limit, "offset": offset}, "request_id": secrets.token_urlsafe(12)}
+        log_ids = [x.coin_log_id for x in items if x.coin_log_id is not None]
+        settled_coins = dict(session.execute(select(CoinLog.id, CoinLog.coin).where(CoinLog.id.in_(log_ids))).all()) if log_ids else {}
+        return {"data": {"items": [{"id": x.id, "game_id": x.game_id, "placement": x.placement, "ad_type": x.ad_type, "provider": x.provider, "status": x.status, "coin_added": float(settled_coins.get(x.coin_log_id, 0)) if x.status == "rewarded" else 0, "request_id": x.request_id, "watched_at": stringify(x.completed_at or x.impressed_at), "created_at": stringify(x.created_at)} for x in items], "total": int(total), "limit": limit, "offset": offset}, "request_id": secrets.token_urlsafe(12)}
 
 
 def _taku_extra_data(item: AppAdSession) -> str:
@@ -3061,6 +3147,9 @@ def taku_reward_callback(
     scenario_id: str = "",
     sign: str = "",
     ilrd: str = "",
+    e_c: str = "",
+    e_c_cny: str = "",
+    s_id: str = "",
     is_test: str = "",
 ) -> Response:
     """Taku S2S reward callback. Taku calls this endpoint with GET parameters."""
@@ -3074,7 +3163,7 @@ def taku_reward_callback(
         return reply(602, "missing or duplicate parameters")
     if any(len(request.query_params.getlist(k)) != 1 for k in request.query_params):
         return reply(602, "duplicate parameters")
-    if len(trans_id) > 128 or len(placement_id) > 128 or any(len(v) > 512 for k, v in request.query_params.items() if k != "ilrd") or len(ilrd) > 65536:
+    if len(trans_id) > 128 or len(placement_id) > 128 or any(len(v) > 512 for k, v in request.query_params.items() if k not in ("ilrd", "e_c", "e_c_cny")) or len(ilrd) > 65536 or len(e_c) > 8192 or len(e_c_cny) > 8192:
         return reply(602, "parameters too long")
     # Resolve the server-issued session before selecting the game's private key.
     with SessionLocal() as lookup:
@@ -3102,12 +3191,12 @@ def taku_reward_callback(
     except (TypeError, ValueError):
         return reply(602, "invalid user_id")
     try:
-        # TAKU sends the provider ECPM in reward_amount. Convert ECPM to
-        # member coins using the configured rule: ECPM / 1000.
+        # Legacy reward-quantity conversion; NOT verified eCPM revenue.
+        # eCPM verification below does not define a currency-to-coin policy.
         ecpm_value = float(reward_amount)
         if not math.isfinite(ecpm_value) or ecpm_value < 0:
             raise ValueError
-        reward_from_ecpm = ecpm_value / 1000.0
+        reward_from_ecpm = coin_amount(Decimal(reward_amount) / 1000)
     except (TypeError, ValueError):
         return reply(602, "invalid reward_amount")
     with SessionLocal() as session:
@@ -3115,6 +3204,11 @@ def taku_reward_callback(
         # PostgreSQL serializes a user's settlements with a row lock instead.
         if session.bind.dialect.name == "sqlite":
             session.execute(text("BEGIN IMMEDIATE"))
+        source_session = session.get(AppAdSession, extra_data.split(".", 1)[0])
+        if source_session is None:
+            return reply(602, "ad session not found")
+        if session.bind.dialect.name != "sqlite":
+            device_risk.game_lock(session, source_session.game_id)
         item = session.scalar(select(Member).where(Member.id == member_id).with_for_update())
         if item is None:
             return reply(602, "user not found")
@@ -3130,18 +3224,44 @@ def taku_reward_callback(
         prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == event_key))
         if prior:
             return reply(200) if prior.ad_session_id == ad_session.id and prior.event_type == "taku_reward" else reply(602, "transaction already used")
+        try:
+            ecpm_proof = verify_ecpm(ad_session.game_id, adsource_id, e_c, e_c_cny, s_id)
+        except EcpmConfigurationError:
+            return reply(503, "TAKU eCPM key configuration unavailable")
+        except EcpmValidationError:
+            return reply(602, "invalid TAKU eCPM proof")
+        if ecpm_proof:
+            for proof in ecpm_proof["prices"][:1]:
+                # Fixed-price sources lack a provider request id and may reuse prices.
+                # Reserve only provider-request-bound proofs, never the price alone.
+                if proof["sdk_request_id"]:
+                    identity = f'{ad_session.game_id}:{adsource_id}:{proof["sdk_request_id"]}'
+                    proof_event = "taku_ecpm:" + hashlib.sha256(identity.encode()).hexdigest()
+                    existing = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == proof_event))
+                    if existing and existing.ad_session_id != ad_session.id:
+                        return reply(602, "TAKU eCPM proof already used")
+                    if not existing:
+                        session.add(AppAdEvent(event_id=proof_event, ad_session_id=ad_session.id,
+                            member_id=item.id, event_type="taku_ecpm_verified",
+                            result_json=json.dumps(ecpm_proof)))
         if ad_session.status == "rewarded" or ad_session.coin_log_id is not None:
             return reply(602, "session already rewarded by another transaction")
         # Provider delivery can arrive after the short client session timeout.
         if ad_session.status not in ("issued", "impressed", "expired") or ad_session.created_at.replace(tzinfo=UTC) < now() - timedelta(hours=24):
             return reply(602, "session is closed or too old")
-        before = float(item.coin or 0); reward = reward_from_ecpm
-        item.coin = before + reward; item.coin_user = float(item.coin_user or 0) + reward
+        try:
+            reward = member_policy.settle(session, item, ad_session, adsource_id, ecpm_proof, reward_from_ecpm)
+        except HTTPException:
+            session.rollback()
+            return reply(503, "Reward policy requires valid settlement configuration")
+        reward = coin_amount(reward)
+        before = coin_amount(item.coin)
+        item.coin = coin_amount(before + reward); item.coin_user = coin_amount(coin_amount(item.coin_user) + reward)
         ad_session.status = "rewarded"; ad_session.completed_at = now()
         log = CoinLog(user_id=item.id, agent_id=item.agent_id, game_id=ad_session.game_id, coin_before=before, coin=reward, coin_after=item.coin, type=1, remark="TAKU ad reward")
         session.add(log)
         # Reserve the globally unique provider transaction in the same transaction.
-        session.add(AppAdEvent(event_id=event_key, ad_session_id=ad_session.id, member_id=item.id, event_type="taku_reward", result_json=json.dumps({"trans_id": trans_id, "placement_id": placement_id, "network_firm_id": network_firm_id, "adsource_id": adsource_id, "scenario_id": scenario_id, "reward_amount": reward_amount, "reward_name": reward_name, "ilrd": ilrd}, ensure_ascii=False)))
+        session.add(AppAdEvent(event_id=event_key, ad_session_id=ad_session.id, member_id=item.id, event_type="taku_reward", result_json=json.dumps({"trans_id": trans_id, "placement_id": placement_id, "network_firm_id": network_firm_id, "adsource_id": adsource_id, "scenario_id": scenario_id, "reward_amount": reward_amount, "reward_name": reward_name, "ilrd": ilrd, "ecpm_verification": ecpm_proof, "settlement_basis": "legacy_reward_amount"}, ensure_ascii=False)))
         try:
             session.flush()
         except IntegrityError:
@@ -3151,6 +3271,11 @@ def taku_reward_callback(
                 raise
             return reply(200) if prior.ad_session_id == session_id and prior.event_type == "taku_reward" else reply(602, "transaction already used")
         ad_session.coin_log_id = log.id
+        ledger = session.scalar(select(member_policy.RewardLedger).where(
+            member_policy.RewardLedger.ad_session_id == ad_session.id,
+            member_policy.RewardLedger.beneficiary_id == item.id,
+            member_policy.RewardLedger.kind == 'reward'))
+        if ledger: ledger.coin_log_id = log.id
         game = session.get(Game, ad_session.game_id)
         session.add(AdRecord(user_id=item.id, user_account=item.username, parent_id=item.parent_id, agent_id=item.agent_id, game_id=ad_session.game_id, game_name=game.name if game else "", receive_name=item.receive_name or "", ecpm=ecpm_value, coin=reward, estimate_income=reward, ad_network_platform_name="TAKU", ad_type="激励", status="成功", watched_at=ad_session.completed_at, ad_code=placement_id, request_id=ad_session.request_id, trans_id=trans_id))
         _ad_flow_log(session, ad_session, "reward_granted", detail={"coin_added": reward, "coin_log_id": log.id}, trans_id=trans_id)
@@ -3240,7 +3365,7 @@ def app_get_subsidy(subsidy_id: int, member: Member = Depends(require_app_member
 def app_wallet(member: Member = Depends(require_app_member)) -> dict[str, Any]:
     with SessionLocal() as session:
         item = get_or_404(session, Member, member.id, "User")
-        return {"data": {"coin": item.coin, "freeze_coin": item.freeze_coin, "coin_user": item.coin_user, "updated_at": stringify(item.updated_at)}, "request_id": secrets.token_urlsafe(12)}
+        return {"data": {"coin": float(item.coin), "freeze_coin": float(item.freeze_coin), "coin_user": float(item.coin_user), "updated_at": stringify(item.updated_at)}, "request_id": secrets.token_urlsafe(12)}
 
 
 @app_api.get("/wallet/coin-logs")
@@ -4679,7 +4804,7 @@ def list_coin_logs(
         if user_id is not None:
             member = session.get(Member, user_id)
             if member is not None and (game_id is None or member.game_id == game_id):
-                payload["member_summary"] = {"coin_user": member.coin_user, "coin": member.coin, "freeze_coin": member.freeze_coin}
+                payload["member_summary"] = {"coin_user": float(member.coin_user), "coin": float(member.coin), "freeze_coin": float(member.freeze_coin)}
         rows = payload["items"]
         users = dict(session.execute(select(Member.id, Member.username).where(Member.id.in_({row["user_id"] for row in rows}))).all())
         games = dict(session.execute(select(Game.id, Game.name).where(Game.id.in_({row["game_id"] for row in rows}))).all())
@@ -4793,7 +4918,7 @@ def member_behavior_summary(session: Session, user_id: int, game_id: int | None)
                                     'sim_info','risk_flag','usb_debugging','rooted','device_id_ban','imei_id_ban']) if device else {
         'device_id': member.last_login_device_id or member.device_id, 'imei': '',
         'device_id_ban': 0, 'imei_id_ban': 0}
-    return {'coin': member.coin, 'today_lottery_coin': float(earned),
+    return {'coin': float(member.coin), 'today_lottery_coin': float(earned),
             'today_average_coin': float(earned) / count if count else 0,
             'total_clicks': device.total_clicks if device else None,
             'today_clicks': device.today_clicks if device and device.counter_date == today else None,
@@ -5534,13 +5659,18 @@ def member_batch_status(payload: GameMemberBatchStatus, agent_id: int | None = N
 def clear_member_coins(member_id: int, payload: MemberClearCoins = MemberClearCoins(),
                        admin: AdminUser = Depends(allow_roles("operator"))) -> dict[str, Any]:
     with SessionLocal() as session:
-        item = get_or_404(session, Member, member_id, "会员")
-        before = float(item.coin or 0) + float(item.freeze_coin or 0)
-        item.coin = 0.0
-        item.freeze_coin = 0.0
+        payouts.lock(session)
+        item = session.scalar(select(Member).where(Member.id == member_id).with_for_update())
+        if item is None: raise HTTPException(404, "会员不存在")
+        if item.freeze_coin:
+            raise HTTPException(409, "存在冻结资金，请先处理在途提现")
+        before = coin_amount(item.coin) + coin_amount(item.freeze_coin)
+        item.coin = Decimal(0)
+        item.freeze_coin = Decimal(0)
         session.add(CoinLog(user_id=item.id, game_id=item.game_id, coin=-before,
                             coin_before=before, coin_after=0.0, type=9,
                             remark=payload.reason))
+        session.add(AdminOperation(admin_id=admin.id, title=f"清空会员 {member_id} 金币：{payload.reason}", path=f"/api/v1/members/{member_id}/clear-coins", ip=""))
         session.commit()
         session.refresh(item)
         return serialize_member(item)
@@ -5577,6 +5707,9 @@ def get_member(member_id: int) -> dict[str, Any]:
 def create_member(payload: MemberCreate) -> dict[str, Any]:
     changes = payload.model_dump()
     require_nonblank(changes, "username", "会员账号")
+    if any(changes.get(key, 0) != 0 for key in
+           ("coin", "freeze_coin", "coin_user", "coin_user_month", "coin_user_day", "parent_id")):
+        raise HTTPException(422, "开户资金及上级必须为零，请开户后使用调账或绑定邀请流程")
     with SessionLocal() as session:
         validate_member_scope(session, changes["agent_id"], changes["game_id"])
         prepare_member_passwords(changes)
@@ -5689,7 +5822,16 @@ def update_member(
         ],
     )
     with SessionLocal() as session:
-        item = get_or_404(session, Member, member_id, "会员")
+        payouts.lock(session)
+        item = session.scalar(select(Member).where(Member.id == member_id).with_for_update())
+        if item is None: raise HTTPException(404, "会员不存在")
+        protected = {"coin", "freeze_coin", "coin_user", "coin_user_month", "coin_user_day", "parent_id", "game_id", "agent_id"}
+        for field in protected & changes.keys():
+            current = getattr(item, field)
+            submitted = Decimal(str(changes[field])) if isinstance(current, Decimal) and changes[field] is not None else changes[field]
+            if submitted != current:
+                raise HTTPException(409, "资料接口不能修改资金、邀请关系或所属应用，请使用专用业务流程")
+            changes.pop(field)
         agent_id = changes.get("agent_id", item.agent_id)
         game_id = changes.get("game_id", item.game_id)
         validate_member_scope(session, agent_id, game_id)
@@ -5708,8 +5850,29 @@ def update_member(
 )
 def delete_member(member_id: int) -> Response:
     with SessionLocal() as session:
-        item = get_or_404(session, Member, member_id, "会员")
+        payouts.lock(session)
+        item = session.scalar(select(Member).where(Member.id == member_id).with_for_update())
+        if item is None: raise HTTPException(404, "会员不存在")
+        if any(getattr(item, key) for key in ("coin", "freeze_coin", "coin_user", "coin_user_month", "coin_user_day")):
+            raise HTTPException(409, "会员存在余额或历史收益，请停用账号而非删除")
         dependencies = [
+            (payouts.AlipayAccount, payouts.AlipayAccount.member_id == member_id),
+            (member_insights.Observation, member_insights.Observation.member_id == member_id),
+            (member_insights.AdReview, member_insights.AdReview.member_id == member_id),
+            (payouts.Payout, payouts.Payout.member_id == member_id),
+            (AppRefreshSession, AppRefreshSession.member_id == member_id),
+            (WechatIdentity, WechatIdentity.member_id == member_id),
+            (AppAdEvent, AppAdEvent.member_id == member_id),
+            (AdFlowLog, AdFlowLog.member_id == member_id),
+            (device_risk.DeviceCheck, device_risk.DeviceCheck.member_id == member_id),
+            (device_risk.DeviceAdAdmission, device_risk.DeviceAdAdmission.member_id == member_id),
+            (device_risk.RiskDevice, device_risk.RiskDevice.last_member_id == member_id),
+            (subsidy_campaigns.SubsidyReservation, subsidy_campaigns.SubsidyReservation.member_id == member_id),
+            (Member, Member.parent_id == member_id),
+            (member_policy.Enrollment, (member_policy.Enrollment.member_id == member_id) | (member_policy.Enrollment.parent_id == member_id)),
+            (member_policy.RewardLedger, (member_policy.RewardLedger.member_id == member_id) | (member_policy.RewardLedger.beneficiary_id == member_id)),
+            (member_policy.UsageReport, member_policy.UsageReport.member_id == member_id),
+            (AppAdSession, AppAdSession.member_id == member_id),
             (AdRecord, AdRecord.user_id == member_id),
             (Withdrawal, Withdrawal.user_id == member_id),
             (Subsidy, Subsidy.user_id == member_id),
@@ -6070,6 +6233,9 @@ def get_kuaishou_risk(assessment_id: int, admin: AdminUser = Depends(require_adm
 from . import subsidy_campaigns
 from . import payouts
 from . import device_risk
+from . import member_policy
+from . import sms_auth
+from . import member_insights
 
 
 @api.get("/{resource}/{item_id}")

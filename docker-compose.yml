@@ -30,6 +30,7 @@ services:
       JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
       JWT_EXPIRE_MINUTES: ${JWT_EXPIRE_MINUTES:-480}
       TAKU_SEC_KEY: ${TAKU_SEC_KEY:-}
+      TAKU_ECPM_KEYRING_FILE: ${TAKU_ECPM_KEYRING_FILE:-}
       ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:?set ADMIN_PASSWORD in .env}
       ALIBABA_CLOUD_ACCESS_KEY_ID: ${ALIBABA_CLOUD_ACCESS_KEY_ID:-}
@@ -37,6 +38,11 @@ services:
       ALIBABA_CLOUD_SECURITY_TOKEN: ${ALIBABA_CLOUD_SECURITY_TOKEN:-}
       ALIYUN_RISK_REGION: ${ALIYUN_RISK_REGION:-cn-shanghai}
       APP_JSON_AUDIT_ENABLED: ${APP_JSON_AUDIT_ENABLED:-1}
+      SMS_ALIYUN_ACCESS_KEY_ID: ${SMS_ALIYUN_ACCESS_KEY_ID:-}
+      SMS_ALIYUN_ACCESS_KEY_SECRET: ${SMS_ALIYUN_ACCESS_KEY_SECRET:-}
+      SMS_ALIYUN_SIGN_NAME: ${SMS_ALIYUN_SIGN_NAME:-}
+      SMS_ALIYUN_TEMPLATE_CODE: ${SMS_ALIYUN_TEMPLATE_CODE:-}
+      MEMBER_IMAGE_DIR: /app/uploads/members
       PAYMENT_PROVIDER: ${PAYMENT_PROVIDER:-}
       ALIPAY_ENV: ${ALIPAY_ENV:-sandbox}
       ALIPAY_APP_ID: ${ALIPAY_APP_ID:-}
@@ -46,6 +52,17 @@ services:
       ALIPAY_NOTIFY_URL: ${ALIPAY_NOTIFY_URL:-}
     ports:
       - "8000:8000"
+    volumes:
+      - ad_member_uploads:/app/uploads
+      - type: bind
+        source: ${TAKU_ECPM_KEY_DIR:-./secrets}
+        target: /run/taku-ecpm
+        read_only: true
+      - type: bind
+        source: ${ALIPAY_KEY_DIR:-./secrets}
+        target: /run/payment-keys
+        read_only: true
 
 volumes:
   ad_member_postgres_data:
+  ad_member_uploads:
