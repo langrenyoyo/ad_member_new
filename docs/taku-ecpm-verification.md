@@ -2,6 +2,24 @@
 
 Protocol: https://help.takuad.com/docs/ecpm_key
 
+## Global admin settings
+
+Superadmins can open Advertising Settings (`#ad-settings`) and fill the global
+Publisher Key and server/client eCPM RSA PEM private keys, each with its TAKU
+Key ID (`s_id`). The API is GET/PATCH `/api/v1/settings/taku-keys`.
+GET and PATCH responses contain configured flags and key IDs only. Blank inputs
+preserve stored values; saving clears the browser's secret fields. New eCPM IDs
+retain previous keys for in-flight callbacks; an existing ID cannot be replaced
+with a different key. Both client and server eCPM private keys stay on the server.
+
+The global Publisher Key supplies the callback signing secret only for games
+without an explicit game callback configuration. Existing game secrets and
+explicit disabled/cleared settings retain priority. A configured game keyring file
+takes priority over global database eCPM keys. Apply migration `e934_taku_global_keys`
+before starting the new code. Protect database backups as they contain credentials.
+The current `serverdata.md` has no TAKU Publisher/eCPM keys; Aliyun AccessKeys and
+the Android risk AppKey are not substitutes.
+
 The existing GET `/api/callbacks/taku/reward` endpoint accepts `e_c` (USD),
 `e_c_cny` (CNY), and `s_id`. The Android build uses TAKU 6.6.51, which meets
 the documented 6.3.68 minimum and 6.4.80 CNY minimum.
@@ -36,7 +54,7 @@ cannot be reused across sessions of the same game/source. Fixed-price sources
 may omit the SDK request ID; no fictitious display binding is claimed for them.
 
 Verification is recorded under `ecpm_verification` in the `taku_reward` event.
-Prices are decimal strings with explicit currency. Raw keys are never persisted.
+Prices are decimal strings with explicit currency. Raw keys are never included in reward events.
 RSA encryption alone is not a signature; verification supplements the signed
 callback and is not proof of final billable revenue or SDK display identity.
 
