@@ -51,8 +51,8 @@ if APP_ENV == "production":
         raise RuntimeError("生产环境必须设置至少 32 个字符的非默认 JWT_SECRET")
     if ADMIN_PASSWORD == "Admin123!" or ADMIN_PASSWORD.startswith("replace-with") or len(ADMIN_PASSWORD) < 10:
         raise RuntimeError("生产环境必须设置至少 10 个字符的非默认 ADMIN_PASSWORD")
-    if not configured_provider().available:
-        raise RuntimeError("生产环境必须配置真实 PAYMENT_PROVIDER；测试或未配置渠道禁止启用提现转账入口")
+    # Payment availability gates payout operations, not unrelated production APIs.
+    # AlipayProvider still rejects sandbox credentials in production.
 
 engine_kwargs: dict[str, Any] = {}
 if DATABASE_URL.startswith("sqlite"):

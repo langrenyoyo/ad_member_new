@@ -1,4 +1,4 @@
-"""Small adb UI inspector for the isolated device-test app only."""
+"""Small adb UI inspector, defaulting to the isolated device-test app."""
 import argparse
 import re
 import subprocess
@@ -11,17 +11,21 @@ def adb(*args):
     return subprocess.check_output(['adb', *args])
 
 
-def nodes():
-    adb('shell', 'uiautomator', 'dump', '/sdcard/member-device-test.xml')
+def nodes(package=PACKAGE):
+    adb('shell', 'rm', '-f', '/sdcard/member-device-test.xml')
+    output = adb('shell', 'uiautomator', 'dump', '/sdcard/member-device-test.xml')
+    if b'UI hierchary dumped' not in output and b'UI hierarchy dumped' not in output:
+        raise RuntimeError('UI dump failed; refusing to use stale coordinates. Capture a screenshot instead.')
     root = ET.fromstring(adb('shell', 'cat', '/sdcard/member-device-test.xml'))
-    return [n for n in root.iter('node') if n.get('package') == PACKAGE]
+    return [n for n in root.iter('node') if n.get('package') == package]
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--tap')
+    parser.add_argument('--package', default=PACKAGE)
     args = parser.parse_args()
-    current = nodes()
+    current = nodes(args.package)
     if args.tap:
         matches = [n for n in current if args.tap in (n.get('text'), n.get('content-desc'))
                    and n.get('bounds') != '[0,0][0,0]']

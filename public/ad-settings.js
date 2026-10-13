@@ -98,7 +98,7 @@ async function mountTakuGlobalKeys(host,generation){
     const current=await api('/settings/taku-keys');
     if(!host.isConnected||generation!==adSettingsState.generation)return;
     const form=document.createElement('form');
-    form.innerHTML=`<h3>TAKU 全局密钥</h3><p>适用于此服务器的 TAKU 账号。仅超级管理员可编辑；留空保留原值，保存后不回显密钥。游戏专用密钥优先。客户端 eCPM Key 同样只保存在服务端。</p>
+    form.innerHTML=`<h3>TAKU 全局密钥</h3><p>适用于此服务器的 TAKU 账号。仅超级管理员可编辑；留空保留原值，保存后不回显密钥。游戏专用密钥优先。客户端 eCPM Key 同样只保存在服务端。</p><p>在 TAKU 账户信息 → Key 中启用 eCPM 加密后，平台应返回真实的 s_id、e_c 和 e_c_cny。不要在回调地址中自行追加这些字段的花括号占位符。密钥已保存不代表广告结算已验收。</p>
       ${adSettingsField('Publisher Key（回调 sec_key）','publisher_key','','password','autocomplete="new-password"')}
       ${['server','client'].map(kind=>`<fieldset><legend>${kind==='server'?'服务端':'客户端'} eCPM Key</legend>
       ${adSettingsField('Key ID（TAKU s_id）',kind+'_ecpm_key_id','')}
