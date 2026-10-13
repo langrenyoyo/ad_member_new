@@ -89,6 +89,34 @@ class InsightTests(unittest.TestCase):
         self.assertEqual(data['items'][0]['client_metadata'][0]['app_name'],'sample')
         self.assertNotIn('session_token',data['items'][0]['client_metadata'][0])
 
+    def test_encrypted_metadata_records_revenue_without_credit(self):
+        import base64
+        from unittest.mock import patch
+        from cryptography.hazmat.primitives import serialization
+        from cryptography.hazmat.primitives.asymmetric import rsa, padding
+        key = rsa.generate_private_key(public_exponent=65537, key_size=1024)
+        pem = key.private_bytes(serialization.Encoding.PEM, serialization.PrivateFormat.PKCS8,
+                                serialization.NoEncryption()).decode()
+        cipher = base64.b64encode(key.public_key().encrypt(b'123_50_request1', padding.PKCS1v15())).decode()
+        with self.factory() as s:
+            s.add(m.AppAdSession(id='price-ad',member_id=1,agent_id=1,game_id=1,request_id='price-request',
+                session_token_hash=m._token_hash('secret'),expires_at=m.now()+timedelta(minutes=5)))
+            s.commit()
+        body={'session_token':'secret','event':'shown','source_id':'123','s_id':'key1','e_c_cny':cipher}
+        with patch('app.taku_ecpm._game_keys', return_value={'keys':{'key1':pem}}):
+            self.assertEqual(self.client.post('/api/app/v1/ads/price-ad/metadata',headers=self.auth,json=body).status_code,200)
+            self.assertEqual(self.client.post('/api/app/v1/ads/price-ad/metadata',headers=self.auth,
+                json={**body,'event':'reward','source_id':'456'}).status_code,200)
+        with self.factory() as s:
+            rows=s.scalars(select(m.AppAdEvent).where(m.AppAdEvent.ad_session_id=='price-ad').order_by(m.AppAdEvent.id)).all()
+            data=json.loads(rows[0].result_json)
+            self.assertNotIn('e_c_cny',data)
+            self.assertEqual(data['revenue_diagnostic']['prices'][0]['estimated_revenue'],'0.05')
+            self.assertFalse(data['revenue_diagnostic']['settlement_eligible'])
+            self.assertEqual(json.loads(rows[1].result_json)['revenue_diagnostic']['status'],'invalid_proof')
+            self.assertEqual(s.get(m.Member,1).coin,0)
+            self.assertIsNone(s.get(m.AppAdSession,'price-ad').coin_log_id)
+
     def test_late_impression_and_review_after_provider_reward(self):
         with self.factory() as s:
             s.add(m.AppAdSession(id='late-ad', member_id=1, agent_id=1, game_id=1,

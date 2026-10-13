@@ -27,7 +27,8 @@ def redact(value, depth=0):
                        or normalized in {'code', 'account', 'alipayaccount', 'realname', 'receivename',
                                          'receivetel', 'phone', 'mobile', 'email', 'idcard', 'sign', 'signature',
                                          'extradata', 'takuextradata', 'packagename', 'durationms', 'opens',
-                                         'latitude', 'longitude', 'accuracy', 'battery', 'charging', 'locationageseconds'})
+                                         'latitude', 'longitude', 'accuracy', 'battery', 'charging', 'locationageseconds',
+                                         'ec', 'eccny'})
             result[key] = '[REDACTED]' if private else redact(item, depth + 1)
         return result
     if isinstance(value, list):

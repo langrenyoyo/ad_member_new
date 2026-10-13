@@ -89,6 +89,9 @@ class AdMetadata(BaseModel):
     app_name: str = Field(default='',max_length=255)
     creative_id: str = Field(default='',max_length=255)
     extension_keys: list[str] = Field(default_factory=list,max_length=50)
+    e_c: str = Field(default='', max_length=8192)
+    e_c_cny: str = Field(default='', max_length=8192)
+    s_id: str = Field(default='', max_length=128)
 
 
 @m.app_api.post('/ads/{ad_session_id}/metadata')
@@ -101,8 +104,23 @@ def ad_metadata(ad_session_id: str, body: AdMetadata, member=Depends(m.require_a
         if s.scalar(select(m.AppAdEvent.id).where(m.AppAdEvent.event_id==key)):
             return {'data':{'recorded':False}}
         if any(len(k)>100 for k in body.extension_keys):raise HTTPException(422,'扩展字段名称过长')
-        data=body.model_dump(exclude={'session_token'})
+        data=body.model_dump(exclude={'session_token','e_c','e_c_cny'})
         data['trust']='client_reported'
+        # Diagnostic only: encryption is not a signature or proof of a unique display.
+        from .taku_ecpm import verify_ecpm, EcpmConfigurationError, EcpmValidationError
+        revenue = {'status':'missing', 'settlement_eligible':False,
+                   'ciphertext_present':{'USD':bool(body.e_c),'CNY':bool(body.e_c_cny)}}
+        if body.e_c or body.e_c_cny or body.s_id:
+            try:
+                proof = verify_ecpm(ad.game_id, body.source_id, body.e_c, body.e_c_cny, body.s_id)
+                revenue.update(status='decrypted', prices=[{
+                    **price, 'estimated_revenue':format(Decimal(price['ecpm']) / Decimal(1000), 'f')
+                } for price in proof['prices']])
+            except EcpmConfigurationError:
+                revenue['status']='configuration_unavailable'
+            except EcpmValidationError:
+                revenue['status']='invalid_proof'
+        data['revenue_diagnostic']=revenue
         s.add(m.AppAdEvent(event_id=key,ad_session_id=ad.id,member_id=member.id,
             event_type='client_metadata',result_json=json.dumps(data,ensure_ascii=False)))
         s.commit()
