@@ -1,0 +1,12 @@
+[Unit]
+Description=TAKU device report sync for game %i
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/www/wwwroot/ad_member_new
+EnvironmentFile=/www/wwwroot/ad_member_new/server.env
+ExecStart=/www/wwwroot/ad_member_new/.venv/bin/python scripts/sync_taku_reports.py --game %i
+TimeoutStartSec=1800
+UMask=0077

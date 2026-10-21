@@ -65,6 +65,7 @@ async function renderAdSettings(){
     $('#content').innerHTML=`<div class="ad-settings-page"><section class="panel ad-settings-intro"><div class="panel-head"><div><h2>${adSettingLabels.title}</h2><p class="muted">\u914d\u7f6e\u5b8c\u6210\u540e\uff0c\u7528\u6237 APP \u7684 bootstrap \u548c\u5e7f\u544a\u8bf7\u6c42\u4f1a\u4f7f\u7528\u5bf9\u5e94\u5e7f\u544a\u4f4d\u3002</p></div><button class="button ghost" id="adSettingsRefresh" type="button">${adSettingLabels.refresh}</button></div><div class="ad-settings-notice">\u8bf7\u586b\u5199\u771f\u5b9e\u8054\u76df\u5e7f\u544a\u4f4d ID\u3002\u672a\u914d\u7f6e\u771f\u5b9e\u6e20\u9053\u65f6\uff0c\u4e0d\u8981\u628a\u5185\u90e8\u6d4b\u8bd5\u503c\u7528\u4e8e\u751f\u4ea7\u6295\u653e\u3002</div></section>${rows.length?rows.map(([game,config])=>adSettingsCard(game,config)).join(''):'<section class="panel"><div class="empty">\u6682\u65e0\u6e38\u620f</div></section>'}</div>`;
     $('#adSettingsRefresh').onclick=()=>renderAdSettings();
     mountTakuGlobalKeys(document.querySelector('.ad-settings-intro'),generation);
+    mountTakuReports(document.querySelector('.ad-settings-page'));
     document.querySelectorAll('[data-taku-url]').forEach(input=>input.onclick=()=>input.select());
     document.querySelectorAll('[data-ad-game]').forEach(form=>form.addEventListener('submit',async event=>{
       event.preventDefault();

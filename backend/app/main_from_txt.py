@@ -251,6 +251,14 @@ class AdRecord(Base, TimestampMixin):
     ad_code: Mapped[str] = mapped_column(String(128), default="")
     request_id: Mapped[str] = mapped_column(String(128), default="")
     trans_id: Mapped[str] = mapped_column(String(128), default="")
+    # Provider diagnostics shown in the operations table; these never drive payouts.
+    callback_ecpm: Mapped[float | None] = mapped_column(Float, nullable=True)
+    client_ecpm: Mapped[float | None] = mapped_column(Float, nullable=True)
+    settlement_ecpm: Mapped[float | None] = mapped_column(Float, nullable=True)
+    callback_price_currency: Mapped[str] = mapped_column(String(8), default="")
+    attention_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    gps_ip_cross_region: Mapped[int] = mapped_column(Integer, default=0)
+    risk_tags_json: Mapped[str] = mapped_column(Text, default="[]")
 
 
 class GameTakuConfig(Base):
@@ -820,6 +828,13 @@ AD_FIELDS = [
     "ad_code",
     "request_id",
     "trans_id",
+    "callback_ecpm",
+    "client_ecpm",
+    "settlement_ecpm",
+    "callback_price_currency",
+    "attention_count",
+    "gps_ip_cross_region",
+    "risk_tags_json",
     "created_at",
 ]
 
@@ -836,7 +851,7 @@ AD_SEARCH_FIELDS = [
     "request_id",
     "trans_id",
 ]
-AD_EXPORT_COLUMNS = [('ID', 'id'), ('上级ID', 'parent_id'), ('上级支付宝姓名', 'parent_payment_name'), ('会员ID', 'user_id'), ('用户账号', 'user_account'), ('支付宝姓名', 'receive_name'), ('游戏名称', 'game_name'), ('ECPM', 'ecpm'), ('金币', 'estimate_income'), ('广告平台', 'ad_network_platform_name'), ('奖励类型', 'reward_type'), ('广告分组', 'ad_group'), ('状态', 'status'), ('观看时间', 'watched_at'), ('广告代码位', 'ad_code'), ('广告request_id', 'request_id'), ('交易trans_id', 'trans_id')]
+AD_EXPORT_COLUMNS = [('ID', 'id'), ('上级ID', 'parent_id'), ('上级支付宝姓名', 'parent_payment_name'), ('会员ID', 'user_id'), ('用户账号', 'user_account'), ('支付宝姓名', 'receive_name'), ('游戏名称', 'game_name'), ('ECPM', 'ecpm'), ('回调价', 'callback_ecpm'), ('客户端价', 'client_ecpm'), ('结算价', 'settlement_ecpm'), ('金币', 'estimate_income'), ('广告平台', 'ad_network_platform_name'), ('核检标签', 'risk_tags'), ('奖励类型', 'reward_type'), ('广告分组', 'ad_group'), ('状态', 'status'), ('观看时间', 'watched_at'), ('广告代码位', 'ad_code'), ('广告request_id', 'request_id'), ('交易trans_id', 'trans_id')]
 AD_STATS_GROUP_LABELS = {'day': '日期', 'ad_group': '广告分组', 'game': '游戏', 'agent': '代理商'}
 from .recovered_constants import (COINLOG_FIELDS, RISK_FIELDS, SUBSIDY_FIELDS, WITHDRAWAL_FIELDS, AD_IMPORT_FIELD_ALIASES, AD_IMPORT_NUMERIC_FIELDS, AD_IMPORT_STRING_FIELDS, AD_IMPORT_BATCH_FIELDS, AD_IMPORT_ERROR_FIELDS, AD_ALERT_TYPE_LABELS, AD_ALERT_SEVERITY_LABELS, AD_ALERT_SEVERITY_ORDER)
 
@@ -1133,6 +1148,18 @@ def serialize_ad(item: AdRecord) -> dict[str, Any]:
     payload["ad_group"] = classify_ad_group(item)
     payload["pre_ecpm"] = payload.get("ecpm", 0.0)
     payload["ad_network_rit_id"] = payload.get("ad_code", "")
+    try:
+        payload["risk_tags"] = json.loads(item.risk_tags_json or "[]") if item.risk_tags_json else []
+    except (TypeError, ValueError):
+        payload["risk_tags"] = []
+    payload["diagnostics"] = {
+        "callback_ecpm": item.callback_ecpm,
+        "client_ecpm": item.client_ecpm,
+        "settlement_ecpm": item.settlement_ecpm,
+        "currency": item.callback_price_currency,
+        "attention_count": item.attention_count,
+        "gps_ip_cross_region": bool(item.gps_ip_cross_region),
+    }
     watched_at = item.watched_at or item.created_at
     payload["create_time"] = int(watched_at.timestamp()) if watched_at else 0
     return payload
@@ -1144,7 +1171,12 @@ def export_ads_csv(rows: list[AdRecord]) -> Response:
     writer.writerow([label for label, _field in AD_EXPORT_COLUMNS])
     for row in rows:
         payload = serialize_ad(row)
-        writer.writerow([payload.get(field, "") for _label, field in AD_EXPORT_COLUMNS])
+        values=[]
+        for _label, field in AD_EXPORT_COLUMNS:
+            value=payload.get(field, "")
+            if field == 'risk_tags': value='; '.join(str(x.get('label',x)) if isinstance(x,dict) else str(x) for x in (value or []))
+            values.append(value)
+        writer.writerow(values)
     return Response(
         content="\ufeff" + buffer.getvalue(),
         media_type="text/csv; charset=utf-8",
@@ -3288,7 +3320,26 @@ def taku_reward_callback(
             member_policy.RewardLedger.kind == 'reward'))
         if ledger: ledger.coin_log_id = log.id
         game = session.get(Game, ad_session.game_id)
-        session.add(AdRecord(user_id=item.id, user_account=item.username, parent_id=item.parent_id, agent_id=item.agent_id, game_id=ad_session.game_id, game_name=game.name if game else "", receive_name=item.receive_name or "", ecpm=ecpm_value, coin=reward, estimate_income=reward, ad_network_platform_name="TAKU", ad_type="激励", status="成功", watched_at=ad_session.completed_at, ad_code=placement_id, request_id=ad_session.request_id, trans_id=trans_id))
+        # Preserve provider/client/settlement prices for operations review; these
+        # diagnostics never override the verified reward policy.
+        callback_price = next((Decimal(p["ecpm"]) for p in (ecpm_proof or {}).get("prices", []) if p.get("currency") == "CNY"), None)
+        callback_currency = "CNY" if callback_price is not None else ("USD" if ecpm_proof else "")
+        client_price = None
+        shown_event = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == "metadata:"+ad_session.id+":shown"))
+        if shown_event:
+            try:
+                shown = json.loads(shown_event.result_json or "{}").get("revenue_diagnostic", {})
+                client_price = next((Decimal(p["ecpm"]) for p in shown.get("prices", []) if p.get("currency") == callback_currency), None)
+            except (ValueError, TypeError, KeyError):
+                client_price = None
+        tags = []
+        if callback_price is not None and client_price and client_price > 0:
+            variance = abs(callback_price-client_price) / client_price * 100
+            if variance > Decimal("20"):
+                tags.append({"label": "??????????", "level": "warning", "percent": str(variance.quantize(Decimal("0.01")))})
+        if not ecpm_proof:
+            tags.append({"label": "?? eCPM ????", "level": "danger"})
+        session.add(AdRecord(user_id=item.id, user_account=item.username, parent_id=item.parent_id, agent_id=item.agent_id, game_id=ad_session.game_id, game_name=game.name if game else "", receive_name=item.receive_name or "", ecpm=ecpm_value, coin=reward, estimate_income=reward, ad_network_platform_name="TAKU", ad_type="??", status="??", watched_at=ad_session.completed_at, ad_code=placement_id, request_id=ad_session.request_id, trans_id=trans_id, callback_ecpm=float(callback_price) if callback_price is not None else None, client_ecpm=float(client_price) if client_price is not None else None, settlement_ecpm=ecpm_value, callback_price_currency=callback_currency, attention_count=len(tags), risk_tags_json=json.dumps(tags, ensure_ascii=False)))
         _ad_flow_log(session, ad_session, "reward_granted", detail={"coin_added": reward, "coin_log_id": log.id}, trans_id=trans_id)
         session.commit()
     return reply(200)
@@ -6248,6 +6299,8 @@ from . import member_policy
 from . import sms_auth
 from . import member_insights
 from . import taku_settings
+from . import taku_reports
+from . import taku_report_sync
 
 
 @api.get("/{resource}/{item_id}")

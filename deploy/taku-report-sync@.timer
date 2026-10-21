@@ -1,0 +1,12 @@
+[Unit]
+Description=Daily TAKU preliminary and revised device reports for game %i
+
+[Timer]
+OnCalendar=*-*-* 13:30:00 Asia/Shanghai
+OnCalendar=*-*-* 04:30:00 Asia/Shanghai
+Persistent=true
+RandomizedDelaySec=120
+Unit=taku-report-sync@%i.service
+
+[Install]
+WantedBy=timers.target
