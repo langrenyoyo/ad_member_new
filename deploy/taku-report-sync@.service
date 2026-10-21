@@ -6,7 +6,7 @@ Wants=network-online.target
 [Service]
 Type=oneshot
 WorkingDirectory=/www/wwwroot/ad_member_new
-EnvironmentFile=/www/wwwroot/ad_member_new/server.env
+EnvironmentFile=/www/wwwroot/ad_member_new/.env
 ExecStart=/www/wwwroot/ad_member_new/.venv/bin/python scripts/sync_taku_reports.py --game %i
 TimeoutStartSec=1800
 UMask=0077
