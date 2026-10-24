@@ -78,8 +78,12 @@ internal fun DeviceObservationScreen() {
                                     .put("location_age_seconds", (SystemClock.elapsedRealtimeNanos()-it.elapsedRealtimeNanos)/1_000_000_000)
                             }
                         }
-                        auth.memberRequest("POST", "device-observations", body)
-                        message = if (body.has("latitude")) "已上传电量、充电及近期定位" else "已上传电量和充电状态；无有效近期定位"
+                        val result = auth.memberRequest("POST", "device-observations", body).getJSONObject("data")
+                        message = if (result.getBoolean("recorded")) {
+                            if (body.has("latitude")) "已上传电量、充电及近期定位" else "已上传电量和充电状态；无有效近期定位"
+                        } else {
+                            "采样过于频繁，本次未保存；稍后自动重试"
+                        }
                     } else message = "无法获取电量，未上传"
                 } catch (e: CancellationException) { throw e }
                 catch (e: Exception) { message = e.message ?: "上传失败，稍后重试" }

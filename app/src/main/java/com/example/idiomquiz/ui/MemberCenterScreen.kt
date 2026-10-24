@@ -50,7 +50,7 @@ internal fun MemberCenterScreen(model: MemberCenterViewModel, onBack: () -> Unit
                     OutlinedButton(enabled = !state.busy, onClick = { model.load() }) { Text("刷新") }
                     Text("共 ${state.total} 条")
                     if (state.section == MemberSection.COMMISSIONS) state.commissionSummary?.let { summary ->
-                        Text("等级：${listOf("用户", "V1", "V2", "代理").getOrElse(summary.optInt("level")) { "用户" }} · 直属邀请 ${summary.optInt("direct_members")} 人")
+                        Text("等级：${listOf("用户", "团长", "历史 V2", "代理").getOrElse(summary.optInt("level")) { "用户" }} · 直属邀请 ${summary.optInt("direct_members")} 人")
                         Text("今日佣金：${summary.optString("today_earned")} 金币（北京时间）")
                         Text("累计佣金：${summary.optString("total_earned")} 金币，已计入钱包余额")
                     }
@@ -128,7 +128,7 @@ private fun RecordContent(section: MemberSection, item: JSONObject) {
             Text("分佣 ${item.optString("amount")} 金币")
             val commissionName = when (item.optString("kind")) {
                 "commission_0" -> "用户分佣"
-                "commission_1" -> "V1 分佣"
+                "commission_1" -> "团长分佣"
                 "commission_2" -> "V2 分佣"
                 "commission_3" -> "代理分佣"
                 else -> "分佣收益"
@@ -136,7 +136,7 @@ private fun RecordContent(section: MemberSection, item: JSONObject) {
             Text("来源会员 ${item.optInt("source_member_id")} · $commissionName")
         }
         MemberSection.TEAM -> {
-            Text("会员 ${item.optInt("id")} · ${listOf("用户", "V1", "V2", "代理").getOrElse(item.optInt("level")) { "用户" }}")
+            Text("会员 ${item.optInt("id")} · ${listOf("用户", "团长", "历史 V2", "代理").getOrElse(item.optInt("level")) { "用户" }}")
         }
         MemberSection.COINS -> {
             Text("变动 ${item.decimal("coin").toPlainString()} 金币")
@@ -149,7 +149,25 @@ private fun RecordContent(section: MemberSection, item: JSONObject) {
             Text("消耗金币：${record.coin}")
         }
         MemberSection.ADS -> {
-            Text("${item.optString("placement")} · ${item.optString("status")}")
+            val placement = when (val value = item.optString("placement")) {
+                "rewarded" -> "激励视频"
+                "interstitial" -> "插屏广告"
+                "banner" -> "横幅广告"
+                "splash" -> "开屏广告"
+                "native" -> "原生广告"
+                else -> value.ifBlank { "广告" }
+            }
+            val status = when (val value = item.optString("status")) {
+                "requested", "issued" -> "已申请"
+                "impressed" -> "已展示"
+                "completed" -> "已观看完成"
+                "rewarded" -> "奖励已到账"
+                "pending_verification" -> "等待奖励核验"
+                "failed" -> "未完成"
+                "expired" -> "已过期"
+                else -> value.ifBlank { "状态待确认" }
+            }
+            Text("$placement · $status")
             Text("实际奖励：${item.decimal("coin_added")} 金币")
         }
         MemberSection.CAMPAIGNS -> {

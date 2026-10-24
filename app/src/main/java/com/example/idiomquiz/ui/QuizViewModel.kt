@@ -15,6 +15,7 @@ import com.example.idiomquiz.data.AdPlacement
 import com.example.idiomquiz.data.AppSettings
 import com.example.idiomquiz.data.AuthRepository
 import com.example.idiomquiz.data.AuthUser
+import com.example.idiomquiz.data.UserApiException
 import com.example.idiomquiz.data.QuizMode
 import com.example.idiomquiz.data.QuizRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -73,7 +74,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                             }
 
                             if (!_uiState.value.authBusy) return@collect
-                            val result = authRepository.loginWithWeChatCode(event.code)
+                            val result = authRepository.loginWithWeChatCode(event.code, registrationInvite)
                             _uiState.update { it.copy(authBusy = false, currentUser = result.user,
                                 authError = result.error, screen = if (result.user != null) AppScreen.PROFILE else AppScreen.LOGIN) }
                             if (result.user != null) initializeApp()
@@ -125,7 +126,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun loginWithSms(phone: String, code: String, password: String) {
+    fun loginWithSms(phone: String, code: String, password: String, inviteCode: String = "") {
         val snapshot = _uiState.value
         if (snapshot.authBusy) return
         if (!Regex("[0-9]{6}").matches(code.trim())) {
@@ -136,7 +137,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         }
         _uiState.update { it.copy(authBusy = true, authError = null) }
         viewModelScope.launch {
-            val result = authRepository.loginWithSms(phone, code, snapshot.smsChallenge, password)
+            val result = authRepository.loginWithSms(phone, code, snapshot.smsChallenge, password, inviteCode)
             applyAuthResult(result.user, result.error)
             if (result.user != null) {
                 _uiState.update { it.copy(smsChallenge = null) }
@@ -480,20 +481,49 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                             catch (_: Exception) { /* Metadata is advisory and never gates settlement. */ }
                         }
                     },
-                    onReward = reward@{
+                    onReward = reward@{ rewardEvidence ->
                         try { authRepository.checkSession(epoch) } catch (_: CancellationException) { return@reward }
                         earned = true
                         val seconds = if (shownAt == 0L) 0 else
                             ((android.os.SystemClock.elapsedRealtime() - shownAt) / 1000).coerceIn(0, 86400).toInt()
                         viewModelScope.launch {
                             try {
-                                // Completion is advisory. Even if this upload fails, S2S may settle.
-                                sessionCatching { authRepository.adComplete(session, seconds) }
-                                    .onFailure { if (it is CancellationException) throw it }
-                                awaitRewardSettlement(session, gameId, epoch)
+                                // The server uses the one-shot session reward as the
+                                // immediate user-facing result.  The TAKU callback
+                                // remains a later reconciliation signal.
+                                val completion = sessionCatching {
+                                    authRepository.adComplete(session, seconds, rewardEvidence)
+                                }
+                                completion.onSuccess { response ->
+                                    val data = response.optJSONObject("data")
+                                    if (data?.optBoolean("rewarded", false) == true) {
+                                        val balance = data.optDouble("coin_balance", Double.NaN)
+                                        if (!balance.isNaN()) {
+                                            val coins = balance.toBigDecimal()
+                                            _uiState.update { it.copy(serverCoin = coins,
+                                                appBootstrap = it.appBootstrap?.copy(coin = coins), message = "奖励已到账") }
+                                        } else {
+                                            viewModelScope.launch {
+                                                runCatching { refreshWalletState() }
+                                                _uiState.update { it.copy(message = "奖励已到账") }
+                                            }
+                                        }
+                                    } else if (data?.optString("status") == "queued") {
+                                        _uiState.update { it.copy(message = "奖励正在补发，网络恢复后会自动到账") }
+                                    } else {
+                                        awaitRewardSettlement(session, gameId, epoch)
+                                    }
+                                }.onFailure { error ->
+                                    if (error is CancellationException) throw error
+                                    val unavailable = error is UserApiException && error.errorCode?.startsWith(
+                                        "PUBLISHER_REVENUE_") == true
+                                    _uiState.update { it.copy(message = if (unavailable)
+                                        "广告平台未返回有效收益，本次未发放奖励"
+                                    else "奖励正在补发，网络恢复后会自动到账") }
+                                }
                             } catch (e: CancellationException) { throw e }
                             catch (e: Exception) {
-                                _uiState.update { it.copy(message = "奖励确认中，请稍后刷新钱包") }
+                                _uiState.update { it.copy(message = "奖励正在补发，网络恢复后会自动到账") }
                             }
                         }
                     },
@@ -582,12 +612,14 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         _uiState.update { it.copy(authMode = mode, authError = null) }
     }
 
-    fun loginWithPhone(phone: String, password: String) {
+    private var registrationInvite = ""
+
+    fun loginWithPhone(phone: String, password: String, inviteCode: String = "") {
         val mode = _uiState.value.authMode
         _uiState.update { it.copy(authBusy = true, authError = null) }
         viewModelScope.launch {
             val result = if (mode == AuthMode.REGISTER) {
-                authRepository.registerWithPhone(phone, password)
+                authRepository.registerWithPhone(phone, password, inviteCode)
             } else {
                 authRepository.loginWithPhone(phone, password)
             }
@@ -596,8 +628,9 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun loginWithWeChat(context: android.content.Context) {
+    fun loginWithWeChat(context: android.content.Context, inviteCode: String = "") {
         if (_uiState.value.authBusy || passwordAuthorization != null) return
+        registrationInvite = inviteCode
         val attempt = ++wechatAttempt
         _uiState.update { it.copy(authBusy = true, authError = null) }
         viewModelScope.launch {

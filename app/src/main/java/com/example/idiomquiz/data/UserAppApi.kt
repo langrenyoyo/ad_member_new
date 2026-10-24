@@ -3,6 +3,7 @@ package com.example.idiomquiz.data
 import com.example.idiomquiz.BuildConfig
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
@@ -103,18 +104,18 @@ internal class UserAppApi(context: android.content.Context) {
         body = JSONObject().put("phone", phone).put("game_id", BuildConfig.REGISTRATION_GAME_ID))
         .getJSONObject("data").getString("challenge_id")
 
-    suspend fun smsLogin(phone: String, code: String, challenge: String, password: String, deviceId: String): UserApiSession =
+    suspend fun smsLogin(phone: String, code: String, challenge: String, password: String, deviceId: String, inviteCode: String = ""): UserApiSession =
         requestJson("POST", "auth/sms/login", deviceId, body = JSONObject().put("phone", phone).put("code", code)
             .put("challenge_id", challenge).put("device_id", deviceId).put("game_id", BuildConfig.REGISTRATION_GAME_ID)
-            .apply { if (password.isNotEmpty()) put("new_password", password) }).toSession()
+            .put("invite_code", inviteCode.trim()).apply { if (password.isNotEmpty()) put("new_password", password) }).toSession()
     private val appContext = context.applicationContext
 
-    suspend fun register(username: String, password: String, deviceId: String): UserApiSession =
+    suspend fun register(username: String, password: String, deviceId: String, inviteCode: String = ""): UserApiSession =
         requestJson(
             method = "POST",
             path = "auth/register",
             deviceId = deviceId,
-            body = credentialsBody(username, password, deviceId).put("game_id", BuildConfig.REGISTRATION_GAME_ID)
+            body = credentialsBody(username, password, deviceId).put("game_id", BuildConfig.REGISTRATION_GAME_ID).put("invite_code", inviteCode.trim())
         ).toSession()
 
     suspend fun login(username: String, password: String, deviceId: String): UserApiSession =
@@ -135,9 +136,9 @@ internal class UserAppApi(context: android.content.Context) {
                 .put("device_id", deviceId)
         ).toSession()
 
-    suspend fun wechatLogin(code: String, deviceId: String, gameId: Int): UserApiSession =
+    suspend fun wechatLogin(code: String, deviceId: String, gameId: Int, inviteCode: String = ""): UserApiSession =
         requestJson("POST", "auth/wechat", deviceId, body = JSONObject()
-            .put("code", code).put("provider", "app").put("game_id", gameId)
+            .put("code", code).put("provider", "app").put("game_id", gameId).put("invite_code", inviteCode.trim())
             .put("device_id", deviceId).put("app_id", APP_ID)
             .put("app_version", BuildConfig.VERSION_NAME).put("platform", "android")
         ).toSession()
@@ -292,16 +293,47 @@ internal class UserAppApi(context: android.content.Context) {
         accessToken: String,
         deviceId: String,
         session: AdSession,
-        watchedSeconds: Int
+        watchedSeconds: Int,
+        rewardEvidence: JSONObject
+    ): JSONObject = adComplete(accessToken, deviceId, session.id, session.sessionToken,
+        "complete-${session.id}", watchedSeconds,
+        rewardEvidence.opt("publisher_revenue_cny")?.toString().orEmpty(),
+        rewardEvidence.optString("sdk_request_id"), rewardEvidence.optString("sdk_show_id"),
+        rewardEvidence.optString("source_id"))
+
+    suspend fun adComplete(
+        accessToken: String,
+        deviceId: String,
+        sessionId: String,
+        sessionToken: String,
+        eventId: String,
+        watchedSeconds: Int,
+        publisherRevenueCny: String,
+        sdkRequestId: String,
+        sdkShowId: String,
+        sourceId: String
     ): JSONObject {
-        val requestBody = JSONObject()
-            .put("event_id", "complete-${session.id}").put("session_token", session.sessionToken)
+        val requestBody = JSONObject().put("event_id", eventId).put("session_token", sessionToken)
             .put("watched_seconds", watchedSeconds)
             .put("occurred_at", java.time.Instant.now().toString())
+        if (publisherRevenueCny.isNotBlank()) requestBody.put("publisher_revenue_cny", publisherRevenueCny)
+        if (sdkRequestId.isNotBlank()) requestBody.put("sdk_request_id", sdkRequestId)
+        if (sdkShowId.isNotBlank()) requestBody.put("sdk_show_id", sdkShowId)
+        if (sourceId.isNotBlank()) requestBody.put("source_id", sourceId)
         if (BuildConfig.DEBUG) {
-            Log.d(TAG, "Submitting completion for session=${session.id}")
+            Log.d(TAG, "Submitting completion for session=$sessionId")
         }
-        return requestJson("POST", "ads/${session.id}/complete", deviceId, accessToken, requestBody)
+        var attempt = 0
+        while (true) {
+            try {
+                return requestJson("POST", "ads/$sessionId/complete", deviceId, accessToken, requestBody)
+            } catch (error: IOException) {
+                val transient = error !is UserApiException || error.statusCode in setOf(408, 429) || error.statusCode >= 500
+                if (!transient || attempt >= 2) throw error
+                delay(300L * (attempt + 1))
+                attempt++
+            }
+        }
     }
 
     suspend fun adFail(accessToken: String, deviceId: String, session: AdSession, reason: String) {
@@ -428,7 +460,11 @@ internal class UserAppApi(context: android.content.Context) {
                 429 -> "请求太频繁，请稍后再试"
                 else -> "服务器请求失败（$statusCode）"
             }
-        return UserApiException(statusCode, errorCode, message, root?.optJSONObject("detail")?.stringOrNull("blocked_until"))
+        val displayMessage = when (message) {
+            "Current password is incorrect" -> "当前密码不正确"
+            else -> message
+        }
+        return UserApiException(statusCode, errorCode, displayMessage, root?.optJSONObject("detail")?.stringOrNull("blocked_until"))
     }
 
     private fun JSONObject.toSession(): UserApiSession {
@@ -489,7 +525,9 @@ internal class UserAppApi(context: android.content.Context) {
     private fun JSONObject.toAdSession(): AdSession {
         val data = optJSONObject("data") ?: this
         if (data.optString("provider").lowercase() != "taku" ||
-            data.optString("reward_verification") != "server_callback") {
+            data.optString("reward_verification") !in setOf(
+                "server_callback", "client_reward_with_server_reconciliation",
+                "client_publisher_revenue_with_server_reconciliation")) {
             throw UserApiException(502, "INVALID_RESPONSE", "广告渠道或奖励验证方式不匹配")
         }
         val reward = data.optJSONObject("reward")

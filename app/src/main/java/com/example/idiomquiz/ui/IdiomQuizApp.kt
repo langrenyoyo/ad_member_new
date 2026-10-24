@@ -1291,6 +1291,7 @@ private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
     var phone by rememberSaveable { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var smsCode by remember { mutableStateOf("") }
+    var registrationInvite by rememberSaveable { mutableStateOf("") }
     var smsMode by rememberSaveable { mutableStateOf(true) }
     val context = LocalContext.current
     val isRegister = state.authMode == AuthMode.REGISTER
@@ -1389,8 +1390,15 @@ private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
             }
         }
 
+        OutlinedTextField(
+            value = registrationInvite,
+            onValueChange = { registrationInvite = it },
+            label = { Text("上级邀请码（新用户必填）") },
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
+        )
         Button(
-            onClick = { if (smsMode) viewModel.loginWithSms(phone, smsCode, "") else viewModel.loginWithPhone(phone, password) },
+            onClick = { if (smsMode) viewModel.loginWithSms(phone, smsCode, "", registrationInvite) else viewModel.loginWithPhone(phone, password, registrationInvite) },
             enabled = !state.authBusy,
             modifier = Modifier
                 .fillMaxWidth()
@@ -1422,7 +1430,7 @@ private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
         }
 
         OutlinedButton(
-            onClick = { viewModel.loginWithWeChat(context) },
+            onClick = { viewModel.loginWithWeChat(context, registrationInvite) },
             enabled = !state.authBusy,
             modifier = Modifier
                 .fillMaxWidth()

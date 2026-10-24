@@ -207,7 +207,7 @@ object AnyThinkAdManager {
     fun showRewarded(
         activity: Activity,
         session: AdSession,
-        onReward: () -> Unit,
+        onReward: (JSONObject) -> Unit,
         onClosed: () -> Unit,
         onShown: () -> Unit,
         onFailure: (String) -> Unit,
@@ -226,7 +226,7 @@ object AnyThinkAdManager {
         val ad = ATRewardVideoAd(activity, session.adUnitId)
         rewardedAd = ad
         val lifecycle = RewardedLifecycle()
-        fun metadata(event: String, info: ATAdInfo) {
+        fun metadata(event: String, info: ATAdInfo): JSONObject? =
             runCatching {
                 val extra = info.extInfoMap.orEmpty()
                 fun field(vararg names: String): String = names.firstNotNullOfOrNull { key ->
@@ -237,9 +237,17 @@ object AnyThinkAdManager {
                     .put("title", field("title", "ad_title")).put("app_name", field("app_name", "appName"))
                     .put("creative_id", field("creative_id", "creativeId"))
                     .put("extension_keys", org.json.JSONArray(extra.keys.take(50).map { it.take(100) }))
+                    .put("e_c", info.encEcpmInfo.orEmpty())
+                    .put("e_c_cny", info.rmbEncEcpmInfo.orEmpty())
+                    .put("s_id", if (info.secretId > 0) info.secretId.toString() else "")
+                    .put("sdk_request_id", info.requestId.orEmpty().take(256))
+                    .put("sdk_show_id", info.showId.orEmpty().take(256))
+                runCatching { info.getPublisherRevenue(ATAdConst.CURRENCY.RMB) }.getOrNull()
+                    ?.takeIf { it.isFinite() && it > 0.0 }
+                    ?.let { payload.put("publisher_revenue_cny", it.toString()) }
                 onMetadata(event, payload)
-            }
-        }
+                payload
+            }.getOrNull()
         lateinit var timeout: Runnable
         fun release() {
             lifecycle.end()
@@ -297,8 +305,8 @@ object AnyThinkAdManager {
             override fun onReward(adInfo: ATAdInfo) {
                 mainHandler.post {
                     if (lifecycle.reward()) {
-                        metadata("reward", adInfo)
-                        onReward()
+                        val evidence = metadata("reward", adInfo) ?: JSONObject()
+                        onReward(evidence)
                     }
                 }
             }

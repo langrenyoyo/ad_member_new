@@ -5,6 +5,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withTimeoutOrNull
 import java.io.IOException
 import java.util.UUID
@@ -45,8 +46,8 @@ class AuthRepository(context: Context) {
     }
     fun checkSession(epoch: Long) = sessions.withCurrent(epoch) { }
     suspend fun sendSms(phone: String): String = api.sendSms(phone.trim(), deviceId())
-    suspend fun loginWithSms(phone: String, code: String, challenge: String, password: String): AuthResult =
-        authenticate(sms = true) { api.smsLogin(phone.trim(), code.trim(), challenge, password, deviceId()) }
+    suspend fun loginWithSms(phone: String, code: String, challenge: String, password: String, inviteCode: String = ""): AuthResult =
+        authenticate(sms = true) { api.smsLogin(phone.trim(), code.trim(), challenge, password, deviceId(), inviteCode) }
 
     private suspend fun validAccessToken(epoch: Long, rejected: String? = null): String? = refreshMutex.withLock {
         val current = sessions.withCurrent(epoch) { accessToken() }
@@ -67,8 +68,8 @@ class AuthRepository(context: Context) {
         }
     }
 
-    suspend fun loginWithWeChatCode(code: String): AuthResult = authenticate {
-        api.wechatLogin(code, deviceId(), com.example.idiomquiz.BuildConfig.REGISTRATION_GAME_ID)
+    suspend fun loginWithWeChatCode(code: String, inviteCode: String = ""): AuthResult = authenticate {
+        api.wechatLogin(code, deviceId(), com.example.idiomquiz.BuildConfig.REGISTRATION_GAME_ID, inviteCode)
     }
 
     private suspend fun <T> authenticated(request: suspend (String) -> T): T =
@@ -104,7 +105,10 @@ class AuthRepository(context: Context) {
         }
     }
 
-    suspend fun refreshWallet(): JSONObject = memberRequest("GET", "wallet").getJSONObject("data")
+    suspend fun refreshWallet(): JSONObject {
+        scheduleRewardCompletions()
+        return memberRequest("GET", "wallet").getJSONObject("data")
+    }
 
     fun currentUser(): AuthUser? {
         if (!preferences.getBoolean(KEY_LOGGED_IN, false)) return null
@@ -112,12 +116,12 @@ class AuthRepository(context: Context) {
         return readStoredUser()
     }
 
-    suspend fun registerWithPhone(phone: String, password: String): AuthResult {
+    suspend fun registerWithPhone(phone: String, password: String, inviteCode: String = ""): AuthResult {
         val normalizedPhone = phone.trim()
         val validationError = validatePhoneAndPassword(normalizedPhone, password)
         if (validationError != null) return AuthResult(error = validationError)
         return authenticate {
-            api.register(normalizedPhone, password, deviceId())
+            api.register(normalizedPhone, password, deviceId(), inviteCode)
         }
     }
 
@@ -133,6 +137,7 @@ class AuthRepository(context: Context) {
 
     suspend fun initializeApp(gameId: Int): BootstrapResult = try {
         scheduleImpressions()
+        scheduleRewardCompletions()
         BootstrapResult(bootstrap = authenticated { api.bootstrap(it, deviceId(), gameId) })
     } catch (error: UserApiException) {
         bootstrapFailure(error).copy(sessionInvalid = currentUser() == null)
@@ -148,6 +153,7 @@ class AuthRepository(context: Context) {
     fun serverGameId(): Int? = preferences.getInt(KEY_GAME_ID, 0).takeIf { it > 0 }
 
     suspend fun walletBalance(): java.math.BigDecimal {
+        scheduleRewardCompletions()
         scheduleImpressions()
         return authenticated { token -> api.wallet(token, deviceId()) }
     }
@@ -237,11 +243,120 @@ class AuthRepository(context: Context) {
         }
     }
 
+    private fun scheduleRewardCompletions() {
+        val epoch = sessions.snapshot()
+        rewardWorker.schedule { retryRewardCompletions(epoch) }
+    }
+
+    private suspend fun retryRewardCompletions(epoch: Long) {
+        var backoffMs = 1_000L
+        while (true) {
+            val userId = sessions.withCurrent(epoch) { currentUser()?.id } ?: return
+            val entries = sessions.withCurrent(epoch) {
+                preferences.all.filterKeys { it.startsWith(PENDING_REWARD_PREFIX) }.toList().take(30)
+            }
+            if (entries.isEmpty()) return
+            var retryLater = false
+            for ((key, raw) in entries) {
+                val record = runCatching { JSONObject(raw as String) }.getOrNull() ?: continue
+                if (record.optString("member_id") != userId) continue
+                val created = record.optLong("created", 0)
+                if (created <= 0) continue
+                if (System.currentTimeMillis() - created > 7 * 24 * 60 * 60 * 1000L) {
+                    sessions.withCurrent(epoch) { preferences.edit().remove(key).commit() }
+                    continue
+                }
+                try {
+                    val result = try {
+                        authenticatedInSession(epoch) { token -> api.adComplete(token, deviceId(),
+                            record.getString("id"), record.getString("token"), record.getString("event_id"),
+                            record.optInt("seconds", 0), record.optString("publisher_revenue_cny"),
+                            record.optString("sdk_request_id"), record.optString("sdk_show_id"),
+                            record.optString("source_id")) }
+                    } catch (error: IOException) {
+                        if (error is UserApiException) throw error
+                        authenticatedInSession(epoch) { token -> api.adComplete(token, deviceId(),
+                            record.getString("id"), record.getString("token"), record.getString("event_id"),
+                            record.optInt("seconds", 0), record.optString("publisher_revenue_cny"),
+                            record.optString("sdk_request_id"), record.optString("sdk_show_id"),
+                            record.optString("source_id")) }
+                    }
+                    if (result.optJSONObject("data")?.optBoolean("rewarded", false) == true) {
+                        sessions.withCurrent(epoch) { preferences.edit().remove(key).commit() }
+                    } else {
+                        retryLater = true
+                    }
+                } catch (error: CancellationException) {
+                    throw error
+                } catch (error: UserApiException) {
+                    if (error.statusCode in listOf(404, 409, 422)) {
+                        sessions.withCurrent(epoch) { preferences.edit().remove(key).commit() }
+                        continue
+                    }
+                    retryLater = true
+                    break
+                } catch (_: IOException) {
+                    retryLater = true
+                    break
+                }
+            }
+            if (!retryLater) return
+            delay(backoffMs)
+            backoffMs = (backoffMs * 2).coerceAtMost(60_000L)
+        }
+    }
+
+    private fun pendingRewardKey(sessionId: String) = PENDING_REWARD_PREFIX + sessionId
+
     suspend fun adComplete(
         session: AdSession,
-        watchedSeconds: Int
+        watchedSeconds: Int,
+        rewardEvidence: JSONObject
     ): JSONObject {
-        return authenticated { token -> api.adComplete(token, deviceId(), session, watchedSeconds) }
+        val epoch = sessions.snapshot()
+        val userId = currentUser()?.id ?: throw UserApiException(401, "SESSION_EXPIRED", "Please sign in again")
+        val key = pendingRewardKey(session.id)
+        val record = JSONObject().put("id", session.id).put("token", session.sessionToken)
+            .put("seconds", watchedSeconds).put("event_id", "complete-${session.id}")
+            .put("member_id", userId).put("created", System.currentTimeMillis())
+        listOf("publisher_revenue_cny", "sdk_request_id", "sdk_show_id", "source_id").forEach { key ->
+            if (rewardEvidence.has(key) && !rewardEvidence.isNull(key)) record.put(key, rewardEvidence.get(key))
+        }
+        sessions.withCurrent(epoch) {
+            check(preferences.edit().putString(key, record.toString()).commit()) {
+                "无法保存奖励补发记录，奖励将保持待确认状态"
+            }
+        }
+        scheduleRewardCompletions()
+        return try {
+            var result = try {
+                authenticatedInSession(epoch) { token ->
+                    api.adComplete(token, deviceId(), session, watchedSeconds, rewardEvidence)
+                }
+            } catch (error: IOException) {
+                if (error is UserApiException) throw error
+                authenticatedInSession(epoch) { token ->
+                    api.adComplete(token, deviceId(), session, watchedSeconds, rewardEvidence)
+                }
+            }
+            if (result.optJSONObject("data")?.optBoolean("rewarded", false) == true) {
+                sessions.withCurrent(epoch) { preferences.edit().remove(key).commit() }
+            } else {
+                scheduleRewardCompletions()
+            }
+            result
+        } catch (error: CancellationException) {
+            throw error
+        } catch (error: UserApiException) {
+            if (error.statusCode in listOf(404, 409, 422)) {
+                sessions.withCurrent(epoch) { preferences.edit().remove(key).commit() }
+            }
+            throw error
+        } catch (error: IOException) {
+            scheduleRewardCompletions()
+            JSONObject().put("data", JSONObject().put("status", "queued")
+                .put("rewarded", false).put("ad_session_id", session.id))
+        }
     }
 
     suspend fun adFail(session: AdSession, reason: String) {
@@ -255,6 +370,7 @@ class AuthRepository(context: Context) {
         return try {
             val user = authenticatedInSession(epoch) { api.me(it, deviceId()).toAuthUser() }
             sessions.withCurrent(epoch) { saveUser(user) }
+            scheduleRewardCompletions()
             user
         } catch (error: CancellationException) {
             throw error
@@ -298,6 +414,7 @@ class AuthRepository(context: Context) {
             val user = session.user?.toAuthUser()
                 ?: api.me(session.accessToken, deviceId()).toAuthUser()
             sessions.withCurrent(epoch) { saveTokens(session); saveUser(user) }
+            scheduleRewardCompletions()
             AuthResult(user = user)
         } catch (error: UserApiException) {
             sessions.withCurrent(epoch) { AuthResult(error = if (sms && error.statusCode == 401)
@@ -372,6 +489,7 @@ class AuthRepository(context: Context) {
 
     private fun clearSession() {
         impressionWorker.cancel()
+        rewardWorker.cancel()
         val pending = preferences.edit().remove("pending_campaign")
         preferences.all.keys.filter { it.startsWith("pending_impression_") }.forEach { pending.remove(it) }
         pending.commit()
@@ -416,6 +534,8 @@ class AuthRepository(context: Context) {
     companion object {
         internal val campaignRequests = CampaignRequests()
         private val impressionWorker = BackgroundRetry(CoroutineScope(SupervisorJob() + Dispatchers.IO))
+        private val rewardWorker = BackgroundRetry(CoroutineScope(SupervisorJob() + Dispatchers.IO), cooldownMs = 1_000)
+        private const val PENDING_REWARD_PREFIX = "pending_reward_"
         // Both the quiz and member screens share rotating refresh credentials.
         private val refreshMutex = Mutex()
         private val sessions = SessionFence()
