@@ -4,9 +4,13 @@ const riskHistoryColumns=[['id','Id'],['user_id','会员ID','search'],['username
  ['tagcode','标签','search'],['tags','标签名'],['hardware_main_id','硬件主ID','search'],['ip','ip','search'],
  ['action','行为'],['risk_score','风险分数'],['risk_level','风险等级'],['created_at','创建时间','date']];
 const riskHistorySearchFields=new Set(['user_id','username','parent_id','game_name','agent_name','hardware_main_id','ip']);
+ riskHistoryColumns.push(['reset_user','疑似双清'],['reconciliation_day','核检日期'],['reconciliation_rate','核检率'],['reconciliation_difference','差异额'],['reconciliation_currency','币种'],['ad_category','广告类目']);
 
 function riskHistoryCell(row,column,interactive){
- const key=column[0],value=row[key];if(value==null)return '';
+ const key=column[0],value=row[key];if(value==null)return key.startsWith('reconciliation_')?'待核检':'';
+ if(key==='reset_user')return value?'是':'否';
+ if(key==='reconciliation_rate')return esc(Number(value).toFixed(2))+'%';
+ if(key==='ad_category')return esc(({game:'游戏',social:'交友',ecommerce:'电商购物',finance:'金融理财'})[value]||'未知');
  const text=key==='created_at'?profileLogTime(value):value,html=esc(text);
  return interactive&&riskHistorySearchFields.has(key)?`<button class="game-user-cell-search" data-risk-search="${key}" data-value="${esc(value)}" title="点击搜索 ${esc(text)}">${html}</button>`:html;
 }

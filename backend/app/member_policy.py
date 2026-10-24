@@ -56,7 +56,7 @@ class DeviceCooldown(m.Base):
 
 def check_cooldown(session, member, install_id=None):
     rule = policy(session, member.game_id)
-    if not rule.reset_login_block or (member.is_white and rule.whitelist_risk_exempt): return
+    if not rule.reset_login_block or member.is_white: return
     d = m.device_risk
     ids = set(session.scalars(select(d.DeviceCheck.device_id).where(d.DeviceCheck.member_id == member.id,
         d.DeviceCheck.device_id.is_not(None))).all())
@@ -77,7 +77,7 @@ def check_access(session, member, request):
     if ('/ads/' not in path or path.endswith('/request')) and not path.endswith(('/me', '/wallet', '/withdrawals')) and '/withdrawals/' not in path:
         check_cooldown(session, member)
     rule = policy(session, member.game_id)
-    if not (member.is_white and rule.whitelist_risk_exempt):
+    if not member.is_white:
         signals = set(request.headers.get('X-Device-Risk', '').split(','))
         if signals & set(rule.block_signals):
             raise HTTPException(403, {'code': 'DEVICE_POLICY_BLOCKED', 'message': '设备状态不符合当前使用规则'})
@@ -96,8 +96,8 @@ def rolling_usage(session, device):
 
 def admit_rolling(session, device, member, limit):
     rule = policy(session, member.game_id)
+    if member.is_white: return True
     if not rule.reset_login_block: return False
-    if member.is_white and rule.whitelist_risk_exempt: return True
     cooldown = session.get(DeviceCooldown, device.id)
     if cooldown and cooldown.blocked_until.replace(tzinfo=m.UTC) > m.now():
         raise HTTPException(403, '风险设备处于 24 小时限制期')
@@ -263,6 +263,16 @@ class InviteInput(BaseModel):
     invite_code: str = Field(min_length=1, max_length=32)
 
 
+def bind_registration(session, member, code):
+    parent = session.scalar(select(Enrollment).where(Enrollment.invite_code == (code or '').strip().upper()))
+    owner = session.get(m.Member, parent.member_id) if parent else None
+    if not owner or owner.status != 1 or owner.game_id != member.game_id or parent.level not in (1, 3):
+        raise HTTPException(422, '注册必须填写本应用团长或代理的邀请码')
+    if owner.id == member.id:
+        raise HTTPException(422, '不能绑定自己为上级')
+    enrollment(session, member).parent_id = member.parent_id = owner.id
+
+
 def check_reward_configuration(game_id, rule):
     from .taku_ecpm import require_configuration, EcpmConfigurationError
     required = rule.reward_enabled and (rule.reward_basis == 'verified_cny_ecpm' or bool(rule.source_networks))
@@ -279,7 +289,7 @@ def onboarding(member=Depends(m.require_app_member)):
         row = enrollment(session, member)
         rule = policy(session, member.game_id)
         result = {'policy': rule.model_dump(mode='json', include={'require_alipay', 'require_invite', 'require_usage', 'announcement', 'announcement_version'}),
-            'level': row.level, 'invite_code': row.invite_code if row.level >= rule.invite_min_level else None,
+            'level': row.level, 'invite_code': row.invite_code if row.level in (1, 3) else None,
             'parent_id': row.parent_id, 'alipay_bound': session.get(m.payouts.AlipayAccount, member.id) is not None,
             'usage_granted': bool(row.usage_granted)}
         session.commit()
@@ -294,7 +304,7 @@ def bind_invite(body: InviteInput, member=Depends(m.require_app_member)):
         row = enrollment(session, stored)
         parent = session.scalar(select(Enrollment).where(Enrollment.invite_code == body.invite_code.strip().upper()))
         parent_member = session.get(m.Member, parent.member_id) if parent else None
-        if not parent or not parent_member or parent_member.status != 1 or parent_member.game_id != member.game_id or parent.level < policy(session, member.game_id).invite_min_level:
+        if not parent or not parent_member or parent_member.status != 1 or parent_member.game_id != member.game_id or parent.level not in (1, 3):
             raise HTTPException(422, '邀请码无效或邀请人不具备资格')
         if row.parent_id:
             if row.parent_id == parent.member_id: return {'data': {'parent_id': row.parent_id}}
@@ -312,7 +322,7 @@ def bind_invite(body: InviteInput, member=Depends(m.require_app_member)):
 
 
 class LevelInput(BaseModel):
-    level: int = Field(ge=0, le=3)
+    level: Literal[0, 1, 3]
 
 
 class BalanceAdjustment(BaseModel):
@@ -367,7 +377,7 @@ def rebind_member(member_id: int, body: RebindInput, admin=Depends(m.allow_roles
             parent = session.get(m.Member, body.parent_id)
             if not parent or parent.game_id != member.game_id or parent.status != 1:
                 raise HTTPException(422, '上级必须是同应用的正常会员')
-            if enrollment(session, parent).level < policy(session, member.game_id).invite_min_level:
+            if enrollment(session, parent).level not in (1, 3):
                 raise HTTPException(422, '上级不具备邀请资格')
             seen = {member.id}
             cursor = parent
@@ -443,6 +453,11 @@ def get_usage(member_id: int, report_date: str = Query(pattern=r'^\d{4}-\d{2}-\d
 
 def calculate_reward(rule, member, source_id, proof):
     network = rule.source_networks.get(source_id, 'other')
+    range_reward = getattr(member, 'whitelist_range_reward', None)
+    if member.is_white and range_reward is not None:
+        reward = Decimal(str(range_reward)).quantize(Decimal('.000001'), rounding=ROUND_DOWN)
+        return reward, {'network': network, 'reward_mode': 'whitelist_range',
+            'whitelist_range_reward': str(reward), 'rule': rule.model_dump(mode='json')}
     if rule.source_networks and not proof:
         raise HTTPException(503, '分平台奖励需要经过验证的广告来源证明')
     if rule.reward_basis == 'fixed_ecpm':
@@ -470,6 +485,33 @@ def calculate_reward(rule, member, source_id, proof):
         'tier': tier.model_dump(mode='json') if tier else None, 'rule': rule.model_dump(mode='json')}
 
 
+def calculate_publisher_revenue_reward(rule, member, source_id, revenue_cny):
+    """Convert one SDK-reported CNY publisher revenue amount into coins."""
+    revenue = Decimal(str(revenue_cny))
+    if not revenue.is_finite() or revenue <= 0:
+        raise HTTPException(422, {'code': 'PUBLISHER_REVENUE_INVALID',
+            'message': '广告收益必须为有效的人民币正数'})
+    network = rule.source_networks.get(source_id, 'other')
+    ecpm = revenue * Decimal(1000)
+    rate = rule.network_rates[network]
+    tier = None
+    if rule.tier_enabled:
+        tier = next((item for item in rule.ecpm_tiers if ecpm <= item.upper), rule.ecpm_tiers[-1])
+        rate = tier.percent / 100
+    multiplier = rule.whitelist_multiplier if member.is_white else Decimal(1)
+    base = revenue * rule.coins_per_yuan
+    reward = min(rule.max_reward, base * rate * multiplier).quantize(
+        Decimal('.000001'), rounding=ROUND_DOWN)
+    if reward <= 0:
+        raise HTTPException(422, {'code': 'PUBLISHER_REVENUE_TOO_SMALL',
+            'message': '广告收益低于最小金币精度'})
+    return reward, {'network': network, 'publisher_revenue_cny': str(revenue),
+        'derived_ecpm_cny': str(ecpm), 'base': str(base), 'release_rate': str(rate),
+        'reward_mode': 'publisher_revenue', 'trust': 'client_sdk_reported',
+        'tier': tier.model_dump(mode='json') if tier else None,
+        'rule': rule.model_dump(mode='json')}
+
+
 class RewardPreview(BaseModel):
     policy: Policy
     ecpm: Decimal = Field(ge=0, le=1000000)
@@ -488,7 +530,7 @@ def reward_preview(body: RewardPreview, admin=Depends(m.allow_roles('superadmin'
     return {'coin': str(amount), 'detail': detail, 'simulation': True}
 
 
-def commission_recipients(session, member, rule):
+def commission_recipients(session, member, rule, all_agents=False):
     row = session.get(Enrollment, member.id)
     parent_id = row.parent_id if row else member.parent_id
     selected, seen = {}, {member.id}
@@ -498,38 +540,74 @@ def commission_recipients(session, member, rule):
         if parent is None: break
         recipient = session.get(m.Member, parent_id)
         if recipient and recipient.status == 1 and recipient.game_id == member.game_id:
-            selected.setdefault(parent.level, parent.member_id)
+            if all_agents and parent.level == 3:
+                selected.setdefault(3, []).append(parent.member_id)
+            else:
+                selected.setdefault(parent.level, parent.member_id)
         parent_id = parent.parent_id
-    if rule.agent_member_id: selected[3] = rule.agent_member_id
+    if rule.agent_member_id: selected.setdefault(3, rule.agent_member_id)
     return selected
 
 
 def settlement_snapshot(session, member, game_id):
     rule = policy(session, game_id)
-    return {'version': 2, 'rule': rule.model_dump(mode='json'),
+    range_reward = None
+    if member.is_white and member.whitelist_min_coin is not None and member.whitelist_max_coin is not None:
+        low = int((Decimal(str(member.whitelist_min_coin)) * 1000000).to_integral_value())
+        high = int((Decimal(str(member.whitelist_max_coin)) * 1000000).to_integral_value())
+        if low > high:
+            raise HTTPException(422, '白名单金币区间无效')
+        range_reward = Decimal(secrets.randbelow(high - low + 1) + low) / Decimal(1000000)
+    return {'version': 3, 'rule': rule.model_dump(mode='json'),
         'label_summary': m.member_insights.label_summary(session, member.id, rule) if rule.label_rewards_enabled else {'label':'unknown','reason':'标签奖励未启用'},
         'is_white': bool(member.is_white),
-        'recipients': commission_recipients(session, member, rule)}
+        'whitelist_range_reward': str(range_reward) if range_reward is not None else None,
+        'recipients': commission_recipients(session, member, rule, all_agents=True)}
 
 
-def settle(session, member, ad, source_id, proof, legacy_reward):
+def settle(session, member, ad, source_id, proof, legacy_reward, allow_fallback=False,
+           publisher_revenue_cny=None):
     event = session.scalar(select(m.AppAdEvent).where(m.AppAdEvent.event_id == 'policy:'+ad.id))
     captured = json.loads(event.result_json) if event else {}
-    modern = captured.get('version') == 2
+    modern = captured.get('version') in (2, 3)
     rule = Policy.model_validate(captured['rule'] if modern else captured) if event else policy(session, ad.game_id)
     commission_on = rule.commission_enabled if rule.commission_enabled is not None else rule.reward_enabled
-    if not rule.reward_enabled and not commission_on: return legacy_reward
-    if rule.reward_enabled:
+    range_reward = captured.get('whitelist_range_reward') if modern and captured.get('is_white') else None
+    if (publisher_revenue_cny is None and not rule.reward_enabled
+            and not commission_on and range_reward is None):
+        return legacy_reward
+    if publisher_revenue_cny is not None:
         from types import SimpleNamespace
-        basis = SimpleNamespace(is_white=captured['is_white'],
+        basis = SimpleNamespace(is_white=captured.get('is_white', bool(member.is_white)),
             ad_label=captured.get('label_summary', {}).get('label', 'unknown')) if modern else member
-        reward, snapshot = calculate_reward(rule, basis, source_id, proof)
+        reward, snapshot = calculate_publisher_revenue_reward(
+            rule, basis, source_id, publisher_revenue_cny)
+        snapshot['label_summary'] = captured.get('label_summary', {'label': 'unknown'})
+    elif range_reward is not None:
+        reward = Decimal(range_reward).quantize(Decimal('.000001'))
+        snapshot = {'reward_mode': 'whitelist_range', 'whitelist_range_reward': str(reward),
+            'rule': rule.model_dump(mode='json')}
+    elif rule.reward_enabled:
+        from types import SimpleNamespace
+        basis = SimpleNamespace(is_white=captured['is_white'], whitelist_range_reward=captured.get('whitelist_range_reward'),
+            ad_label=captured.get('label_summary', {}).get('label', 'unknown')) if modern else member
+        if not proof and allow_fallback:
+            # The SDK has already delivered its one-shot reward callback.  Use
+            # the server-issued placement amount immediately and keep the
+            # provider eCPM callback as an audit/reconciliation signal.
+            reward = Decimal(str(legacy_reward)).quantize(Decimal('.000001'), rounding=ROUND_DOWN)
+            snapshot = {'reward_mode': 'client_fallback', 'fallback_reward': str(reward),
+                'rule': rule.model_dump(mode='json')}
+        else:
+            reward, snapshot = calculate_reward(rule, basis, source_id, proof)
         snapshot['label_summary'] = captured.get('label_summary', {'label': 'unknown'})
     else:
         reward = Decimal(str(legacy_reward)).quantize(Decimal('.000001'), rounding=ROUND_DOWN)
         snapshot = {'basis': 'legacy_reward', 'rule': rule.model_dump(mode='json')}
     selected = {int(k): v for k, v in captured['recipients'].items()} if modern else commission_recipients(session, member, rule)
     snapshot['recipients'] = selected
+    recipient_pairs = sorted((level, beneficiary) for level, values in selected.items()
+        for beneficiary in (values if isinstance(values, list) else [values]))
     snapshot['attribution'] = 'ad_request' if modern else 'legacy_callback'
     snapshot['commission_audit_version'] = 1
     commission_outcomes = []
@@ -539,17 +617,18 @@ def settle(session, member, ad, source_id, proof, legacy_reward):
     if not commission_on:
         snapshot['commission_outcomes'] = [
             {'level': level, 'beneficiary_id': beneficiary, 'eligible': False,
-             'amount': '0', 'reason': '分佣未启用'} for level, beneficiary in sorted(selected.items())]
+             'amount': '0', 'reason': '分佣未启用'} for level, beneficiary in recipient_pairs]
         reward_ledger.rule_json = json.dumps(snapshot, ensure_ascii=False)
         return reward
-    for level, beneficiary in sorted(selected.items()):
+    for level, beneficiary in recipient_pairs:
         outcome = {'level': level, 'beneficiary_id': beneficiary, 'eligible': False, 'amount': '0', 'reason': ''}
         if beneficiary == member.id:
             outcome['reason'] = '不能向自己分佣'
             commission_outcomes.append(outcome)
             continue
         enrollment_row = session.get(Enrollment, beneficiary)
-        if not enrollment_row or enrollment_row.level < level:
+        required_level = 1 if level == 2 else level
+        if not enrollment_row or enrollment_row.level < required_level:
             outcome['reason'] = '等级不满足'
             commission_outcomes.append(outcome)
             continue

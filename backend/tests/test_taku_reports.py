@@ -18,6 +18,84 @@ class ReportTests(unittest.TestCase):
     tearDown = fixtures.MemberPolicyTests.tearDown
     admin_headers = fixtures.MemberPolicyTests.admin_headers
 
+    def test_report_missing_placement_and_inactive_days(self):
+        day=reports.date(2026,10,20)
+        rows=reports.parse_report(HEADER+'1,a,28,3,0.9,CNY,1,x\n')
+        with self.factory() as s:
+            s.get(m.Member,1).created_at=reports.datetime(2026,10,18,6)
+            s.add(reports.ReportBatch(game_id=1,day=str(day),digest='fixture',stage='rechecked',
+                rows_json=json.dumps(rows),admin_id=0));s.commit()
+        local={('1',p,c):{'count':3,'revenue':Decimal(1),'missing':False}
+            for p in ('a','b') for c in ('CNY','USD')}
+        with patch.object(reports,'local_estimates',return_value=local):
+            result=reports.results(1,day)
+        item={'id':999,'game_id':1,'user_id':1,'created_at':'2026-10-21T10:00:00+08:00'}
+        with self.factory() as s, patch.object(reports,'results',return_value=result):
+            reports.withdrawal_checks(s,[item])
+            self.assertEqual(item['reconciliation']['missing_placements'],['b'])
+            self.assertIsNone(item['reconciliation']['difference_rate'])
+        local={key:value for key,value in local.items() if key[1]=='a'}
+        with patch.object(reports,'local_estimates',return_value=local):
+            result=reports.results(1,day)
+        inactive={'status':'rechecked','items':[],'local_placements':{}}
+        with self.factory() as s:
+            with patch.object(reports,'results',side_effect=lambda game,d: result if d==day else inactive):
+                reports.withdrawal_checks(s,[item],period=True)
+            self.assertEqual(item['reconciliation']['classification'],'normal')
+            self.assertEqual(item['reconciliation']['no_activity_days'],['2026-10-19'])
+            self.assertEqual(Decimal(item['reconciliation']['difference_rate']),10)
+            with patch.object(reports,'results',side_effect=lambda game,d: result if d==day else {'status':'waiting_report','items':[]}):
+                reports.withdrawal_checks(s,[item],period=True)
+            self.assertEqual(item['reconciliation']['classification'],'pending')
+            self.assertEqual(item['reconciliation']['missing_days'],['2026-10-19'])
+
+    def test_period_covers_complete_days_and_missing_day_blocks_normal(self):
+        with self.factory() as s:
+            s.get(m.Member,1).created_at=reports.datetime(2026,10,18,6)
+            s.commit()
+            row={'member_id':1,'currency':'CNY','backend_estimate':'10','backend_complete':True,
+                'backend_impressions':10,'impressions':10,'status':'normal','revenue':'9','flagged':False}
+            def result(game,day):
+                return {'status':'rechecked','items':[row] if str(day)!='2026-10-20' else []}
+            item={'id':999,'game_id':1,'user_id':1,'created_at':'2026-10-22T10:00:00+08:00'}
+            with patch.object(reports,'results',side_effect=result):
+                reports.withdrawal_checks(s,[item],period=True)
+            check=item['reconciliation']
+            self.assertEqual(check['start_day'],'2026-10-19')
+            self.assertEqual(check['end_day'],'2026-10-21')
+            self.assertEqual(check['missing_days'],['2026-10-20'])
+            self.assertEqual(check['classification'],'pending')
+            self.assertIsNone(check['difference_rate'])
+            withdrawal=m.Withdrawal(id=1,user_id=1,game_id=1,status=1,
+                transferred_at=reports.datetime(2026,10,20,2))
+            s.add(withdrawal)
+            s.add(m.payouts.Payout(withdrawal_id=1,member_id=1,game_id=1,request_key='period',
+                amount_cents=10,coin_cost=1,account='test',real_name='test',out_biz_no='period',state='succeeded'))
+            s.commit()
+            with patch.object(reports,'results',side_effect=result):
+                reports.withdrawal_checks(s,[item],period=True)
+            self.assertEqual(item['reconciliation']['start_day'],'2026-10-21')
+            self.assertEqual(item['reconciliation']['classification'],'normal')
+            self.assertEqual(Decimal(item['reconciliation']['difference_rate']),10)
+
+    def test_withdrawal_local_completeness_currency_and_threshold(self):
+        row={'member_id':1,'currency':'CNY','backend_estimate':'10','backend_complete':True,
+             'backend_impressions':10,'impressions':10,'status':'normal','revenue':'7','flagged':False}
+        report={'status':'rechecked','rule':{'threshold_percent':'20'},'items':[row]}
+        with self.factory() as s, patch.object(reports,'results',return_value=report):
+            def check():
+                item={'game_id':1,'user_id':1,'created_at':'2026-10-22T00:30:00+08:00'}
+                reports.withdrawal_checks(s,[item]);return item['reconciliation']
+            result=check()
+            self.assertEqual(result['day'],'2026-10-21')
+            self.assertEqual(result['classification'],'review')
+            self.assertEqual(Decimal(result['difference']),3)
+            row['backend_complete']=False
+            self.assertEqual(check()['classification'],'pending')
+            self.assertIsNone(check()['difference'])
+            row['backend_complete']=True;report['items'].append({**row,'currency':'USD'})
+            self.assertEqual(check()['classification'],'pending')
+
     def test_threshold_currency_missing_and_shared_devices(self):
         rows = reports.parse_report(HEADER+'1,p,28,10,8,CNY,10,a\n2,p,28,10,7.99,CNY,10,b\n3,p,28,10,0,CNY,,c\n4,p,28,10,0,CNY,10,b\n')
         result = reports.evaluate(rows, {1,2,3,4}, reports.RuleInput(), 'rechecked')

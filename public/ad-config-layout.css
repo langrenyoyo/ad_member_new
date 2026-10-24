@@ -1,0 +1,58 @@
+body .ad-config-workspace{display:block;max-width:1280px;margin:0 auto;background:#fff}
+body .main:has(.ad-config-workspace)>.topbar{display:none}
+.ad-config-workspace .fa{font-family:FontAwesome!important;font-style:normal}
+.ad-config-workspace .fa-refresh:before{content:'\f021'}
+.ad-config-workspace .fa-cubes:before{content:'\f1b3'}
+.ad-config-workspace .fa-key:before{content:'\f084'}
+.ad-config-workspace .fa-bar-chart:before{content:'\f080'}
+.ad-config-workspace [hidden]{display:none!important}
+body .ad-config-workspace .ad-settings-intro{border:0;margin:0;padding:0}
+.ad-config-workspace .ad-settings-intro .panel-head{padding:20px 24px;border-bottom:0;align-items:center}
+.ad-config-workspace .ad-settings-intro h2{margin:0}
+.ad-config-tabs{display:flex;gap:24px;padding:0 24px;border-bottom:1px solid #dfe6eb;overflow-x:auto}
+.ad-config-tabs button{display:flex;gap:8px;align-items:center;white-space:nowrap;flex-shrink:0;border:0;border-bottom:3px solid transparent;background:transparent;padding:14px 2px;color:#64727c;font-size:14px}
+.ad-config-tabs button[aria-selected=true]{border-bottom-color:var(--accent);color:var(--accent);font-weight:600}
+.ad-config-tabpanel{padding:24px;min-width:0}
+.ad-app-picker{display:flex;align-items:center;gap:14px;padding-bottom:22px;border-bottom:1px solid #e5eaee;flex-wrap:wrap}
+.ad-app-picker label{margin:0;color:#43535f;font-size:13px}
+.ad-app-picker select{width:340px;max-width:100%;padding:8px 12px}
+.ad-app-picker>span{color:#8a959d;font-size:12px}
+body .ad-config-workspace .ad-settings-card{padding:0;gap:0;margin:0}
+.ad-config-workspace .ad-settings-card .panel-head{padding:20px 0;align-items:center}
+.ad-config-workspace .ad-settings-card h2{font-size:16px}
+.ad-config-workspace .ad-config-section{border:0;border-top:1px solid #e5eaee;padding:22px 0;margin:12px 0;min-width:0}
+.ad-config-workspace .ad-config-section legend{float:none;width:auto;border:0;padding:0 12px 0 0;margin:0;font-size:14px;font-weight:600;color:#30434f}
+.ad-config-workspace .ad-settings-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 28px}
+.ad-config-workspace label{font-weight:400}
+.ad-config-workspace .ad-settings-field input,.ad-config-workspace .ad-settings-field select,.ad-config-workspace textarea{min-height:38px;border-radius:4px}
+.ad-config-workspace .ad-config-wide{grid-column:1/-1}
+.ad-config-workspace [data-taku-url]{font-family:Consolas,monospace;font-size:12px;background:#f6f8fa!important}
+.ad-config-workspace input[type=checkbox]{width:16px;min-height:16px;height:16px;vertical-align:middle;margin:0 6px 0 0}
+.ad-config-workspace .ad-settings-actions{margin-top:16px;padding-top:18px}
+.ad-config-workspace .ad-settings-message{color:#465b68;overflow-wrap:anywhere}
+.ad-global-keys{max-width:900px}
+.ad-global-keys h3{margin:0 0 16px;font-size:18px}
+.ad-global-keys>p{font-size:13px;line-height:1.8;color:#6d7a84;max-width:800px}
+.ad-global-keys .ad-config-section{display:grid;grid-template-columns:minmax(160px,1fr) minmax(0,2fr);gap:22px}
+.ad-global-keys textarea{width:100%;padding:12px;border:1px solid #d8dfe5;resize:vertical;font:12px/1.6 Consolas,monospace;min-height:150px}
+.ad-global-keys [data-global-status]{padding:12px 16px;background:#f2f7f6;border-left:3px solid #137f74;color:#405c56;overflow-wrap:anywhere}
+#ad-reports-panel>.panel{padding:0;margin:0}
+#ad-reports-panel h2{margin:0 0 16px}
+#ad-reports-panel p{color:#71808a;font-size:13px;line-height:1.7}
+#ad-reports-panel form{display:flex;gap:16px;flex-wrap:wrap;align-items:end;padding:20px 0;border-bottom:1px solid #e5eaee}
+#ad-reports-panel label{display:grid;gap:8px;font-size:13px;color:#52616d;min-width:0;flex:1 1 180px;max-width:320px}
+#ad-reports-panel input,#ad-reports-panel select{padding:8px 10px;width:100%}
+#ad-reports-panel button{min-height:36px;border:1px solid #ccd8df;background:white;color:#236c65;border-radius:4px;padding:8px 14px}
+#ad-reports-panel button:disabled{opacity:.5}
+#ad-reports-panel [data-query] button{background:var(--accent);color:white;border-color:var(--accent)}
+#ad-reports-panel [data-status]:not(:empty){padding:12px;background:#f4f7f9;border-left:3px solid #aebfc9}
+#ad-reports-panel table{width:100%;white-space:nowrap}
+#ad-reports-panel td,#ad-reports-panel th{padding:10px 14px}
+@media(max-width:640px){
+ .ad-config-tabpanel{padding:16px}
+ .ad-config-tabs{padding:0 16px;gap:20px}
+ .ad-config-workspace .ad-settings-grid,.ad-global-keys .ad-config-section{grid-template-columns:minmax(0,1fr)}
+ .ad-app-picker select{width:100%}
+ .ad-config-workspace .ad-settings-intro .panel-head{padding:16px}
+ #ad-reports-panel label{max-width:none;flex-basis:100%}
+}

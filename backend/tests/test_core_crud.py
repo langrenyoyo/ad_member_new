@@ -22,6 +22,33 @@ from app.main_from_txt import AdminUser, AdImportBatch, AdImportError, AdRecord,
 
 
 class CoreCrudTestCase(unittest.TestCase):
+    def test_withdrawal_ad_checks_scope_cutoff_and_missing(self):
+        from app.main_from_txt import Withdrawal, enrich_withdrawal_ad_checks
+        with SessionLocal() as session:
+            withdrawals = [Withdrawal(user_id=998877, game_id=887766, agent_id=776655,
+                created_at=datetime(2026, 10, 20)), Withdrawal(user_id=998878, game_id=887766,
+                agent_id=776655, created_at=datetime(2026, 10, 20))]
+            session.add_all(withdrawals)
+            session.flush()
+            def ad(day, game=887766, agent=776655, price=10, tags='[]'):
+                return AdRecord(user_id=998877, game_id=game, agent_id=agent,
+                    watched_at=datetime(2026, 10, day), callback_ecpm=price,
+                    client_ecpm=price+1, settlement_ecpm=price+2, risk_tags_json=tags)
+            session.add_all([ad(18,tags='[{"label":"older risk","level":"warning"}]'),
+                ad(19,price=20), ad(21,price=99,tags='["future"]'),
+                ad(19,game=1,price=88,tags='["other game"]'),
+                ad(19,agent=1,price=77,tags='["other agent"]')])
+            session.flush()
+            payload={'items':[{'id':w.id} for w in withdrawals]}
+            enrich_withdrawal_ad_checks(session,payload)
+            result,missing=payload['items']
+            self.assertEqual((result['callback_ecpm'],result['client_ecpm'],result['settlement_ecpm']),(20,21,22))
+            self.assertEqual(result['risk_tags'],[{'label':'older risk','level':'warning'}])
+            self.assertTrue(result['ad_check_available'])
+            self.assertFalse(missing['ad_check_available'])
+            self.assertIsNone(missing['callback_ecpm'])
+            session.rollback()
+
     def test_agent_analysis_aggregation_ranges_scope_and_settings(self) -> None:
         from app.main_from_txt import Game, LotteryRecord, AgentAnalysisConfig
         with SessionLocal() as session:

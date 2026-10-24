@@ -81,7 +81,7 @@ def label_summary(s, member_id, rule):
 
 class AdMetadata(BaseModel):
     session_token: str = Field(min_length=1,max_length=256)
-    event: Literal['shown','clicked','reward','closed']
+    event: Literal['shown','clicked','reward','closed','downloaded','installed','opened']
     network: str = Field(default='',max_length=128)
     source_id: str = Field(default='',max_length=128)
     format: str = Field(default='',max_length=64)
@@ -92,6 +92,10 @@ class AdMetadata(BaseModel):
     e_c: str = Field(default='', max_length=8192)
     e_c_cny: str = Field(default='', max_length=8192)
     s_id: str = Field(default='', max_length=128)
+    publisher_revenue_cny: Decimal | None = Field(default=None, gt=0, le=1000000,
+        max_digits=24, decimal_places=12)
+    sdk_request_id: str = Field(default='', max_length=256)
+    sdk_show_id: str = Field(default='', max_length=256)
 
 
 @m.app_api.post('/ads/{ad_session_id}/metadata')
@@ -125,6 +129,30 @@ def ad_metadata(ad_session_id: str, body: AdMetadata, member=Depends(m.require_a
             event_type='client_metadata',result_json=json.dumps(data,ensure_ascii=False)))
         s.commit()
         return {'data':{'recorded':True}}
+
+
+def enrich_ad_list(s, rows):
+    requests = [r['request_id'] for r in rows if r.get('request_id')]
+    sessions = {ad.request_id: ad for ad in s.scalars(select(m.AppAdSession).where(
+        m.AppAdSession.request_id.in_(requests)))} if requests else {}
+    ids = [ad.id for ad in sessions.values()]
+    reviews = {r.ad_session_id:r for r in s.scalars(select(AdReview).where(AdReview.ad_session_id.in_(ids)))} if ids else {}
+    events = {}
+    if ids:
+        for e in s.scalars(select(m.AppAdEvent).where(m.AppAdEvent.ad_session_id.in_(ids),
+                m.AppAdEvent.event_type == 'client_metadata').order_by(m.AppAdEvent.id)):
+            events.setdefault(e.ad_session_id, []).append(json.loads(e.result_json))
+    for row in rows:
+        ad = sessions.get(row.get('request_id'))
+        if ad and (ad.member_id != row['user_id'] or ad.game_id != row['game_id']):
+            ad = None
+        review = reviews.get(ad.id) if ad else None
+        metadata = events.get(ad.id, []) if ad else []
+        row['ad_category'] = review.category if review else 'unknown'
+        row['ad_title'] = review.title if review and review.title else next(
+            (e.get('title') or e.get('app_name') for e in metadata if e.get('title') or e.get('app_name')), '')
+        row['ad_behaviors'] = sorted({e.get('event') for e in metadata if e.get('event') in
+            ('shown','clicked','downloaded','installed','opened')} | ({'shown'} if ad and ad.impressed_at else set()))
 
 
 def purge_expired():

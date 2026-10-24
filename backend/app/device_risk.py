@@ -250,6 +250,7 @@ def verify(payload:CheckInput,member:m.Member=Depends(m.require_app_member)):
 
 
 def authorize_ad(session,payload,member,ad_id):
+    if member.is_white:return
     rule=session.get(DeviceRule,payload.game_id)
     if rule is None or not rule.enabled:return
     check=session.get(DeviceCheck,payload.risk_check_id) if payload.risk_check_id else None
@@ -270,6 +271,9 @@ def authorize_ad(session,payload,member,ad_id):
 
 
 def authorize_retry(session, payload, existing):
+    member = session.get(m.Member, existing.member_id)
+    if member and member.is_white:
+        return
     rule = session.get(DeviceRule, payload.game_id)
     if rule is None or not rule.enabled:
         return
@@ -283,6 +287,8 @@ def app_config(game_id: int = Query(ge=1), member: m.Member = Depends(m.require_
     with m.SessionLocal() as session:
         m._app_game_for_member(session, member, game_id)
         rule = rule_data(session.get(DeviceRule, game_id))
+        if member.is_white:
+            rule.update(enabled=False, limit_enabled=False)
         return {'data': {k: rule[k] for k in ('enabled', 'limit_enabled', 'daily_limit')},
                 'request_id': secrets.token_urlsafe(12)}
 

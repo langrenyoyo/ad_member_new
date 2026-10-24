@@ -22,6 +22,16 @@ from cryptography.hazmat.primitives.asymmetric import rsa, padding
 
 
 class TakuCallbackTests(unittest.TestCase):
+    def test_placeholder_proof_rejected_with_standard_status_and_audit(self):
+        self.configure_ecpm()
+        response=self.callback(self.params(e_c='{e_c}',e_c_cny='{e_c_cny}',s_id='{s_id}'))
+        self.assertEqual(response.status_code,400)
+        self.assertEqual(response.headers['x-taku-result-code'],'602')
+        self.assertEqual(self.balances(),(10,0,0))
+        with self.factory() as s:
+            row=s.scalar(select(m.AdFlowLog).where(m.AdFlowLog.error_code=='ecpm_placeholder'))
+            self.assertIsNotNone(row)
+
     def test_global_keys_permissions_preservation_and_real_decryption(self):
         from app.taku_settings import global_ecpm_keys
         admin = m.AdminUser(id=99, username='key-admin', role='superadmin', status=1)
@@ -191,7 +201,7 @@ class TakuCallbackTests(unittest.TestCase):
                         {'e_c': encrypt('123_1'), 's_id': 'wrong-key'},
                         {'e_c': encrypt('123_NaN'), 's_id': 'test-key'},
                         {'e_c': encrypt('123_1_a'), 'e_c_cny': encrypt('123_7_b'), 's_id': 'test-key'}]:
-            self.assertEqual(self.callback(self.params(**changes)).status_code, 602)
+            self.assertEqual(self.callback(self.params(**changes)).status_code, 400)
             self.assertEqual(self.balances(), (10, 0, 0))
 
     def test_fixed_price_encrypted_ecpm_without_request_id(self):
@@ -209,7 +219,7 @@ class TakuCallbackTests(unittest.TestCase):
         # A fresh encryption of the same provider request must still be rejected.
         response = self.callback(self.params(trans_id='second', extra_data=extra,
             e_c=encrypt('123_5_sdk-one'), s_id='test-key'))
-        self.assertEqual(response.status_code, 602)
+        self.assertEqual(response.status_code, 400)
         self.assertEqual(self.balances(), (12, 1, 1))
 
     def setUp(self):
@@ -252,6 +262,13 @@ class TakuCallbackTests(unittest.TestCase):
             return (s.get(m.Member,self.uid).coin, s.scalar(select(func.count()).select_from(m.CoinLog)),
                     s.scalar(select(func.count()).select_from(m.AdRecord)))
 
+    def completion_payload(self, **changes):
+        payload = dict(event_id='client-event', session_token=self.token,
+            publisher_revenue_cny='2', sdk_request_id='sdk-request-1',
+            sdk_show_id='sdk-show-1', source_id='123')
+        payload.update(changes)
+        return payload
+
     def test_settlement_retry_and_record_visibility(self):
         self.assertEqual(self.callback().status_code,200)
         self.assertEqual(self.callback().status_code,200)
@@ -261,14 +278,14 @@ class TakuCallbackTests(unittest.TestCase):
             self.assertEqual(row.trans_id,'transaction-1')
             self.assertEqual(row.request_id,'req-test')
             self.assertEqual(row.ecpm,2000)
-        self.assertEqual(self.callback(self.params(trans_id='transaction-2')).status_code,602)
+        self.assertEqual(self.callback(self.params(trans_id='transaction-2')).status_code,400)
         self.assertEqual(self.balances(),(12,1,1))
 
     def test_invalid_signature_binding_and_disabled_configuration(self):
         p=self.params();p['sign']='0'*32
-        self.assertEqual(self.callback(p).status_code,601)
+        self.assertEqual(self.callback(p).status_code,403)
         for changes in [dict(extra_data='ads_test'),dict(user_id='999'),dict(placement_id='other')]:
-            self.assertEqual(self.callback(self.params(**changes)).status_code,602)
+            self.assertEqual(self.callback(self.params(**changes)).status_code,400)
         with patch.object(m,'TAKU_SEC_KEY',''):
             self.assertEqual(self.callback().status_code,503)
         self.assertEqual(self.balances(),(10,0,0))
@@ -282,18 +299,105 @@ class TakuCallbackTests(unittest.TestCase):
         self.assertEqual(self.callback(self.params(ilrd='{"currency":"USD"}')).status_code,200)
         self.assertEqual(self.balances(),(12,1,1))
 
-    def test_client_completion_waits_for_callback(self):
-        payload=dict(event_id='client-event',session_token=self.token)
+    def test_client_completion_rewards_immediately_and_is_idempotent(self):
+        payload=self.completion_payload()
         headers={'Authorization':'Bearer '+self.access}
         r=self.client.post('/api/app/v1/ads/ads_test/complete',json=payload,headers=headers)
         self.assertEqual(r.status_code,200,r.text)
-        self.assertFalse(r.json()['data']['rewarded'])
-        self.assertEqual(r.json()['data']['message'],'奖励确认中')
-        self.assertNotIn('coin_added',r.json()['data'])
-        self.assertEqual(self.balances(),(10,0,0))
-        self.assertEqual(self.callback().status_code,200)
-        r=self.client.post('/api/app/v1/ads/ads_test/complete',json=payload,headers=headers)
         self.assertTrue(r.json()['data']['rewarded'])
+        self.assertEqual(r.json()['data']['coin_added'],2)
+        self.assertEqual(r.json()['data']['coin_balance'],12)
+        self.assertEqual(self.balances(),(12,1,1))
+        retry=self.client.post('/api/app/v1/ads/ads_test/complete',json=payload,headers=headers)
+        self.assertEqual(retry.status_code,200,retry.text)
+        self.assertEqual(retry.json()['data']['coin_log_id'],r.json()['data']['coin_log_id'])
+        self.assertEqual(self.balances(),(12,1,1))
+        self.assertEqual(self.callback().status_code,200)
+        self.assertEqual(self.balances(),(12,1,1))
+
+    def test_client_completion_uses_publisher_revenue_and_policy_multiplier(self):
+        with self.factory() as s:
+            s.get(m.Game,1).settings_json=json.dumps({'member_policy':{
+                'reward_enabled':True,'reward_basis':'fixed_ecpm','fixed_ecpm':'500',
+                'coins_per_yuan':'10'}})
+            s.commit()
+        response=self.client.post('/api/app/v1/ads/ads_test/complete',
+            headers={'Authorization':'Bearer '+self.access},
+            json=self.completion_payload(publisher_revenue_cny='0.2'))
+        self.assertEqual(response.status_code,200,response.text)
+        self.assertEqual(response.json()['data']['coin_added'],2)
+        self.assertEqual(self.balances(),(12,1,1))
+        from app.member_policy import RewardLedger
+        with self.factory() as s:
+            ledger=s.scalar(select(RewardLedger).where(RewardLedger.kind=='reward'))
+            detail=json.loads(ledger.rule_json)
+            self.assertEqual(detail['reward_mode'],'publisher_revenue')
+            self.assertEqual(detail['publisher_revenue_cny'],'0.2')
+
+    def test_client_completion_requires_revenue_and_unique_provider_identity(self):
+        headers={'Authorization':'Bearer '+self.access}
+        missing=self.client.post('/api/app/v1/ads/ads_test/complete',headers=headers,
+            json={'event_id':'missing','session_token':self.token})
+        self.assertEqual(missing.status_code,422,missing.text)
+        self.assertEqual(missing.json()['detail']['code'],'PUBLISHER_REVENUE_REQUIRED')
+        first=self.client.post('/api/app/v1/ads/ads_test/complete',headers=headers,
+            json=self.completion_payload())
+        self.assertEqual(first.status_code,200,first.text)
+        with self.factory() as s:
+            other=m.AppAdSession(id='ads_other',member_id=self.uid,agent_id=1,game_id=1,
+                provider='taku',ad_unit_id='placement-test',reward_coin=99,request_id='req-other',
+                session_token_hash=m._token_hash(self.token),expires_at=m.now()+timedelta(minutes=5))
+            s.add(other);s.commit()
+        replay=self.client.post('/api/app/v1/ads/ads_other/complete',headers=headers,
+            json=self.completion_payload(event_id='client-event-other',sdk_show_id='different-show'))
+        self.assertEqual(replay.status_code,409,replay.text)
+        self.assertEqual(replay.json()['detail']['code'],'PUBLISHER_REVENUE_ALREADY_USED')
+        self.assertEqual(self.balances(),(12,1,1))
+
+    def test_concurrent_client_completions_credit_only_once(self):
+        headers={'Authorization':'Bearer '+self.access}
+        payload=self.completion_payload()
+        with ThreadPoolExecutor(max_workers=5) as pool:
+            responses=list(pool.map(lambda _:self.client.post('/api/app/v1/ads/ads_test/complete',
+                json=payload,headers=headers),range(5)))
+        self.assertEqual([r.status_code for r in responses],[200]*5)
+        self.assertTrue(all(r.json()['data']['rewarded'] for r in responses))
+        self.assertEqual(self.balances(),(12,1,1))
+
+    def test_client_reward_callback_bad_signature_still_rejected(self):
+        self.assertEqual(self.client.post('/api/app/v1/ads/ads_test/complete',
+            headers={'Authorization':'Bearer '+self.access},
+            json=self.completion_payload()).status_code,200)
+        params=self.params();params['sign']='0'*32
+        self.assertEqual(self.callback(params).status_code,403)
+        self.assertEqual(self.balances(),(12,1,1))
+
+    def test_client_reward_callback_with_valid_ecpm_updates_audit_only(self):
+        self.assertEqual(self.client.post('/api/app/v1/ads/ads_test/complete',
+            headers={'Authorization':'Bearer '+self.access},
+            json=self.completion_payload()).status_code,200)
+        encrypt=self.configure_ecpm()
+        params=self.params(e_c_cny=encrypt('123_20.5_sdk-callback'),s_id='test-key')
+        self.assertEqual(self.callback(params).status_code,200)
+        self.assertEqual(self.balances(),(12,1,1))
+        with self.factory() as s:
+            record=s.scalar(select(m.AdRecord))
+            self.assertEqual(record.trans_id,'transaction-1')
+            self.assertEqual(record.callback_ecpm,20.5)
+            self.assertEqual(record.callback_price_currency,'CNY')
+            event=s.scalar(select(m.AppAdEvent).where(m.AppAdEvent.event_type=='taku_reconciliation'))
+            self.assertTrue(json.loads(event.result_json)['callback_ecpm_verified'])
+
+    def test_late_client_completion_is_accepted_once_within_recovery_window(self):
+        with self.factory() as s:
+            ad=s.get(m.AppAdSession,'ads_test')
+            ad.status='expired';ad.expires_at=m.now()-timedelta(minutes=1)
+            s.commit()
+        response=self.client.post('/api/app/v1/ads/ads_test/complete',
+            headers={'Authorization':'Bearer '+self.access},
+            json=self.completion_payload())
+        self.assertEqual(response.status_code,200,response.text)
+        self.assertTrue(response.json()['data']['rewarded'])
         self.assertEqual(self.balances(),(12,1,1))
 
     def test_actual_settlement_overrides_configured_reward_in_responses(self):
@@ -315,7 +419,7 @@ class TakuCallbackTests(unittest.TestCase):
     def test_failed_session_does_not_settle(self):
         with self.factory() as s:
             s.get(m.AppAdSession,'ads_test').status='failed';s.commit()
-        self.assertEqual(self.callback().status_code,602)
+        self.assertEqual(self.callback().status_code,400)
         self.assertEqual(self.balances(),(10,0,0))
 
     def test_late_provider_delivery_after_client_expiration(self):
@@ -331,7 +435,7 @@ class TakuCallbackTests(unittest.TestCase):
                 provider='taku', ad_unit_id='placement-test', reward_coin=2, request_id='req-other',
                 session_token_hash=m._token_hash(self.token), expires_at=m.now()+timedelta(minutes=5))
             s.add(ad);s.commit();extra=m._taku_extra_data(ad)
-        self.assertEqual(self.callback(self.params(extra_data=extra)).status_code,602)
+        self.assertEqual(self.callback(self.params(extra_data=extra)).status_code,400)
         self.assertEqual(self.balances(),(12,1,1))
 
     def test_request_returns_sdk_context_and_blocks_missing_secret(self):
@@ -345,7 +449,7 @@ class TakuCallbackTests(unittest.TestCase):
         r=self.client.post('/api/app/v1/ads/request',headers=headers,json=payload)
         self.assertEqual(r.status_code,201,r.text)
         data=r.json()['data']
-        self.assertEqual(data['reward_verification'],'server_callback')
+        self.assertEqual(data['reward_verification'],'client_publisher_revenue_with_server_reconciliation')
         self.assertEqual(data['taku_user_id'],str(self.uid))
         self.assertTrue(data['taku_extra_data'].startswith(data['ad_session_id']+'.'))
         self.assertNotIn('test-taku-key',r.text)
@@ -355,9 +459,9 @@ class TakuCallbackTests(unittest.TestCase):
 
     def test_non_ascii_and_duplicate_signature_rejected(self):
         p=self.params();p['sign']='\u4e2d'
-        self.assertEqual(self.callback(p).status_code,601)
+        self.assertEqual(self.callback(p).status_code,403)
         pairs=list(self.params().items())+[('sign','duplicate')]
-        self.assertEqual(self.callback(pairs).status_code,602)
+        self.assertEqual(self.callback(pairs).status_code,400)
         self.assertEqual(self.balances(),(10,0,0))
 
     def test_game_private_key_save_preserve_clear_and_no_leak(self):
@@ -371,7 +475,7 @@ class TakuCallbackTests(unittest.TestCase):
             self.assertEqual(m.taku_credentials(s,1),(True,'private-game-key'))
             self.assertNotIn('private-game-key',s.get(m.Game,1).settings_json)
             self.assertNotIn('private-game-key',str(m.serialize_game_editor(s.get(m.Game,1))))
-        self.assertEqual(self.callback().status_code,601)  # Global key cannot override game key.
+        self.assertEqual(self.callback().status_code,403)  # Global key cannot override game key.
         p=self.params()
         raw='&'.join(f'{k}={p[k]}' for k in ['trans_id','placement_id','adsource_id','reward_amount','reward_name'])+'&sec_key=private-game-key'
         p['sign']=hashlib.md5(raw.encode()).hexdigest()

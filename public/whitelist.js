@@ -7,6 +7,7 @@ const whitelistColumns=[['id','Id'],['image_url','头像','image',false],['usern
  ['is_white','白名单'],['status','状态',{0:'禁用',1:'启用'}],['last_login_device_id','最后登陆设备号',null,false],['last_login_ip','最后登陆IP',null,false],
  ['last_login_time','最后登陆时间','datetime',false],['created_at','创建时间','date'],['member_actions','操作']];
 
+whitelistColumns.push(['whitelist_min_coin','最小金币'],['whitelist_max_coin','最大金币']);
 function whitelistCell(row,column,interactive){
  const key=column[0],value=row[key];
  if(key==='member_actions')return interactive?`${memberBehaviorButtons(row.id,row.game_id)}<button class="game-member-coins" data-white-coins="${esc(row.id)}">修改金币</button> <button class="game-member-edit" data-white-edit="${esc(row.id)}" title="编辑" aria-label="编辑"><i class="shell-icon" aria-hidden="true">&#xf040;</i></button>`:'';

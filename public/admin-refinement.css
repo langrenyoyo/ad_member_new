@@ -1,0 +1,67 @@
+@import url('/ad-config-layout.css?v=20261022');
+/* Shared administrative surfaces; page-specific interaction styles remain local. */
+body { font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif; }
+body .main { min-width: 0; }
+body .target-header { box-shadow: none; }
+body .target-header .target-logo { font-weight: 700; }
+body .sidebar { padding: 0; gap: 0; }
+body .target-user-panel { padding: 16px; height: 84px; }
+body .target-menu-search { border-radius: 4px; }
+body .nav .nav-item { height: 42px; min-height: 42px; padding: 10px 16px; border-radius: 4px; margin: 2px 8px; gap: 10px; }
+body .nav .nav-item.active { font-weight: 600; }
+body .nav-group-title { height: 38px; padding: 10px 20px; }
+body .account-card { padding: 12px; }
+body .target-menu-search input { outline: none; border: 0; }
+body .main .content { padding: 20px; }
+body .main .panel, body .main .ads-panel, body .main .whitelist-panel { border-radius: 0; border: 0; box-shadow: none; }
+body .main .panel h2 { font-size: 18px; font-weight: 600; line-height: 1.5; }
+body .main h3 { font-size: 15px; font-weight: 600; line-height: 1.5; }
+body .main .topbar { box-shadow: none; }
+body .main .panel-head { padding: 16px 20px; }
+body .main input:not([type=checkbox]):not([type=radio]):not([type=file]), body .main select, body .main textarea {
+ border-radius: 4px; min-height: 34px; max-width: 100%; box-shadow: none;
+}
+body input:focus-visible, body select:focus-visible, body textarea:focus-visible, body button:focus-visible, body a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+body .main .button { border-radius: 4px; min-height: 32px; font-size: 13px; }
+body .main .table-wrap { overflow-x: auto; max-width: 100%; }
+body .main table { font-size: 13px; }
+body .main table th { font-weight: 600; }
+body .main table td { vertical-align: middle; }
+body .main .empty { padding: 48px 20px; text-align: center; }
+body .main .member-filters { border: 0; border-bottom: 1px solid #e5eaee; border-radius: 0; }
+body .main .pagination { padding: 14px 0; flex-wrap: wrap; gap: 8px; }
+body .modal-backdrop .modal { border-radius: 8px; box-shadow: 0 16px 64px #172c3b26; }
+body .modal-head { border-bottom: 1px solid #e5eaee; }
+body .risk-devices-view { color: inherit; }
+body.risk-devices-view .content { display: grid; gap: 24px; }
+body.risk-devices-view .content .panel { padding: 24px; margin: 0; }
+body.risk-devices-view .content h2 { margin: 0 0 20px; padding-bottom: 14px; border-bottom: 1px solid #e5eaee; }
+body.risk-devices-view .content h3 { margin: 24px 0 16px; }
+body.risk-devices-view .content form[data-load], body.risk-devices-view .content form[data-picker], body.risk-devices-view .content form[data-member] { display: flex; align-items: end; flex-wrap: wrap; gap: 12px; padding: 0 0 18px; }
+body.risk-devices-view .content label { font-weight: 400; color: #52616d; font-size: 13px; min-width: 0; }
+body.risk-devices-view .content label>input:not([type=checkbox]), body.risk-devices-view .content label>select, body.risk-devices-view .content label>textarea { display: block; width: 100%; margin-top: 7px; padding: 7px 10px; }
+body.risk-devices-view .content button { min-height: 34px; padding: 7px 14px; border: 1px solid #d8dfe5; border-radius: 4px; background: #fff; color: #31566a; cursor: pointer; }
+body.risk-devices-view .content button[type=submit], body.risk-devices-view .content button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+body.risk-devices-view .content button:disabled { opacity: .5; cursor: not-allowed; }
+body.risk-devices-view .content p { color: #72808b; font-size: 12px; line-height: 1.7; overflow-wrap: anywhere; }
+body.risk-devices-view .content [role=status]:empty { display: none; }
+body.risk-devices-view .content [role=status]:not(:empty) { padding: 10px 12px; border-left: 3px solid #d4a545; background: #fff9ec; color: #766025; }
+body.risk-devices-view .content fieldset { min-width: 0; border: 0; border-top: 1px solid #e5eaee; padding: 20px 0; margin: 16px 0 0; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px 24px; }
+body.risk-devices-view .content legend { float: none; width: auto; border: 0; font-size: 14px; font-weight: 600; margin: 0; padding: 0 12px 0 0; color: #263d48; }
+body.risk-devices-view .content fieldset>p, body.risk-devices-view .content fieldset>pre, body.risk-devices-view .content fieldset>.ad-settings-grid { grid-column: 1 / -1; }
+body.risk-devices-view .content label:has(input[type=checkbox]) { display: flex !important; align-items: center; gap: 8px; min-height: 34px; }
+body.risk-devices-view .content input[type=checkbox] { width: 16px; height: 16px; margin: 0; flex: 0 0 16px; }
+body.risk-devices-view .content pre { border: 0; border-radius: 4px; background: #f5f7f9; padding: 12px; white-space: pre-wrap; }
+body.risk-devices-view .content pre:empty { display: none; }
+body.risk-devices-view .policy-save-actions { display: flex; justify-content: flex-end; padding-top: 18px; border-top: 1px solid #e5eaee; }
+body.risk-devices-view [data-report], body.risk-devices-view [data-ledgers] { overflow-x: auto; }
+@media(max-width:1000px) { body.risk-devices-view .content fieldset { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(max-width:640px) {
+ body .main { margin-left: 0; }
+ body .main .content { padding: 10px; }
+ body.risk-devices-view .content .panel { padding: 16px; }
+ body.risk-devices-view .content fieldset { grid-template-columns: minmax(0,1fr); }
+ body.risk-devices-view .content form[data-member]>* { max-width: 100%; }
+ body .target-header .target-logo { font-size: 16px; }
+ body .main .panel-head { flex-wrap: wrap; gap: 10px; }
+}

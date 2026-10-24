@@ -64,8 +64,9 @@ async function renderAdSettings(){
     if(generation!==adSettingsState.generation||state.view!=='ad-settings')return;
     $('#content').innerHTML=`<div class="ad-settings-page"><section class="panel ad-settings-intro"><div class="panel-head"><div><h2>${adSettingLabels.title}</h2><p class="muted">\u914d\u7f6e\u5b8c\u6210\u540e\uff0c\u7528\u6237 APP \u7684 bootstrap \u548c\u5e7f\u544a\u8bf7\u6c42\u4f1a\u4f7f\u7528\u5bf9\u5e94\u5e7f\u544a\u4f4d\u3002</p></div><button class="button ghost" id="adSettingsRefresh" type="button">${adSettingLabels.refresh}</button></div><div class="ad-settings-notice">\u8bf7\u586b\u5199\u771f\u5b9e\u8054\u76df\u5e7f\u544a\u4f4d ID\u3002\u672a\u914d\u7f6e\u771f\u5b9e\u6e20\u9053\u65f6\uff0c\u4e0d\u8981\u628a\u5185\u90e8\u6d4b\u8bd5\u503c\u7528\u4e8e\u751f\u4ea7\u6295\u653e\u3002</div></section>${rows.length?rows.map(([game,config])=>adSettingsCard(game,config)).join(''):'<section class="panel"><div class="empty">\u6682\u65e0\u6e38\u620f</div></section>'}</div>`;
     $('#adSettingsRefresh').onclick=()=>renderAdSettings();
-    mountTakuGlobalKeys(document.querySelector('.ad-settings-intro'),generation);
-    mountTakuReports(document.querySelector('.ad-settings-page'));
+    organizeAdSettings(rows);
+    mountTakuGlobalKeys(document.querySelector('#ad-platform-panel'),generation);
+    mountTakuReports(document.querySelector('#ad-reports-panel'));
     document.querySelectorAll('[data-taku-url]').forEach(input=>input.onclick=()=>input.select());
     document.querySelectorAll('[data-ad-game]').forEach(form=>form.addEventListener('submit',async event=>{
       event.preventDefault();
@@ -94,6 +95,33 @@ async function renderAdSettings(){
   }
 }
 
+function organizeAdSettings(rows){
+ const page=document.querySelector('.ad-settings-page');
+ page.classList.add('ad-config-workspace');
+ const intro=page.querySelector('.ad-settings-intro');
+ intro.querySelector('.muted')?.remove();intro.querySelector('.ad-settings-notice')?.remove();
+ const refresh=intro.querySelector('button');refresh.innerHTML='<i class="fa fa-refresh" aria-hidden="true"></i>';refresh.title='刷新配置';refresh.setAttribute('aria-label','刷新配置');
+ const tabs=document.createElement('div');tabs.className='ad-config-tabs';tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','广告联盟设置');
+ const names=[['applications','应用配置','cubes'],['platform','平台密钥','key'],['reports','收益核对','bar-chart']],panels={};
+ names.forEach(([key,title,icon],index)=>{
+  const panel=document.createElement('section');panel.id=`ad-${key}-panel`;panel.className='ad-config-tabpanel';panel.hidden=index!==0;panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',`ad-${key}-tab`);panels[key]=panel;
+  const tab=document.createElement('button');tab.type='button';tab.id=`ad-${key}-tab`;tab.setAttribute('role','tab');tab.setAttribute('aria-selected',String(index===0));tab.setAttribute('aria-controls',panel.id);tab.tabIndex=index===0?0:-1;tab.innerHTML=`<i class="fa fa-${icon}" aria-hidden="true"></i>${title}`;
+  tab.onclick=()=>names.forEach(([other])=>{const active=key===other;panels[other].hidden=!active;const button=tabs.querySelector(`#ad-${other}-tab`);button.setAttribute('aria-selected',String(active));button.tabIndex=active?0:-1;});
+  tabs.append(tab);page.append(panel);
+ });
+ tabs.onkeydown=event=>{const buttons=[...tabs.querySelectorAll('button')],index=buttons.indexOf(document.activeElement);if(index<0)return;let next;if(event.key==='ArrowRight')next=(index+1)%buttons.length;else if(event.key==='ArrowLeft')next=(index+buttons.length-1)%buttons.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=buttons.length-1;else return;event.preventDefault();buttons[next].click();buttons[next].focus();};
+ intro.after(tabs);
+ const picker=document.createElement('div');picker.className='ad-app-picker';picker.innerHTML=`<label for="adApplication">应用 / 游戏</label><select id="adApplication">${rows.map(([g])=>`<option value="${esc(g.id)}">${esc(g.name)} · ID ${esc(g.id)}</option>`).join('')}</select><span>${rows.length} 个应用</span>`;panels.applications.append(picker);
+ const forms=[...page.querySelectorAll('[data-ad-game]')];
+ forms.forEach((form,index)=>{
+  panels.applications.append(form);form.hidden=index!==0;const grid=form.querySelector('.ad-settings-grid');
+  const groups=[['基础配置',['enabled','provider','app_id','app_key']],['广告位与奖励',['rewarded_unit_id','interstitial_unit_id','banner_unit_id','splash_unit_id','native_unit_id','reward_coin','cooldown_seconds']],['服务端回调',['taku_callback_enabled','taku_sec_key','taku_clear_sec_key']]];
+  groups.forEach(([title,fields])=>{const section=document.createElement('fieldset');section.className='ad-config-section';const legend=document.createElement('legend');legend.textContent=title;section.append(legend);const inner=document.createElement('div');inner.className='ad-settings-grid';section.append(inner);fields.forEach(name=>inner.append(form.elements.namedItem(name).closest('label')));if(title==='服务端回调'){const url=form.querySelector('[data-taku-url]').closest('label');url.classList.add('ad-config-wide');inner.append(url);}grid.before(section);});grid.remove();
+ });
+ picker.querySelector('select').onchange=event=>forms.forEach(form=>form.hidden=form.dataset.adGame!==event.target.value);
+ if(!forms.length)panels.applications.insertAdjacentHTML('beforeend','<div class="empty">暂无应用</div>');
+}
+
 async function mountTakuGlobalKeys(host,generation){
   try{
     const current=await api('/settings/taku-keys');
@@ -106,6 +134,10 @@ async function mountTakuGlobalKeys(host,generation){
       <label class="ad-settings-field"><span>RSA 私钥（完整 PEM）</span><textarea name="${kind}_ecpm_key" rows="5" autocomplete="off" spellcheck="false"></textarea></label></fieldset>`).join('')}
       <p data-global-status role="status"></p><button type="submit" class="button primary">保存全局密钥</button>`;
     host.append(form);
+    form.className='ad-global-keys';
+    const publisher=form.elements.publisher_key.closest('label');
+    const publisherGroup=document.createElement('fieldset');publisherGroup.innerHTML='<legend>回调鉴权</legend>';publisher.before(publisherGroup);publisherGroup.append(publisher);
+    form.querySelectorAll('fieldset').forEach(fieldset=>fieldset.classList.add('ad-config-section'));
     const status=form.querySelector('[data-global-status]');
     const show=result=>{status.textContent=`Publisher Key：${result.publisher_key_configured?'已配置':'未配置'}；服务端 eCPM：${result.server_ecpm_key_configured?'已配置':'未配置'}（${result.server_ecpm_key_ids.join(', ')}）；客户端 eCPM：${result.client_ecpm_key_configured?'已配置':'未配置'}（${result.client_ecpm_key_ids.join(', ')}）`;};
     show(current);

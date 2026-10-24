@@ -195,6 +195,10 @@ class Member(Base, TimestampMixin):
     game_addiction_enable: Mapped[int] = mapped_column(Integer, default=0)
     game_addiction_time: Mapped[str] = mapped_column(String(64), default="")
     is_white: Mapped[int] = mapped_column(Integer, default=0)
+    # Optional per-member whitelist reward range.  Null means use the game's
+    # normal policy (including the global whitelist multiplier).
+    whitelist_min_coin: Mapped[Decimal | None] = mapped_column(Numeric(24, 6), nullable=True)
+    whitelist_max_coin: Mapped[Decimal | None] = mapped_column(Numeric(24, 6), nullable=True)
     ht_status: Mapped[int] = mapped_column(Integer, default=0)
     ht_id: Mapped[int] = mapped_column(Integer, default=0)
     ht_top_id: Mapped[int] = mapped_column(Integer, default=0)
@@ -784,6 +788,8 @@ MEMBER_FIELDS = [
     "game_addiction_enable",
     "game_addiction_time",
     "is_white",
+    "whitelist_min_coin",
+    "whitelist_max_coin",
     "ht_status",
     "ht_id",
     "ht_top_id",
@@ -1013,6 +1019,14 @@ def merge_game_ad_config(changes: dict[str, Any], existing_settings: str | None 
 
 def serialize_member(item: Member) -> dict[str, Any]:
     return serialize(item, MEMBER_FIELDS)
+
+
+def validate_whitelist_range(low, high):
+    if (low is None) != (high is None):
+        raise HTTPException(422, '白名单金币上下限必须同时填写或同时清空')
+    if low is not None and (low > high or low < 0 or high > 1000000 or
+            any(Decimal(str(v)).as_tuple().exponent < -6 for v in (low, high))):
+        raise HTTPException(422, '白名单金币区间须为 0 至 1000000，最小值不大于最大值，最多六位小数')
 
 
 def secondary_ad_condition() -> Any:
@@ -1717,6 +1731,42 @@ def serialize_withdrawal(item: Withdrawal) -> dict[str, Any]:
         return payouts.withdrawal_payload(session, item)
 
 
+def enrich_withdrawal_ad_checks(session: Session, payload: dict[str, Any]) -> None:
+    rows = payload.get('items', [])
+    if not rows:
+        return
+    ids = [row['id'] for row in rows]
+    # Rank within each application: no later ads or other games may supply prices.
+    ranked = select(Withdrawal.id.label('withdrawal_id'), AdRecord.id.label('ad_id'),
+        func.row_number().over(partition_by=Withdrawal.id,
+            order_by=[AdRecord.watched_at.desc(), AdRecord.id.desc()]).label('position')).join(
+        AdRecord, and_(AdRecord.user_id == Withdrawal.user_id,
+            AdRecord.game_id == Withdrawal.game_id, AdRecord.agent_id == Withdrawal.agent_id,
+            AdRecord.watched_at <= Withdrawal.created_at)).where(Withdrawal.id.in_(ids)).subquery()
+    latest = {wid: ad for wid, ad in session.execute(select(ranked.c.withdrawal_id, AdRecord).join(
+        AdRecord, AdRecord.id == ranked.c.ad_id).where(ranked.c.position == 1))}
+    tags_by_id = {}
+    for wid, raw in session.execute(select(ranked.c.withdrawal_id, AdRecord.risk_tags_json).join(
+            AdRecord, AdRecord.id == ranked.c.ad_id).distinct()):
+        try:
+            tags = json.loads(raw or '[]')
+        except (ValueError, TypeError):
+            tags = [{'label': '核检数据异常', 'level': 'warning'}]
+        if not isinstance(tags, list):
+            tags = [{'label': '核检数据异常', 'level': 'warning'}]
+        unique = tags_by_id.setdefault(wid, {})
+        for tag in tags:
+            unique[json.dumps(tag, sort_keys=True, ensure_ascii=False)] = tag
+    for row in rows:
+        ad = latest.get(row['id'])
+        row.update({key: getattr(ad, key) if ad else None for key in
+            ('callback_ecpm', 'client_ecpm', 'settlement_ecpm')})
+        row['risk_tags'] = list(tags_by_id.get(row['id'], {}).values())
+        row['ad_check_available'] = ad is not None
+        row['ad_check_source'] = {'id': ad.id, 'watched_at': stringify(ad.watched_at),
+            'currency': ad.callback_price_currency or None} if ad else None
+
+
 def serialize_subsidy(item: Subsidy) -> dict[str, Any]:
     payload = serialize(item, list(item.__table__.columns.keys()))
     payload["target_status"] = 4 if item.status == 2 else item.status
@@ -2089,6 +2139,8 @@ class MemberCreate(BaseModel):
     game_addiction_enable: int = 0
     game_addiction_time: str = Field(default="", max_length=64)
     is_white: int = 0
+    whitelist_min_coin: Decimal | None = Field(default=None, ge=0, le=1000000)
+    whitelist_max_coin: Decimal | None = Field(default=None, ge=0, le=1000000)
     ht_status: int = 0
     ht_id: int = 0
     ht_top_id: int = 0
@@ -2140,6 +2192,8 @@ class MemberUpdate(BaseModel):
     game_addiction_enable: int | None = None
     game_addiction_time: str | None = Field(default=None, max_length=64)
     is_white: Literal[0, 1] | None = None
+    whitelist_min_coin: Decimal | None = Field(default=None, ge=0, le=1000000)
+    whitelist_max_coin: Decimal | None = Field(default=None, ge=0, le=1000000)
     ht_status: int | None = None
     ht_id: int | None = None
     ht_top_id: int | None = None
@@ -2545,6 +2599,7 @@ class AppLoginRequest(AppClient):
 
 
 class AppWechatLoginRequest(AppClient):
+    invite_code: str = Field(default='', max_length=128)
     code: str = Field(min_length=1, max_length=1024)
     game_id: int | None = Field(default=None, ge=1)
     provider: Literal["mini_program", "app"] = "mini_program"
@@ -2600,6 +2655,11 @@ class AppAdEventRequest(BaseModel):
     provider_event_id: str = Field(default="", max_length=128)
     watched_seconds: float = Field(default=0, ge=0, le=86400)
     reason: str = Field(default="", max_length=128)
+    publisher_revenue_cny: Decimal | None = Field(default=None, gt=0, le=1000000,
+        max_digits=24, decimal_places=12)
+    sdk_request_id: str = Field(default="", max_length=256)
+    sdk_show_id: str = Field(default="", max_length=256)
+    source_id: str = Field(default="", max_length=128)
 
 
 def _app_member_payload(member: Member, device: str = "") -> dict[str, Any]:
@@ -2716,7 +2776,7 @@ def _app_game_for_member(session: Session, member: Member, game_id: int | None =
 
 def _app_device(session: Session, member: Member, device_id: str, request: Request, app_version: str = "") -> None:
     policy = member_policy.policy(session, member.game_id)
-    if not (member.is_white and policy.whitelist_risk_exempt) and set(request.headers.get('X-Device-Risk', '').split(',')) & set(policy.block_signals):
+    if not member.is_white and set(request.headers.get('X-Device-Risk', '').split(',')) & set(policy.block_signals):
         raise HTTPException(403, '设备状态不符合当前使用规则')
     device = session.get(MemberDevice, member.id)
     if device is None:
@@ -2743,7 +2803,7 @@ def _app_ad_result(item: AppAdSession, member: Member) -> dict[str, Any]:
         "session_token": "",
         "expires_at": stringify(item.expires_at),
         "status": item.status,
-        "reward_verification": "server_callback" if item.provider.lower() == "taku" else "client",
+        "reward_verification": "client_publisher_revenue_with_server_reconciliation" if item.provider.lower() == "taku" else "client",
         "taku_user_id": str(member.id) if item.provider.lower() == "taku" else None,
         "taku_extra_data": _taku_extra_data(item) if item.provider.lower() == "taku" else None,
     }
@@ -2804,6 +2864,7 @@ def app_register(payload: AppRegisterRequest, request: Request) -> dict[str, Any
                         password_hash=password_hash, password_salt=password_salt, status=1)
         session.add(member)
         session.flush()
+        member_policy.bind_registration(session, member, payload.invite_code)
         _app_device(session, member, payload.device_id, request, payload.app_version)
         tokens = _app_tokens(session, member, payload.device_id)
         session.commit()
@@ -2881,6 +2942,7 @@ def app_wechat_login(payload: AppWechatLoginRequest, request: Request) -> dict[s
                                     openid=identity["openid"], unionid=identity["unionid"],
                                     nickname=payload.nickname.strip(), avatar_url=payload.avatar_url.strip())
             session.add(stored)
+            member_policy.bind_registration(session, member, payload.invite_code)
         elif member.status != 1:
             raise HTTPException(status_code=403, detail="Account is disabled")
         if stored.unionid == "" and identity["unionid"]:
@@ -3064,7 +3126,8 @@ def app_ad_request(payload: AppAdRequest, request: Request, member: Member = Dep
         return {"data": result, "request_id": request_id}
 
 
-def _app_session(session: Session, session_id: str, member: Member, token: str) -> AppAdSession:
+def _app_session(session: Session, session_id: str, member: Member, token: str,
+                 allow_late_completion: bool = False) -> AppAdSession:
     if session.bind.dialect.name == "sqlite":
         session.execute(text("BEGIN IMMEDIATE"))
     session.scalar(select(Member).where(Member.id == member.id).with_for_update())
@@ -3072,8 +3135,14 @@ def _app_session(session: Session, session_id: str, member: Member, token: str) 
     if item is None or item.member_id != member.id or not hmac.compare_digest(item.session_token_hash, _token_hash(token)):
         raise HTTPException(status_code=404, detail="Ad session not found")
     if item.expires_at.replace(tzinfo=UTC) <= now() and item.status not in ("rewarded", "failed", "expired"):
+        if (not allow_late_completion or item.provider.lower() != "taku"
+                or item.created_at.replace(tzinfo=UTC) < now() - timedelta(days=7)):
+            item.status = "expired"
+            raise HTTPException(status_code=409, detail="Ad session expired")
         item.status = "expired"
-        raise HTTPException(status_code=409, detail="Ad session expired")
+    if (allow_late_completion and item.provider.lower() == "taku" and item.status == "expired"
+            and item.created_at.replace(tzinfo=UTC) < now() - timedelta(days=7)):
+        raise HTTPException(status_code=409, detail="Ad session completion window expired")
     return item
 
 
@@ -3102,19 +3171,105 @@ def app_ad_impression(ad_session_id: str, payload: AppAdEventRequest, member: Me
 @app_api.post("/ads/{ad_session_id}/complete")
 def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Member = Depends(require_app_member)) -> dict[str, Any]:
     with SessionLocal() as session:
-        item = _app_session(session, ad_session_id, member, payload.session_token)
+        item = _app_session(session, ad_session_id, member, payload.session_token,
+                            allow_late_completion=True)
         if item.provider.lower() == "taku":
             if item.status == "rewarded":
                 _ad_flow_log(session, item, "client_complete", detail={"event_id": payload.event_id, "already_rewarded": True})
+                log = session.get(CoinLog, item.coin_log_id) if item.coin_log_id else None
+                balance = session.get(Member, member.id).coin
                 session.commit()
-                return {"data": {"ad_session_id": item.id, "status": "rewarded", "rewarded": True, "coin_added": float(session.get(CoinLog, item.coin_log_id).coin) if item.coin_log_id else 0, "coin_log_id": item.coin_log_id}, "request_id": item.request_id}
-            if item.status not in ("issued", "impressed"):
+                return {"data": {"ad_session_id": item.id, "status": "rewarded", "rewarded": True,
+                    "coin_added": float(log.coin) if log else 0, "coin_balance": float(balance),
+                    "coin_log_id": item.coin_log_id}, "request_id": item.request_id}
+            if item.status not in ("issued", "impressed", "expired"):
                 raise HTTPException(status_code=409, detail="Ad session has already been closed")
-            # Client completion is advisory; only the verified provider callback settles.
-            _ad_flow_log(session, item, "client_complete", status="pending", detail={"event_id": payload.event_id, "awaiting": "taku_reward"})
+            if payload.publisher_revenue_cny is None:
+                raise HTTPException(422, {'code': 'PUBLISHER_REVENUE_REQUIRED',
+                    'message': '广告平台未返回可用的人民币收益'})
+            if not payload.sdk_request_id and not payload.sdk_show_id:
+                raise HTTPException(422, {'code': 'PUBLISHER_REVENUE_ID_REQUIRED',
+                    'message': '广告平台未返回收益展示标识'})
+            identity_kind, identity_value = ('request', payload.sdk_request_id) if payload.sdk_request_id else (
+                'show', payload.sdk_show_id)
+            identity = f'{item.game_id}:{identity_kind}:{identity_value}'
+            evidence_event_id = 'publisher_revenue:' + hashlib.sha256(identity.encode()).hexdigest()
+            used_evidence = session.scalar(select(AppAdEvent).where(
+                AppAdEvent.event_id == evidence_event_id))
+            if used_evidence and used_evidence.ad_session_id != item.id:
+                raise HTTPException(409, {'code': 'PUBLISHER_REVENUE_ALREADY_USED',
+                    'message': '广告收益标识已用于其他会话'})
+            shown_event = session.scalar(select(AppAdEvent).where(
+                AppAdEvent.event_id == 'metadata:' + item.id + ':shown'))
+            if shown_event:
+                try:
+                    shown = json.loads(shown_event.result_json or '{}')
+                except (TypeError, ValueError):
+                    shown = {}
+                comparisons = (('sdk_request_id', payload.sdk_request_id),
+                    ('sdk_show_id', payload.sdk_show_id), ('source_id', payload.source_id))
+                if any(shown.get(key) and value and shown[key] != value for key, value in comparisons):
+                    raise HTTPException(409, {'code': 'PUBLISHER_REVENUE_BINDING_MISMATCH',
+                        'message': '广告收益标识与展示事件不一致'})
+            existing_reward = session.scalar(select(AppAdEvent).where(
+                AppAdEvent.event_id == "client_reward:" + item.id))
+            if existing_reward:
+                result = json.loads(existing_reward.result_json or "{}")
+                session.commit()
+                return {"data": result, "request_id": item.request_id}
+            stored = get_or_404(session, Member, member.id, "User")
+            before = coin_amount(stored.coin)
+            reward = coin_amount(member_policy.settle(session, stored, item, payload.source_id,
+                None, item.reward_coin, publisher_revenue_cny=payload.publisher_revenue_cny))
+            stored.coin = coin_amount(before + reward)
+            stored.coin_user = coin_amount(coin_amount(stored.coin_user) + reward)
+            item.status = "rewarded"
+            item.completed_at = now()
+            log = CoinLog(user_id=stored.id, agent_id=stored.agent_id, game_id=item.game_id,
+                coin_before=before, coin=reward, coin_after=stored.coin, type=1,
+                remark="TAKU ad reward (publisher revenue)")
+            session.add(log)
+            session.flush()
+            item.coin_log_id = log.id
+            ledger = session.scalar(select(member_policy.RewardLedger).where(
+                member_policy.RewardLedger.ad_session_id == item.id,
+                member_policy.RewardLedger.beneficiary_id == stored.id,
+                member_policy.RewardLedger.kind == "reward"))
+            if ledger:
+                ledger.coin_log_id = log.id
+            game = session.get(Game, item.game_id)
+            pending_tag = [{"label": "客户端发布者收益待核检", "level": "warning",
+                "verification": "publisher_revenue_client_sdk"}]
+            publisher_ecpm = Decimal(payload.publisher_revenue_cny) * Decimal(1000)
+            session.add(AdRecord(user_id=stored.id, user_account=stored.username, parent_id=stored.parent_id,
+                agent_id=stored.agent_id, game_id=item.game_id, game_name=game.name if game else "",
+                receive_name=stored.receive_name or "", ecpm=float(publisher_ecpm), coin=reward,
+                estimate_income=reward, client_ecpm=float(publisher_ecpm),
+                settlement_ecpm=float(publisher_ecpm), callback_price_currency="CNY",
+                ad_network_platform_name="TAKU", ad_type="激励", status="成功-待核检",
+                watched_at=item.completed_at, ad_code=item.ad_unit_id, request_id=item.request_id,
+                attention_count=1, risk_tags_json=json.dumps(pending_tag, ensure_ascii=False)))
+            result = {"ad_session_id": item.id, "status": "rewarded", "rewarded": True,
+                "coin_added": float(reward), "coin_balance": float(stored.coin), "coin_log_id": log.id}
+            if not used_evidence:
+                session.add(AppAdEvent(event_id=evidence_event_id, ad_session_id=item.id,
+                    member_id=stored.id, event_type="publisher_revenue_evidence", result_json=json.dumps({
+                        "publisher_revenue_cny": str(payload.publisher_revenue_cny),
+                        "sdk_request_id": payload.sdk_request_id, "sdk_show_id": payload.sdk_show_id,
+                        "source_id": payload.source_id, "identity_kind": identity_kind}, ensure_ascii=False)))
+            session.add(AppAdEvent(event_id="client_reward:" + item.id, ad_session_id=item.id,
+                member_id=stored.id, event_type="client_reward", result_json=json.dumps({
+                    **result, "client_event_id": payload.event_id, "watched_seconds": payload.watched_seconds,
+                    "publisher_revenue_cny": str(payload.publisher_revenue_cny),
+                    "sdk_request_id": payload.sdk_request_id, "sdk_show_id": payload.sdk_show_id,
+                    "source_id": payload.source_id,
+                    "settlement_source": "client_sdk_publisher_revenue"}, default=str)))
+            _ad_flow_log(session, item, "client_reward_granted", detail={
+                "event_id": payload.event_id, "coin_added": reward, "coin_log_id": log.id,
+                "publisher_revenue_cny": str(payload.publisher_revenue_cny),
+                "verification": "publisher_revenue_pending_taku_reconciliation"})
             session.commit()
-            return {"data": {"ad_session_id": item.id, "status": "pending_verification", "rewarded": False,
-                              "message": "奖励确认中"}, "request_id": item.request_id}
+            return {"data": result, "request_id": item.request_id}
         prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == payload.event_id))
         if prior:
             if prior.ad_session_id != item.id or prior.event_type != "complete":
@@ -3197,7 +3352,11 @@ def taku_reward_callback(
 ) -> Response:
     """Taku S2S reward callback. Taku calls this endpoint with GET parameters."""
     def reply(code: int, message: str = "ok") -> Response:
-        return Response(status_code=code, content=message, headers={"Cache-Control": "no-store"})
+        # Uvicorn supports standard HTTP statuses only; keep the provider error
+        # code in a header without acknowledging rejected rewards as successful.
+        http_status = {601: 403, 602: 400}.get(code, code)
+        return Response(status_code=http_status, content=message,
+            headers={"Cache-Control": "no-store", "X-TAKU-Result-Code": str(code)})
     if is_test == "1":
         # Console probes contain literal placeholders and never write anything.
         return reply(200)
@@ -3266,13 +3425,107 @@ def taku_reward_callback(
         event_key = "taku:" + hashlib.sha256(trans_id.encode()).hexdigest()
         prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == event_key))
         if prior:
-            return reply(200) if prior.ad_session_id == ad_session.id and prior.event_type == "taku_reward" else reply(602, "transaction already used")
+            return reply(200) if prior.ad_session_id == ad_session.id and prior.event_type in ("taku_reward", "taku_reconciliation") else reply(602, "transaction already used")
+        client_reward = session.scalar(select(AppAdEvent).where(
+            AppAdEvent.event_id == "client_reward:" + ad_session.id,
+            AppAdEvent.event_type == "client_reward"))
         try:
             ecpm_proof = verify_ecpm(ad_session.game_id, adsource_id, e_c, e_c_cny, s_id)
         except EcpmConfigurationError:
-            return reply(503, "TAKU eCPM key configuration unavailable")
+            if client_reward:
+                ecpm_proof = None
+                ecpm_error = "ecpm_configuration_unavailable"
+            else:
+                return reply(503, "TAKU eCPM key configuration unavailable")
         except EcpmValidationError:
-            return reply(602, "invalid TAKU eCPM proof")
+            if client_reward:
+                ecpm_proof = None
+                ecpm_error = "ecpm_missing_or_invalid"
+            else:
+                session.rollback()
+                with SessionLocal() as audit:
+                    target = audit.get(AppAdSession, session_id)
+                    placeholders = any('{' in value or '}' in value for value in (e_c, e_c_cny, s_id))
+                    _ad_flow_log(audit, target, "callback_rejected", status="failed",
+                        error_code="ecpm_placeholder" if placeholders else "invalid_ecpm_proof",
+                        detail={"trans_id": trans_id})
+                    audit.commit()
+                return reply(602, "invalid TAKU eCPM proof")
+        else:
+            ecpm_error = ""
+        if client_reward and not ecpm_proof and not ecpm_error:
+            ecpm_error = "ecpm_not_provided"
+        if client_reward:
+            if ecpm_proof:
+                for proof in ecpm_proof["prices"][:1]:
+                    if proof["sdk_request_id"]:
+                        identity = f'{ad_session.game_id}:{adsource_id}:{proof["sdk_request_id"]}'
+                        proof_event = "taku_ecpm:" + hashlib.sha256(identity.encode()).hexdigest()
+                        existing = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == proof_event))
+                        if existing and existing.ad_session_id != ad_session.id:
+                            ecpm_error = "ecpm_proof_already_used"
+                            ecpm_proof = None
+                            break
+                        if not existing:
+                            session.add(AppAdEvent(event_id=proof_event, ad_session_id=ad_session.id,
+                                member_id=item.id, event_type="taku_ecpm_verified",
+                                result_json=json.dumps(ecpm_proof)))
+            callback_price = next((Decimal(p["ecpm"]) for p in (ecpm_proof or {}).get("prices", [])
+                if p.get("currency") == "CNY"), None)
+            callback_currency = "CNY" if callback_price is not None else ("USD" if ecpm_proof else "")
+            client_price = None
+            shown_event = session.scalar(select(AppAdEvent).where(
+                AppAdEvent.event_id == "metadata:" + ad_session.id + ":shown"))
+            if shown_event:
+                try:
+                    shown = json.loads(shown_event.result_json or "{}").get("revenue_diagnostic", {})
+                    client_price = next((Decimal(p["ecpm"]) for p in shown.get("prices", [])
+                        if p.get("currency") == callback_currency), None)
+                except (ValueError, TypeError, KeyError):
+                    client_price = None
+            record = session.scalar(select(AdRecord).where(
+                AdRecord.request_id == ad_session.request_id).order_by(AdRecord.id.desc()))
+            if record:
+                record.trans_id = trans_id
+                record.ecpm = ecpm_value
+                record.callback_ecpm = float(callback_price) if callback_price is not None else None
+                record.client_ecpm = float(client_price) if client_price is not None else record.client_ecpm
+                record.settlement_ecpm = ecpm_value
+                record.callback_price_currency = callback_currency
+                record.attention_count = 1
+                record.risk_tags_json = json.dumps([{
+                    "label": "TAKU次日核检待对账" if ecpm_proof else "TAKU eCPM待核验",
+                    "level": "warning" if ecpm_proof else "danger",
+                    "verification": "encrypted_ecpm_verified" if ecpm_proof else ecpm_error,
+                }], ensure_ascii=False)
+            ledger = session.scalar(select(member_policy.RewardLedger).where(
+                member_policy.RewardLedger.ad_session_id == ad_session.id,
+                member_policy.RewardLedger.beneficiary_id == item.id,
+                member_policy.RewardLedger.kind == "reward"))
+            if ledger:
+                try:
+                    settlement = json.loads(ledger.rule_json or "{}")
+                except (TypeError, ValueError):
+                    settlement = {}
+                settlement["provider_reconciliation"] = {
+                    "trans_id": trans_id, "ecpm_verified": bool(ecpm_proof),
+                    "ecpm_error": ecpm_error, "ecpm_verification": ecpm_proof,
+                    "received_at": now().isoformat(),
+                }
+                ledger.rule_json = json.dumps(settlement, ensure_ascii=False, default=str)
+            result = {"trans_id": trans_id, "callback_ecpm_verified": bool(ecpm_proof),
+                "ecpm_error": ecpm_error, "ad_record_updated": bool(record),
+                "coin_log_id": ad_session.coin_log_id}
+            session.add(AppAdEvent(event_id=event_key, ad_session_id=ad_session.id,
+                member_id=item.id, event_type="taku_reconciliation",
+                result_json=json.dumps(result, ensure_ascii=False)))
+            _ad_flow_log(session, ad_session, "taku_reconciliation_received",
+                status="ok" if ecpm_proof else "pending",
+                error_code=ecpm_error,
+                detail={"trans_id": trans_id, "ecpm_verified": bool(ecpm_proof),
+                    "coin_log_id": ad_session.coin_log_id}, trans_id=trans_id)
+            session.commit()
+            return reply(200)
         if ecpm_proof:
             for proof in ecpm_proof["prices"][:1]:
                 # Fixed-price sources lack a provider request id and may reuse prices.
@@ -3290,7 +3543,7 @@ def taku_reward_callback(
         if ad_session.status == "rewarded" or ad_session.coin_log_id is not None:
             return reply(602, "session already rewarded by another transaction")
         # Provider delivery can arrive after the short client session timeout.
-        if ad_session.status not in ("issued", "impressed", "expired") or ad_session.created_at.replace(tzinfo=UTC) < now() - timedelta(hours=24):
+        if ad_session.status not in ("issued", "impressed", "expired") or ad_session.created_at.replace(tzinfo=UTC) < now() - timedelta(days=7):
             return reply(602, "session is closed or too old")
         try:
             reward = member_policy.settle(session, item, ad_session, adsource_id, ecpm_proof, reward_from_ecpm)
@@ -4086,6 +4339,7 @@ def list_ads(
                        'request_id': AdRecord.request_id}[sort]
         payload = list_payload(session, AdRecord, AD_SEARCH_FIELDS, serialize_ad, q, limit, offset, conditions,
                                [getattr(sort_column, order)(), AdRecord.id.desc()])
+        member_insights.enrich_ad_list(session, payload['items'])
         games = dict(session.execute(select(Game.id, Game.name).where(Game.id.in_({row['game_id'] for row in payload['items']}))).all())
         agents = dict(session.execute(select(Agent.id, Agent.name).where(Agent.id.in_({row['agent_id'] for row in payload['items']}))).all())
         for row in payload['items']:
@@ -4519,6 +4773,8 @@ def list_withdrawals(
             [getattr(getattr(Withdrawal, sort), order)(), Withdrawal.id.desc()],
         )
         enrich_review_members(session, payload)
+        enrich_withdrawal_ad_checks(session, payload)
+        taku_reports.withdrawal_checks(session, payload['items'], period=True)
         base = select(func.coalesce(func.sum(Withdrawal.exchange_value), 0.0)).select_from(Withdrawal)
         # Historical imported values use the reference UI's amount scale.
         # New Alipay orders are counted separately in integer cents.
@@ -4926,6 +5182,16 @@ def list_risk_history(q: str | None = None, risk_level: str | None = None, actio
             member = users.get(row["user_id"])
             row.update(username=member.username if member else "", parent_id=member.parent_id if member else None,
                        game_name=games.get(row["game_id"], ""), agent_name=agents.get(row["agent_id"], ""))
+        taku_reports.withdrawal_checks(session, rows)
+        labels = {}
+        for row in rows:
+            key = (row['game_id'], row['user_id'])
+            if key not in labels:
+                labels[key] = member_insights.label_summary(session, row['user_id'], member_policy.policy(session, row['game_id']))['label'] if row['user_id'] in users and row['game_id'] in games else 'unknown'
+            check = row['reconciliation']
+            row.update(reset_user=check['reset_user'], reconciliation_rate=check['difference_rate'],
+                       reconciliation_difference=check['difference'], reconciliation_currency=check['currency'],
+                       reconciliation_day=check['day'], ad_category=labels[key])
         return payload
 
 
@@ -5768,6 +6034,7 @@ def get_member(member_id: int) -> dict[str, Any]:
 )
 def create_member(payload: MemberCreate) -> dict[str, Any]:
     changes = payload.model_dump()
+    validate_whitelist_range(payload.whitelist_min_coin, payload.whitelist_max_coin)
     require_nonblank(changes, "username", "会员账号")
     if any(changes.get(key, 0) != 0 for key in
            ("coin", "freeze_coin", "coin_user", "coin_user_month", "coin_user_day", "parent_id")):
@@ -5888,6 +6155,13 @@ def update_member(
         item = session.scalar(select(Member).where(Member.id == member_id).with_for_update())
         if item is None: raise HTTPException(404, "会员不存在")
         protected = {"coin", "freeze_coin", "coin_user", "coin_user_month", "coin_user_day", "parent_id", "game_id", "agent_id"}
+        validate_whitelist_range(changes.get('whitelist_min_coin', item.whitelist_min_coin),
+                                 changes.get('whitelist_max_coin', item.whitelist_max_coin))
+        if {'is_white', 'whitelist_min_coin', 'whitelist_max_coin'} & changes.keys():
+            session.add(AdminOperation(admin_id=admin.id, title='修改会员白名单及金币区间 '+json.dumps({
+                key: {'before': str(getattr(item, key)), 'after': str(changes[key])}
+                for key in ('is_white','whitelist_min_coin','whitelist_max_coin') if key in changes}, ensure_ascii=False),
+                path=f'/api/v1/members/{member_id}', ip=''))
         for field in protected & changes.keys():
             current = getattr(item, field)
             submitted = Decimal(str(changes[field])) if isinstance(current, Decimal) and changes[field] is not None else changes[field]

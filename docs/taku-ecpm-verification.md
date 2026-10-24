@@ -17,8 +17,15 @@ without an explicit game callback configuration. Existing game secrets and
 explicit disabled/cleared settings retain priority. A configured game keyring file
 takes priority over global database eCPM keys. Apply migration `e934_taku_global_keys`
 before starting the new code. Protect database backups as they contain credentials.
-The current `serverdata.md` has no TAKU Publisher/eCPM keys; Aliyun AccessKeys and
-the Android risk AppKey are not substitutes.
+As of 2026-10-13, the supplied Publisher Key and both eCPM RSA private keys,
+with their supplied TAKU Key IDs, are saved in the deployed global settings.
+Authenticated API readback confirmed all three configured flags and both IDs.
+Aliyun AccessKeys and the Android risk AppKey are not substitutes.
+
+The failed callback examined on 2026-10-13 contains literal `{s_id}`, `{e_c}`,
+and `{e_c_cny}` placeholders, not encrypted prices. It cannot establish whether
+the supplied private keys match. Check TAKU encryption and callback settings,
+then verify a genuine callback with resolved fields after entering the Key IDs.
 
 The existing GET `/api/callbacks/taku/reward` endpoint accepts `e_c` (USD),
 `e_c_cny` (CNY), and `s_id`. The Android build uses TAKU 6.6.51, which meets

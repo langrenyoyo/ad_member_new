@@ -195,11 +195,16 @@ def results(game_id: int, day: date, member_id: int | None = None, admin=Depends
                 v['missing_estimate'] |= r['missing_estimate']
                 v['devices'].update(r['devices'])
         local = local_estimates(s, game_id, day)
+        local_placements = {}
+        for (uid, placement, _), entry in local.items():
+            if entry['count']:
+                local_placements.setdefault(uid, set()).add(placement)
         for key, r in combined.items():
             r['taku_estimate'] = r['estimate']
             entry = local.get(key)
             r['backend_estimate'] = str(entry['revenue']) if entry else None
             r['backend_impressions'] = entry['count'] if entry else 0
+            r['backend_complete'] = bool(entry and not entry['missing'] and entry['count'] == r['impressions'])
             if rule.basis == 'backend_estimate':
                 r['estimate'] = r['backend_estimate'] or '0'
                 # Missing SDK prices or mismatched scope must not become a deduction.
@@ -209,8 +214,98 @@ def results(game_id: int, day: date, member_id: int | None = None, admin=Depends
             items = [r for r in items if r['member_id'] == member_id]
         return {'status': batch.stage, 'batch_id': batch.id, 'day': batch.day, 'rule': rule.model_dump(mode='json'),
             'basis': rule.basis, 'items': items,
+            'local_placements': {uid: sorted(values) for uid, values in local_placements.items()},
             'flagged_members': sorted({r['member_id'] for r in items if r['flagged']}),
             'updated_at': m.stringify(batch.created_at)}
+
+
+def withdrawal_checks(s, items, period=False, report_cache=None):
+    if period:
+        return withdrawal_period_checks(s, items)
+    cache = report_cache if report_cache is not None else {}
+    for item in items:
+        created = datetime.fromisoformat(str(item['created_at']).replace('Z', '+00:00'))
+        if created.tzinfo is None:
+            created = created.replace(tzinfo=timezone.utc)
+        day = (created.astimezone(CN) - timedelta(days=1)).date()
+        key = (item['game_id'], day)
+        if key not in cache:
+            cache[key] = results(key[0], day) if s.get(m.Game, key[0]) else {'status': 'waiting_report', 'items': []}
+        report = cache[key]
+        rows = [r for r in report['items'] if r['member_id'] == item['user_id']]
+        currencies = {r['currency'] for r in rows}
+        expected = set(report.get('local_placements', {}).get(str(item['user_id']), []))
+        missing_placements = sorted(expected - {r.get('placement_id') for r in rows})
+        no_activity = (report['status'] in ('preliminary', 'rechecked') and
+            'local_placements' in report and not rows and not expected)
+        valid = bool(rows) and len(currencies) == 1 and all(r.get('backend_complete', False) and r['backend_estimate'] is not None and
+            r['backend_impressions'] == r['impressions'] and r['status'] in
+            ('normal','preliminary_alert','suspected_reduction') for r in rows) and not missing_placements
+        devices = s.scalars(select(m.device_risk.RiskDevice).join(m.device_risk.DeviceCheck,
+            m.device_risk.DeviceCheck.device_id == m.device_risk.RiskDevice.id).where(
+            m.device_risk.DeviceCheck.member_id == item['user_id'],
+            m.device_risk.RiskDevice.game_id == item['game_id'])).all()
+        reset = any(m.device_risk.risky(d) for d in devices)
+        local = sum((Decimal(r['backend_estimate']) for r in rows), Decimal(0)) if valid else None
+        revenue = sum((Decimal(r['revenue']) for r in rows), Decimal(0)) if valid else None
+        diff = local - revenue if valid else None
+        rate = diff / local * 100 if valid and local > 0 else None
+        threshold = Decimal(str(report.get('rule', {}).get('threshold_percent', 20)))
+        flagged = rate is not None and rate > threshold
+        item['reconciliation'] = {'day': str(day), 'stage': report['status'],
+            'no_activity': no_activity, 'missing_placements': missing_placements,
+            'currency': next(iter(currencies)) if len(currencies) == 1 else None,
+            'taku_data': str(revenue) if valid else None, 'backend_data': str(local) if valid else None,
+            'difference': str(diff) if valid else None, 'difference_rate': str(rate) if rate is not None else None,
+            'flagged': flagged, 'reset_user': reset,
+            'classification': 'no_activity' if no_activity else 'review' if flagged else 'reset' if reset else 'normal' if valid else 'pending'}
+
+
+def withdrawal_period_checks(s, items):
+    cache = {}
+    def cn(value):
+        value = datetime.fromisoformat(str(value).replace('Z', '+00:00'))
+        return (value if value.tzinfo else value.replace(tzinfo=timezone.utc)).astimezone(CN)
+
+    for item in items:
+        end = cn(item['created_at']).date() - timedelta(days=1)
+        previous = s.scalar(select(m.Withdrawal).join(m.payouts.Payout,
+            m.payouts.Payout.withdrawal_id == m.Withdrawal.id).where(
+            m.Withdrawal.user_id == item['user_id'], m.Withdrawal.game_id == item['game_id'],
+            m.payouts.Payout.state == 'succeeded',
+            m.Withdrawal.transferred_at < cn(item['created_at']).astimezone(timezone.utc),
+            m.Withdrawal.id != item['id']).order_by(m.Withdrawal.transferred_at.desc()).limit(1))
+        member = s.get(m.Member, item['user_id'])
+        anchor = previous.transferred_at if previous else member.created_at if member else item['created_at']
+        boundary = cn(anchor)
+        start = boundary.date() + (timedelta(days=1) if boundary.time().replace(tzinfo=None) != datetime.min.time() else timedelta())
+        days = []
+        day = start
+        while day <= end:
+            days.append({**item, 'created_at': datetime.combine(day+timedelta(days=1), datetime.min.time(), CN).isoformat()})
+            day += timedelta(days=1)
+        withdrawal_checks(s, days, report_cache=cache)
+        checks = [d['reconciliation'] for d in days]
+        active = [d for d in checks if not d.get('no_activity')]
+        missing = [d['day'] for d in active if d['backend_data'] is None]
+        currencies = {d['currency'] for d in active}
+        valid = bool(checks) and not missing and len(currencies) <= 1
+        local = sum((Decimal(d['backend_data']) for d in active), Decimal(0)) if valid else None
+        revenue = sum((Decimal(d['taku_data']) for d in active), Decimal(0)) if valid else None
+        difference = local-revenue if valid else None
+        rate = difference/local*100 if valid and local > 0 else None
+        config = s.get(ReportRule, item['game_id'])
+        rule = RuleInput.model_validate_json(config.config_json) if config else RuleInput()
+        flagged = rate is not None and rate > rule.threshold_percent
+        reset = any(d['reset_user'] for d in checks)
+        item['reconciliation'] = dict(day=f'{start} ~ {end}' if days else '暂无完整自然日', start_day=str(start), end_day=str(end),
+            scope='complete_days_since_last_success', missing_days=missing,
+            no_activity_days=[d['day'] for d in checks if d.get('no_activity')],
+            stage='waiting_report' if not valid else 'rechecked' if all(d['stage']=='rechecked' for d in checks) else 'preliminary',
+            currency=next(iter(currencies)) if len(currencies)==1 else None,
+            backend_data=str(local) if valid else None, taku_data=str(revenue) if valid else None,
+            difference=str(difference) if valid else None, difference_rate=str(rate) if rate is not None else None,
+            flagged=flagged, reset_user=reset, classification='pending' if not valid else 'review' if flagged else 'reset' if reset else 'normal')
 
 
 def local_estimates(s, game_id, day):

@@ -37,7 +37,8 @@ function renderAdsPagination(total,count){
  panel.querySelector('[data-ads-jump]').onclick=jump;
  panel.querySelector('input').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();jump();}};
 }
-const adCols=[['id','Id'],['parent_id','上级Id'],['parent_payment_name','上级支付宝姓名'],['user_id','会员ID'],['user_account','用户账号'],['receive_name','支付宝姓名'],['game_name','游戏名称'],['agent_name','代理商名称'],['ecpm','ECPM'],['callback_ecpm','回调价'],['client_ecpm','客户端价'],['settlement_ecpm','结算价'],['coin','金币'],['ad_network_platform_name','广告平台'],['risk_tags','核检标签'],['is_lottery','抽奖'],['is_rw','任务'],['reward_type','奖励类型'],['ad_type','广告类型'],['sub_ad_type','副广类型'],['status','状态'],['watched_at','观看时间'],['ad_code','广告代码位'],['request_id','广告request_id'],['trans_id','交易trans_id']];
+const adCols=[['id','Id'],['parent_id','上级Id'],['parent_payment_name','上级支付宝姓名'],['user_id','会员ID'],['user_account','用户账号'],['receive_name','支付宝姓名'],['game_name','游戏名称'],['agent_name','代理商名称'],['ecpm','ECPM'],['coin','金币'],['ad_network_platform_name','广告平台'],['is_lottery','抽奖'],['is_rw','任务'],['reward_type','奖励类型'],['ad_type','广告类型'],['sub_ad_type','副广类型'],['status','状态'],['watched_at','观看时间'],['ad_code','广告代码位'],['request_id','广告request_id'],['trans_id','交易trans_id']];
+adCols.push(['ad_category','广告品类'],['ad_title','广告名称'],['ad_behaviors','看广行为']);
 if(!adsState.visible.size)adCols.forEach(([key])=>{if(key!=='agent_name')adsState.visible.add(key)});
 function attachAdsTools(){
  const tools=document.querySelector('.ads-tools'),filters=document.querySelector('#adsFilters'); if(!tools||!filters)return;
@@ -97,6 +98,9 @@ function attachAdsCellSearch(){
  });
 }
 function adsCell(row,key){
+ if(key==='ad_category')return esc(({game:'游戏',social:'交友',ecommerce:'电商购物',finance:'金融理财'})[row[key]]||'未知');
+ if(key==='ad_title')return esc(row[key]||'未知');
+ if(key==='ad_behaviors')return esc((row[key]||[]).map(v=>({shown:'展示',clicked:'点击',downloaded:'下载',installed:'安装',opened:'打开'})[v]).join('、')||'未知');
  if(key==='callback_ecpm'||key==='client_ecpm'||key==='settlement_ecpm'){const v=row[key];return v==null?'—':`<span class="ad-price">${esc(Number(v).toFixed(4))}</span>`;}
  if(key==='risk_tags'){const tags=Array.isArray(row.risk_tags)?row.risk_tags:[];return tags.length?tags.map(t=>`<span class="label label-${t.level==='danger'?'danger':t.level==='warning'?'warning':'info'}">${esc(t.label||t)}</span>`).join(' '):'<span class="label label-success">正常</span>';}
  if(['parent_id','user_id','user_account','game_name','agent_name'].includes(key)&&row[key]!=null)return `<a href="#" class="ads-cell-search" data-ads-search="${key}" data-value="${esc(row[key])}">${esc(row[key])}</a>`;

@@ -98,6 +98,23 @@ async function renderReviewPage(kind){
  const lastPage=all?1:Math.max(1,Math.ceil(d.total/s.pageSize));
  if(s.page>lastPage){s.page=lastPage;return renderReviewPage(kind);}
  function cell(row,key){
+  if(kind==='withdrawals'&&key.startsWith('reconcile_')){
+   const data=row.reconciliation||{},field=key.slice(10);
+   if(field==='day')return esc(data.day||'待核验');
+   if(field==='classification')return esc(({review:'作弊审查用户',reset:'提现双清用户',normal:'正常用户',pending:'待核验'})[data.classification]||'待核验');
+   const amount=data[field],text=amount==null?'待核验':Number(amount).toFixed(field==='difference_rate'?2:6)+(field==='difference_rate'?'%':' '+(data.currency||''));
+   return `<span class="${data.flagged&&['difference','difference_rate'].includes(field)?'review-badge review-badge-danger':''}" title="${esc((data.day||'')+' · '+(data.stage||'waiting_report'))}">${esc(text)}</span>`;
+  }
+  if(kind==='withdrawals'&&['callback_ecpm','client_ecpm','settlement_ecpm'].includes(key)){
+   const source=row.ad_check_source;
+   const note=source?`申请前最后一条广告 #${source.id} · ${profileLogTime(source.watched_at)} · ECPM${source.currency?' · 回调币种 '+source.currency:''}`:'暂无广告数据';
+   return `<span title="${esc(note)}">${row[key]==null?'暂无数据':esc(Number(row[key]).toFixed(4))}</span>`;
+  }
+  if(kind==='withdrawals'&&key==='risk_tags'){
+   if(!row.ad_check_available)return '暂无数据';
+   const tags=Array.isArray(row.risk_tags)?row.risk_tags:[];
+   return tags.length?tags.map(tag=>`<span class="review-badge review-badge-${['danger','warning'].includes(tag?.level)?tag.level:'info'}" title="提现申请前该会员在本游戏的广告核检标签">${esc(tag?.label||String(tag))}</span>`).join(' '):'<span title="已有广告记录未标记异常，不代表平台最终核减结果">未标记异常</span>';
+  }
   if(kind==='subsidies'&&key==='review_actions')return subsidyRowActions(row,d.permissions);
   if(kind==='withdrawals'&&row.payout&&key==='plan_status')return esc(({pending_review:'待审核 / 待打款',queued:'排队中',processing:'结果待确认',succeeded:'支付宝已确认到账',failed:'转账失败，已退金币',rejected:'已驳回，已退金币'})[row.payout.state]||row.payout.state);
   if(kind==='withdrawals'&&row.payout&&key==='exchange_value')return (row.payout.amount_cents/100).toFixed(2)+'元';
@@ -128,6 +145,8 @@ async function renderReviewPage(kind){
   cols.push(['updated_at','更新时间',false]);
  }
  if(kind==='withdrawals'){
+  cols.splice(cols.findIndex(([key])=>key==='exchange_value')+1,0,['callback_ecpm','回调价'],['client_ecpm','客户端价'],['settlement_ecpm','结算价'],['risk_tags','核检标签']);
+  cols.splice(cols.findIndex(([key])=>key==='risk_tags')+1,0,['reconcile_day','核检日期范围'],['reconcile_taku_data','Taku数据'],['reconcile_backend_data','后台数据'],['reconcile_difference','差异额'],['reconcile_difference_rate','差异率'],['reconcile_classification','核检分类']);
   cols.splice(cols.findIndex(([key])=>key==='parent_name'),0,['parent_id','上级Id',false],['parent_username','上级账号',false]);
   cols.splice(cols.findIndex(([key])=>key==='good_name'),0,['agent_name','代理商名称',false],['name','昵称',false]);
   cols.splice(cols.findIndex(([key])=>key==='exchange_type'),0,['receive_address','收货地址',false],['delivery_name','快递名称',false],['delivery_no','快递单号',false],['remark','备注',false]);

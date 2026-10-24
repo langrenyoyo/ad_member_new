@@ -16,6 +16,71 @@ from app import member_policy as p, sms_auth as sms
 
 
 class MemberPolicyTests(unittest.TestCase):
+    def test_all_upstream_agents_paid_with_snapshot(self):
+        self.policy(commission_enabled=True,commission_rates=[0,0,0,'0.1'])
+        with self.factory() as s:
+            user=s.get(m.Member,1);p.enrollment(s,user).parent_id=2
+            s.get(p.Enrollment,2).level=3
+            agent=m.Member(id=3,username='upper',game_id=1,agent_id=1,status=1,coin=0)
+            s.add(agent);s.flush();p.enrollment(s,agent).level=3
+            s.get(p.Enrollment,2).parent_id=3;s.flush()
+            captured=p.settlement_snapshot(s,user,1)
+            self.assertEqual(captured['recipients'][3],[2,3])
+            s.add(m.AppAdEvent(event_id='policy:multi-agent',ad_session_id='multi-agent',member_id=1,
+                event_type='policy_snapshot',result_json=json.dumps(captured)));s.flush()
+            s.get(p.Enrollment,2).parent_id=0
+            p.settle(s,user,SimpleNamespace(id='multi-agent',game_id=1),'',None,100)
+            s.flush()
+            self.assertEqual(s.get(m.Member,2).coin,10)
+            self.assertEqual(s.get(m.Member,3).coin,10)
+
+    def test_registration_parent_identity_and_atomic_binding(self):
+        with self.factory() as s:
+            user=s.get(m.Member,1);parent=s.get(p.Enrollment,2)
+            for level in (0,2):
+                parent.level=level;s.flush()
+                with self.assertRaises(m.HTTPException):p.bind_registration(s,user,parent.invite_code)
+                self.assertFalse(user.parent_id)
+            for level in (1,3):
+                parent.level=level;s.flush();p.bind_registration(s,user,parent.invite_code.lower())
+                self.assertEqual(user.parent_id,2)
+                self.assertEqual(s.get(p.Enrollment,1).parent_id,2)
+
+    def test_agent_receives_indirect_descendants_and_white_retry(self):
+        with self.factory() as s:
+            user=s.get(m.Member,1);p.enrollment(s,user).parent_id=2
+            agent=m.Member(id=3,username='upstream-agent',game_id=1,agent_id=1,status=1)
+            s.add(agent);s.flush();p.enrollment(s,agent).level=3
+            s.get(p.Enrollment,2).parent_id=3;s.flush()
+            self.assertEqual(p.commission_recipients(s,user,p.Policy()),{1:2,3:3})
+            s.add(m.device_risk.DeviceRule(game_id=1,enabled=1));user.is_white=1;s.flush()
+            m.device_risk.authorize_retry(s,SimpleNamespace(game_id=1,risk_check_id=None),SimpleNamespace(id='white',member_id=1))
+
+    def test_whitelist_range_precedes_disabled_policy_and_cap(self):
+        self.policy(reward_enabled=False,commission_enabled=False,max_reward=1)
+        with self.factory() as s:
+            user=s.get(m.Member,1);user.is_white=1
+            user.whitelist_min_coin=Decimal('5');user.whitelist_max_coin=Decimal('5')
+            captured=p.settlement_snapshot(s,user,1)
+            s.add(m.AppAdEvent(event_id='policy:white-priority',ad_session_id='white-priority',member_id=1,
+                event_type='policy_snapshot',result_json=json.dumps(captured)));s.flush()
+            user.whitelist_min_coin=99;user.whitelist_max_coin=100
+            amount=p.settle(s,user,SimpleNamespace(id='white-priority',game_id=1),'',None,1)
+            self.assertEqual(amount,5)
+            s.flush()
+            ledger=s.scalar(select(p.RewardLedger).where(p.RewardLedger.ad_session_id=='white-priority'))
+            self.assertEqual(ledger.amount,5)
+
+    def test_whitelist_partial_update_validates_merged_range(self):
+        headers=self.admin_headers();path='/api/v1/members/1'
+        self.assertEqual(self.client.patch(path,headers=headers,json={'whitelist_min_coin':'5','whitelist_max_coin':'10'}).status_code,200)
+        for body in ({'whitelist_min_coin':'11'},{'whitelist_max_coin':None},{'whitelist_min_coin':'1.0000001'}):
+            self.assertEqual(self.client.patch(path,headers=headers,json=body).status_code,422)
+        with self.factory() as s:
+            self.assertEqual(s.get(m.Member,1).whitelist_min_coin,5)
+            self.assertEqual(s.get(m.Member,1).whitelist_max_coin,10)
+        self.assertEqual(self.client.patch(path,headers=headers,json={'whitelist_min_coin':None,'whitelist_max_coin':None}).status_code,200)
+
     def test_announcement_change_does_not_revalidate_unchanged_settlement(self):
         import os
         self.policy(reward_enabled=True,reward_basis='verified_cny_ecpm')
@@ -270,6 +335,20 @@ class MemberPolicyTests(unittest.TestCase):
             self.assertEqual(len(s.scalars(select(p.RewardLedger)).all()),2)
         with self.assertRaises(ValueError):p.Policy(commission_rates=['.5','.5','.5','0'])
 
+    def test_publisher_revenue_is_converted_as_single_impression_revenue(self):
+        self.policy(reward_enabled=True, coins_per_yuan='100',
+            source_networks={'123':'kuaishou'},
+            network_rates={'kuaishou':'.5','gdt':'1','csj':'1','baidu':'1','other':'1'})
+        with self.factory() as s:
+            user=s.get(m.Member,1)
+            reward=p.settle(s,user,SimpleNamespace(id='publisher',game_id=1),'123',None,999,
+                publisher_revenue_cny=Decimal('0.2'))
+            self.assertEqual(reward,Decimal('10.000000'))
+            ledger=s.scalar(select(p.RewardLedger).where(p.RewardLedger.kind=='reward'))
+            detail=json.loads(ledger.rule_json)
+            self.assertEqual(detail['reward_mode'],'publisher_revenue')
+            self.assertEqual(detail['derived_ecpm_cny'],'200.0')
+
     def test_commission_independent_of_reward_and_summary(self):
         self.policy(commission_enabled=True, commission_rates=['0','.1','0','0'])
         with self.factory() as s:
@@ -304,6 +383,22 @@ class MemberPolicyTests(unittest.TestCase):
             self.assertEqual(p.settle(s,user,SimpleNamespace(id='snapshot',game_id=1),'1',None,0),20)
             s.commit()
             self.assertEqual(s.get(m.Member,2).coin,2)
+
+    def test_whitelist_member_coin_range_is_randomized_once_in_snapshot(self):
+        self.policy(reward_enabled=True, reward_basis='fixed_ecpm', fixed_ecpm='100', coins_per_yuan='100',
+            whitelist_multiplier='2')
+        with self.factory() as s:
+            user=s.get(m.Member,1); user.is_white=1
+            user.whitelist_min_coin=10; user.whitelist_max_coin=20
+            with patch('app.member_policy.secrets.randbelow', return_value=3):
+                captured=p.settlement_snapshot(s,user,1)
+            self.assertEqual(captured['whitelist_range_reward'], '10.000003')
+            s.add(m.AppAdEvent(event_id='policy:range',ad_session_id='range',member_id=1,
+                event_type='policy_snapshot',result_json=json.dumps(captured)))
+            self.assertEqual(p.settle(s,user,SimpleNamespace(id='range',game_id=1),'1',None,0), Decimal('10.000003'))
+            s.commit()
+            ledger=s.scalar(select(p.RewardLedger).where(p.RewardLedger.ad_session_id=='range'))
+            self.assertEqual(json.loads(ledger.rule_json)['reward_mode'], 'whitelist_range')
 
     def test_agent_demotion_blocks_snapshotted_commission(self):
         self.policy(commission_enabled=True,agent_member_id=2,commission_rates=['0','0','0','.1'])
@@ -390,6 +485,10 @@ class MemberPolicyTests(unittest.TestCase):
             challenge=result.json()['data']['challenge_id']
             self.assertEqual(self.client.post('/api/app/v1/auth/sms/send',json={'phone':'13800000000','game_id':1}).status_code,429)
         body={'phone':'13800000000','game_id':1,'device_id':'device','challenge_id':challenge,'code':captured[0],'new_password':'Password123'}
+        self.assertEqual(self.client.post('/api/app/v1/auth/sms/login',json=body).status_code,422)
+        with self.factory() as s:
+            self.assertIsNone(s.scalar(select(m.Member).where(m.Member.username=='13800000000')))
+            body['invite_code']=s.get(p.Enrollment,2).invite_code
         result=self.client.post('/api/app/v1/auth/sms/login',json=body)
         self.assertEqual(result.status_code,200,result.text)
         self.assertEqual(self.client.post('/api/app/v1/auth/sms/login',json=body).status_code,401)

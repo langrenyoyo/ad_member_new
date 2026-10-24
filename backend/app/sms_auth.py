@@ -59,6 +59,7 @@ class SendCode(BaseModel):
 
 
 class SmsLogin(m.AppClient):
+    invite_code: str = Field(default='', max_length=128)
     phone: str = Field(pattern=r'^1[3-9]\d{9}$')
     game_id: int = Field(ge=1)
     challenge_id: str = Field(min_length=1, max_length=64)
@@ -146,6 +147,7 @@ def sms_login(body: SmsLogin, request: Request):
                 password_hash=hashed, password_salt=salt, status=1)
             session.add(member)
             session.flush()
+            m.member_policy.bind_registration(session, member, body.invite_code)
         if member.game_id != body.game_id or member.status != 1:
             raise HTTPException(403, '账号不可用于当前应用')
         if body.new_password:

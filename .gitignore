@@ -34,8 +34,18 @@ yarn-error.log*
 # python
 __pycache__/
 *.py[cod]
+.venv/
 backend/app.db
 *.db
 serverdata.md
 /secrets/
 backend/uploads/
+
+# local builds, device evidence, and nested Android repository
+/apk/
+/artifacts/
+/phone-*.png
+/Taku_*.xlsx
+/aaa.py
+*.bak
+*.bak-*
