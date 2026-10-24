@@ -108,7 +108,7 @@ def ad_metadata(ad_session_id: str, body: AdMetadata, member=Depends(m.require_a
         if s.scalar(select(m.AppAdEvent.id).where(m.AppAdEvent.event_id==key)):
             return {'data':{'recorded':False}}
         if any(len(k)>100 for k in body.extension_keys):raise HTTPException(422,'扩展字段名称过长')
-        data=body.model_dump(exclude={'session_token','e_c','e_c_cny'})
+        data=body.model_dump(mode='json', exclude={'session_token','e_c','e_c_cny'})
         data['trust']='client_reported'
         # Diagnostic only: encryption is not a signature or proof of a unique display.
         from .taku_ecpm import verify_ecpm, EcpmConfigurationError, EcpmValidationError

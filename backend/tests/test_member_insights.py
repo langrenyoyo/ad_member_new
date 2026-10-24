@@ -77,7 +77,9 @@ class InsightTests(unittest.TestCase):
                 session_token_hash=m._token_hash('secret'),expires_at=m.now()+timedelta(minutes=5)))
             s.commit()
         path='/api/app/v1/ads/meta-ad/metadata'
-        body={'session_token':'secret','event':'shown','network':'test','app_name':'sample','extension_keys':['app_name']}
+        body={'session_token':'secret','event':'shown','network':'test','app_name':'sample',
+              'extension_keys':['app_name'],'publisher_revenue_cny':'0.000010',
+              'sdk_request_id':'request-1','sdk_show_id':'show-1'}
         self.assertNotEqual(self.client.post(path,headers=self.other,json=body).status_code,200)
         self.assertNotEqual(self.client.post(path,headers=self.auth,json={**body,'session_token':'wrong'}).status_code,200)
         self.assertTrue(self.client.post(path,headers=self.auth,json=body).json()['data']['recorded'])
@@ -87,6 +89,7 @@ class InsightTests(unittest.TestCase):
             self.assertEqual(s.get(m.AppAdSession,'meta-ad').status,'issued')
         data=self.client.get('/api/v1/members/1/ad-settlements',headers=self.admin_headers()).json()
         self.assertEqual(data['items'][0]['client_metadata'][0]['app_name'],'sample')
+        self.assertEqual(data['items'][0]['client_metadata'][0]['publisher_revenue_cny'],'0.000010')
         self.assertNotIn('session_token',data['items'][0]['client_metadata'][0])
 
     def test_encrypted_metadata_records_revenue_without_credit(self):
