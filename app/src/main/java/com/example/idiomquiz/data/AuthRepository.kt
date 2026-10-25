@@ -270,14 +270,16 @@ class AuthRepository(context: Context) {
                     val result = try {
                         authenticatedInSession(epoch) { token -> api.adComplete(token, deviceId(),
                             record.getString("id"), record.getString("token"), record.getString("event_id"),
-                            record.optInt("seconds", 0), record.optString("publisher_revenue_cny"),
+                            record.optInt("seconds", 0), record.optString("e_c"),
+                            record.optString("e_c_cny"), record.optString("s_id"),
                             record.optString("sdk_request_id"), record.optString("sdk_show_id"),
                             record.optString("source_id")) }
                     } catch (error: IOException) {
                         if (error is UserApiException) throw error
                         authenticatedInSession(epoch) { token -> api.adComplete(token, deviceId(),
                             record.getString("id"), record.getString("token"), record.getString("event_id"),
-                            record.optInt("seconds", 0), record.optString("publisher_revenue_cny"),
+                            record.optInt("seconds", 0), record.optString("e_c"),
+                            record.optString("e_c_cny"), record.optString("s_id"),
                             record.optString("sdk_request_id"), record.optString("sdk_show_id"),
                             record.optString("source_id")) }
                     }
@@ -319,7 +321,7 @@ class AuthRepository(context: Context) {
         val record = JSONObject().put("id", session.id).put("token", session.sessionToken)
             .put("seconds", watchedSeconds).put("event_id", "complete-${session.id}")
             .put("member_id", userId).put("created", System.currentTimeMillis())
-        listOf("publisher_revenue_cny", "sdk_request_id", "sdk_show_id", "source_id").forEach { key ->
+        listOf("e_c", "e_c_cny", "s_id", "sdk_request_id", "sdk_show_id", "source_id").forEach { key ->
             if (rewardEvidence.has(key) && !rewardEvidence.isNull(key)) record.put(key, rewardEvidence.get(key))
         }
         sessions.withCurrent(epoch) {

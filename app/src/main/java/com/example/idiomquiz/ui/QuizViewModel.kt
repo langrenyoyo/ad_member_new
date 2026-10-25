@@ -488,9 +488,8 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                             ((android.os.SystemClock.elapsedRealtime() - shownAt) / 1000).coerceIn(0, 86400).toInt()
                         viewModelScope.launch {
                             try {
-                                // The server uses the one-shot session reward as the
-                                // immediate user-facing result.  The TAKU callback
-                                // remains a later reconciliation signal.
+                                // The server decrypts the SDK CNY eCPM for immediate
+                                // settlement; the TAKU callback reconciles it later.
                                 val completion = sessionCatching {
                                     authRepository.adComplete(session, seconds, rewardEvidence)
                                 }
@@ -515,8 +514,10 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                                     }
                                 }.onFailure { error ->
                                     if (error is CancellationException) throw error
-                                    val unavailable = error is UserApiException && error.errorCode?.startsWith(
-                                        "PUBLISHER_REVENUE_") == true
+                                    val unavailable = error is UserApiException &&
+                                        (error.errorCode?.startsWith("ECPM_") == true ||
+                                            error.errorCode == "INVALID_ECPM_PROOF" ||
+                                            error.errorCode == "CNY_ECPM_REQUIRED")
                                     _uiState.update { it.copy(message = if (unavailable)
                                         "广告平台未返回有效收益，本次未发放奖励"
                                     else "奖励正在补发，网络恢复后会自动到账") }

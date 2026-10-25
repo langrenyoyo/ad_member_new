@@ -297,7 +297,8 @@ internal class UserAppApi(context: android.content.Context) {
         rewardEvidence: JSONObject
     ): JSONObject = adComplete(accessToken, deviceId, session.id, session.sessionToken,
         "complete-${session.id}", watchedSeconds,
-        rewardEvidence.opt("publisher_revenue_cny")?.toString().orEmpty(),
+        rewardEvidence.optString("e_c"), rewardEvidence.optString("e_c_cny"),
+        rewardEvidence.optString("s_id"),
         rewardEvidence.optString("sdk_request_id"), rewardEvidence.optString("sdk_show_id"),
         rewardEvidence.optString("source_id"))
 
@@ -308,7 +309,9 @@ internal class UserAppApi(context: android.content.Context) {
         sessionToken: String,
         eventId: String,
         watchedSeconds: Int,
-        publisherRevenueCny: String,
+        encryptedEcpm: String,
+        encryptedCnyEcpm: String,
+        secretId: String,
         sdkRequestId: String,
         sdkShowId: String,
         sourceId: String
@@ -316,7 +319,9 @@ internal class UserAppApi(context: android.content.Context) {
         val requestBody = JSONObject().put("event_id", eventId).put("session_token", sessionToken)
             .put("watched_seconds", watchedSeconds)
             .put("occurred_at", java.time.Instant.now().toString())
-        if (publisherRevenueCny.isNotBlank()) requestBody.put("publisher_revenue_cny", publisherRevenueCny)
+        if (encryptedEcpm.isNotBlank()) requestBody.put("e_c", encryptedEcpm)
+        if (encryptedCnyEcpm.isNotBlank()) requestBody.put("e_c_cny", encryptedCnyEcpm)
+        if (secretId.isNotBlank()) requestBody.put("s_id", secretId)
         if (sdkRequestId.isNotBlank()) requestBody.put("sdk_request_id", sdkRequestId)
         if (sdkShowId.isNotBlank()) requestBody.put("sdk_show_id", sdkShowId)
         if (sourceId.isNotBlank()) requestBody.put("source_id", sourceId)
@@ -527,7 +532,7 @@ internal class UserAppApi(context: android.content.Context) {
         if (data.optString("provider").lowercase() != "taku" ||
             data.optString("reward_verification") !in setOf(
                 "server_callback", "client_reward_with_server_reconciliation",
-                "client_publisher_revenue_with_server_reconciliation")) {
+                "client_encrypted_ecpm_with_server_reconciliation")) {
             throw UserApiException(502, "INVALID_RESPONSE", "广告渠道或奖励验证方式不匹配")
         }
         val reward = data.optJSONObject("reward")

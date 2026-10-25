@@ -242,9 +242,6 @@ object AnyThinkAdManager {
                     .put("s_id", if (info.secretId > 0) info.secretId.toString() else "")
                     .put("sdk_request_id", info.requestId.orEmpty().take(256))
                     .put("sdk_show_id", info.showId.orEmpty().take(256))
-                runCatching { info.getPublisherRevenue(ATAdConst.CURRENCY.RMB) }.getOrNull()
-                    ?.takeIf { it.isFinite() && it > 0.0 }
-                    ?.let { payload.put("publisher_revenue_cny", it.toString()) }
                 onMetadata(event, payload)
                 payload
             }.getOrNull()
