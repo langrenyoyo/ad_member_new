@@ -263,8 +263,10 @@ class TakuCallbackTests(unittest.TestCase):
                     s.scalar(select(func.count()).select_from(m.AdRecord)))
 
     def completion_payload(self, **changes):
+        cny_plain = changes.pop('cny_plain', '123_200_sdk-request-1')
+        encrypt = self.configure_ecpm()
         payload = dict(event_id='client-event', session_token=self.token,
-            publisher_revenue_cny='2', sdk_request_id='sdk-request-1',
+            e_c_cny=encrypt(cny_plain), s_id='test-key', sdk_request_id='sdk-request-1',
             sdk_show_id='sdk-show-1', source_id='123')
         payload.update(changes)
         return payload
@@ -315,15 +317,16 @@ class TakuCallbackTests(unittest.TestCase):
         self.assertEqual(self.callback().status_code,200)
         self.assertEqual(self.balances(),(12,1,1))
 
-    def test_client_completion_uses_publisher_revenue_and_policy_multiplier(self):
+    def test_client_completion_uses_decrypted_cny_ecpm_and_policy_multiplier(self):
         with self.factory() as s:
             s.get(m.Game,1).settings_json=json.dumps({'member_policy':{
-                'reward_enabled':True,'reward_basis':'fixed_ecpm','fixed_ecpm':'500',
-                'coins_per_yuan':'10'}})
+                'reward_enabled':True,'reward_basis':'verified_cny_ecpm',
+                'coins_per_yuan':'10','source_networks':{'123':'kuaishou'},
+                'network_rates':{'kuaishou':'.5','gdt':'1','csj':'1','baidu':'1','other':'1'}}})
             s.commit()
         response=self.client.post('/api/app/v1/ads/ads_test/complete',
             headers={'Authorization':'Bearer '+self.access},
-            json=self.completion_payload(publisher_revenue_cny='0.2'))
+            json=self.completion_payload(cny_plain='123_400_sdk-request-1'))
         self.assertEqual(response.status_code,200,response.text)
         self.assertEqual(response.json()['data']['coin_added'],2)
         self.assertEqual(self.balances(),(12,1,1))
@@ -331,15 +334,16 @@ class TakuCallbackTests(unittest.TestCase):
         with self.factory() as s:
             ledger=s.scalar(select(RewardLedger).where(RewardLedger.kind=='reward'))
             detail=json.loads(ledger.rule_json)
-            self.assertEqual(detail['reward_mode'],'publisher_revenue')
-            self.assertEqual(detail['publisher_revenue_cny'],'0.2')
+            self.assertEqual(detail['reward_mode'],'ecpm')
+            self.assertEqual(detail['ecpm'],'400')
+            self.assertEqual(detail['release_rate'],'0.5')
 
-    def test_client_completion_requires_revenue_and_unique_provider_identity(self):
+    def test_client_completion_requires_encrypted_cny_proof_and_unique_provider_identity(self):
         headers={'Authorization':'Bearer '+self.access}
         missing=self.client.post('/api/app/v1/ads/ads_test/complete',headers=headers,
-            json={'event_id':'missing','session_token':self.token})
+            json={'event_id':'missing','session_token':self.token,'publisher_revenue_cny':'2'})
         self.assertEqual(missing.status_code,422,missing.text)
-        self.assertEqual(missing.json()['detail']['code'],'PUBLISHER_REVENUE_REQUIRED')
+        self.assertEqual(missing.json()['detail']['code'],'ECPM_PROOF_REQUIRED')
         first=self.client.post('/api/app/v1/ads/ads_test/complete',headers=headers,
             json=self.completion_payload())
         self.assertEqual(first.status_code,200,first.text)
@@ -351,8 +355,47 @@ class TakuCallbackTests(unittest.TestCase):
         replay=self.client.post('/api/app/v1/ads/ads_other/complete',headers=headers,
             json=self.completion_payload(event_id='client-event-other',sdk_show_id='different-show'))
         self.assertEqual(replay.status_code,409,replay.text)
-        self.assertEqual(replay.json()['detail']['code'],'PUBLISHER_REVENUE_ALREADY_USED')
+        self.assertEqual(replay.json()['detail']['code'],'ECPM_PROOF_ALREADY_USED')
         self.assertEqual(self.balances(),(12,1,1))
+
+    def test_client_completion_rejects_invalid_proof_source_key_and_request_binding(self):
+        headers={'Authorization':'Bearer '+self.access}
+        encrypt=self.configure_ecpm()
+        cases = [
+            ({'e_c_cny':'invalid','s_id':'test-key','source_id':'123'}, 422, 'INVALID_ECPM_PROOF'),
+            ({'e_c_cny':encrypt('999_200_sdk-request-1'),'s_id':'test-key','source_id':'123'}, 422, 'INVALID_ECPM_PROOF'),
+            ({'e_c_cny':encrypt('123_200_sdk-request-1'),'s_id':'missing','source_id':'123'}, 422, 'INVALID_ECPM_PROOF'),
+            ({'e_c_cny':encrypt('123_200_other-request'),'s_id':'test-key','source_id':'123',
+              'sdk_request_id':'sdk-request-1'}, 409, 'ECPM_PROOF_BINDING_MISMATCH'),
+        ]
+        for fields,status,code in cases:
+            payload={'event_id':'invalid-'+code,'session_token':self.token,
+                'sdk_show_id':'sdk-show-1',**fields}
+            response=self.client.post('/api/app/v1/ads/ads_test/complete',headers=headers,json=payload)
+            self.assertEqual(response.status_code,status,response.text)
+            self.assertEqual(response.json()['detail']['code'],code)
+            self.assertEqual(self.balances(),(10,0,0))
+
+    def test_client_completion_returns_503_when_ecpm_key_configuration_is_missing(self):
+        payload=self.completion_payload()
+        with patch.dict(os.environ, TAKU_ECPM_KEYRING_FILE=''):
+            response=self.client.post('/api/app/v1/ads/ads_test/complete',
+                headers={'Authorization':'Bearer '+self.access},json=payload)
+        self.assertEqual(response.status_code,503,response.text)
+        self.assertEqual(response.json()['detail']['code'],'ECPM_CONFIGURATION_UNAVAILABLE')
+        self.assertEqual(self.balances(),(10,0,0))
+
+    def test_client_completion_stores_only_sanitized_ecpm_proof(self):
+        payload=self.completion_payload()
+        ciphertext=payload['e_c_cny']
+        response=self.client.post('/api/app/v1/ads/ads_test/complete',
+            headers={'Authorization':'Bearer '+self.access},json=payload)
+        self.assertEqual(response.status_code,200,response.text)
+        with self.factory() as s:
+            serialized='\n'.join(e.result_json for e in s.scalars(select(m.AppAdEvent)).all())
+            self.assertNotIn(ciphertext,serialized)
+            proof=s.scalar(select(m.AppAdEvent).where(m.AppAdEvent.event_type=='taku_ecpm_verified'))
+            self.assertEqual(json.loads(proof.result_json)['prices'][0]['ecpm'],'200')
 
     def test_concurrent_client_completions_credit_only_once(self):
         headers={'Authorization':'Bearer '+self.access}
@@ -373,11 +416,11 @@ class TakuCallbackTests(unittest.TestCase):
         self.assertEqual(self.balances(),(12,1,1))
 
     def test_client_reward_callback_with_valid_ecpm_updates_audit_only(self):
+        completion=self.completion_payload()
         self.assertEqual(self.client.post('/api/app/v1/ads/ads_test/complete',
-            headers={'Authorization':'Bearer '+self.access},
-            json=self.completion_payload()).status_code,200)
+            headers={'Authorization':'Bearer '+self.access},json=completion).status_code,200)
         encrypt=self.configure_ecpm()
-        params=self.params(e_c_cny=encrypt('123_20.5_sdk-callback'),s_id='test-key')
+        params=self.params(e_c_cny=encrypt('123_20.5_sdk-request-1'),s_id='test-key')
         self.assertEqual(self.callback(params).status_code,200)
         self.assertEqual(self.balances(),(12,1,1))
         with self.factory() as s:
@@ -449,7 +492,7 @@ class TakuCallbackTests(unittest.TestCase):
         r=self.client.post('/api/app/v1/ads/request',headers=headers,json=payload)
         self.assertEqual(r.status_code,201,r.text)
         data=r.json()['data']
-        self.assertEqual(data['reward_verification'],'client_publisher_revenue_with_server_reconciliation')
+        self.assertEqual(data['reward_verification'],'client_encrypted_ecpm_with_server_reconciliation')
         self.assertEqual(data['taku_user_id'],str(self.uid))
         self.assertTrue(data['taku_extra_data'].startswith(data['ad_session_id']+'.'))
         self.assertNotIn('test-taku-key',r.text)

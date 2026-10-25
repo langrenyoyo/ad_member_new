@@ -485,33 +485,6 @@ def calculate_reward(rule, member, source_id, proof):
         'tier': tier.model_dump(mode='json') if tier else None, 'rule': rule.model_dump(mode='json')}
 
 
-def calculate_publisher_revenue_reward(rule, member, source_id, revenue_cny):
-    """Convert one SDK-reported CNY publisher revenue amount into coins."""
-    revenue = Decimal(str(revenue_cny))
-    if not revenue.is_finite() or revenue <= 0:
-        raise HTTPException(422, {'code': 'PUBLISHER_REVENUE_INVALID',
-            'message': '广告收益必须为有效的人民币正数'})
-    network = rule.source_networks.get(source_id, 'other')
-    ecpm = revenue * Decimal(1000)
-    rate = rule.network_rates[network]
-    tier = None
-    if rule.tier_enabled:
-        tier = next((item for item in rule.ecpm_tiers if ecpm <= item.upper), rule.ecpm_tiers[-1])
-        rate = tier.percent / 100
-    multiplier = rule.whitelist_multiplier if member.is_white else Decimal(1)
-    base = revenue * rule.coins_per_yuan
-    reward = min(rule.max_reward, base * rate * multiplier).quantize(
-        Decimal('.000001'), rounding=ROUND_DOWN)
-    if reward <= 0:
-        raise HTTPException(422, {'code': 'PUBLISHER_REVENUE_TOO_SMALL',
-            'message': '广告收益低于最小金币精度'})
-    return reward, {'network': network, 'publisher_revenue_cny': str(revenue),
-        'derived_ecpm_cny': str(ecpm), 'base': str(base), 'release_rate': str(rate),
-        'reward_mode': 'publisher_revenue', 'trust': 'client_sdk_reported',
-        'tier': tier.model_dump(mode='json') if tier else None,
-        'rule': rule.model_dump(mode='json')}
-
-
 class RewardPreview(BaseModel):
     policy: Policy
     ecpm: Decimal = Field(ge=0, le=1000000)
@@ -565,25 +538,16 @@ def settlement_snapshot(session, member, game_id):
         'recipients': commission_recipients(session, member, rule, all_agents=True)}
 
 
-def settle(session, member, ad, source_id, proof, legacy_reward, allow_fallback=False,
-           publisher_revenue_cny=None):
+def settle(session, member, ad, source_id, proof, legacy_reward, allow_fallback=False):
     event = session.scalar(select(m.AppAdEvent).where(m.AppAdEvent.event_id == 'policy:'+ad.id))
     captured = json.loads(event.result_json) if event else {}
     modern = captured.get('version') in (2, 3)
     rule = Policy.model_validate(captured['rule'] if modern else captured) if event else policy(session, ad.game_id)
     commission_on = rule.commission_enabled if rule.commission_enabled is not None else rule.reward_enabled
     range_reward = captured.get('whitelist_range_reward') if modern and captured.get('is_white') else None
-    if (publisher_revenue_cny is None and not rule.reward_enabled
-            and not commission_on and range_reward is None):
+    if not rule.reward_enabled and not commission_on and range_reward is None:
         return legacy_reward
-    if publisher_revenue_cny is not None:
-        from types import SimpleNamespace
-        basis = SimpleNamespace(is_white=captured.get('is_white', bool(member.is_white)),
-            ad_label=captured.get('label_summary', {}).get('label', 'unknown')) if modern else member
-        reward, snapshot = calculate_publisher_revenue_reward(
-            rule, basis, source_id, publisher_revenue_cny)
-        snapshot['label_summary'] = captured.get('label_summary', {'label': 'unknown'})
-    elif range_reward is not None:
+    if range_reward is not None:
         reward = Decimal(range_reward).quantize(Decimal('.000001'))
         snapshot = {'reward_mode': 'whitelist_range', 'whitelist_range_reward': str(reward),
             'rule': rule.model_dump(mode='json')}

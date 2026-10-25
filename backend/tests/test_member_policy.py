@@ -335,20 +335,6 @@ class MemberPolicyTests(unittest.TestCase):
             self.assertEqual(len(s.scalars(select(p.RewardLedger)).all()),2)
         with self.assertRaises(ValueError):p.Policy(commission_rates=['.5','.5','.5','0'])
 
-    def test_publisher_revenue_is_converted_as_single_impression_revenue(self):
-        self.policy(reward_enabled=True, coins_per_yuan='100',
-            source_networks={'123':'kuaishou'},
-            network_rates={'kuaishou':'.5','gdt':'1','csj':'1','baidu':'1','other':'1'})
-        with self.factory() as s:
-            user=s.get(m.Member,1)
-            reward=p.settle(s,user,SimpleNamespace(id='publisher',game_id=1),'123',None,999,
-                publisher_revenue_cny=Decimal('0.2'))
-            self.assertEqual(reward,Decimal('10.000000'))
-            ledger=s.scalar(select(p.RewardLedger).where(p.RewardLedger.kind=='reward'))
-            detail=json.loads(ledger.rule_json)
-            self.assertEqual(detail['reward_mode'],'publisher_revenue')
-            self.assertEqual(detail['derived_ecpm_cny'],'200.0')
-
     def test_commission_independent_of_reward_and_summary(self):
         self.policy(commission_enabled=True, commission_rates=['0','.1','0','0'])
         with self.factory() as s:

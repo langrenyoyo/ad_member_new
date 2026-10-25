@@ -2657,6 +2657,9 @@ class AppAdEventRequest(BaseModel):
     reason: str = Field(default="", max_length=128)
     publisher_revenue_cny: Decimal | None = Field(default=None, gt=0, le=1000000,
         max_digits=24, decimal_places=12)
+    e_c: str = Field(default="", max_length=8192)
+    e_c_cny: str = Field(default="", max_length=8192)
+    s_id: str = Field(default="", max_length=128)
     sdk_request_id: str = Field(default="", max_length=256)
     sdk_show_id: str = Field(default="", max_length=256)
     source_id: str = Field(default="", max_length=128)
@@ -2803,7 +2806,7 @@ def _app_ad_result(item: AppAdSession, member: Member) -> dict[str, Any]:
         "session_token": "",
         "expires_at": stringify(item.expires_at),
         "status": item.status,
-        "reward_verification": "client_publisher_revenue_with_server_reconciliation" if item.provider.lower() == "taku" else "client",
+        "reward_verification": "client_encrypted_ecpm_with_server_reconciliation" if item.provider.lower() == "taku" else "client",
         "taku_user_id": str(member.id) if item.provider.lower() == "taku" else None,
         "taku_extra_data": _taku_extra_data(item) if item.provider.lower() == "taku" else None,
     }
@@ -3184,21 +3187,36 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
                     "coin_log_id": item.coin_log_id}, "request_id": item.request_id}
             if item.status not in ("issued", "impressed", "expired"):
                 raise HTTPException(status_code=409, detail="Ad session has already been closed")
-            if payload.publisher_revenue_cny is None:
-                raise HTTPException(422, {'code': 'PUBLISHER_REVENUE_REQUIRED',
-                    'message': '广告平台未返回可用的人民币收益'})
-            if not payload.sdk_request_id and not payload.sdk_show_id:
-                raise HTTPException(422, {'code': 'PUBLISHER_REVENUE_ID_REQUIRED',
-                    'message': '广告平台未返回收益展示标识'})
-            identity_kind, identity_value = ('request', payload.sdk_request_id) if payload.sdk_request_id else (
-                'show', payload.sdk_show_id)
-            identity = f'{item.game_id}:{identity_kind}:{identity_value}'
-            evidence_event_id = 'publisher_revenue:' + hashlib.sha256(identity.encode()).hexdigest()
-            used_evidence = session.scalar(select(AppAdEvent).where(
-                AppAdEvent.event_id == evidence_event_id))
-            if used_evidence and used_evidence.ad_session_id != item.id:
-                raise HTTPException(409, {'code': 'PUBLISHER_REVENUE_ALREADY_USED',
-                    'message': '广告收益标识已用于其他会话'})
+            if not payload.e_c_cny or not payload.s_id or not payload.source_id:
+                raise HTTPException(422, {'code': 'ECPM_PROOF_REQUIRED',
+                    'message': '广告 SDK 未返回完整的人民币 eCPM 加密证明'})
+            try:
+                ecpm_proof = verify_ecpm(item.game_id, payload.source_id,
+                    payload.e_c, payload.e_c_cny, payload.s_id)
+            except EcpmConfigurationError:
+                raise HTTPException(503, {'code': 'ECPM_CONFIGURATION_UNAVAILABLE',
+                    'message': '服务端 eCPM 密钥配置不可用'}) from None
+            except EcpmValidationError:
+                raise HTTPException(422, {'code': 'INVALID_ECPM_PROOF',
+                    'message': '广告 SDK eCPM 加密证明无效'}) from None
+            cny_proof = next((proof for proof in ecpm_proof['prices']
+                if proof.get('currency') == 'CNY'), None)
+            if cny_proof is None:
+                raise HTTPException(422, {'code': 'CNY_ECPM_REQUIRED',
+                    'message': '广告 SDK 未返回人民币 eCPM 加密证明'})
+            proof_request_id = cny_proof.get('sdk_request_id') or ''
+            if proof_request_id and payload.sdk_request_id and proof_request_id != payload.sdk_request_id:
+                raise HTTPException(409, {'code': 'ECPM_PROOF_BINDING_MISMATCH',
+                    'message': 'eCPM 证明与 SDK 请求标识不一致'})
+            sdk_request_id = payload.sdk_request_id or proof_request_id
+            identity_value = proof_request_id or cny_proof['ciphertext_sha256']
+            identity = f'{item.game_id}:{payload.source_id}:{identity_value}'
+            proof_event_id = 'taku_ecpm:' + hashlib.sha256(identity.encode()).hexdigest()
+            used_proof = session.scalar(select(AppAdEvent).where(
+                AppAdEvent.event_id == proof_event_id))
+            if used_proof and used_proof.ad_session_id != item.id:
+                raise HTTPException(409, {'code': 'ECPM_PROOF_ALREADY_USED',
+                    'message': 'eCPM 证明已用于其他广告会话'})
             shown_event = session.scalar(select(AppAdEvent).where(
                 AppAdEvent.event_id == 'metadata:' + item.id + ':shown'))
             if shown_event:
@@ -3206,11 +3224,18 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
                     shown = json.loads(shown_event.result_json or '{}')
                 except (TypeError, ValueError):
                     shown = {}
-                comparisons = (('sdk_request_id', payload.sdk_request_id),
+                comparisons = (('sdk_request_id', sdk_request_id),
                     ('sdk_show_id', payload.sdk_show_id), ('source_id', payload.source_id))
                 if any(shown.get(key) and value and shown[key] != value for key, value in comparisons):
-                    raise HTTPException(409, {'code': 'PUBLISHER_REVENUE_BINDING_MISMATCH',
-                        'message': '广告收益标识与展示事件不一致'})
+                    raise HTTPException(409, {'code': 'ECPM_PROOF_BINDING_MISMATCH',
+                        'message': 'eCPM 证明与展示事件不一致'})
+                shown_prices = shown.get('revenue_diagnostic', {}).get('prices', [])
+                shown_cny = next((proof for proof in shown_prices
+                    if proof.get('currency') == 'CNY'), None)
+                if (shown_cny and shown_cny.get('ciphertext_sha256')
+                        and shown_cny['ciphertext_sha256'] != cny_proof['ciphertext_sha256']):
+                    raise HTTPException(409, {'code': 'ECPM_PROOF_BINDING_MISMATCH',
+                        'message': 'eCPM 证明与展示事件不一致'})
             existing_reward = session.scalar(select(AppAdEvent).where(
                 AppAdEvent.event_id == "client_reward:" + item.id))
             if existing_reward:
@@ -3220,14 +3245,14 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
             stored = get_or_404(session, Member, member.id, "User")
             before = coin_amount(stored.coin)
             reward = coin_amount(member_policy.settle(session, stored, item, payload.source_id,
-                None, item.reward_coin, publisher_revenue_cny=payload.publisher_revenue_cny))
+                ecpm_proof, item.reward_coin))
             stored.coin = coin_amount(before + reward)
             stored.coin_user = coin_amount(coin_amount(stored.coin_user) + reward)
             item.status = "rewarded"
             item.completed_at = now()
             log = CoinLog(user_id=stored.id, agent_id=stored.agent_id, game_id=item.game_id,
                 coin_before=before, coin=reward, coin_after=stored.coin, type=1,
-                remark="TAKU ad reward (publisher revenue)")
+                remark="TAKU ad reward (encrypted CNY eCPM)")
             session.add(log)
             session.flush()
             item.coin_log_id = log.id
@@ -3238,36 +3263,33 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
             if ledger:
                 ledger.coin_log_id = log.id
             game = session.get(Game, item.game_id)
-            pending_tag = [{"label": "客户端发布者收益待核检", "level": "warning",
-                "verification": "publisher_revenue_client_sdk"}]
-            publisher_ecpm = Decimal(payload.publisher_revenue_cny) * Decimal(1000)
+            pending_tag = [{"label": "客户端加密 eCPM 已验证，待回调核检", "level": "warning",
+                "verification": "client_encrypted_ecpm_verified"}]
+            verified_ecpm = Decimal(cny_proof['ecpm'])
             session.add(AdRecord(user_id=stored.id, user_account=stored.username, parent_id=stored.parent_id,
                 agent_id=stored.agent_id, game_id=item.game_id, game_name=game.name if game else "",
-                receive_name=stored.receive_name or "", ecpm=float(publisher_ecpm), coin=reward,
-                estimate_income=reward, client_ecpm=float(publisher_ecpm),
-                settlement_ecpm=float(publisher_ecpm), callback_price_currency="CNY",
+                receive_name=stored.receive_name or "", ecpm=float(verified_ecpm), coin=reward,
+                estimate_income=reward, client_ecpm=float(verified_ecpm),
+                settlement_ecpm=float(verified_ecpm), callback_price_currency="CNY",
                 ad_network_platform_name="TAKU", ad_type="激励", status="成功-待核检",
                 watched_at=item.completed_at, ad_code=item.ad_unit_id, request_id=item.request_id,
                 attention_count=1, risk_tags_json=json.dumps(pending_tag, ensure_ascii=False)))
             result = {"ad_session_id": item.id, "status": "rewarded", "rewarded": True,
                 "coin_added": float(reward), "coin_balance": float(stored.coin), "coin_log_id": log.id}
-            if not used_evidence:
-                session.add(AppAdEvent(event_id=evidence_event_id, ad_session_id=item.id,
-                    member_id=stored.id, event_type="publisher_revenue_evidence", result_json=json.dumps({
-                        "publisher_revenue_cny": str(payload.publisher_revenue_cny),
-                        "sdk_request_id": payload.sdk_request_id, "sdk_show_id": payload.sdk_show_id,
-                        "source_id": payload.source_id, "identity_kind": identity_kind}, ensure_ascii=False)))
+            if not used_proof:
+                session.add(AppAdEvent(event_id=proof_event_id, ad_session_id=item.id,
+                    member_id=stored.id, event_type="taku_ecpm_verified",
+                    result_json=json.dumps(ecpm_proof, ensure_ascii=False)))
             session.add(AppAdEvent(event_id="client_reward:" + item.id, ad_session_id=item.id,
                 member_id=stored.id, event_type="client_reward", result_json=json.dumps({
                     **result, "client_event_id": payload.event_id, "watched_seconds": payload.watched_seconds,
-                    "publisher_revenue_cny": str(payload.publisher_revenue_cny),
-                    "sdk_request_id": payload.sdk_request_id, "sdk_show_id": payload.sdk_show_id,
-                    "source_id": payload.source_id,
-                    "settlement_source": "client_sdk_publisher_revenue"}, default=str)))
+                    "sdk_request_id": sdk_request_id, "sdk_show_id": payload.sdk_show_id,
+                    "source_id": payload.source_id, "ecpm_verification": ecpm_proof,
+                    "settlement_source": "client_sdk_encrypted_cny_ecpm"}, default=str)))
             _ad_flow_log(session, item, "client_reward_granted", detail={
                 "event_id": payload.event_id, "coin_added": reward, "coin_log_id": log.id,
-                "publisher_revenue_cny": str(payload.publisher_revenue_cny),
-                "verification": "publisher_revenue_pending_taku_reconciliation"})
+                "verified_ecpm_cny": str(verified_ecpm),
+                "verification": "client_encrypted_ecpm_pending_taku_reconciliation"})
             session.commit()
             return {"data": result, "request_id": item.request_id}
         prior = session.scalar(select(AppAdEvent).where(AppAdEvent.event_id == payload.event_id))
