@@ -2345,6 +2345,7 @@ def ensure_development_schema() -> None:
         additions={"raffle_open":"INTEGER","raffle_num":"INTEGER","star_countdown":"FLOAT","over_countdown":"FLOAT","down_load":"VARCHAR(255) NOT NULL DEFAULT ''"}
         additions.update({"raffle_num2":"INTEGER","star_countdown2":"FLOAT","over_countdown2":"FLOAT"})
         additions["otherlevel"] = "TEXT NOT NULL DEFAULT ''"
+        additions.update({"whitelist_min_coin": "NUMERIC(24, 6)", "whitelist_max_coin": "NUMERIC(24, 6)"})
         additions.update({"password_hash":"VARCHAR(255) NOT NULL DEFAULT ''","password_salt":"VARCHAR(64) NOT NULL DEFAULT ''","pay_password_hash":"VARCHAR(255) NOT NULL DEFAULT ''","pay_password_salt":"VARCHAR(64) NOT NULL DEFAULT ''"})
         for column, definition in additions.items():
             if column not in member_columns:
@@ -2366,6 +2367,19 @@ def ensure_development_schema() -> None:
         if "ad_group" not in ad_columns:
             connection.execute(text(f"ALTER TABLE ad_records ADD COLUMN ad_group VARCHAR(32) NOT NULL DEFAULT '{MAIN_AD_LABEL}'"))
             connection.execute(text(ad_group_backfill_sql()))
+
+        # Older local databases predate e936/e937. create_all does not add
+        # columns to existing tables; keep the development repair idempotent.
+        ad_diagnostics = {
+            "callback_ecpm": "FLOAT", "client_ecpm": "FLOAT", "settlement_ecpm": "FLOAT",
+            "callback_price_currency": "VARCHAR(8)", "attention_count": "INTEGER",
+            "gps_ip_cross_region": "INTEGER", "risk_tags_json": "TEXT",
+        }
+        for column, definition in ad_diagnostics.items():
+            if column not in ad_columns:
+                connection.execute(text(f"ALTER TABLE ad_records ADD COLUMN {column} {definition}"))
+        if "callback_price_currency" not in ad_columns:
+            connection.execute(text("UPDATE ad_records SET callback_price_currency='', gps_ip_cross_region=0, risk_tags_json='[]' WHERE callback_price_currency IS NULL"))
 
         if "withdrawals" in table_names:
             withdrawal_columns = {column["name"] for column in inspector.get_columns("withdrawals")}
