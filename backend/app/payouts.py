@@ -209,12 +209,14 @@ def apply_withdrawal(payload: WithdrawalApply, member: m.Member = Depends(m.requ
 
 @m.app_api.get('/withdrawals')
 def app_withdrawals(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0),
-                    member: m.Member = Depends(m.require_app_member)):
+                    member: m.Member = Depends(m.require_app_member),
+                    page: int | None = Query(None, ge=1, le=100000000), page_size: int | None = Query(None, ge=1, le=100)):
+    limit, offset = m.app_page_window(limit, offset, page, page_size)
     with m.SessionLocal() as session:
         rows = session.scalars(select(m.Withdrawal).where(m.Withdrawal.user_id == member.id)
             .order_by(m.Withdrawal.id.desc()).offset(offset).limit(limit)).all()
         count = session.scalar(select(func.count()).select_from(m.Withdrawal).where(m.Withdrawal.user_id == member.id)) or 0
-        return {'data': {'items': [app_payload(session, x) for x in rows], 'total': count, 'limit': limit, 'offset': offset},
+        return {'data': {'items': [app_payload(session, x) for x in rows], **m.app_page_metadata(count, limit, offset)},
                 'request_id': secrets.token_urlsafe(12)}
 
 

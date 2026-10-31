@@ -3386,16 +3386,30 @@ def app_ad_fail(ad_session_id: str, payload: AppAdEventRequest, member: Member =
         session.commit(); return {"data": result, "request_id": item.request_id}
 
 
+def app_page_window(limit: int, offset: int, page: int | None, page_size: int | None) -> tuple[int, int]:
+    """Page parameters take precedence; preserve legacy offset requests."""
+    size = page_size if page_size is not None else limit
+    return size, (page - 1) * size if page is not None else offset
+
+
+def app_page_metadata(total: int, limit: int, offset: int) -> dict[str, Any]:
+    return {"total": int(total), "limit": limit, "offset": offset,
+            "page": offset // limit + 1, "page_size": limit,
+            "total_pages": (total + limit - 1) // limit, "has_more": offset + limit < total}
+
+
 @app_api.get("/ads/history")
-def app_ad_history(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0), game_id: int | None = Query(None, ge=1), member: Member = Depends(require_app_member)) -> dict[str, Any]:
+def app_ad_history(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0), game_id: int | None = Query(None, ge=1), member: Member = Depends(require_app_member),
+                   page: int | None = Query(None, ge=1, le=100000000), page_size: int | None = Query(None, ge=1, le=100)) -> dict[str, Any]:
+    limit, offset = app_page_window(limit, offset, page, page_size)
     with SessionLocal() as session:
         conditions = [AppAdSession.member_id == member.id]
         if game_id: conditions.append(AppAdSession.game_id == game_id)
-        stmt = select(AppAdSession).where(*conditions).order_by(AppAdSession.created_at.desc()).offset(offset).limit(limit)
+        stmt = select(AppAdSession).where(*conditions).order_by(AppAdSession.created_at.desc(), AppAdSession.id.desc()).offset(offset).limit(limit)
         items = session.scalars(stmt).all(); total = session.scalar(select(func.count()).select_from(AppAdSession).where(*conditions)) or 0
         log_ids = [x.coin_log_id for x in items if x.coin_log_id is not None]
         settled_coins = dict(session.execute(select(CoinLog.id, CoinLog.coin).where(CoinLog.id.in_(log_ids))).all()) if log_ids else {}
-        return {"data": {"items": [{"id": x.id, "game_id": x.game_id, "placement": x.placement, "ad_type": x.ad_type, "provider": x.provider, "status": x.status, "coin_added": float(settled_coins.get(x.coin_log_id, 0)) if x.status == "rewarded" else 0, "request_id": x.request_id, "watched_at": stringify(x.completed_at or x.impressed_at), "created_at": stringify(x.created_at)} for x in items], "total": int(total), "limit": limit, "offset": offset}, "request_id": secrets.token_urlsafe(12)}
+        return {"data": {"items": [{"id": x.id, "game_id": x.game_id, "placement": x.placement, "ad_type": x.ad_type, "provider": x.provider, "status": x.status, "coin_added": float(settled_coins.get(x.coin_log_id, 0)) if x.status == "rewarded" else 0, "request_id": x.request_id, "watched_at": stringify(x.completed_at or x.impressed_at), "created_at": stringify(x.created_at)} for x in items], **app_page_metadata(total, limit, offset)}, "request_id": secrets.token_urlsafe(12)}
 
 
 def _taku_extra_data(item: AppAdSession) -> str:
@@ -3727,7 +3741,9 @@ def app_list_subsidies(
     status: int | None = Query(None, ge=0, le=2),
     limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0),
     member: Member = Depends(require_app_member),
+    page: int | None = Query(None, ge=1, le=100000000), page_size: int | None = Query(None, ge=1, le=100),
 ) -> dict[str, Any]:
+    limit, offset = app_page_window(limit, offset, page, page_size)
     with SessionLocal() as session:
         conditions = [Subsidy.user_id == member.id]
         if game_id is not None:
@@ -3736,8 +3752,8 @@ def app_list_subsidies(
             conditions.append(Subsidy.status == status)
         rows = session.scalars(select(Subsidy).where(*conditions).order_by(Subsidy.id.desc()).offset(offset).limit(limit)).all()
         total = session.scalar(select(func.count()).select_from(Subsidy).where(*conditions)) or 0
-        return {"data": {"items": [_app_subsidy_payload(x) for x in rows], "total": int(total),
-                         "limit": limit, "offset": offset}, "request_id": secrets.token_urlsafe(12)}
+        return {"data": {"items": [_app_subsidy_payload(x) for x in rows],
+                         **app_page_metadata(total, limit, offset)}, "request_id": secrets.token_urlsafe(12)}
 
 
 @app_api.get("/subsidies/{subsidy_id}")
@@ -3757,12 +3773,14 @@ def app_wallet(member: Member = Depends(require_app_member)) -> dict[str, Any]:
 
 
 @app_api.get("/wallet/coin-logs")
-def app_coin_logs(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0), member: Member = Depends(require_app_member)) -> dict[str, Any]:
+def app_coin_logs(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0), member: Member = Depends(require_app_member),
+                  page: int | None = Query(None, ge=1, le=100000000), page_size: int | None = Query(None, ge=1, le=100)) -> dict[str, Any]:
+    limit, offset = app_page_window(limit, offset, page, page_size)
     with SessionLocal() as session:
         conditions = [CoinLog.user_id == member.id]
-        items = session.scalars(select(CoinLog).where(*conditions).order_by(CoinLog.created_at.desc()).offset(offset).limit(limit)).all()
+        items = session.scalars(select(CoinLog).where(*conditions).order_by(CoinLog.created_at.desc(), CoinLog.id.desc()).offset(offset).limit(limit)).all()
         total = session.scalar(select(func.count()).select_from(CoinLog).where(*conditions)) or 0
-        return {"data": {"items": [{"id": x.id, "type": x.type, "coin_before": x.coin_before, "coin": x.coin, "coin_after": x.coin_after, "remark": x.remark, "source_id": 0, "created_at": stringify(x.created_at)} for x in items], "total": int(total), "limit": limit, "offset": offset}, "request_id": secrets.token_urlsafe(12)}
+        return {"data": {"items": [{"id": x.id, "type": x.type, "coin_before": x.coin_before, "coin": x.coin, "coin_after": x.coin_after, "remark": x.remark, "source_id": 0, "created_at": stringify(x.created_at)} for x in items], **app_page_metadata(total, limit, offset)}, "request_id": secrets.token_urlsafe(12)}
 
 
 api = APIRouter(prefix="/api/v1", dependencies=[Depends(require_admin)])

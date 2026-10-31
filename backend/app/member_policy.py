@@ -628,7 +628,9 @@ def settle(session, member, ad, source_id, proof, legacy_reward, allow_fallback=
 
 
 @m.app_api.get('/commissions')
-def commissions(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0), member=Depends(m.require_app_member)):
+def commissions(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0), member=Depends(m.require_app_member),
+                page: int | None = Query(None, ge=1, le=100000000), page_size: int | None = Query(None, ge=1, le=100)):
+    limit, offset = m.app_page_window(limit, offset, page, page_size)
     with m.SessionLocal() as session:
         rows = session.scalars(select(RewardLedger).where(RewardLedger.beneficiary_id == member.id,
             RewardLedger.kind != 'reward').order_by(RewardLedger.id.desc()).offset(offset).limit(limit)).all()
@@ -639,19 +641,21 @@ def commissions(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=
         daily = session.scalar(select(m.func.sum(RewardLedger.amount)).where(*condition, RewardLedger.created_at >= today)) or Decimal(0)
         direct = session.scalar(select(m.func.count()).select_from(Enrollment).join(m.Member, m.Member.id == Enrollment.member_id).where(Enrollment.parent_id == member.id, m.Member.game_id == member.game_id)) or 0
         row = session.get(Enrollment, member.id)
-        return {'data': {'summary': {'total_earned': str(earned), 'today_earned': str(daily), 'direct_members': direct, 'level': row.level if row else 0}, 'total': total, 'items': [{'id': r.id, 'amount': str(r.amount), 'kind': r.kind,
+        return {'data': {'summary': {'total_earned': str(earned), 'today_earned': str(daily), 'direct_members': direct, 'level': row.level if row else 0}, **m.app_page_metadata(total, limit, offset), 'items': [{'id': r.id, 'amount': str(r.amount), 'kind': r.kind,
             'source_member_id': r.member_id, 'ad_session_id': r.ad_session_id, 'created_at': m.stringify(r.created_at)} for r in rows]}}
 
 
 @m.app_api.get('/commission-team')
-def commission_team(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0), member=Depends(m.require_app_member)):
+def commission_team(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0), member=Depends(m.require_app_member),
+                    page: int | None = Query(None, ge=1, le=100000000), page_size: int | None = Query(None, ge=1, le=100)):
+    limit, offset = m.app_page_window(limit, offset, page, page_size)
     with m.SessionLocal() as session:
         condition = (Enrollment.parent_id == member.id, m.Member.game_id == member.game_id)
         base = select(Enrollment).join(m.Member, m.Member.id == Enrollment.member_id).where(*condition)
         rows = session.scalars(base.order_by(Enrollment.member_id.desc()).offset(offset).limit(limit)).all()
         total = session.scalar(select(m.func.count()).select_from(Enrollment).join(m.Member, m.Member.id == Enrollment.member_id).where(*condition)) or 0
         # Only show the caller's direct referrals; never expose phone or payout details.
-        return {'data': {'total': total, 'items': [{'id': r.member_id, 'level': r.level} for r in rows]}}
+        return {'data': {**m.app_page_metadata(total, limit, offset), 'items': [{'id': r.member_id, 'level': r.level} for r in rows]}}
 
 
 @m.api.get('/games/{game_id}/reward-ledgers')

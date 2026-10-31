@@ -488,6 +488,12 @@ Authorization: Bearer <user_access_token>
 
 ### 5.5 广告记录查询
 
+用户端记录列表统一支持页码分页：`page` 从 1 开始，`page_size` 为每页数量（1–100，默认 20）。响应 `data` 包含 `items`、`total`、`page`、`page_size`、`total_pages`、`has_more`，并保留兼容字段 `limit` 和 `offset`。APP 应优先传 `page/page_size`；同一请求同时包含新旧参数时，以页码参数为准。旧客户端仍可只传 `limit/offset`。
+
+此分页约定适用于广告历史 `/ads/history`、金币流水 `/wallet/coin-logs`、提现记录 `/withdrawals`、补贴申请 `/subsidies`、分佣记录 `/commissions`、直属邀请 `/commission-team` 和补贴活动列表 `/subsidy-campaigns`。会员范围与已有游戏/状态筛选保持不变；详情接口仍按单条 ID 查询，不分页。
+
+例：`GET /api/app/v1/ads/history?game_id=238&page=2&page_size=20`。
+
 ```http
 GET /api/app/v1/ads/history?game_id=237&limit=20&offset=0
 Authorization: Bearer <user_access_token>

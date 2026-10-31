@@ -142,15 +142,19 @@ def application_snapshot(session, subsidy):
 
 
 @m.app_api.get('/subsidy-campaigns')
-def app_campaigns(game_id: int | None = Query(None, ge=1), member: m.Member = Depends(m.require_app_member)):
+def app_campaigns(game_id: int | None = Query(None, ge=1), member: m.Member = Depends(m.require_app_member),
+                  limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0),
+                  page: int | None = Query(None, ge=1, le=100000000), page_size: int | None = Query(None, ge=1, le=100)):
+    limit, offset = m.app_page_window(limit, offset, page, page_size)
     with m.SessionLocal() as session:
         agent = session.get(m.Agent, member.agent_id)
         if agent is None or agent.status != 1: raise HTTPException(403, '主体已停用')
         stmt = select(SubsidyCampaign).join(m.Game, m.Game.id == SubsidyCampaign.game_id).where(
             m.Game.agent_id == member.agent_id, m.Game.status == 1, SubsidyCampaign.enabled == 1)
         if game_id is not None: stmt = stmt.where(SubsidyCampaign.game_id == game_id)
-        rows = session.scalars(stmt.order_by(SubsidyCampaign.id.desc())).all()
-        return {'data': {'items': [eligibility(session, x, member) for x in rows], 'total': len(rows)},
+        total = session.scalar(select(func.count()).select_from(stmt.subquery())) or 0
+        rows = session.scalars(stmt.order_by(SubsidyCampaign.id.desc()).offset(offset).limit(limit)).all()
+        return {'data': {'items': [eligibility(session, x, member) for x in rows], **m.app_page_metadata(total, limit, offset)},
                 'request_id': secrets.token_urlsafe(12)}
 
 

@@ -349,7 +349,10 @@ class MemberPolicyTests(unittest.TestCase):
         self.assertEqual(Decimal(data['summary']['total_earned']),2)
         self.assertEqual(data['summary']['direct_members'],1)
         team=self.client.get('/api/app/v1/commission-team',headers=self.other).json()['data']
-        self.assertEqual(team,{'total':1,'items':[{'id':1,'level':0}]})
+        self.assertEqual(team['total'],1)
+        self.assertEqual(team['items'],[{'id':1,'level':0}])
+        self.assertEqual((team['page'],team['page_size'],team['total_pages'],team['has_more']),
+                         (1,20,1,False))
         self.assertEqual(self.client.get('/api/app/v1/commission-team',headers=self.auth).json()['data']['total'],0)
         self.assertEqual(self.client.get('/api/app/v1/commissions',headers=self.auth).json()['data']['total'],0)
 
