@@ -376,6 +376,100 @@ class TakuCallbackTests(unittest.TestCase):
             self.assertEqual(response.json()['detail']['code'],code)
             self.assertEqual(self.balances(),(10,0,0))
 
+    def fixed_price_display(self, sid, cipher, request_id, show_id, shown=True):
+        with self.factory() as s:
+            if not s.get(m.AppAdSession, sid):
+                s.add(m.AppAdSession(id=sid, member_id=self.uid, agent_id=1, game_id=1,
+                    provider='taku', ad_unit_id='placement-test', reward_coin=99,
+                    request_id='req-'+sid, session_token_hash=m._token_hash(self.token),
+                    expires_at=m.now()+timedelta(minutes=5)))
+            s.get(m.Game,1).settings_json=json.dumps({'member_policy':{
+                'reward_enabled':True,'reward_basis':'verified_cny_ecpm'}})
+            if shown:
+                s.add(m.AppAdEvent(event_id='metadata:'+sid+':shown', ad_session_id=sid,
+                    member_id=self.uid, event_type='client_metadata', result_json=json.dumps({
+                        'sdk_request_id':request_id,'sdk_show_id':show_id,'source_id':'123',
+                        'revenue_diagnostic':{'prices':[{'currency':'CNY',
+                            'ciphertext_sha256':hashlib.sha256(base64.b64decode(cipher)).hexdigest()}]}})))
+            s.commit()
+        return dict(event_id='complete-'+sid, session_token=self.token, e_c_cny=cipher,
+            s_id='test-key', source_id='123', sdk_request_id=request_id, sdk_show_id=show_id)
+
+    def test_fixed_cipher_distinct_displays_reward_immediately_once_each(self):
+        cipher=self.configure_ecpm()('123_0.01')
+        headers={'Authorization':'Bearer '+self.access}
+        for i in range(3):
+            sid='fixed-'+str(i)
+            body=self.fixed_price_display(sid,cipher,'request-'+str(i),'show-'+str(i))
+            response=self.client.post('/api/app/v1/ads/'+sid+'/complete',headers=headers,json=body)
+            self.assertEqual(response.status_code,200,response.text)
+            self.assertEqual(response.json()['data']['coin_added'],.00001)
+            retry=self.client.post('/api/app/v1/ads/'+sid+'/complete',headers=headers,json=body)
+            self.assertEqual(retry.json()['data']['coin_log_id'],response.json()['data']['coin_log_id'])
+        self.assertEqual(self.balances(),(Decimal('10.000030'),3,3))
+
+    def test_fixed_price_requires_matching_shown_proof_and_identifiers(self):
+        cipher=self.configure_ecpm()('123_0.01')
+        headers={'Authorization':'Bearer '+self.access}
+        for i,change in enumerate(({'sdk_request_id':''},{'sdk_show_id':''},
+                                  {'sdk_request_id':'different'},{'sdk_show_id':'different'})):
+            sid='binding-'+str(i)
+            body=self.fixed_price_display(sid,cipher,'request-'+str(i),'show-'+str(i))
+            body.update(change)
+            response=self.client.post('/api/app/v1/ads/'+sid+'/complete',headers=headers,json=body)
+            self.assertEqual(response.status_code,409,response.text)
+        body=self.fixed_price_display('no-shown',cipher,'request','show',shown=False)
+        response=self.client.post('/api/app/v1/ads/no-shown/complete',headers=headers,json=body)
+        self.assertEqual(response.status_code,409,response.text)
+        self.assertEqual(response.json()['detail']['code'],'ECPM_DISPLAY_BINDING_REQUIRED')
+        self.assertEqual(self.balances(),(10,0,0))
+
+    def test_fixed_price_cannot_reuse_request_or_show_in_another_session(self):
+        cipher=self.configure_ecpm()('123_0.01')
+        headers={'Authorization':'Bearer '+self.access}
+        first=self.fixed_price_display('fixed-first',cipher,'request-one','show-one')
+        self.assertEqual(self.client.post('/api/app/v1/ads/fixed-first/complete',
+            headers=headers,json=first).status_code,200)
+        for i,(request_id,show_id) in enumerate((('request-one','show-two'),('request-two','show-one'))):
+            sid='replay-'+str(i)
+            body=self.fixed_price_display(sid,cipher,request_id,show_id)
+            response=self.client.post('/api/app/v1/ads/'+sid+'/complete',headers=headers,json=body)
+            self.assertEqual(response.status_code,409,response.text)
+            self.assertEqual(response.json()['detail']['code'],'ECPM_PROOF_ALREADY_USED')
+        self.assertEqual(self.balances(),(Decimal('10.000010'),1,1))
+
+    def test_fixed_price_upgrade_preserves_old_display_reservations(self):
+        cipher=self.configure_ecpm()('123_0.01')
+        headers={'Authorization':'Bearer '+self.access}
+        body=self.fixed_price_display('fixed-old',cipher,'request-old','show-old')
+        self.assertEqual(self.client.post('/api/app/v1/ads/fixed-old/complete',
+            headers=headers,json=body).status_code,200)
+        with self.factory() as s:
+            s.query(m.AppAdEvent).filter(m.AppAdEvent.event_type.in_(
+                ['taku_ecpm_verified','taku_display_reserved'])).delete()
+            old_hash=hashlib.sha256(('1:123:'+hashlib.sha256(base64.b64decode(cipher)).hexdigest()).encode()).hexdigest()
+            s.add(m.AppAdEvent(event_id='taku_ecpm:'+old_hash,ad_session_id='fixed-old',
+                member_id=self.uid,event_type='taku_ecpm_verified',result_json='{}'))
+            s.commit()
+        for i,(request_id,show_id) in enumerate((('request-old','show-new'),('request-new','show-old'))):
+            sid='old-replay-'+str(i)
+            body=self.fixed_price_display(sid,cipher,request_id,show_id)
+            self.assertEqual(self.client.post('/api/app/v1/ads/'+sid+'/complete',
+                headers=headers,json=body).status_code,409)
+        body=self.fixed_price_display('new-display',cipher,'request-new','show-new')
+        self.assertEqual(self.client.post('/api/app/v1/ads/new-display/complete',
+            headers=headers,json=body).status_code,200)
+        self.assertEqual(self.balances(),(Decimal('10.000020'),2,2))
+
+    def test_concurrent_fixed_price_completions_credit_only_once(self):
+        cipher=self.configure_ecpm()('123_0.01')
+        body=self.fixed_price_display('fixed-concurrent',cipher,'request-concurrent','show-concurrent')
+        with ThreadPoolExecutor(max_workers=5) as pool:
+            responses=list(pool.map(lambda _:self.client.post('/api/app/v1/ads/fixed-concurrent/complete',
+                headers={'Authorization':'Bearer '+self.access},json=body),range(5)))
+        self.assertEqual([r.status_code for r in responses],[200]*5)
+        self.assertEqual(self.balances(),(Decimal('10.000010'),1,1))
+
     def test_client_completion_returns_503_when_ecpm_key_configuration_is_missing(self):
         payload=self.completion_payload()
         with patch.dict(os.environ, TAKU_ECPM_KEYRING_FILE=''):

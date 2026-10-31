@@ -3223,7 +3223,9 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
                 raise HTTPException(409, {'code': 'ECPM_PROOF_BINDING_MISMATCH',
                     'message': 'eCPM 证明与 SDK 请求标识不一致'})
             sdk_request_id = payload.sdk_request_id or proof_request_id
-            identity_value = proof_request_id or cny_proof['ciphertext_sha256']
+            # Fixed-price sources reuse encrypted prices across distinct displays.
+            # Only request-bound proofs can use the decrypted identity directly.
+            identity_value = proof_request_id or sdk_request_id
             identity = f'{item.game_id}:{payload.source_id}:{identity_value}'
             proof_event_id = 'taku_ecpm:' + hashlib.sha256(identity.encode()).hexdigest()
             used_proof = session.scalar(select(AppAdEvent).where(
@@ -3233,13 +3235,15 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
                     'message': 'eCPM 证明已用于其他广告会话'})
             shown_event = session.scalar(select(AppAdEvent).where(
                 AppAdEvent.event_id == 'metadata:' + item.id + ':shown'))
+            shown = {}
+            shown_cny = None
+            comparisons = (('sdk_request_id', sdk_request_id),
+                ('sdk_show_id', payload.sdk_show_id), ('source_id', payload.source_id))
             if shown_event:
                 try:
                     shown = json.loads(shown_event.result_json or '{}')
                 except (TypeError, ValueError):
                     shown = {}
-                comparisons = (('sdk_request_id', sdk_request_id),
-                    ('sdk_show_id', payload.sdk_show_id), ('source_id', payload.source_id))
                 if any(shown.get(key) and value and shown[key] != value for key, value in comparisons):
                     raise HTTPException(409, {'code': 'ECPM_PROOF_BINDING_MISMATCH',
                         'message': 'eCPM 证明与展示事件不一致'})
@@ -3250,6 +3254,34 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
                         and shown_cny['ciphertext_sha256'] != cny_proof['ciphertext_sha256']):
                     raise HTTPException(409, {'code': 'ECPM_PROOF_BINDING_MISMATCH',
                         'message': 'eCPM 证明与展示事件不一致'})
+            show_event_id = None
+            if not proof_request_id:
+                if (not sdk_request_id or not payload.sdk_show_id or not shown_cny
+                        or any(shown.get(key) != value for key, value in comparisons)
+                        or shown_cny.get('ciphertext_sha256') != cny_proof['ciphertext_sha256']):
+                    raise HTTPException(409, {'code': 'ECPM_DISPLAY_BINDING_REQUIRED',
+                        'message': '固定价格加密证明需要匹配已上报的广告请求和展示标识'})
+                show_identity = json.dumps([item.game_id, payload.source_id, payload.sdk_show_id])
+                show_event_id = 'taku_show:' + hashlib.sha256(show_identity.encode()).hexdigest()
+                # Include old client settlements, which reserved only a price hash,
+                # and signed callbacks whose transaction id is the SDK show id.
+                callback_event_id = 'taku:' + hashlib.sha256(payload.sdk_show_id.encode()).hexdigest()
+                used_show = session.scalar(select(AppAdEvent).where(
+                    AppAdEvent.event_id.in_([show_event_id, callback_event_id]),
+                    AppAdEvent.ad_session_id != item.id))
+                prior_rewards = session.scalars(select(AppAdEvent).join(
+                    AppAdSession, AppAdEvent.ad_session_id == AppAdSession.id).where(
+                    AppAdSession.game_id == item.game_id,
+                    AppAdEvent.event_type == 'client_reward',
+                    AppAdEvent.ad_session_id != item.id,
+                    or_(AppAdEvent.result_json.contains(json.dumps(sdk_request_id)),
+                        AppAdEvent.result_json.contains(json.dumps(payload.sdk_show_id))))).all()
+                reused = any((previous := json.loads(event.result_json)).get('source_id') == payload.source_id
+                    and (previous.get('sdk_request_id') == sdk_request_id
+                         or previous.get('sdk_show_id') == payload.sdk_show_id) for event in prior_rewards)
+                if used_show or reused:
+                    raise HTTPException(409, {'code': 'ECPM_PROOF_ALREADY_USED',
+                        'message': '广告请求或展示标识已用于其他广告会话'})
             existing_reward = session.scalar(select(AppAdEvent).where(
                 AppAdEvent.event_id == "client_reward:" + item.id))
             if existing_reward:
@@ -3294,6 +3326,11 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
                 session.add(AppAdEvent(event_id=proof_event_id, ad_session_id=item.id,
                     member_id=stored.id, event_type="taku_ecpm_verified",
                     result_json=json.dumps(ecpm_proof, ensure_ascii=False)))
+            if show_event_id:
+                session.add(AppAdEvent(event_id=show_event_id, ad_session_id=item.id,
+                    member_id=stored.id, event_type='taku_display_reserved',
+                    result_json=json.dumps({'sdk_request_id': sdk_request_id,
+                        'sdk_show_id': payload.sdk_show_id, 'source_id': payload.source_id})))
             session.add(AppAdEvent(event_id="client_reward:" + item.id, ad_session_id=item.id,
                 member_id=stored.id, event_type="client_reward", result_json=json.dumps({
                     **result, "client_event_id": payload.event_id, "watched_seconds": payload.watched_seconds,
