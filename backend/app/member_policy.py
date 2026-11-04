@@ -294,7 +294,7 @@ def onboarding(member=Depends(m.require_app_member)):
         row = enrollment(session, member)
         rule = policy(session, member.game_id)
         result = {'policy': rule.model_dump(mode='json', include={'require_alipay', 'require_invite', 'require_usage', 'announcement', 'announcement_version'}),
-            'level': row.level, 'invite_code': row.invite_code if row.level in (1, 3) else None,
+            'level': row.level, 'invite_code': row.invite_code,
             'parent_id': row.parent_id, 'alipay_bound': session.get(m.payouts.AlipayAccount, member.id) is not None,
             'usage_granted': bool(row.usage_granted)}
         session.commit()
@@ -307,7 +307,7 @@ def get_invite_code(member=Depends(m.require_app_member)):
         stored = m.get_or_404(session, m.Member, member.id, '会员')
         row = enrollment(session, stored)
         session.commit()
-        return {'data': {'level': row.level, 'invite_code': row.invite_code if row.level in (1, 3) else None}}
+        return {'data': {'level': row.level, 'invite_code': row.invite_code}}
 
 
 @m.app_api.post('/onboarding')

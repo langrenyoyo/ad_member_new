@@ -843,10 +843,10 @@ GET /api/app/v1/invite-code
 Authorization: Bearer <user_access_token>
 ```
 
-返回当前登录会员的等级和邀请码。仅团长（等级 `1`）和代理（等级 `3`）返回邀请码，其他等级的 `invite_code` 为 `null`。该接口不接受会员 ID，且未绑定上级的会员仍可调用。
+返回当前登录会员的等级和邀请码，所有等级均返回本人邀请码。该接口不接受会员 ID，且未绑定上级的会员仍可调用。普通会员邀请码可展示；注册绑定资格仍按邀请规则校验。
 
 ```json
-{"data":{"level":1,"invite_code":"A1B2C3D4E5F6"}}
+{"data":{"level":0,"invite_code":"A1B2C3D4E5F6"}}
 ```
 
 ### 12.6 APP 联调检查

@@ -314,7 +314,11 @@ class MemberPolicyTests(unittest.TestCase):
         response=self.client.get('/api/app/v1/invite-code',headers=self.auth)
         self.assertEqual(response.status_code,200,response.text)
         self.assertEqual(response.json()['data']['level'],0)
-        self.assertIsNone(response.json()['data']['invite_code'])
+        member_code=response.json()['data']['invite_code']
+        self.assertRegex(member_code,r'^[A-F0-9]{12}$')
+        onboarding=self.client.get('/api/app/v1/onboarding',headers=self.auth)
+        self.assertEqual(onboarding.status_code,200,onboarding.text)
+        self.assertEqual(onboarding.json()['data']['invite_code'],member_code)
         with self.factory() as s:
             row=s.get(p.Enrollment,2)
             code=row.invite_code
