@@ -2549,6 +2549,8 @@ def seed_data() -> None:
         coinlog = CoinLog(user_id=695016, agent_id=133, game_id=237, coin_before=0.0, coin=0.0, coin_after=0.0, type=100, remark="初始化")
         risk = RiskRecord(user_id=695016, agent_id=133, game_id=237, tagcode="login", tags="", hardware_main_id="4A24005C-D751-4FD5-B6E0-CC6C89B5AC5A", ip="183.34.194.167", action="login", risk_score=0, risk_level="low")
         session.add_all([agent, game, member, ad, withdrawal, subsidy, coinlog, risk])
+        session.flush()
+        member_policy.enrollment(session, member)
         session.commit()
 
 
@@ -6169,6 +6171,8 @@ def create_member(payload: MemberCreate) -> dict[str, Any]:
         prepare_member_passwords(changes)
         item = Member(**changes)
         session.add(item)
+        session.flush()
+        member_policy.enrollment(session, item)
         session.commit()
         session.refresh(item)
         return serialize_member(item)
@@ -6341,7 +6345,7 @@ def delete_member(member_id: int) -> Response:
             (device_risk.RiskDevice, device_risk.RiskDevice.last_member_id == member_id),
             (subsidy_campaigns.SubsidyReservation, subsidy_campaigns.SubsidyReservation.member_id == member_id),
             (Member, Member.parent_id == member_id),
-            (member_policy.Enrollment, (member_policy.Enrollment.member_id == member_id) | (member_policy.Enrollment.parent_id == member_id)),
+            (member_policy.Enrollment, member_policy.Enrollment.parent_id == member_id),
             (member_policy.RewardLedger, (member_policy.RewardLedger.member_id == member_id) | (member_policy.RewardLedger.beneficiary_id == member_id)),
             (member_policy.UsageReport, member_policy.UsageReport.member_id == member_id),
             (AppAdSession, AppAdSession.member_id == member_id),
@@ -6357,6 +6361,9 @@ def delete_member(member_id: int) -> Response:
         ]
         if any(has_rows(session, model, condition) for model, condition in dependencies):
             raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="会员存在关联流水或审核记录，不能删除")
+        enrollment = session.get(member_policy.Enrollment, member_id)
+        if enrollment is not None:
+            session.delete(enrollment)
         session.delete(item)
         session.commit()
         return Response(status_code=status.HTTP_204_NO_CONTENT)

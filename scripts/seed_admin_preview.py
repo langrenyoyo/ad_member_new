@@ -9,6 +9,7 @@ from decimal import Decimal
 import json
 from pathlib import Path
 import re
+import secrets
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'backend'))
@@ -23,6 +24,7 @@ def seed(batch, game_id=None):
     current = m.now()
     today = (current + timedelta(hours=8)).replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(hours=8)
     manifest = {'batch': prefix, 'synthetic': True, 'tables': {}}
+    invite_codes = set()
     with m.SessionLocal() as db:
         if db.scalar(select(m.Game.id).where(m.Game.game_key == prefix)) or db.scalar(select(m.Member.id).where(m.Member.username.startswith(prefix + '-'))):
             raise RuntimeError('Batch already exists; no data changed')
@@ -34,6 +36,17 @@ def seed(batch, game_id=None):
             entry = manifest['tables'].setdefault(table.name, {'primary_key': key, 'ids': []})
             entry['ids'].append(getattr(row, key))
             return row
+
+        def invite_code():
+            while True:
+                chars = [secrets.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') for _ in range(6)]
+                if not any(char.isalpha() for char in chars): chars[0] = secrets.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+                if not any(char.isdigit() for char in chars): chars[-1] = secrets.choice('0123456789')
+                secrets.SystemRandom().shuffle(chars)
+                code = ''.join(chars)
+                if code not in invite_codes:
+                    invite_codes.add(code)
+                    return code
 
         if game_id is None:
             agent = add(m.Agent(name=f'测试数据-{batch}-主体', user_name=prefix, status=0, game_ad_status=0))
@@ -60,7 +73,7 @@ def seed(batch, game_id=None):
                 last_login_ip=f'192.0.2.{i+1}', last_login_time=current.isoformat(),
                 last_login_device_id=f'{prefix}-device-{i:03}', created_at=stamp))
             members.append(member)
-            add(m.member_policy.Enrollment(member_id=member.id, invite_code=f'{prefix}-{i:03}', parent_id=parent, level=level))
+            add(m.member_policy.Enrollment(member_id=member.id, invite_code=invite_code(), parent_id=parent, level=level))
             add(m.MemberDevice(user_id=member.id, device_id=member.device_id,
                 model=['TEST-Huawei', 'TEST-Xiaomi', 'TEST-OPPO'][i % 3], android_version=str(12+i % 3),
                 app_version='test-preview', ip_address=member.ip, sim_info='TEST', risk_flag=i % 2,

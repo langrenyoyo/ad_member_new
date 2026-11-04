@@ -54,6 +54,21 @@ class DeviceCooldown(m.Base):
     window_start: Mapped[object] = mapped_column(DateTime(timezone=True))
 
 
+INVITE_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+INVITE_DIGITS = '0123456789'
+INVITE_ALPHABET = INVITE_LETTERS + INVITE_DIGITS
+
+
+def new_invite_code():
+    chars = [secrets.choice(INVITE_ALPHABET) for _ in range(6)]
+    if not any(char in INVITE_LETTERS for char in chars):
+        chars[0] = secrets.choice(INVITE_LETTERS)
+    if not any(char in INVITE_DIGITS for char in chars):
+        chars[-1] = secrets.choice(INVITE_DIGITS)
+    secrets.SystemRandom().shuffle(chars)
+    return ''.join(chars)
+
+
 def check_cooldown(session, member, install_id=None):
     rule = policy(session, member.game_id)
     if not rule.reset_login_block or member.is_white: return
@@ -185,7 +200,17 @@ def policy(session, game_id):
 def enrollment(session, member):
     row = session.get(Enrollment, member.id)
     if row is None:
-        row = Enrollment(member_id=member.id, invite_code=secrets.token_hex(6).upper(), parent_id=member.parent_id or 0)
+        if (session.scalar(select(m.func.count()).select_from(Enrollment)) or 0) >= 36 ** 6:
+            raise HTTPException(503, '邀请码编码空间已用尽')
+        invite_code = None
+        for _ in range(1000):
+            candidate = new_invite_code()
+            if session.scalar(select(Enrollment.member_id).where(Enrollment.invite_code == candidate)) is None:
+                invite_code = candidate
+                break
+        if invite_code is None:
+            raise HTTPException(503, '暂时无法分配邀请码，请重试')
+        row = Enrollment(member_id=member.id, invite_code=invite_code, parent_id=member.parent_id or 0)
         session.add(row)
         session.flush()
     return row
@@ -269,6 +294,8 @@ def bind_registration(session, member, code):
     if not code and not policy(session, member.game_id).require_registration_invite:
         enrollment(session, member)
         return
+    if len(code) != 6 or not code.isascii() or not code.isalnum():
+        raise HTTPException(422, '邀请码必须是6位英文或数字')
     parent = session.scalar(select(Enrollment).where(Enrollment.invite_code == code))
     owner = session.get(m.Member, parent.member_id) if parent else None
     if not owner or owner.status != 1 or owner.game_id != member.game_id or parent.level not in (1, 3):
@@ -316,7 +343,10 @@ def bind_invite(body: InviteInput, member=Depends(m.require_app_member)):
         m.device_risk.game_lock(session, member.game_id)
         stored = session.get(m.Member, member.id)
         row = enrollment(session, stored)
-        parent = session.scalar(select(Enrollment).where(Enrollment.invite_code == body.invite_code.strip().upper()))
+        code = body.invite_code.strip().upper()
+        if len(code) != 6 or not code.isascii() or not code.isalnum():
+            raise HTTPException(422, '邀请码必须是6位英文或数字')
+        parent = session.scalar(select(Enrollment).where(Enrollment.invite_code == code))
         parent_member = session.get(m.Member, parent.member_id) if parent else None
         if not parent or not parent_member or parent_member.status != 1 or parent_member.game_id != member.game_id or parent.level not in (1, 3):
             raise HTTPException(422, '邀请码无效或邀请人不具备资格')

@@ -1,4 +1,5 @@
 import json
+import importlib.util
 import sys
 import tempfile
 import unittest
@@ -8,14 +9,42 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 from fastapi.testclient import TestClient
+import sqlalchemy as sa
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import sessionmaker
+from alembic.migration import MigrationContext
+from alembic.operations import Operations
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from app import main_from_txt as m
 from app import member_policy as p, sms_auth as sms
 
 
 class MemberPolicyTests(unittest.TestCase):
+    def test_six_character_invite_code_migration_preserves_enrollment_links(self):
+        path=Path(__file__).resolve().parents[1]/'alembic/versions/e939_six_char_invite_codes.py'
+        spec=importlib.util.spec_from_file_location('six_char_invites_migration',path)
+        migration=importlib.util.module_from_spec(spec);spec.loader.exec_module(migration)
+        engine=create_engine('sqlite://')
+        try:
+            with engine.begin() as connection:
+                connection.execute(sa.text('CREATE TABLE members (id INTEGER PRIMARY KEY, parent_id INTEGER)'))
+                connection.execute(sa.text('INSERT INTO members (id,parent_id) VALUES (1,0),(2,1),(3,2)'))
+                p.Enrollment.__table__.create(connection)
+                stamp=m.now()
+                connection.execute(p.Enrollment.__table__.insert(),[
+                    {'member_id':1,'invite_code':'ABCDEF123456','parent_id':0,'level':0,'usage_granted':0,'created_at':stamp,'updated_at':stamp},
+                    {'member_id':2,'invite_code':'FEDCBA654321','parent_id':1,'level':1,'usage_granted':0,'created_at':stamp,'updated_at':stamp},
+                ])
+                with patch.object(migration,'op',Operations(MigrationContext.configure(connection))):
+                    migration.upgrade()
+                rows=connection.execute(select(p.Enrollment.__table__).order_by(p.Enrollment.member_id)).mappings().all()
+                codes=[row['invite_code'] for row in rows]
+                self.assertEqual(len(set(codes)),3)
+                self.assertTrue(all(len(code)==6 and code.isascii() and code.isalnum()
+                    and any(char.isalpha() for char in code) and any(char.isdigit() for char in code) for code in codes))
+                self.assertEqual([(row['member_id'],row['parent_id'],row['level']) for row in rows],[(1,0,0),(2,1,1),(3,2,0)])
+        finally:engine.dispose()
+
     def test_all_upstream_agents_paid_with_snapshot(self):
         self.policy(commission_enabled=True,commission_rates=[0,0,0,'0.1'])
         with self.factory() as s:
@@ -146,6 +175,10 @@ class MemberPolicyTests(unittest.TestCase):
             'username':'zero-opening','agent_id':1,'game_id':1,'coin':0,'parent_id':0})
         self.assertEqual(result.status_code,201,result.text)
         self.assertEqual(result.json()['coin'],0)
+        with self.factory() as session:
+            code=session.get(p.Enrollment,result.json()['id']).invite_code
+            self.assertRegex(code,r'^[A-Z0-9]{6}$')
+            self.assertTrue(any(char.isalpha() for char in code) and any(char.isdigit() for char in code))
         self.assertEqual(self.client.delete('/api/v1/members/'+str(result.json()['id']),headers=headers).status_code,204)
 
     def test_adjustment_precision_boundary(self):
@@ -302,12 +335,20 @@ class MemberPolicyTests(unittest.TestCase):
         a=self.client.get('/api/app/v1/onboarding',headers=self.auth)
         self.assertEqual(a.status_code,200,a.text)
         b=self.client.get('/api/app/v1/onboarding',headers=self.other).json()['data']
-        result=self.client.post('/api/app/v1/onboarding',headers=self.auth,json={'invite_code':b['invite_code']})
+        result=self.client.post('/api/app/v1/onboarding',headers=self.auth,json={'invite_code':b['invite_code'].lower()})
         self.assertEqual(result.status_code,200,result.text)
         self.assertEqual(self.client.get('/api/app/v1/wallet',headers=self.auth).status_code,200)
         with self.factory() as s:
             row=s.get(p.Enrollment,1);row.level=1;code=row.invite_code;s.commit()
         self.assertEqual(self.client.post('/api/app/v1/onboarding',headers=self.other,json={'invite_code':code}).status_code,422)
+
+    def test_invite_binding_requires_six_ascii_alphanumeric_chars(self):
+        with self.factory() as s:
+            member=s.get(m.Member,1)
+            for code in ('12345','1234567','ABC-1A','ＡＢＣ１２３'):
+                with self.assertRaises(m.HTTPException) as error:
+                    p.bind_registration(s,member,code)
+                self.assertEqual(error.exception.status_code,422)
 
     def test_invite_code_display_is_self_scoped_and_available_before_binding(self):
         self.policy(require_invite=True)
@@ -315,7 +356,8 @@ class MemberPolicyTests(unittest.TestCase):
         self.assertEqual(response.status_code,200,response.text)
         self.assertEqual(response.json()['data']['level'],0)
         member_code=response.json()['data']['invite_code']
-        self.assertRegex(member_code,r'^[A-F0-9]{12}$')
+        self.assertRegex(member_code,r'^[A-Z0-9]{6}$')
+        self.assertTrue(any(char.isalpha() for char in member_code) and any(char.isdigit() for char in member_code))
         onboarding=self.client.get('/api/app/v1/onboarding',headers=self.auth)
         self.assertEqual(onboarding.status_code,200,onboarding.text)
         self.assertEqual(onboarding.json()['data']['invite_code'],member_code)
