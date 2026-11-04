@@ -34,7 +34,7 @@ function attachMemberExport(items,params){
     const cell=tr.insertCell();
     if(key==='image_url')continue;
     let markup;
-    if(key==='vip'&&row[key]!=null)markup=`<span class="label label-${['success','warning','danger'][Number(row[key])]||'primary'}">V${esc(row[key])}</span>`;
+    if(key==='member_level')markup=esc(row.member_level_name||({0:'用户',1:'团长',3:'代理'})[row.member_level??0]||'未知');
     if(['status','is_white','exchange_enable'].includes(key)&&row[key]!=null)markup=`<i class="fa fa-toggle-on text-success text-success ${String(row[key])==='1'?'':'fa-flip-horizontal text-gray'} fa-2x"></i>`;
     if(markup){cell.innerHTML='<a>'+markup+'</a>';cell.dataset.memberExportValue=markup;continue;}
     if(['username','parent_id','game_name','agent_name','name','ip','last_login_ip'].includes(key)&&row[key]!=null&&String(row[key]).trim()!==''&&Number.isFinite(Number(row[key]))){const link=document.createElement('a');link.textContent=String(row[key]);cell.append(link);continue;}

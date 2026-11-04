@@ -123,6 +123,7 @@ class EcpmTier(BaseModel):
 class Policy(BaseModel):
     require_alipay: bool = False
     require_invite: bool = False
+    require_registration_invite: bool = True
     invite_min_level: int = Field(default=1, ge=0, le=3)
     require_usage: bool = False
     block_signals: list[Literal['emulator', 'root', 'hook', 'developer', 'accessibility', 'bluetooth']] = Field(default_factory=list)
@@ -193,7 +194,7 @@ def enrollment(session, member):
 def require_onboarding(session, member, path):
     rule = policy(session, member.game_id)
     # Recovery/read endpoints remain reachable while business actions are gated.
-    if path.endswith(('/onboarding', '/usage', '/me', '/bootstrap', '/me/alipay', '/auth/wechat-password', '/auth/sms/password', '/auth/change-password', '/auth/logout')) or '/device-risk/' in path:
+    if path.endswith(('/onboarding', '/invite-code', '/usage', '/me', '/bootstrap', '/me/alipay', '/auth/wechat-password', '/auth/sms/password', '/auth/change-password', '/auth/logout')) or '/device-risk/' in path:
         return
     row = session.get(Enrollment, member.id)
     if rule.require_invite and (row is None or not row.parent_id):
@@ -208,7 +209,7 @@ def require_onboarding(session, member, path):
 def public_policy(game_id: int = Query(ge=1)):
     with m.SessionLocal() as session:
         rule = policy(session, game_id)
-        return {'data': rule.model_dump(mode='json', include={'require_alipay', 'require_invite', 'require_usage', 'announcement', 'announcement_version', 'invite_min_level'})}
+        return {'data': rule.model_dump(mode='json', include={'require_alipay', 'require_invite', 'require_registration_invite', 'require_usage', 'announcement', 'announcement_version', 'invite_min_level'})}
 
 
 @m.api.get('/games/{game_id}/member-policy')
@@ -236,7 +237,7 @@ def set_policy(game_id: int, body: Policy, admin=Depends(m.allow_roles('superadm
         # Management must remain available during a keyring outage. Admission
         # retains its independent fail-closed validation.
         original = policy(session, game_id)
-        independent = {'announcement', 'announcement_version', 'require_alipay', 'require_invite',
+        independent = {'announcement', 'announcement_version', 'require_alipay', 'require_invite', 'require_registration_invite',
             'invite_min_level', 'require_usage', 'block_signals', 'reset_login_block', 'whitelist_risk_exempt'}
         settlement_changed = original.model_dump(exclude=independent) != body.model_dump(exclude=independent)
         if settlement_changed and body.reward_enabled and (body.reward_basis == 'verified_cny_ecpm' or body.source_networks):
@@ -264,7 +265,11 @@ class InviteInput(BaseModel):
 
 
 def bind_registration(session, member, code):
-    parent = session.scalar(select(Enrollment).where(Enrollment.invite_code == (code or '').strip().upper()))
+    code = (code or '').strip().upper()
+    if not code and not policy(session, member.game_id).require_registration_invite:
+        enrollment(session, member)
+        return
+    parent = session.scalar(select(Enrollment).where(Enrollment.invite_code == code))
     owner = session.get(m.Member, parent.member_id) if parent else None
     if not owner or owner.status != 1 or owner.game_id != member.game_id or parent.level not in (1, 3):
         raise HTTPException(422, '注册必须填写本应用团长或代理的邀请码')
@@ -296,6 +301,15 @@ def onboarding(member=Depends(m.require_app_member)):
         return {'data': result}
 
 
+@m.app_api.get('/invite-code')
+def get_invite_code(member=Depends(m.require_app_member)):
+    with m.SessionLocal() as session:
+        stored = m.get_or_404(session, m.Member, member.id, '会员')
+        row = enrollment(session, stored)
+        session.commit()
+        return {'data': {'level': row.level, 'invite_code': row.invite_code if row.level in (1, 3) else None}}
+
+
 @m.app_api.post('/onboarding')
 def bind_invite(body: InviteInput, member=Depends(m.require_app_member)):
     with m.SessionLocal() as session:
@@ -323,6 +337,27 @@ def bind_invite(body: InviteInput, member=Depends(m.require_app_member)):
 
 class LevelInput(BaseModel):
     level: Literal[0, 1, 3]
+
+
+MEMBER_LEVEL_NAMES = {0: '用户', 1: '团长', 3: '代理'}
+
+
+def level_details(session, member_id):
+    row = session.get(Enrollment, member_id)
+    level = row.level if row else 0
+    return {'member_level': level, 'member_level_name': MEMBER_LEVEL_NAMES.get(level, f'历史等级 {level}')}
+
+
+def change_level(session, member, level, admin, path):
+    if admin.role != 'superadmin':
+        raise HTTPException(403, '仅超级管理员可修改会员身份')
+    row = enrollment(session, member)
+    if row.level != level:
+        before = row.level
+        row.level = level
+        session.add(m.AdminOperation(admin_id=admin.id,
+            title=f'修改会员 {member.id} 身份 {before} -> {level}', path=path, ip=''))
+    return row
 
 
 class BalanceAdjustment(BaseModel):
@@ -401,10 +436,7 @@ def set_level(member_id: int, body: LevelInput, admin=Depends(m.allow_roles('sup
     with m.SessionLocal() as session:
         member = m.get_or_404(session, m.Member, member_id, 'Member')
         m.device_risk.game_lock(session, member.game_id)
-        row = enrollment(session, member)
-        row.level = body.level
-        session.add(m.AdminOperation(admin_id=admin.id,
-            title=f'修改会员 {member_id} 等级为 {body.level}', path=f'/api/v1/members/{member_id}/level', ip=''))
+        row = change_level(session, member, body.level, admin, f'/api/v1/members/{member_id}/level')
         session.commit()
         return {'level': row.level, 'invite_code': row.invite_code}
 

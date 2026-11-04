@@ -836,6 +836,19 @@ Content-Type: application/json
 
 服务端限次按北京时间自然日统计“已批准广告会话”，同一游戏同一设备跨账号共享额度；失败广告不退还次数，已批准广告的 TAKU 回调发奖不受影响。
 
+### 邀请码展示
+
+```http
+GET /api/app/v1/invite-code
+Authorization: Bearer <user_access_token>
+```
+
+返回当前登录会员的等级和邀请码。仅团长（等级 `1`）和代理（等级 `3`）返回邀请码，其他等级的 `invite_code` 为 `null`。该接口不接受会员 ID，且未绑定上级的会员仍可调用。
+
+```json
+{"data":{"level":1,"invite_code":"A1B2C3D4E5F6"}}
+```
+
 ### 12.6 APP 联调检查
 
 - 确认请求头携带用户 `Authorization`，不能使用管理端 token。

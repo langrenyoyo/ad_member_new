@@ -12,8 +12,11 @@ with sync_playwright() as p:
     page.add_script_tag(content="""
     const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     const calls=[];
+    let savedPolicy=null;
     async function api(path,options){
       calls.push({path,options});
+      if(options?.method==='PUT' && path.endsWith('/member-policy')){savedPolicy=JSON.parse(options.body);return savedPolicy;}
+      if(!options && path.endsWith('/member-policy') && savedPolicy)return savedPolicy;
       if(path.endsWith('/reward-preview'))return {coin:'8.000000'};
       if(path.endsWith('/level'))return {invite_code:'ABC'};
       if(path.includes('/usage?'))return {items:[{package_name:'com.test.app',duration_ms:60000,opens:3}]};
@@ -31,15 +34,24 @@ with sync_playwright() as p:
     page.evaluate('mountMemberPolicy(document.querySelector("#host"))')
     page.locator('[name=game]').fill('1')
     page.locator('[data-load] button').click()
+    assert page.locator('[name=require_registration_invite]').is_checked()
+    page.locator('[name=require_registration_invite]').uncheck()
     page.locator('[name=require_invite]').check()
     page.locator('[name=commission_enabled]').check()
     page.locator('[name=sources]').fill('123=kuaishou')
-    page.locator('[data-save] button').first.click()
+    page.locator('[data-save] button[type=submit]').click()
     assert page.locator('[data-status]').inner_text() == '规则已保存'
     body = page.evaluate('JSON.parse(calls.find(c=>c.options?.method==="PUT").options.body)')
     assert body['require_invite'] and body['source_networks'] == {'123':'kuaishou'}
     assert body['announcement'] == '<script>bad</script>'
     assert body['commission_enabled'] and not body['reward_enabled']
+    assert body['require_registration_invite'] is False
+    page.locator('[data-load] button').click()
+    assert not page.locator('[name=require_registration_invite]').is_checked()
+    page.locator('[name=require_registration_invite]').check()
+    page.locator('[data-save] button[type=submit]').click()
+    page.locator('[data-load] button').click()
+    assert page.locator('[name=require_registration_invite]').is_checked()
     page.locator('[data-ledger]').click()
     assert page.locator('[data-ledgers] tbody tr').count() == 50
     assert page.locator('[data-prev]').is_disabled()
@@ -59,7 +71,7 @@ with sync_playwright() as p:
     assert '200%' in page.locator('[data-tier-table]').inner_text()
     page.locator('[data-preview]').click()
     assert '8.000000' in page.locator('[data-preview-result]').inner_text()
-    page.locator('[data-save] button').first.click()
+    page.locator('[data-save] button[type=submit]').click()
     saved=page.evaluate('JSON.parse(calls.filter(c=>c.options?.method==="PUT").at(-1).options.body)')
     assert saved['tier_enabled'] and saved['ecpm_tiers']==[{'upper':'50','percent':'200'},{'upper':'100','percent':'70'}]
     assert saved['label_rewards_enabled'] and saved['label_rewards']=={'finance':'10'}
@@ -70,6 +82,6 @@ with sync_playwright() as p:
     page.locator('[data-usage]').click()
     assert 'com.test.app' in page.locator('[data-report]').inner_text()
     page.set_viewport_size({'width':390,'height':844})
-    assert page.locator('[data-save] button').first.is_visible()
+    assert page.locator('[data-save] button[type=submit]').is_visible()
     browser.close()
 print('member policy browser smoke passed')

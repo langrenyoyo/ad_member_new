@@ -309,6 +309,20 @@ class MemberPolicyTests(unittest.TestCase):
             row=s.get(p.Enrollment,1);row.level=1;code=row.invite_code;s.commit()
         self.assertEqual(self.client.post('/api/app/v1/onboarding',headers=self.other,json={'invite_code':code}).status_code,422)
 
+    def test_invite_code_display_is_self_scoped_and_available_before_binding(self):
+        self.policy(require_invite=True)
+        response=self.client.get('/api/app/v1/invite-code',headers=self.auth)
+        self.assertEqual(response.status_code,200,response.text)
+        self.assertEqual(response.json()['data']['level'],0)
+        self.assertIsNone(response.json()['data']['invite_code'])
+        with self.factory() as s:
+            row=s.get(p.Enrollment,2)
+            code=row.invite_code
+        response=self.client.get('/api/app/v1/invite-code',headers=self.other)
+        self.assertEqual(response.status_code,200,response.text)
+        self.assertEqual(response.json()['data']['invite_code'],code)
+        self.assertEqual(self.client.get('/api/app/v1/invite-code').status_code,401)
+
     def test_usage_upsert_and_revocation_gate(self):
         self.policy(require_usage=True)
         body={'granted':True,'report_date':(m.now()+timedelta(hours=8)).date().isoformat(),

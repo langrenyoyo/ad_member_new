@@ -50,3 +50,17 @@
 .dashboard-view .dash-cards{grid-template-columns:repeat(2,minmax(0,calc((100% - 90px)/4)))}
 @media(max-width:767px){.dashboard-view .dash-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
+/* Keep the header and navigation visible while each workspace scrolls. */
+.app-shell{height:100vh;height:100dvh;min-height:0;overflow:hidden;display:grid;grid-template-columns:230px minmax(0,1fr);grid-template-rows:50px minmax(0,1fr)}
+.app-shell>.main{min-height:0;margin-left:0;overflow:auto;overscroll-behavior:contain}
+.app-shell>.sidebar{width:auto;min-height:0;overflow:hidden}
+.sidebar>.target-user-panel,.sidebar>.target-menu-search,.sidebar>.account-card{flex-shrink:0}
+.sidebar>#nav{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;display:block}
+.shell-collapsed .app-shell>.sidebar{width:50px}
+@media(max-width:640px){
+ .app-shell,.shell-collapsed .app-shell{grid-template-columns:minmax(0,1fr)}
+ .app-shell>.main{grid-column:1;grid-row:2}
+ .app-shell>.sidebar,.shell-collapsed .app-shell>.sidebar{position:fixed;top:50px;bottom:0;left:0;width:230px}
+ .app-shell>.target-header{position:relative;top:auto;z-index:21}
+}
+

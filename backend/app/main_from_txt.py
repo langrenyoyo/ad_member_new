@@ -2187,6 +2187,7 @@ class MemberUpdate(BaseModel):
     coin_user_month: float | None = None
     coin_user_day: float | None = None
     vip: int | None = None
+    member_level: Literal[0, 1, 3] | None = None
     status: Literal[0, 1] | None = None
     exchange_enable: Literal[0, 1] | None = None
     game_addiction_enable: int | None = None
@@ -4206,6 +4207,7 @@ def list_members(
     is_white: int | None = Query(None, alias="is_white"),
     exchange_enable: int | None = Query(None, alias="exchange_enable"),
     vip: int | None = None,
+    member_level: int | None = Query(None, ge=0, le=3),
     limit: int = Query(20, ge=1, le=200),
     offset: int = Query(0, ge=0),
     admin: AdminUser = Depends(require_admin),
@@ -4283,6 +4285,12 @@ def list_members(
         conditions.append(Member.exchange_enable == exchange_enable)
     if vip is not None:
         conditions.append(Member.vip == vip)
+    if member_level is not None:
+        if member_level not in (0, 1, 3):
+            raise HTTPException(422, '会员身份须为用户、团长或代理')
+        enrollment_level = select(member_policy.Enrollment.level).where(
+            member_policy.Enrollment.member_id == Member.id).scalar_subquery()
+        conditions.append(func.coalesce(enrollment_level, 0) == member_level)
     with SessionLocal() as session:
         payload = list_payload(
             session,
@@ -4297,6 +4305,11 @@ def list_members(
         )
         # Resolve display names from related records, never substitute numeric IDs.
         rows = payload.get("items", [])
+        levels = dict(session.execute(select(member_policy.Enrollment.member_id, member_policy.Enrollment.level)
+            .where(member_policy.Enrollment.member_id.in_([row['id'] for row in rows]))).all())
+        for row in rows:
+            row['member_level'] = levels.get(row['id'], 0)
+            row['member_level_name'] = member_policy.MEMBER_LEVEL_NAMES.get(row['member_level'], f"历史等级 {row['member_level']}")
         game_ids = {row["game_id"] for row in rows if row.get("game_id")}
         agent_ids = {row["agent_id"] for row in rows if row.get("agent_id")}
         parent_ids = {row["parent_id"] for row in rows if row.get("parent_id")}
@@ -4341,6 +4354,7 @@ def list_members(
                 "behavior": True,
                 "coin": can_manage,
             }
+        payload['permissions']['member_level'] = admin.role == 'superadmin'
         return payload
 
 
@@ -4778,12 +4792,17 @@ def export_ads(
 def enrich_review_members(session: Session, payload: dict[str, Any]) -> dict[str, Any]:
     rows = payload["items"]
     members = {member.id: member for member in session.scalars(select(Member).where(Member.id.in_({row["user_id"] for row in rows})))}
+    levels = dict(session.execute(select(member_policy.Enrollment.member_id, member_policy.Enrollment.level)
+        .where(member_policy.Enrollment.member_id.in_(members))).all())
     parents = {parent.id: parent for parent in session.scalars(select(Member).where(Member.id.in_({member.parent_id for member in members.values()})))}
     games = dict(session.execute(select(Game.id, Game.name).where(Game.id.in_({row["game_id"] for row in rows}))).all())
     agents = dict(session.execute(select(Agent.id, Agent.name).where(Agent.id.in_({row["agent_id"] for row in rows}))).all())
     for row in rows:
         member = members.get(row["user_id"])
         parent = parents.get(member.parent_id) if member else None
+        level = levels.get(member.id, 0) if member else None
+        row.update(member_level=level, member_level_name=member_policy.MEMBER_LEVEL_NAMES.get(
+            level, f'历史等级 {level}' if level is not None else '会员不存在'))
         row.update(username=member.username if member else "", vip=member.vip if member else None,
                    is_true=member.is_true if member else None,
                    parent_id=member.parent_id if member else None, parent_username=parent.username if parent else "",
@@ -4792,7 +4811,7 @@ def enrich_review_members(session: Session, payload: dict[str, Any]) -> dict[str
     return payload
 
 
-def review_conditions(model, user_id, username, name, vip, parent_id, game_id, agent_id, created_from, created_to, updated_from, updated_to):
+def review_conditions(model, user_id, username, name, vip, parent_id, game_id, agent_id, created_from, created_to, updated_from, updated_to, member_level=None):
     conditions = []
     for field, value in [(model.user_id, user_id), (model.game_id, game_id), (model.agent_id, agent_id)]:
         if value is not None: conditions.append(field == value)
@@ -4800,6 +4819,12 @@ def review_conditions(model, user_id, username, name, vip, parent_id, game_id, a
     if username: members.append(Member.username.contains(username, autoescape=True))
     if name: members.append(Member.name.contains(name, autoescape=True))
     if vip is not None: members.append(Member.vip == vip)
+    if member_level is not None:
+        if member_level not in (0, 1, 3):
+            raise HTTPException(422, '会员身份须为用户、团长或代理')
+        enrollment_level = select(member_policy.Enrollment.level).where(
+            member_policy.Enrollment.member_id == Member.id).scalar_subquery()
+        members.append(func.coalesce(enrollment_level, 0) == member_level)
     if parent_id is not None: members.append(Member.parent_id == parent_id)
     if members: conditions.append(model.user_id.in_(select(Member.id).where(*members)))
     for column, start, end in [(model.created_at, created_from, created_to), (model.updated_at, updated_from, updated_to)]:
@@ -4824,6 +4849,7 @@ def list_withdrawals(
     username: str | None = None,
     name: str | None = None,
     vip: int | None = None,
+    member_level: int | None = Query(None, ge=0, le=3),
     parent_id: int | None = None,
     is_true: int | None = Query(None, ge=0, le=1),
     game_id: int | None = None,
@@ -4843,7 +4869,7 @@ def list_withdrawals(
 ) -> dict[str, Any]:
     with SessionLocal() as session:
         internal_status = 2 if status_filter == 4 else status_filter
-        conditions = review_conditions(Withdrawal, user_id, username, name, vip, parent_id, game_id, agent_id, created_from, created_to, updated_from, updated_to)
+        conditions = review_conditions(Withdrawal, user_id, username, name, vip, parent_id, game_id, agent_id, created_from, created_to, updated_from, updated_to, member_level=member_level)
         conditions.extend(behavior_filter_conditions(Withdrawal, filter_user_id, game_name))
         if is_true is not None:
             conditions.append(Withdrawal.user_id.in_(select(Member.id).where(Member.is_true == is_true)))
@@ -4876,6 +4902,10 @@ def list_withdrawals(
             base = base.where(Withdrawal.agent_id == agent_id)
         if user_id is not None:
             base = base.where(Withdrawal.user_id == user_id)
+        identity_conditions = review_conditions(Withdrawal, None, None, None, None, None, None, None,
+            None, None, None, None, member_level=member_level)
+        if identity_conditions:
+            base = base.where(*identity_conditions)
         payload["summary"] = {
             "withdrawn": float(session.scalar(base.where(Withdrawal.status == 1)) or 0),
             "pending": float(session.scalar(base.where(Withdrawal.status == 0)) or 0),
@@ -4887,6 +4917,8 @@ def list_withdrawals(
         payload["summary_unavailable"] = {"blacklisted": "blacklist_source_unverified"}
         payout_base = select(func.coalesce(func.sum(payouts.Payout.amount_cents), 0)).join(
             Withdrawal, Withdrawal.id == payouts.Payout.withdrawal_id)
+        if identity_conditions:
+            payout_base = payout_base.where(*identity_conditions)
         for field, value in [('game_id', game_id), ('agent_id', agent_id), ('user_id', user_id)]:
             if value is not None: payout_base = payout_base.where(getattr(Withdrawal, field) == value)
         payload['summary']['alipay_paid_cents'] = int(session.scalar(payout_base.where(payouts.Payout.state == 'succeeded')) or 0)
@@ -5060,6 +5092,7 @@ def list_subsidies(
     username: str | None = None,
     name: str | None = None,
     vip: int | None = None,
+    member_level: int | None = Query(None, ge=0, le=3),
     parent_id: int | None = None,
     game_id: int | None = None,
     agent_id: int | None = None,
@@ -5075,7 +5108,7 @@ def list_subsidies(
 ) -> dict[str, Any]:
     with SessionLocal() as session:
         internal_status = 2 if status_filter == 4 else status_filter
-        conditions = review_conditions(Subsidy, user_id, username, name, vip, parent_id, game_id, agent_id, created_from, created_to, updated_from, updated_to)
+        conditions = review_conditions(Subsidy, user_id, username, name, vip, parent_id, game_id, agent_id, created_from, created_to, updated_from, updated_to, member_level=member_level)
         if receive_name is not None: conditions.append(Subsidy.receive_name == receive_name)
         if receive_tel is not None: conditions.append(Subsidy.receive_tel == receive_tel)
         if pics is not None: conditions.append(Subsidy.pics == pics)
@@ -6113,9 +6146,10 @@ def game_member_batch_status(game_id: int, payload: GameMemberBatchStatus,
 
 
 @api.get("/members/{member_id}")
-def get_member(member_id: int) -> dict[str, Any]:
+def get_member(member_id: int, admin: AdminUser = Depends(require_admin)) -> dict[str, Any]:
     with SessionLocal() as session:
-        return serialize_member(get_or_404(session, Member, member_id, "会员"))
+        return {**serialize_member(get_or_404(session, Member, member_id, "会员")),
+            **member_policy.level_details(session, member_id), 'can_edit_member_level': admin.role == 'superadmin'}
 
 
 @api.post(
@@ -6212,6 +6246,9 @@ def update_member(
     changes = payload.model_dump(exclude_unset=True)
     if admin.role == "risk" and set(changes) - {"is_white"}:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="风控角色只能调整白名单状态")
+    if 'member_level' in changes and admin.role != 'superadmin':
+        raise HTTPException(403, '仅超级管理员可修改会员身份')
+    require_not_none(changes, ['member_level'])
     require_nonblank(changes, "username", "会员账号")
     require_not_none(changes, ["receive_name", "down_load", "image_url", "otherlevel", "game_addiction_time"])
     require_not_none(
@@ -6242,7 +6279,12 @@ def update_member(
         ],
     )
     with SessionLocal() as session:
-        payouts.lock(session)
+        if 'member_level' in changes:
+            member_game_id = session.scalar(select(Member.game_id).where(Member.id == member_id))
+            if member_game_id is None: raise HTTPException(404, "会员不存在")
+            device_risk.game_lock(session, member_game_id)
+        else:
+            payouts.lock(session)
         item = session.scalar(select(Member).where(Member.id == member_id).with_for_update())
         if item is None: raise HTTPException(404, "会员不存在")
         protected = {"coin", "freeze_coin", "coin_user", "coin_user_month", "coin_user_day", "parent_id", "game_id", "agent_id"}
@@ -6263,11 +6305,14 @@ def update_member(
         game_id = changes.get("game_id", item.game_id)
         validate_member_scope(session, agent_id, game_id)
         prepare_member_passwords(changes)
+        if 'member_level' in changes:
+            member_policy.change_level(session, item, changes.pop('member_level'), admin, f'/api/v1/members/{member_id}')
         for field, value in changes.items():
             setattr(item, field, value)
         session.commit()
         session.refresh(item)
-        return serialize_member(item)
+        return {**serialize_member(item), **member_policy.level_details(session, member_id),
+            'can_edit_member_level': admin.role == 'superadmin'}
 
 
 @api.delete(

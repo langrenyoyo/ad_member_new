@@ -6,14 +6,14 @@ async function mountMemberPolicy(host) {
  const status=host.querySelector('[data-status]'), area=host.querySelector('[data-form]');
  let game=0,generation=0,ledgerOffset=0;
  host.querySelector('[data-ledger]').textContent='查看奖励与分佣流水';
- const labels={require_alipay:'强制绑定支付宝',require_invite:'未绑定老账号须补绑上级',require_usage:'要求应用使用情况授权',reset_login_block:'清机额度耗尽后限制登录 24 小时',reward_enabled:'启用自定义奖励策略',commission_enabled:'启用分佣（按最终奖励另计）'};
+ const labels={require_alipay:'强制绑定支付宝',require_registration_invite:'强制推荐码注册（团长 / 代理）',require_invite:'未绑定账号须补绑上级（限制业务使用）',require_usage:'要求应用使用情况授权',reset_login_block:'清机额度耗尽后限制登录 24 小时',reward_enabled:'启用自定义奖励策略',commission_enabled:'启用分佣（按最终奖励另计）'};
  host.querySelector('[data-load]').onsubmit=async e=>{
   e.preventDefault();const version=++generation;game=Number(new FormData(e.target).get('game'));area.replaceChildren();ledgerOffset=0;host.querySelector('[data-ledgers]').replaceChildren();
   try {
    const loadedGame=game;
-   const p=await api(`/games/${loadedGame}/member-policy`);p.commission_enabled=p.commission_enabled??p.reward_enabled;if(!host.isConnected||version!==generation)return;
+   const p=await api(`/games/${loadedGame}/member-policy`);p.commission_enabled=p.commission_enabled??p.reward_enabled;p.require_registration_invite=p.require_registration_invite??true;if(!host.isConnected||version!==generation)return;
    area.innerHTML=`<form data-save>${Object.entries(labels).map(([k,l])=>`<label style="display:block"><input type="checkbox" name="${k}" ${p[k]?'checked':''}>${l}</label>`).join('')}
-   <label>新用户注册上级 <input value="必须绑定团长或代理" readonly></label>
+   <p data-registration-help>开启后，新用户必须填写本应用启用的团长或代理推荐码；关闭后可留空注册，填写时仍须通过校验。适用于密码、短信和微信首次注册。已有账号登录不受影响。</p>
    <label>白名单设备风控 <input value="固定豁免" readonly></label>
    <label>奖励基数 <select name="reward_basis"><option value="verified_cny_ecpm">可信人民币 ECPM</option><option value="fixed_ecpm">后台自定义 ECPM</option></select></label>
    ${[['fixed_ecpm','自定义 ECPM'],['coins_per_yuan','每元折算金币'],['whitelist_multiplier','白名单奖励倍率'],['max_reward','单次奖励上限'],['agent_member_id','全应用代理会员 ID（0 不指定）'],['announcement_version','公告版本']].map(([k,l])=>`<label style="display:block">${l}<input type="number" min="0" step="any" name="${k}" value="${esc(p[k])}" required></label>`).join('')}
@@ -34,7 +34,7 @@ async function mountMemberPolicy(host) {
    area.querySelector('form').append(labelBox);
    const policyForm=area.querySelector('form');
    const sections=[
-    ['会员准入',['require_alipay','require_invite','require_usage','reset_login_block']],
+    ['会员准入',['require_alipay','require_registration_invite','require_invite','require_usage','reset_login_block']],
     ['奖励与分佣',['reward_enabled','commission_enabled','reward_basis','fixed_ecpm','coins_per_yuan','whitelist_multiplier','max_reward','agent_member_id']],
     ['广告来源与公告',['sources','announcement_version','announcement']]
    ];
@@ -45,6 +45,7 @@ async function mountMemberPolicy(host) {
     return group;
    });
    policyForm.prepend(groups[0],groups[1]);policyForm.append(groups[2]);
+   groups[0].append(policyForm.querySelector('[data-registration-help]'));
    const saveButton=policyForm.querySelector(':scope > button');
    saveButton.type='submit';
    const actions=document.createElement('div');actions.className='policy-save-actions';actions.append(saveButton);policyForm.append(actions);

@@ -98,6 +98,10 @@ async function renderReviewPage(kind){
  const lastPage=all?1:Math.max(1,Math.ceil(d.total/s.pageSize));
  if(s.page>lastPage){s.page=lastPage;return renderReviewPage(kind);}
  function cell(row,key){
+  if(key==='member_level'){
+   const label=row.member_level_name||({0:'用户',1:'团长',3:'代理'})[row.member_level]||'未知';
+   return [0,1,3].includes(row.member_level)?`<button class="review-search-value" data-review-search="member_level" data-review-value="${row.member_level}">${esc(label)}</button>`:esc(label);
+  }
   if(kind==='withdrawals'&&key.startsWith('reconcile_')){
    const data=row.reconciliation||{},field=key.slice(10);
    if(field==='day')return esc(data.day||'待核验');
@@ -122,14 +126,14 @@ async function renderReviewPage(kind){
   if(kind==='withdrawals'&&key==='review_actions')return withdrawalRowActions(row,d.permissions);
   if((kind==='withdrawals'||kind==='subsidies')&&key==='behavior')return `<button class="review-behavior" data-member-behavior="single" data-member-id="${esc(row.user_id)}" data-game-id="${esc(row.game_id)}">单APP行为</button>`;
   if((kind==='withdrawals'&&['user_id','username','game_name','receive_name','receive_tel'].includes(key))||(kind==='subsidies'&&['user_id','username','receive_name','receive_tel'].includes(key)))return `<button class="review-search-value" data-review-search="${key==='game_name'?'game_id':key}" data-review-value="${esc(key==='game_name'?row.game_id:row[key])}">${esc(row[key]??'')}</button>`;
-  if((kind==='withdrawals'&&['vip','exchange_type','status','plan_status'].includes(key))||(kind==='subsidies'&&['vip','status'].includes(key))){
-   const number=Number(row[key]),tone=key==='vip'?({0:'success',1:'warning',2:'danger'})[number]:key==='status'?({0:'info',1:'primary',2:'danger',4:'danger'})[number]:({0:'info',1:'primary',2:'danger'})[number];
+  if((kind==='withdrawals'&&['exchange_type','status','plan_status'].includes(key))||(kind==='subsidies'&&key==='status')){
+   const number=Number(row[key]),tone=key==='status'?({0:'info',1:'primary',2:'danger',4:'danger'})[number]:({0:'info',1:'primary',2:'danger'})[number];
    return tone?`<span class="review-badge review-badge-${tone}">${esc(value(row,key)??'')}</span>`:baseCell(row,key);
   }
   return baseCell(row,key);
  }
  const cols=kind==='withdrawals'?[['id','Id'],['user_id','会员ID'],['good_name','商品名称'],['exchange_value','金额'],['device_manufacturer','手机型号'],['receive_name','收件人'],['receive_tel','联系方式'],['exchange_type','提现方式'],['status','状态'],['plan_status','定时'],['sub_msg','失败原因'],['review_actions','操作'],['check_status_txt','作弊审查'],['created_at','申请时间']]:[['id','Id'],['user_id','会员ID'],['tx_price','提现金额条件(元)'],['price','到账金额(元)'],['sub_msg','备注'],['status','状态'],['created_at','申请时间'],['review_actions','操作']];
- cols.splice(2,0,['username','\u8d26\u53f7'],['vip','VIP'],['parent_name','\u4e0a\u7ea7\u6635\u79f0'],['game_name','\u6e38\u620f\u540d\u79f0']);
+ cols.splice(2,0,['username','\u8d26\u53f7'],['member_level','会员身份'],['parent_name','\u4e0a\u7ea7\u6635\u79f0'],['game_name','\u6e38\u620f\u540d\u79f0']);
  if(kind==='withdrawals')cols.splice(cols.findIndex(([key])=>key==='game_name'),0,['behavior','用户行为']);
  if(kind==='subsidies')cols.splice(cols.findIndex(([key])=>key==='price')+1,0,['behavior','用户行为']);
  if(kind==='subsidies'&&d.items.some(row=>row.campaign))cols.push(['campaign','补贴活动 / 审核时限']);
@@ -154,7 +158,7 @@ async function renderReviewPage(kind){
   cols.splice(cols.findIndex(([key])=>key==='review_actions'),0,['reason','拒绝原因',false]);
   cols.push(['updated_at','更新时间',false]);
  }
- const value=(r,k)=>['created_at','updated_at'].includes(k)?profileLogTime(r[k]):k==='exchange_value'?Number(r[k]||0)/10+'元':k==='vip'?(r[k]==null?'':'V'+r[k]):k==='exchange_type'?({0:'默认',1:'支付宝',2:'微信'}[r[k]]??r[k]):k==='plan_status'?({0:'默认',1:'转账中',2:'已转账'}[r[k]]??r[k]):k==='status'?({0:'申请中',1:'审核通过',2:'审核失败',4:'审核失败'}[r[k]]):r[k];
+ const value=(r,k)=>['created_at','updated_at'].includes(k)?profileLogTime(r[k]):k==='exchange_value'?Number(r[k]||0)/10+'元':k==='exchange_type'?({0:'默认',1:'支付宝',2:'微信'}[r[k]]??r[k]):k==='plan_status'?({0:'默认',1:'转账中',2:'已转账'}[r[k]]??r[k]):k==='status'?({0:'申请中',1:'审核通过',2:'审核失败',4:'审核失败'}[r[k]]):r[k];
  const baseCell=(r,k)=>k==='review_actions'?(kind==='withdrawals'?withdrawalRowActions(r,d.permissions):`<button class="review-edit" data-subsidy-edit="${esc(r.id)}" aria-label="编辑" title="编辑">✎</button><button class="review-delete" data-subsidy-delete="${esc(r.id)}" aria-label="删除" title="删除">▣</button>`):k==='is_true'?esc(({0:'否',1:'是'})[r[k]]??''):k==='pics'?subsidyPictures(r[k]):esc(value(r,k)??'');
  $('#content').innerHTML=`<section class="withdrawal-panel"><div class="withdrawal-tabs">${labels.map(([v,l])=>`<button data-review-status="${v}" class="${s.status===v?'active':''}">${l}</button>`).join('')}</div>${reviewFilterMarkup(kind)}<div class="withdrawal-toolbar"><button id="reviewRefresh" aria-label="刷新">⟳</button></div><p id="reviewError" role="alert"></p><div class="table-wrap"><table class="ads-table"><thead><tr>${cols.map(([k,l,visible])=>`<th data-review-column="${k}" ${visible===false?'hidden':''}>${l}</th>`).join('')}</tr></thead><tbody>${d.items.map(r=>`<tr>${cols.map(([k,,visible])=>`<td data-review-cell="${k}" ${visible===false?'hidden':''}>${cell(r,k)}</td>`).join('')}</tr>`).join('')||`<tr><td colspan="${cols.length}">没有找到匹配的记录</td></tr>`}</tbody></table></div><div class="pagination"></div></section>`;
  attachReviewFilters(kind);
