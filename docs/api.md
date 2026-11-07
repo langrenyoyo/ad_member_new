@@ -117,18 +117,20 @@
 | POST | `/api/v1/withdrawals/{withdrawal_id}/reject` | 驳回提现 |
 | POST | `/api/v1/withdrawals/{withdrawal_id}/transfer` | 提现转账 |
 | GET | `/api/v1/subsidies` | 补贴列表 |
-| PATCH | `/api/v1/subsidies/{subsidy_id}` | 更新补贴 |
+| PATCH | `/api/v1/subsidies/{subsidy_id}` | 更新补贴；待审核改为通过时按配置折算并发放金币 |
 | DELETE | `/api/v1/subsidies/{subsidy_id}` | 删除补贴 |
 | POST | `/api/v1/subsidies/batch-delete` | 批量删除补贴 |
-| POST | `/api/v1/subsidies/batch-approve` | 批量同意补贴；`ids` 原子校验 |
+| POST | `/api/v1/subsidies/batch-approve` | 批量同意补贴并发放金币；`ids` 原子校验，整批事务 |
 | POST | `/api/v1/subsidies/batch-reject` | 批量驳回补贴；需要非空 `message`，原子校验 |
 | POST | `/api/v1/subsidies/batch-refuse` | 批量无理由拒绝补贴 |
-| POST | `/api/v1/subsidies/{subsidy_id}/approve` | 通过补贴 |
+| POST | `/api/v1/subsidies/{subsidy_id}/approve` | 通过补贴并按后台兑换比例发放金币 |
 | POST | `/api/v1/subsidies/{subsidy_id}/reject` | 驳回补贴 |
 | GET | `/api/v1/coin-logs` | 金币流水 |
 | GET | `/api/v1/risk/history` | 风控历史 |
 | GET | `/api/v1/risk/whitelist` | 白名单 |
 | GET | `/api/v1/risk/devices` | 设备风控；真实会员入选来源待确认，当前返回 503，不返回风险日志 |
+
+补贴到账金币 = 申请的 `price`（元）× 该游戏审核时会员策略的 `coins_per_yuan`，保留六位小数并向下截断。金额必须大于零；活动申请金额使用提交时快照。审核状态、余额、累计收入与 `type=302` 金币流水在同一事务提交，重复审核不会重复发放；驳回不发放，历史已通过记录不自动补发。详见 [APP 补贴接口](./user-app-api.md#62-图片上传与兼容申请)。
 
 ## 7. 教程
 

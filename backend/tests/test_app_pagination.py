@@ -99,6 +99,25 @@ class AppPaginationTests(unittest.TestCase):
                     response=self.client.get('/api/app/v1/'+path,params=params,headers=self.headers)
                     self.assertEqual(response.status_code,422,response.text)
 
+    def test_campaign_load_more_returns_all_45_without_duplicates(self):
+        with self.factory() as session:
+            session.add_all(m.subsidy_campaigns.SubsidyCampaign(
+                game_id=1, title=f'Extra campaign {i}', enabled=1) for i in range(40))
+            session.add(m.subsidy_campaigns.SubsidyCampaign(game_id=1, title='Closed', enabled=0))
+            session.commit()
+        ids, sizes = [], []
+        while True:
+            page = self.get('subsidy-campaigns', game_id=1, limit=20, offset=len(ids))
+            self.assertEqual(page['total'], 45)
+            sizes.append(len(page['items']))
+            ids.extend(item['id'] for item in page['items'])
+            self.assertLessEqual(len(ids), 45)
+            if not page['has_more']:
+                break
+        self.assertEqual(sizes, [20, 20, 5])
+        self.assertEqual(len(set(ids)), 45)
+        self.assertEqual(ids, sorted(ids, reverse=True))
+
     def test_filter_counts_and_empty_page_metadata(self):
         first=self.get('subsidies',status=1,page=1,page_size=1)
         self.assertEqual((first['total'],first['total_pages'],first['has_more']),(2,2,True))

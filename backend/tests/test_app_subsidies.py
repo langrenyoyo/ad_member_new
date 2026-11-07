@@ -1,9 +1,11 @@
 """APP applications and admin review share records in an isolated database."""
 import os
+import json
 import sys
 import tempfile
 import unittest
 from concurrent.futures import ThreadPoolExecutor
+from decimal import Decimal
 from io import BytesIO
 from pathlib import Path
 from threading import Barrier
@@ -39,7 +41,8 @@ class AppSubsidyTests(unittest.TestCase):
         self.client = TestClient(m.app)
         with self.factory() as s:
             s.add_all([m.Agent(id=1, name='Own'), m.Agent(id=2, name='Other'),
-                       m.Game(id=1, agent_id=1, name='Game'),
+                       m.Game(id=1, agent_id=1, name='Game',
+                              settings_json=json.dumps({'member_policy': {'coins_per_yuan': '100'}})),
                        m.Game(id=2, agent_id=2, name='Foreign'),
                        m.Game(id=3, agent_id=1, name='Disabled', status=0)])
             user = m.Member(id=1, username='applicant', agent_id=1, game_id=1, coin=50)
@@ -86,10 +89,140 @@ class AppSubsidyTests(unittest.TestCase):
         self.assertIsNotNone(result['audited_at'])
         self.assertNotIn('audit_operator_id', result)
         self.assertEqual(self.client.post(admin_path + '/approve', headers=self.admin_auth).status_code, 409)
-        # Approval is an audit result, not an automatic wallet payout.
+        with self.factory() as s:
+            self.assertEqual(s.get(m.Member, 1).coin, 575)
+            self.assertEqual(s.get(m.Member, 1).coin_user, 525)
+            log = s.scalar(select(m.CoinLog))
+            self.assertEqual((log.coin_before, log.coin, log.coin_after, log.type), (50, 525, 575, 302))
+            self.assertIn(f'#{sid}', log.remark)
+            self.assertEqual(s.scalar(select(func.count()).select_from(m.CoinLog)), 1)
+        wallet = self.client.get('/api/app/v1/wallet', headers=self.auth).json()['data']
+        self.assertEqual(wallet['coin'], 575)
+        logs = self.client.get('/api/app/v1/wallet/coin-logs', headers=self.auth).json()['data']['items']
+        self.assertEqual((logs[0]['type'], Decimal(logs[0]['coin'])), (302, 525))
+
+    def review_row(self, **changes):
+        with self.factory() as s:
+            row = m.Subsidy(user_id=1, agent_id=1, game_id=1, price=5.25)
+            for key, value in changes.items():
+                setattr(row, key, value)
+            s.add(row)
+            s.commit()
+            return row.id
+
+    def test_patch_approval_uses_new_amount_once_and_locks_final_amount(self):
+        sid = self.create().json()['data']['id']
+        path = f'/api/v1/subsidies/{sid}'
+        result = self.client.patch(path, json={'status': 1, 'price': 3.21}, headers=self.admin_auth)
+        self.assertEqual(result.status_code, 200, result.text)
+        self.assertEqual(self.client.patch(path, json={'status': 1}, headers=self.admin_auth).status_code, 200)
+        self.assertEqual(self.client.post(path+'/approve', headers=self.admin_auth).status_code, 409)
+        self.assertEqual(self.client.patch(path, json={'price': 10}, headers=self.admin_auth).status_code, 409)
+        self.assertEqual(self.client.patch(path, json={'status': 0}, headers=self.admin_auth).status_code, 409)
+        self.assertEqual(self.client.post(path+'/reject', json={'message':'late'}, headers=self.admin_auth).status_code, 409)
+        with self.factory() as s:
+            self.assertEqual(s.get(m.Member, 1).coin, 371)
+            self.assertEqual(s.get(m.Subsidy, sid).price, 3.21)
+            self.assertEqual(s.scalar(select(func.count()).select_from(m.CoinLog)), 1)
+
+    def test_batch_approval_credits_each_application_once(self):
+        ids = [self.review_row(), self.review_row(price=1.23), self.review_row(user_id=2, price=2)]
+        response = self.client.post('/api/v1/subsidies/batch-approve',
+                                    json={'ids': ids + ids[:1]}, headers=self.admin_auth)
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json()['updated'], 3)
+        self.assertEqual(self.client.post('/api/v1/subsidies/batch-approve',
+            json={'ids': ids}, headers=self.admin_auth).status_code, 409)
+        with self.factory() as s:
+            self.assertEqual(s.get(m.Member, 1).coin, 698)
+            self.assertEqual(s.get(m.Member, 2).coin, 200)
+            logs = s.scalars(select(m.CoinLog).order_by(m.CoinLog.id)).all()
+            self.assertEqual(len(logs), 3)
+            self.assertTrue(all(log.coin_before + log.coin == log.coin_after for log in logs))
+            self.assertEqual(logs[1].coin_before, logs[0].coin_after)
+
+    def test_batch_failure_rolls_back_wallet_ledger_and_audit(self):
+        ids = [self.review_row(), self.review_row(price=-1)]
+        response = self.client.post('/api/v1/subsidies/batch-approve', json={'ids': ids}, headers=self.admin_auth)
+        self.assertEqual(response.status_code, 409, response.text)
+        with self.factory() as s:
+            self.assertEqual(s.get(m.Member, 1).coin, 50)
+            self.assertEqual(s.get(m.Member, 1).coin_user, 0)
+            self.assertEqual(s.scalar(select(func.count()).select_from(m.CoinLog)), 0)
+            for sid in ids:
+                row = s.get(m.Subsidy, sid)
+                self.assertEqual(row.status, 0)
+                self.assertIsNone(row.audited_at)
+
+    def test_invalid_amount_member_scope_and_rate_do_not_approve(self):
+        for changes in ({'price': 0}, {'price': -1}, {'user_id': 999}, {'game_id': 2}, {'game_id': 999}):
+            with self.subTest(changes=changes):
+                sid = self.review_row(**changes)
+                response = self.client.post(f'/api/v1/subsidies/{sid}/approve', headers=self.admin_auth)
+                self.assertEqual(response.status_code, 409, response.text)
+        for rate in ('0', '-1', 'NaN'):
+            with self.subTest(rate=rate):
+                with self.factory() as s:
+                    s.get(m.Game, 1).settings_json = json.dumps({'member_policy': {'coins_per_yuan': rate}})
+                    s.commit()
+                sid = self.review_row()
+                self.assertEqual(self.client.post(f'/api/v1/subsidies/{sid}/approve', headers=self.admin_auth).status_code, 409)
         with self.factory() as s:
             self.assertEqual(s.get(m.Member, 1).coin, 50)
             self.assertEqual(s.scalar(select(func.count()).select_from(m.CoinLog)), 0)
+            self.assertTrue(all(row.status == 0 and row.audited_at is None for row in s.scalars(select(m.Subsidy))))
+
+    def test_decimal_reward_rounds_down_at_wallet_precision(self):
+        with self.factory() as s:
+            s.get(m.Game, 1).settings_json = json.dumps({'member_policy': {'coins_per_yuan': '1.23456789'}})
+            s.commit()
+        sid = self.review_row(price=0.01)
+        response = self.client.post(f'/api/v1/subsidies/{sid}/approve', headers=self.admin_auth)
+        self.assertEqual(response.status_code, 200, response.text)
+        with self.factory() as s:
+            self.assertEqual(s.get(m.Member, 1).coin, Decimal('50.012345'))
+            self.assertEqual(s.scalar(select(m.CoinLog)).coin, Decimal('0.012345'))
+
+    def test_concurrent_review_only_credits_once(self):
+        for second_action in ('approve', 'reject'):
+            with self.subTest(second_action=second_action):
+                sid = self.review_row()
+                barrier = Barrier(2)
+                def submit(action):
+                    client = TestClient(m.app)
+                    try:
+                        barrier.wait(timeout=10)
+                        return client.post(f'/api/v1/subsidies/{sid}/{action}',
+                            json={'message': 'review'}, headers=self.admin_auth).status_code
+                    finally:
+                        client.close()
+                with ThreadPoolExecutor(max_workers=2) as pool:
+                    outcomes = list(pool.map(submit, ['approve', second_action]))
+                self.assertEqual(sorted(outcomes), [200, 409])
+                with self.factory() as s:
+                    row = s.get(m.Subsidy, sid)
+                    logs = s.scalars(select(m.CoinLog).where(m.CoinLog.remark.like(f'补贴审核到账 #{sid}，%'))).all()
+                    self.assertEqual(len(logs), 1 if row.status == 1 else 0)
+                    self.assertEqual(s.get(m.Member, 1).coin,
+                        50 + (s.scalar(select(func.sum(m.CoinLog.coin))) or 0))
+
+    def test_concurrent_distinct_approvals_preserve_both_wallet_credits(self):
+        ids = [self.review_row(), self.review_row()]
+        barrier = Barrier(2)
+        def submit(sid):
+            client = TestClient(m.app)
+            try:
+                barrier.wait(timeout=10)
+                return client.post(f'/api/v1/subsidies/{sid}/approve', headers=self.admin_auth).status_code
+            finally:
+                client.close()
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            self.assertEqual(list(pool.map(submit, ids)), [200, 200])
+        with self.factory() as s:
+            self.assertEqual(s.get(m.Member, 1).coin, 1100)
+            logs = s.scalars(select(m.CoinLog).order_by(m.CoinLog.id)).all()
+            self.assertEqual(len(logs), 2)
+            self.assertEqual(logs[1].coin_before, logs[0].coin_after)
 
     def test_duplicate_reject_and_resubmit(self):
         sid = self.create().json()['data']['id']
@@ -100,6 +233,9 @@ class AppSubsidyTests(unittest.TestCase):
         self.assertEqual(rejected.status_code, 200, rejected.text)
         result = self.client.get(f'/api/app/v1/subsidies/{sid}', headers=self.auth).json()['data']
         self.assertEqual((result['status'], result['target_status'], result['sub_msg']), (2, 4, '请补充凭证'))
+        with self.factory() as s:
+            self.assertEqual(s.get(m.Member, 1).coin, 50)
+            self.assertEqual(s.scalar(select(func.count()).select_from(m.CoinLog)), 0)
         self.assertEqual(self.create().status_code, 201)
 
     def test_ownership_auth_and_no_client_audit(self):
@@ -244,6 +380,29 @@ class AppSubsidyTests(unittest.TestCase):
         info = self.client.get(path, headers=self.auth).json()['data']
         self.assertEqual((info['used'], info['remaining']), (1, 49))
         self.assertEqual(self.client.post(path+'/applications', json=self.campaign_body, headers=self.auth).status_code, 410)
+
+    def test_campaign_approval_uses_application_amount_and_current_game_rate(self):
+        cid = self.campaign_setup()
+        response = self.client.post(f'/api/app/v1/subsidy-campaigns/{cid}/applications',
+                                    json=self.campaign_body, headers=self.auth)
+        self.assertEqual(response.status_code, 201, response.text)
+        sid = response.json()['data']['id']
+        with self.factory() as s:
+            s.get(m.subsidy_campaigns.SubsidyCampaign, cid).reward_cents = 2400
+            s.get(m.Game, 1).settings_json = json.dumps({'member_policy': {'coins_per_yuan': '125'}})
+            s.commit()
+        path = f'/api/v1/subsidies/{sid}'
+        self.assertEqual(self.client.patch(path, json={'status': 1, 'price': 24}, headers=self.admin_auth).status_code, 422)
+        approved = self.client.post(path+'/approve', headers=self.admin_auth)
+        self.assertEqual(approved.status_code, 200, approved.text)
+        self.assertEqual(self.client.post(path+'/approve', headers=self.admin_auth).status_code, 409)
+        replay = self.client.post(f'/api/app/v1/subsidy-campaigns/{cid}/applications',
+                                  json=self.campaign_body, headers=self.auth)
+        self.assertEqual(replay.json()['data']['id'], sid)
+        with self.factory() as s:
+            self.assertEqual(s.get(m.Member, 1).coin, 1550)  # original 12 yuan * current 125 coins/yuan
+            self.assertEqual(s.scalar(select(m.CoinLog)).coin, 1500)
+            self.assertEqual(s.scalar(select(func.count()).select_from(m.CoinLog)), 1)
 
     def test_campaign_last_slot_concurrency(self):
         cid = self.campaign_setup(quota=1)

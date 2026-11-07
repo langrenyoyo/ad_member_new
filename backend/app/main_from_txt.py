@@ -1796,6 +1796,64 @@ def mark_audit(item: Withdrawal | Subsidy, admin: AdminUser) -> None:
     item.audited_at = now()
 
 
+SUBSIDY_COIN_LOG_TYPE = 302
+
+
+def grant_subsidy_coins(session: Session, item: Subsidy) -> Decimal:
+    """Credit the applicant when a subsidy transitions to approved.
+
+    The subsidy amount is stored on the application as a snapshot in yuan.
+    Convert it with the game's current member-policy exchange rate and write
+    the wallet change and its ledger row in the same transaction as the
+    review.  Callers must hold the subsidy row's review lock and only invoke
+    this for a pending application.
+    """
+    reward_yuan = Decimal(str(item.price or 0))
+    if not reward_yuan.is_finite() or reward_yuan <= 0:
+        raise HTTPException(status_code=409, detail="补贴金额异常，无法到账")
+    member = session.scalar(select(Member).where(Member.id == item.user_id).with_for_update())
+    if member is None:
+        raise HTTPException(status_code=409, detail="补贴所属会员不存在，无法到账")
+    game = session.get(Game, item.game_id)
+    if game is None or game.agent_id != item.agent_id or member.agent_id != item.agent_id:
+        raise HTTPException(status_code=409, detail="补贴所属游戏或主体不匹配，无法到账")
+    try:
+        rule = member_policy.policy(session, item.game_id)
+    except ValueError:
+        raise HTTPException(status_code=409, detail="游戏金币兑换比例配置异常，无法到账") from None
+    coins_per_yuan = Decimal(str(rule.coins_per_yuan))
+    if not coins_per_yuan.is_finite() or coins_per_yuan <= 0:
+        raise HTTPException(status_code=409, detail="游戏金币兑换比例无效，无法到账")
+    reward = coin_amount(reward_yuan * coins_per_yuan)
+    if reward <= 0:
+        raise HTTPException(status_code=409, detail="补贴折算金币为零，无法到账")
+    before = coin_amount(member.coin)
+    member.coin = coin_amount(before + reward)
+    member.coin_user = coin_amount(coin_amount(member.coin_user) + reward)
+    session.add(CoinLog(
+        user_id=member.id,
+        agent_id=member.agent_id,
+        game_id=item.game_id,
+        coin_before=before,
+        coin=reward,
+        coin_after=member.coin,
+        type=SUBSIDY_COIN_LOG_TYPE,
+        remark=f"补贴审核到账 #{item.id}，{reward_yuan}元 × {coins_per_yuan}金币/元",
+    ))
+    return reward
+
+
+def complete_subsidy_review(session: Session, item: Subsidy, target_status: int, admin: AdminUser) -> None:
+    # The locked pending -> final transition is the idempotency guard. Wallet,
+    # ledger and audit state commit together; an error rolls all three back.
+    if item.status != 0:
+        raise HTTPException(409, "补贴记录已处理，不能重复审核")
+    if target_status == 1:
+        grant_subsidy_coins(session, item)
+    item.status = target_status
+    mark_audit(item, admin)
+
+
 def get_or_404(session: Session, model: Any, item_id: int, label: str) -> Any:
     item = session.get(model, item_id)
     if item is None:
@@ -5141,6 +5199,7 @@ class SubsidyDeleteBatch(BaseModel):
 def remove_subsidies(ids: list[int], request: Request, admin: AdminUser) -> int:
     unique_ids = set(ids)
     with SessionLocal() as session:
+        payouts.lock(session)
         rows = session.scalars(select(Subsidy).where(Subsidy.id.in_(unique_ids)).with_for_update()).all()
         if len(rows) != len(unique_ids):
             raise HTTPException(status_code=404, detail="补贴记录不存在")
@@ -5166,16 +5225,18 @@ def _batch_subsidy_update(ids: list[int], target_status: int, message: str, admi
     if target_status == 2 and not allow_reasonless and not message.strip():
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="拒绝原因不能为空")
     with SessionLocal() as session:
-        rows = session.scalars(select(Subsidy).where(Subsidy.id.in_(ids))).all()
+        payouts.lock(session)
+        rows = session.scalars(select(Subsidy).where(Subsidy.id.in_(ids)).order_by(Subsidy.id).with_for_update()).all()
         if len(rows) != len(set(ids)):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="补贴申请不存在")
         for item in rows:
             if item.status != 0:
                 raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="只能处理申请中的补贴")
-            item.status = target_status
+        # Acquire recipient wallet locks in a stable order across batches.
+        for item in sorted(rows, key=lambda row: (row.user_id, row.id)):
             if message.strip():
                 item.sub_msg = message.strip()
-            mark_audit(item, admin)
+            complete_subsidy_review(session, item, target_status, admin)
         session.commit()
         return {"updated": len(rows), "items": [serialize_subsidy(item) for item in rows]}
 
@@ -6515,6 +6576,7 @@ def update_subsidy(
         if not changes["sub_msg"]:
             raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="拒绝补贴时必须填写原因")
     with SessionLocal() as session:
+        payouts.lock(session)
         item = session.scalar(select(Subsidy).where(Subsidy.id == subsidy_id).with_for_update())
         if item is None:
             raise HTTPException(status_code=404, detail="补贴记录不存在")
@@ -6523,13 +6585,16 @@ def update_subsidy(
             for field in ('tx_price', 'price', 'pics'):
                 if field in changes and changes[field] != getattr(item, field):
                     raise HTTPException(422, '活动申请的条件金额、补贴金额和凭证不可修改，请审核通过或驳回')
-        if "status" in changes and changes["status"] != item.status:
-            if item.status != 0:
-                raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="补贴记录已处理，不能重复审核")
-            if changes["status"] in (1, 2, 4):
-                mark_audit(item, admin)
+        if item.status != 0 and any(field in changes and changes[field] != getattr(item, field)
+                                    for field in ('tx_price', 'price', 'pics')):
+            raise HTTPException(409, "已处理的补贴金额和凭证不可修改")
+        target_status = changes.pop("status", item.status)
+        if target_status != item.status and item.status != 0:
+            raise HTTPException(status_code=409, detail="补贴记录已处理，不能重复审核")
         for field, value in changes.items():
             setattr(item, field, value)
+        if target_status != item.status:
+            complete_subsidy_review(session, item, target_status, admin)
         session.add(AdminOperation(admin_id=admin.id, title=f"编辑补贴记录（{subsidy_id}）", path=request.url.path,
                                    ip=request.client.host if request.client else ""))
         session.commit()
@@ -6554,13 +6619,13 @@ def approve_subsidy(
     admin: AdminUser = Depends(allow_roles("reviewer")),
 ) -> dict[str, Any]:
     with SessionLocal() as session:
-        item = get_or_404(session, Subsidy, subsidy_id, "鐞涖儴鍒涚拋鏉跨秿")
-        if item.status != 0:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="补贴记录已处理，不能重复审核")
-        item.status = 1
+        payouts.lock(session)
+        item = session.scalar(select(Subsidy).where(Subsidy.id == subsidy_id).with_for_update())
+        if item is None:
+            raise HTTPException(status_code=404, detail="补贴记录不存在")
         if payload and payload.message:
             item.sub_msg = payload.message.strip()
-        mark_audit(item, admin)
+        complete_subsidy_review(session, item, 1, admin)
         session.commit()
         session.refresh(item)
         return serialize_subsidy(item)
@@ -6576,12 +6641,12 @@ def reject_subsidy(
     if not message:
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, detail="拒绝原因不能为空")
     with SessionLocal() as session:
-        item = get_or_404(session, Subsidy, subsidy_id, "鐞涖儴鍒涚拋鏉跨秿")
-        if item.status != 0:
-            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="补贴记录已处理，不能重复审核")
-        item.status = 2
+        payouts.lock(session)
+        item = session.scalar(select(Subsidy).where(Subsidy.id == subsidy_id).with_for_update())
+        if item is None:
+            raise HTTPException(status_code=404, detail="补贴记录不存在")
         item.sub_msg = message
-        mark_audit(item, admin)
+        complete_subsidy_review(session, item, 2, admin)
         session.commit()
         session.refresh(item)
         return serialize_subsidy(item)
