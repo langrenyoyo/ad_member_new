@@ -1,6 +1,9 @@
 """Operational insights, reviewed ad categories and opt-in device observations."""
 import json
 import math
+import hashlib
+import secrets
+from uuid import UUID
 from typing import Literal
 from datetime import timedelta
 from decimal import Decimal
@@ -63,6 +66,7 @@ def review_category(ad_session_id: str, body: ReviewInput, admin=Depends(m.allow
 def label_summary(s, member_id, rule):
     # Unknown/unreviewed impressions remain in the denominator; SDK strings never classify money.
     ids = s.scalars(select(m.AppAdSession.id).where(m.AppAdSession.member_id == member_id,
+        m.AppAdSession.ad_type == 'rewarded',
         or_(m.AppAdSession.impressed_at.is_not(None), m.AppAdSession.status == 'rewarded')).order_by(
         func.coalesce(m.AppAdSession.completed_at, m.AppAdSession.impressed_at).desc(),
         m.AppAdSession.id.desc()).limit(rule.label_window)).all()
@@ -88,6 +92,9 @@ class AdMetadata(BaseModel):
     title: str = Field(default='',max_length=255)
     app_name: str = Field(default='',max_length=255)
     creative_id: str = Field(default='',max_length=255)
+    app_package: str = Field(default='',max_length=255)
+    advertiser: str = Field(default='',max_length=255)
+    network_placement_id: str = Field(default='',max_length=255)
     extension_keys: list[str] = Field(default_factory=list,max_length=50)
     e_c: str = Field(default='', max_length=8192)
     e_c_cny: str = Field(default='', max_length=8192)
@@ -101,34 +108,138 @@ class AdMetadata(BaseModel):
 @m.app_api.post('/ads/{ad_session_id}/metadata')
 def ad_metadata(ad_session_id: str, body: AdMetadata, member=Depends(m.require_app_member)):
     with m.SessionLocal() as s:
-        ad=m._app_session(s,ad_session_id,member,body.session_token)
+        ad=m._app_session(s,ad_session_id,member,body.session_token,metadata_only=True)
         if ad.created_at.replace(tzinfo=m.UTC)<m.now()-timedelta(hours=24):
             raise HTTPException(409,'广告元数据上报窗口已结束')
         key='metadata:'+ad.id+':'+body.event
         if s.scalar(select(m.AppAdEvent.id).where(m.AppAdEvent.event_id==key)):
             return {'data':{'recorded':False}}
         if any(len(k)>100 for k in body.extension_keys):raise HTTPException(422,'扩展字段名称过长')
-        data=body.model_dump(mode='json', exclude={'session_token','e_c','e_c_cny'})
-        data['trust']='client_reported'
-        # Diagnostic only: encryption is not a signature or proof of a unique display.
-        from .taku_ecpm import verify_ecpm, EcpmConfigurationError, EcpmValidationError
-        revenue = {'status':'missing', 'settlement_eligible':False,
-                   'ciphertext_present':{'USD':bool(body.e_c),'CNY':bool(body.e_c_cny)}}
-        if body.e_c or body.e_c_cny or body.s_id:
-            try:
-                proof = verify_ecpm(ad.game_id, body.source_id, body.e_c, body.e_c_cny, body.s_id)
-                revenue.update(status='decrypted', prices=[{
-                    **price, 'estimated_revenue':format(Decimal(price['ecpm']) / Decimal(1000), 'f')
-                } for price in proof['prices']])
-            except EcpmConfigurationError:
-                revenue['status']='configuration_unavailable'
-            except EcpmValidationError:
-                revenue['status']='invalid_proof'
-        data['revenue_diagnostic']=revenue
+        data=metadata_payload(body, ad.game_id)
         s.add(m.AppAdEvent(event_id=key,ad_session_id=ad.id,member_id=member.id,
             event_type='client_metadata',result_json=json.dumps(data,ensure_ascii=False)))
         s.commit()
         return {'data':{'recorded':True}}
+
+
+def metadata_payload(body, game_id):
+    if any(len(k)>100 for k in body.extension_keys):
+        raise HTTPException(422,'扩展字段名称过长')
+    data=body.model_dump(mode='json', exclude={'session_token','e_c','e_c_cny'})
+    data['trust']='client_reported'
+    # Diagnostic only: encryption is not a signature or proof of a unique display.
+    from .taku_ecpm import verify_ecpm, EcpmConfigurationError, EcpmValidationError
+    revenue = {'status':'missing', 'settlement_eligible':False,
+               'ciphertext_present':{'USD':bool(body.e_c),'CNY':bool(body.e_c_cny)}}
+    if body.e_c or body.e_c_cny or body.s_id:
+        try:
+            proof = verify_ecpm(game_id, body.source_id, body.e_c, body.e_c_cny, body.s_id)
+            revenue.update(status='decrypted', prices=[{
+                **price, 'estimated_revenue':format(Decimal(price['ecpm']) / Decimal(1000), 'f')
+            } for price in proof['prices']])
+        except EcpmConfigurationError:
+            revenue['status']='configuration_unavailable'
+        except EcpmValidationError:
+            revenue['status']='invalid_proof'
+    data['revenue_diagnostic']=revenue
+    return data
+
+
+SECONDARY_TYPES = {'splash': (1, '开屏'), 'banner': (2, 'Banner'),
+                   'interstitial': (3, '插屏'), 'native': (4, '信息流')}
+
+
+class SecondaryAdEvent(AdMetadata):
+    session_token: str = Field(default='', max_length=256)
+    impression_id: UUID
+    game_id: int = Field(ge=1)
+    ad_type: Literal['splash', 'banner', 'interstitial', 'native']
+    placement: Literal['splash', 'banner', 'interstitial', 'native']
+    ad_unit_id: str = Field(min_length=1, max_length=255)
+    event: Literal['shown', 'clicked', 'closed']
+    occurred_at: m.datetime
+
+
+@m.app_api.post('/ads/secondary-events', status_code=202)
+def secondary_ad_event(body: SecondaryAdEvent, member=Depends(m.require_app_member)):
+    """Advisory SDK telemetry. No reward token, completion or balance mutation."""
+    with m.SessionLocal() as s:
+        m.device_risk.game_lock(s, body.game_id)
+        game = m._app_game_for_member(s, member, body.game_id)
+        config = m.game_ad_config(game)
+        if body.ad_type != body.placement:
+            raise HTTPException(422, '广告位置与类型不一致')
+        configured_unit = config['placements'][body.placement]['unit_id']
+        if not configured_unit or configured_unit != body.ad_unit_id:
+            raise HTTPException(422, '副广广告位与应用配置不一致')
+        occurred = body.occurred_at
+        if occurred.tzinfo is None or not m.now()-timedelta(hours=24) <= occurred <= m.now()+timedelta(minutes=5):
+            raise HTTPException(422, '广告事件时间超出上报窗口')
+        digest = hashlib.sha256(f'{member.id}:{game.id}:{body.impression_id}'.encode()).hexdigest()
+        sid, request_id = 'secondary_'+digest[:48], 'secondary_'+digest
+        ad = s.get(m.AppAdSession, sid)
+        if ad and (ad.ad_type != body.ad_type or ad.ad_unit_id != body.ad_unit_id):
+            raise HTTPException(409, '展示标识已用于其他广告')
+        if ad is None:
+            ad = m.AppAdSession(id=sid, member_id=member.id, agent_id=member.agent_id,
+                game_id=game.id, device_id='', client_request_id=str(body.impression_id),
+                request_id=request_id, placement=body.placement, ad_type=body.ad_type,
+                provider='taku_secondary', ad_unit_id=body.ad_unit_id, reward_coin=0,
+                status='issued', session_token_hash=m._token_hash(secrets.token_urlsafe(32)),
+                expires_at=m.now()+timedelta(hours=24))
+            s.add(ad)
+            s.flush()
+        key = 'metadata:'+sid+':'+body.event
+        if s.scalar(select(m.AppAdEvent.id).where(m.AppAdEvent.event_id == key)):
+            return {'data': {'recorded': False, 'ad_session_id': sid}}
+        data = metadata_payload(body, game.id)
+        data['impression_id'] = str(body.impression_id)
+        s.add(m.AppAdEvent(event_id=key, ad_session_id=sid, member_id=member.id,
+            event_type='client_metadata', result_json=json.dumps(data, ensure_ascii=False)))
+        if body.event == 'shown':
+            ad.impressed_at = occurred
+            if ad.status == 'issued': ad.status = 'impressed'
+            fu_type, label = SECONDARY_TYPES[body.ad_type]
+            s.add(m.AdRecord(user_id=member.id, user_account=member.username,
+                parent_id=member.parent_id, agent_id=member.agent_id, game_id=game.id,
+                game_name=game.name, receive_name=member.receive_name or '',
+                ad_network_platform_name=body.network or 'TAKU', ad_type='副广',
+                sub_ad_type=label, ad_group='副广', is_fu=1, fu_type=fu_type, is_look=1,
+                status='成功', coin=0, estimate_income=0, watched_at=occurred,
+                ad_code=body.ad_unit_id, request_id=request_id))
+        elif body.event == 'closed':
+            ad.status = 'closed'
+        s.commit()
+        return {'data': {'recorded': True, 'ad_session_id': sid}}
+
+
+def metadata_summary(metadata, review=None):
+    def first(key):
+        return next((e[key] for e in metadata if e.get(key)), '')
+    title = review.title if review and review.title else first('title') or first('app_name')
+    return {'ad_title': title, 'ad_app_name': first('app_name'),
+        'ad_app_package': first('app_package'), 'ad_creative_id': first('creative_id'),
+        'ad_advertiser': first('advertiser'), 'ad_source_id': first('source_id'),
+        'ad_network': first('network'), 'ad_network_placement_id': first('network_placement_id'),
+        'ad_content_status': 'reported' if title else 'sdk_not_provided' if metadata else 'not_collected',
+        'ad_content_source': 'manual_review' if review and review.title else 'client_reported' if title else 'unknown',
+        'ad_behaviors': sorted({e.get('event') for e in metadata if e.get('event') in
+            ('shown', 'clicked', 'downloaded', 'installed', 'opened')})}
+
+
+def enrich_app_history(s, rows):
+    ids = [r['id'] for r in rows]
+    grouped = {}
+    for e in s.scalars(select(m.AppAdEvent).where(m.AppAdEvent.ad_session_id.in_(ids),
+            m.AppAdEvent.event_type == 'client_metadata').order_by(m.AppAdEvent.id)):
+        grouped.setdefault(e.ad_session_id, []).append(json.loads(e.result_json))
+    reviews = {r.ad_session_id:r for r in s.scalars(select(AdReview).where(AdReview.ad_session_id.in_(ids)))}
+    for row in rows:
+        row.update(metadata_summary(grouped.get(row['id'], []), reviews.get(row['id'])))
+        kind = row['ad_type']
+        row['is_fu'] = int(kind in SECONDARY_TYPES)
+        row['fu_type'] = SECONDARY_TYPES[kind][0] if kind in SECONDARY_TYPES else None
+        row['ad_type_label'] = '副广 · '+SECONDARY_TYPES[kind][1] if kind in SECONDARY_TYPES else '激励视频' if kind == 'rewarded' else kind
 
 
 def enrich_ad_list(s, rows):
@@ -149,8 +260,7 @@ def enrich_ad_list(s, rows):
         review = reviews.get(ad.id) if ad else None
         metadata = events.get(ad.id, []) if ad else []
         row['ad_category'] = review.category if review else 'unknown'
-        row['ad_title'] = review.title if review and review.title else next(
-            (e.get('title') or e.get('app_name') for e in metadata if e.get('title') or e.get('app_name')), '')
+        row.update(metadata_summary(metadata, review))
         row['ad_behaviors'] = sorted({e.get('event') for e in metadata if e.get('event') in
             ('shown','clicked','downloaded','installed','opened')} | ({'shown'} if ad and ad.impressed_at else set()))
 

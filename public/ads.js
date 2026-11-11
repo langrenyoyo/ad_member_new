@@ -1,4 +1,4 @@
-﻿function adsDefaults(){const day=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());return {is_fu:'0',watched_range:`${day} 00:00:00 - ${day} 23:59:59`}}
+﻿function adsDefaults(){const day=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());return {is_fu:'',watched_range:`${day} 00:00:00 - ${day} 23:59:59`}}
 const adsPageSizes=[10,15,20,25,50,'All'];
 const adsSortFields={ecpm:'pre_ecpm',coin:'estimate_income',ad_network_platform_name:'ad_network_platform_name',watched_at:'create_time',request_id:'request_id'};
 function adsHeader([key,label]){
@@ -39,6 +39,7 @@ function renderAdsPagination(total,count){
 }
 const adCols=[['id','Id'],['parent_id','上级Id'],['parent_payment_name','上级支付宝姓名'],['user_id','会员ID'],['user_account','用户账号'],['receive_name','支付宝姓名'],['game_name','游戏名称'],['agent_name','代理商名称'],['ecpm','ECPM'],['coin','金币'],['ad_network_platform_name','广告平台'],['is_lottery','抽奖'],['is_rw','任务'],['reward_type','奖励类型'],['ad_type','广告类型'],['sub_ad_type','副广类型'],['status','状态'],['watched_at','观看时间'],['ad_code','广告代码位'],['request_id','广告request_id'],['trans_id','交易trans_id']];
 adCols.push(['ad_category','广告品类'],['ad_title','广告名称'],['ad_behaviors','看广行为']);
+adCols.push(['ad_app_name','广告应用'],['ad_app_package','广告包名'],['ad_creative_id','素材ID'],['ad_network','实际广告来源'],['ad_source_id','广告源ID'],['ad_advertiser','广告主'],['ad_content_status','内容采集状态']);
 if(!adsState.visible.size)adCols.forEach(([key])=>{if(key!=='agent_name')adsState.visible.add(key)});
 function attachAdsTools(){
  const tools=document.querySelector('.ads-tools'),filters=document.querySelector('#adsFilters'); if(!tools||!filters)return;
@@ -99,7 +100,9 @@ function attachAdsCellSearch(){
 }
 function adsCell(row,key){
  if(key==='ad_category')return esc(({game:'游戏',social:'交友',ecommerce:'电商购物',finance:'金融理财'})[row[key]]||'未知');
- if(key==='ad_title')return esc(row[key]||'未知');
+ if(['ad_title','ad_app_name','ad_app_package','ad_creative_id','ad_network','ad_source_id','ad_network_placement_id','ad_advertiser'].includes(key))return esc(String(row[key]??'').trim()?row[key]:'未知');
+ if(key==='ad_content_status')return esc(({reported:'已采集',sdk_not_provided:'SDK未提供名称',not_collected:'未采集'})[row[key]]||'未采集');
+ if(key==='sub_ad_type'&&Number(row.is_fu)===0)return '—';
  if(key==='ad_behaviors')return esc((row[key]||[]).map(v=>({shown:'展示',clicked:'点击',downloaded:'下载',installed:'安装',opened:'打开'})[v]).join('、')||'未知');
  if(key==='callback_ecpm'||key==='client_ecpm'||key==='settlement_ecpm'){const v=row[key];return v==null?'—':`<span class="ad-price">${esc(Number(v).toFixed(4))}</span>`;}
  if(key==='risk_tags'){const tags=Array.isArray(row.risk_tags)?row.risk_tags:[];return tags.length?tags.map(t=>`<span class="label label-${t.level==='danger'?'danger':t.level==='warning'?'warning':'info'}">${esc(t.label||t)}</span>`).join(' '):'<span class="label label-success">正常</span>';}

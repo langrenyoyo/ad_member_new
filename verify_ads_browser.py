@@ -7,7 +7,7 @@ with sync_playwright() as p:
     page.fill('#loginForm [name=username]','18532306918');page.fill('#loginForm [name=password]','123456')
     page.locator('#loginForm').evaluate('(f)=>f.requestSubmit()')
     page.wait_for_timeout(2000); print('url',page.url,'error',page.locator('#loginError').text_content())
-    assert page.locator('.ads-table th:visible').count()==20
+    assert page.locator('.ads-table th:visible').count()==page.evaluate('adCols.length-1')
     page.screenshot(path='visual-baseline/verified/ads.png',full_page=True)
     page.fill('#adsFilters [name=watched_range]','')
     page.locator('#adsFilters [name=is_fu]').select_option('')
@@ -29,7 +29,7 @@ with sync_playwright() as p:
     with page.expect_response(lambda response:'/api/v1/ads?' in response.url):
         page.locator('#adsFilters [type=reset]').click()
     assert page.locator('#adsFilters [name=user_id]').input_value()==''
-    assert page.locator('#adsFilters [name=is_fu]').input_value()=='0'
+    assert page.locator('#adsFilters [name=is_fu]').input_value()==''
     assert not errors,errors
     browser.close()
     print('Ads browser checks passed: filters, empty state, retention, reset, export')

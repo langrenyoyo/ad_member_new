@@ -24,7 +24,7 @@ with sync_playwright() as p:
     page.fill('#loginForm [name=password]','123456')
     page.locator('#loginForm').evaluate('f=>f.requestSubmit()')
     page.locator('#adsSearchToggle').wait_for()
-    assert queries[0]['is_fu']==['0']
+    assert 'is_fu' not in queries[0]
     page.locator('[data-ads-lookup=agent_name]').click()
     expect(page.locator('.sp_result_area:visible li[pkey="6301"]')).to_have_text('代理 <>&')
     page.locator('.sp_result_area:visible li[pkey="6301"]').click()
@@ -54,7 +54,7 @@ with sync_playwright() as p:
     assert 'coin_min' not in exports[-1] and 'coin_max' not in exports[-1]
     with page.expect_response(lambda r:'/api/v1/ads?' in r.url):
         page.locator('#adsFilters [type=reset]').click()
-    assert queries[-1]['is_fu']==['0'] and 'agent_id' not in queries[-1]
+    assert 'is_fu' not in queries[-1] and 'agent_id' not in queries[-1]
     assert 'estimate_income_min' not in queries[-1] and 'estimate_income_max' not in queries[-1]
     expect(page.locator('#adsFilters [name=agent_id]')).to_have_value('')
     browser.close()

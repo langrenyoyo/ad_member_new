@@ -3205,20 +3205,20 @@ def app_ad_request(payload: AppAdRequest, request: Request, member: Member = Dep
 
 
 def _app_session(session: Session, session_id: str, member: Member, token: str,
-                 allow_late_completion: bool = False) -> AppAdSession:
+                 allow_late_completion: bool = False, metadata_only: bool = False) -> AppAdSession:
     if session.bind.dialect.name == "sqlite":
         session.execute(text("BEGIN IMMEDIATE"))
     session.scalar(select(Member).where(Member.id == member.id).with_for_update())
     item = session.scalar(select(AppAdSession).where(AppAdSession.id == session_id).with_for_update())
     if item is None or item.member_id != member.id or not hmac.compare_digest(item.session_token_hash, _token_hash(token)):
         raise HTTPException(status_code=404, detail="Ad session not found")
-    if item.expires_at.replace(tzinfo=UTC) <= now() and item.status not in ("rewarded", "failed", "expired"):
+    if not metadata_only and item.expires_at.replace(tzinfo=UTC) <= now() and item.status not in ("rewarded", "failed", "expired"):
         if (not allow_late_completion or item.provider.lower() != "taku"
                 or item.created_at.replace(tzinfo=UTC) < now() - timedelta(days=7)):
             item.status = "expired"
             raise HTTPException(status_code=409, detail="Ad session expired")
         item.status = "expired"
-    if (allow_late_completion and item.provider.lower() == "taku" and item.status == "expired"
+    if (not metadata_only and allow_late_completion and item.provider.lower() == "taku" and item.status == "expired"
             and item.created_at.replace(tzinfo=UTC) < now() - timedelta(days=7)):
         raise HTTPException(status_code=409, detail="Ad session completion window expired")
     return item
@@ -3251,6 +3251,8 @@ def app_ad_complete(ad_session_id: str, payload: AppAdEventRequest, member: Memb
     with SessionLocal() as session:
         item = _app_session(session, ad_session_id, member, payload.session_token,
                             allow_late_completion=True)
+        if item.provider == 'taku_secondary':
+            raise HTTPException(409, '副广记录不参与激励结算')
         if item.provider.lower() == "taku":
             if item.status == "rewarded":
                 _ad_flow_log(session, item, "client_complete", detail={"event_id": payload.event_id, "already_rewarded": True})
@@ -3464,13 +3466,16 @@ def app_ad_history(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, 
                    page: int | None = Query(None, ge=1, le=100000000), page_size: int | None = Query(None, ge=1, le=100)) -> dict[str, Any]:
     limit, offset = app_page_window(limit, offset, page, page_size)
     with SessionLocal() as session:
-        conditions = [AppAdSession.member_id == member.id]
+        conditions = [AppAdSession.member_id == member.id,
+            or_(AppAdSession.provider != 'taku_secondary', AppAdSession.impressed_at.is_not(None))]
         if game_id: conditions.append(AppAdSession.game_id == game_id)
         stmt = select(AppAdSession).where(*conditions).order_by(AppAdSession.created_at.desc(), AppAdSession.id.desc()).offset(offset).limit(limit)
         items = session.scalars(stmt).all(); total = session.scalar(select(func.count()).select_from(AppAdSession).where(*conditions)) or 0
         log_ids = [x.coin_log_id for x in items if x.coin_log_id is not None]
         settled_coins = dict(session.execute(select(CoinLog.id, CoinLog.coin).where(CoinLog.id.in_(log_ids))).all()) if log_ids else {}
-        return {"data": {"items": [{"id": x.id, "game_id": x.game_id, "placement": x.placement, "ad_type": x.ad_type, "provider": x.provider, "status": x.status, "coin_added": float(settled_coins.get(x.coin_log_id, 0)) if x.status == "rewarded" else 0, "request_id": x.request_id, "watched_at": stringify(x.completed_at or x.impressed_at), "created_at": stringify(x.created_at)} for x in items], **app_page_metadata(total, limit, offset)}, "request_id": secrets.token_urlsafe(12)}
+        rows = [{"id": x.id, "game_id": x.game_id, "placement": x.placement, "ad_type": x.ad_type, "provider": x.provider, "status": x.status, "coin_added": float(settled_coins.get(x.coin_log_id, 0)) if x.status == "rewarded" else 0, "request_id": x.request_id, "watched_at": stringify(x.completed_at or x.impressed_at), "created_at": stringify(x.created_at)} for x in items]
+        member_insights.enrich_app_history(session, rows)
+        return {"data": {"items": rows, **app_page_metadata(total, limit, offset)}, "request_id": secrets.token_urlsafe(12)}
 
 
 def _taku_extra_data(item: AppAdSession) -> str:
