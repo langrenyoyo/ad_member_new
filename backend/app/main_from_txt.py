@@ -3466,8 +3466,12 @@ def app_ad_history(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, 
                    page: int | None = Query(None, ge=1, le=100000000), page_size: int | None = Query(None, ge=1, le=100)) -> dict[str, Any]:
     limit, offset = app_page_window(limit, offset, page, page_size)
     with SessionLocal() as session:
+        # Filter before slicing/counting: secondary telemetry remains in admin records.
         conditions = [AppAdSession.member_id == member.id,
-            or_(AppAdSession.provider != 'taku_secondary', AppAdSession.impressed_at.is_not(None))]
+            AppAdSession.game_id == member.game_id,
+            AppAdSession.ad_type == 'rewarded', AppAdSession.placement == 'rewarded',
+            AppAdSession.provider != 'taku_secondary',
+            or_(AppAdSession.impressed_at.is_not(None), AppAdSession.completed_at.is_not(None))]
         if game_id: conditions.append(AppAdSession.game_id == game_id)
         stmt = select(AppAdSession).where(*conditions).order_by(AppAdSession.created_at.desc(), AppAdSession.id.desc()).offset(offset).limit(limit)
         items = session.scalars(stmt).all(); total = session.scalar(select(func.count()).select_from(AppAdSession).where(*conditions)) or 0
@@ -6784,6 +6788,7 @@ from . import payouts
 from . import device_risk
 from . import member_policy
 from . import sms_auth
+from . import invite_landing
 from . import member_insights
 from . import taku_settings
 from . import taku_reports

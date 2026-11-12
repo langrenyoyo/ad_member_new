@@ -1,0 +1,5227 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "鸭只易记 用户 APP API",
+    "version": "2026-11-08-local",
+    "description": "当前本地代码契约，包含尚未部署的副广采集。服务器地址是占位地址，请替换。响应细节见配套中文接入文档。"
+  },
+  "paths": {
+    "/api/app/v1/auth/register": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Register",
+        "operationId": "app_register_api_app_v1_auth_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppRegisterRequest"
+              },
+              "example": {
+                "device_id": "app-install-000000000001",
+                "app_id": "ad-member",
+                "app_version": "1.0.0",
+                "platform": "android",
+                "username": "13800000000",
+                "password": "Example123!",
+                "game_id": 238,
+                "invite_code": "A1B2C3"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response App Register Api App V1 Auth Register Post"
+                },
+                "example": {
+                  "data": {
+                    "user": {
+                      "id": 1,
+                      "username": "13800000000",
+                      "name": "示例昵称",
+                      "image_url": "",
+                      "sex": 0,
+                      "real_name": "",
+                      "receive_name": "",
+                      "address": "",
+                      "agent_id": 1,
+                      "game_id": 238,
+                      "vip": 0,
+                      "status": 1,
+                      "coin": 100,
+                      "freeze_coin": 0,
+                      "coin_user": 100,
+                      "device_id": "app-install-000000000001"
+                    },
+                    "access_token": "<access_token>",
+                    "refresh_token": "<refresh_token>",
+                    "expires_in": 7200,
+                    "token_type": "bearer"
+                  },
+                  "request_id": "example-request"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "密码至少 8 位且同时包含英文字母和数字；用户名为 4–64 位字母、数字、点、下划线或连字符。建议固定传正确 game_id，由服务端推导所属主体。开启强制注册邀请码时必须传本应用团长/代理的邀请码；普通会员邀请码无效。成功返回 user 和两枚 Token。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/auth/wechat": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Wechat Login",
+        "operationId": "app_wechat_login_api_app_v1_auth_wechat_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppWechatLoginRequest"
+              },
+              "example": {
+                "device_id": "app-install-000000000001",
+                "app_id": "ad-member",
+                "app_version": "1.0.0",
+                "platform": "android",
+                "code": "<微信SDK授权code>",
+                "provider": "app",
+                "game_id": 238,
+                "invite_code": "A1B2C3",
+                "nickname": "示例昵称"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response App Wechat Login Api App V1 Auth Wechat Post"
+                },
+                "example": {
+                  "data": {
+                    "user": {
+                      "id": 1,
+                      "username": "13800000000",
+                      "name": "示例昵称",
+                      "image_url": "",
+                      "sex": 0,
+                      "real_name": "",
+                      "receive_name": "",
+                      "address": "",
+                      "agent_id": 1,
+                      "game_id": 238,
+                      "vip": 0,
+                      "status": 1,
+                      "coin": 100,
+                      "freeze_coin": 0,
+                      "coin_user": 100,
+                      "device_id": "app-install-000000000001"
+                    },
+                    "access_token": "<access_token>",
+                    "refresh_token": "<refresh_token>",
+                    "expires_in": 7200,
+                    "token_type": "bearer"
+                  },
+                  "request_id": "example-request"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "与 /auth/wechat-login 为同一实现。Android App 必须显式传 provider=app；默认 mini_program 用于小程序。code 由微信 SDK 获取，首次登录可创建会员并校验注册邀请码。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/auth/wechat-login": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Wechat Login",
+        "operationId": "app_wechat_login_api_app_v1_auth_wechat_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppWechatLoginRequest"
+              },
+              "example": {
+                "device_id": "app-install-000000000001",
+                "app_id": "ad-member",
+                "app_version": "1.0.0",
+                "platform": "android",
+                "code": "<微信SDK授权code>",
+                "provider": "app",
+                "game_id": 238,
+                "invite_code": "A1B2C3",
+                "nickname": "示例昵称"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response App Wechat Login Api App V1 Auth Wechat Login Post"
+                },
+                "example": {
+                  "data": {
+                    "user": {
+                      "id": 1,
+                      "username": "13800000000",
+                      "name": "示例昵称",
+                      "image_url": "",
+                      "sex": 0,
+                      "real_name": "",
+                      "receive_name": "",
+                      "address": "",
+                      "agent_id": 1,
+                      "game_id": 238,
+                      "vip": 0,
+                      "status": 1,
+                      "coin": 100,
+                      "freeze_coin": 0,
+                      "coin_user": 100,
+                      "device_id": "app-install-000000000001"
+                    },
+                    "access_token": "<access_token>",
+                    "refresh_token": "<refresh_token>",
+                    "expires_in": 7200,
+                    "token_type": "bearer"
+                  },
+                  "request_id": "example-request"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "微信登录别名，规则同 /auth/wechat；微信服务未配置时返回 503。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/auth/login": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Login",
+        "operationId": "app_login_api_app_v1_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppLoginRequest"
+              },
+              "example": {
+                "device_id": "app-install-000000000001",
+                "app_id": "ad-member",
+                "app_version": "1.0.0",
+                "platform": "android",
+                "username": "13800000000",
+                "password": "Example123!"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response App Login Api App V1 Auth Login Post"
+                },
+                "example": {
+                  "data": {
+                    "user": {
+                      "id": 1,
+                      "username": "13800000000",
+                      "name": "示例昵称",
+                      "image_url": "",
+                      "sex": 0,
+                      "real_name": "",
+                      "receive_name": "",
+                      "address": "",
+                      "agent_id": 1,
+                      "game_id": 238,
+                      "vip": 0,
+                      "status": 1,
+                      "coin": 100,
+                      "freeze_coin": 0,
+                      "coin_user": 100,
+                      "device_id": "app-install-000000000001"
+                    },
+                    "access_token": "<access_token>",
+                    "refresh_token": "<refresh_token>",
+                    "expires_in": 7200,
+                    "token_type": "bearer"
+                  },
+                  "request_id": "example-request"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "成功返回 user、access_token、refresh_token、expires_in、token_type。device_id 必须与本安装实例一致。无效账号、密码或停用账号可能返回 401，不要把所有 401 都显示成 Token 过期。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/auth/refresh": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Refresh",
+        "operationId": "app_refresh_api_app_v1_auth_refresh_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppRefreshRequest"
+              },
+              "example": {
+                "refresh_token": "{{refresh_token}}",
+                "device_id": "{{device_id}}"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response App Refresh Api App V1 Auth Refresh Post"
+                },
+                "example": {
+                  "data": {
+                    "user": {
+                      "id": 1,
+                      "username": "13800000000",
+                      "name": "示例昵称",
+                      "image_url": "",
+                      "sex": 0,
+                      "real_name": "",
+                      "receive_name": "",
+                      "address": "",
+                      "agent_id": 1,
+                      "game_id": 238,
+                      "vip": 0,
+                      "status": 1,
+                      "coin": 100,
+                      "freeze_coin": 0,
+                      "coin_user": 100,
+                      "device_id": "app-install-000000000001"
+                    },
+                    "access_token": "<access_token>",
+                    "refresh_token": "<refresh_token>",
+                    "expires_in": 7200,
+                    "token_type": "bearer"
+                  },
+                  "request_id": "example-request"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Refresh Token 轮换：旧 refresh_token 在成功后撤销；原子保存响应中的 access_token 和 refresh_token。同一账号设备的刷新请求应串行合并。服务端默认 Access Token 120 分钟、Refresh Token 30 天，以部署配置及 expires_in 为准。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/auth/logout": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Logout",
+        "operationId": "app_logout_api_app_v1_auth_logout_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/AppLogoutRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Payload"
+              },
+              "example": {
+                "refresh_token": "{{refresh_token}}"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "推荐提交当前 refresh_token 以撤销刷新会话；不传时仅返回 204。客户端清除本地令牌及当前账号状态。此接口不立即撤销已签发 Access JWT。204 没有 JSON 响应体。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/me": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Me",
+        "operationId": "app_me_api_app_v1_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response App Me Api App V1 Me Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "GET 返回会员资料和钱包概况；PATCH 只传需要修改的字段。不要把 /me 的 receive_name 当作已绑定支付宝；收款绑定以 /me/alipay 为准。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Update Me",
+        "operationId": "app_update_me_api_app_v1_me_patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppProfileUpdate"
+              },
+              "example": {
+                "name": "示例昵称",
+                "sex": 0
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response App Update Me Api App V1 Me Patch"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "GET 返回会员资料和钱包概况；PATCH 只传需要修改的字段。不要把 /me 的 receive_name 当作已绑定支付宝；收款绑定以 /me/alipay 为准。 sex取值0–2；其具体展示标签需与APP约定，本文不臆造映射。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/auth/wechat-password": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Wechat Password",
+        "description": "需登录，并提供属于当前会员绑定微信 App 身份的新 code，成功 204；不能拿其他微信账号授权来设置密码。",
+        "operationId": "app_wechat_password_api_app_v1_auth_wechat_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppWechatPasswordRequest"
+              },
+              "example": {
+                "code": "<当前账号的新微信App授权code>",
+                "new_password": "NewExample123!"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/auth/change-password": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Change Password",
+        "operationId": "app_change_password_api_app_v1_auth_change_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppPasswordChange"
+              },
+              "example": {
+                "current_password": "Example123!",
+                "new_password": "NewExample123!"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "当前密码验证成功后修改；新密码必须同时含字母和数字，成功 204。当前实现不返回新 Token，也未在此路径批量撤销其他会话。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/games": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Games",
+        "operationId": "app_games_api_app_v1_games_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response App Games Api App V1 Games Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "返回当前主体内 status=1 且 ad_status=1 的游戏 items 与 total；此列表没有通用分页参数。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/bootstrap": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Bootstrap",
+        "operationId": "app_bootstrap_api_app_v1_bootstrap_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "game_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Game Id"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response App Bootstrap Api App V1 Bootstrap Get"
+                },
+                "example": {
+                  "data": {
+                    "user": {
+                      "id": 1,
+                      "username": "13800000000",
+                      "name": "示例昵称",
+                      "image_url": "",
+                      "sex": 0,
+                      "real_name": "",
+                      "receive_name": "",
+                      "address": "",
+                      "agent_id": 1,
+                      "game_id": 238,
+                      "vip": 0,
+                      "status": 1,
+                      "coin": 100,
+                      "freeze_coin": 0,
+                      "coin_user": 100,
+                      "device_id": "app-install-000000000001"
+                    },
+                    "game": {
+                      "id": 238,
+                      "name": "鸭只易记",
+                      "status": 1,
+                      "ad_status": 1
+                    },
+                    "ad_config": {
+                      "enabled": true,
+                      "provider": "taku",
+                      "app_id": "<SDK配置>",
+                      "app_key": "<SDK配置>",
+                      "placements": [
+                        {
+                          "placement": "rewarded",
+                          "ad_type": "rewarded",
+                          "ad_unit_id": "<广告位ID>",
+                          "cooldown_seconds": 30,
+                          "reward_coin": 0.01
+                        }
+                      ]
+                    },
+                    "server_time": "2026-11-08T08:00:00Z"
+                  },
+                  "request_id": "example-request"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "可选 game_id，默认账号游戏。返回 user、game、ad_config、server_time。ad_config 含 enabled、provider、app_id、app_key、placements；placements 含 placement、ad_type、ad_unit_id、cooldown_seconds、reward_coin。SDK 用真实配置初始化。"
+      }
+    },
+    "/api/app/v1/ads/request": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Ad Request",
+        "operationId": "app_ad_request_api_app_v1_ads_request_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppAdRequest"
+              },
+              "example": {
+                "device_id": "app-install-000000000001",
+                "app_id": "ad-member",
+                "app_version": "1.0.0",
+                "platform": "android",
+                "game_id": 238,
+                "placement": "rewarded",
+                "ad_type": "rewarded",
+                "client_request_id": "reward-request-20261108-001",
+                "risk_check_id": "<开启风控时必填>"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response App Ad Request Api App V1 Ads Request Post"
+                },
+                "example": {
+                  "data": {
+                    "ad_session_id": "ads_example",
+                    "request_id": "req_ad_example",
+                    "placement": "rewarded",
+                    "provider": "taku",
+                    "ad_unit_id": "<配置的激励广告位ID>",
+                    "ad_type": "rewarded",
+                    "reward": {
+                      "enabled": true,
+                      "coin": 0.01,
+                      "currency": "coin"
+                    },
+                    "session_token": "<本会话Token>",
+                    "expires_at": "2026-11-08T08:05:00Z",
+                    "status": "issued",
+                    "reward_verification": "client_encrypted_ecpm_with_server_reconciliation",
+                    "taku_user_id": "1",
+                    "taku_extra_data": "<服务端签发的SDK透传值>"
+                  },
+                  "request_id": "req_ad_example"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "TAKU 激励仅允许 placement=rewarded 且 ad_type=rewarded。返回 ad_session_id、request_id、session_token、provider、ad_unit_id、expires_at、status、reward、reward_verification、taku_user_id、taku_extra_data。未展示 issued 会话的相同 client_request_id 重试会轮换 session_token；保存最新值。不是所有状态下的永久幂等键。副广不调用本接口。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/ads/{ad_session_id}/impression": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Ad Impression",
+        "operationId": "app_ad_impression_api_app_v1_ads__ad_session_id__impression_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ad_session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Ad Session Id"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppAdEventRequest"
+              },
+              "example": {
+                "event_id": "example-impression-20261108-001",
+                "session_token": "{{ad_session_token}}"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response App Ad Impression Api App V1 Ads  Ad Session Id  Impression Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "真实 SDK 展示时调用；event_id 按事件生成唯一值，失败重试保持不变。返回 ad_session_id、status；不发金币。通常会话有效 5 分钟，按 expires_at 为准。"
+      }
+    },
+    "/api/app/v1/ads/{ad_session_id}/complete": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Ad Complete",
+        "operationId": "app_ad_complete_api_app_v1_ads__ad_session_id__complete_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ad_session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Ad Session Id"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppAdEventRequest"
+              },
+              "example": {
+                "event_id": "example-complete-20261108-001",
+                "session_token": "{{ad_session_token}}",
+                "e_c_cny": "<SDK返回的人民币加密证明>",
+                "s_id": "<SDK返回的secretId>",
+                "source_id": "<SDK返回的广告源ID>",
+                "sdk_request_id": "<SDK请求ID>",
+                "sdk_show_id": "<SDK展示ID>",
+                "watched_seconds": 30
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response App Ad Complete Api App V1 Ads  Ad Session Id  Complete Post"
+                },
+                "example": {
+                  "data": {
+                    "ad_session_id": "ads_example",
+                    "status": "rewarded",
+                    "rewarded": true,
+                    "coin_added": 10,
+                    "coin_balance": 110,
+                    "coin_log_id": 1
+                  },
+                  "request_id": "example-request"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "仅 SDK 激励达成后调用。TAKU 必须传 e_c_cny、s_id、source_id，并传 SDK 请求/展示 ID；固定价格证明还必须先成功上报同展示 shown 元数据。人民币证明与展示不匹配会拒绝。成功 data 含 ad_session_id、status=rewarded、rewarded=true、coin_added、coin_balance、coin_log_id。重复完成不会重复发放；过期 TAKU 会话可在创建后 7 天内尝试补结算，仍须通过证明检查。publisher_revenue_cny 不能代替 SDK 加密证明。副广一律拒绝结算。"
+      }
+    },
+    "/api/app/v1/ads/{ad_session_id}/fail": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Ad Fail",
+        "operationId": "app_ad_fail_api_app_v1_ads__ad_session_id__fail_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ad_session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Ad Session Id"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppAdEventRequest"
+              },
+              "example": {
+                "event_id": "example-fail-20261108-001",
+                "session_token": "{{ad_session_token}}",
+                "reason": "sdk_load_failed"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response App Ad Fail Api App V1 Ads  Ad Session Id  Fail Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "SDK 加载/展示失败时上报 reason，返回 ad_session_id、status=failed、rewarded=false。已奖励会话不能改成失败。"
+      }
+    },
+    "/api/app/v1/ads/history": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Ad History",
+        "operationId": "app_ad_history_api_app_v1_ads_history_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "game_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Game Id"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 100000000,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 100,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page Size"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response App Ad History Api App V1 Ads History Get"
+                },
+                "example": {
+                  "data": {
+                    "items": [
+                      {
+                        "id": "secondary_example",
+                        "game_id": 238,
+                        "placement": "interstitial",
+                        "ad_type": "interstitial",
+                        "provider": "taku_secondary",
+                        "status": "closed",
+                        "coin_added": 0,
+                        "request_id": "secondary_request",
+                        "watched_at": "2026-11-08T08:00:00Z",
+                        "created_at": "2026-11-08T08:00:01Z",
+                        "is_fu": 1,
+                        "fu_type": 3,
+                        "ad_type_label": "副广 · 插屏",
+                        "ad_title": "示例广告",
+                        "ad_app_name": "示例应用",
+                        "ad_app_package": "com.example.ad",
+                        "ad_creative_id": "example-creative",
+                        "ad_advertiser": "示例广告主",
+                        "ad_source_id": "example-source",
+                        "ad_network": "示例平台",
+                        "ad_network_placement_id": "example-placement",
+                        "ad_content_status": "reported",
+                        "ad_content_source": "client_reported",
+                        "ad_behaviors": [
+                          "shown",
+                          "clicked"
+                        ]
+                      }
+                    ],
+                    "total": 1,
+                    "limit": 20,
+                    "offset": 0,
+                    "page": 1,
+                    "page_size": 20,
+                    "total_pages": 1,
+                    "has_more": false
+                  },
+                  "request_id": "example-request"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "本人广告历史，可选 game_id，支持通用分页。返回激励与已展示副广，含内容字段，副广关闭状态可为 closed；coin_added=0 不代表请求失败。激励未完成会话也可能出现在历史中。"
+      }
+    },
+    "/api/app/v1/subsidies": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Create Subsidy",
+        "operationId": "app_create_subsidy_api_app_v1_subsidies_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppSubsidyCreate"
+              },
+              "example": {
+                "game_id": 238,
+                "tx_price": "5.00",
+                "pics": [
+                  "/api/member-images/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png"
+                ],
+                "receive_name": "示例姓名",
+                "receive_tel": "13800000000"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response App Create Subsidy Api App V1 Subsidies Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "GET 查询本人补贴申请，可选 game_id、status=0/1/2（筛选驳回传2，不传target_status的4）。POST 为旧版无活动申请兼容入口，无request_key永久幂等承诺；该游戏一旦配置过活动即返回409，应走活动申请。旧入口 price由审核端设置，APP不能提交补贴金额。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App List Subsidies",
+        "operationId": "app_list_subsidies_api_app_v1_subsidies_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "game_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Game Id"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 2,
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 100000000,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 100,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page Size"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response App List Subsidies Api App V1 Subsidies Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "GET 查询本人补贴申请，可选 game_id、status=0/1/2（筛选驳回传2，不传target_status的4）。POST 为旧版无活动申请兼容入口，无request_key永久幂等承诺；该游戏一旦配置过活动即返回409，应走活动申请。旧入口 price由审核端设置，APP不能提交补贴金额。"
+      }
+    },
+    "/api/app/v1/subsidies/images": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Upload Subsidy Image",
+        "operationId": "app_upload_subsidy_image_api_app_v1_subsidies_images_post",
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response App Upload Subsidy Image Api App V1 Subsidies Images Post"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "发送原始图片二进制（Content-Type:image/png 或 image/jpeg 等），不要用 multipart/form-data、Base64 或 JSON。最大2MB，PNG/JPEG/WebP/GIF，单边不超过4096像素。返回 data.url，相对路径可用于申请和展示；图片会标准化为PNG。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "image/png": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            },
+            "image/jpeg": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            },
+            "image/webp": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            },
+            "image/gif": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/v1/subsidies/{subsidy_id}": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Get Subsidy",
+        "operationId": "app_get_subsidy_api_app_v1_subsidies__subsidy_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "subsidy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Subsidy Id"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response App Get Subsidy Api App V1 Subsidies  Subsidy Id  Get"
+                },
+                "example": {
+                  "data": {
+                    "id": 1,
+                    "user_id": 1,
+                    "agent_id": 1,
+                    "game_id": 238,
+                    "tx_price": 5,
+                    "price": 12,
+                    "pics": "/api/member-images/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png,/api/member-images/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.png,/api/member-images/cccccccccccccccccccccccccccccccccccccccccccccccc.png",
+                    "receive_name": "示例姓名",
+                    "receive_tel": "13800000000",
+                    "status": 0,
+                    "target_status": 0,
+                    "sub_msg": "",
+                    "created_at": "2026-11-08T08:00:00Z",
+                    "updated_at": "2026-11-08T08:00:00Z",
+                    "audited_at": null,
+                    "campaign": {
+                      "id": 1,
+                      "title": "示例补贴活动",
+                      "game_id": 238,
+                      "withdrawal_cents": 500,
+                      "recharge_cents": 600,
+                      "reward_cents": 1200,
+                      "review_hours": 24,
+                      "instructions": "示例说明",
+                      "confirmed_withdrawal_cents": 500,
+                      "quota_date": "2026-11-08",
+                      "evidence": {
+                        "download_image": "<下载图URL>",
+                        "install_image": "<安装来源图URL>",
+                        "recharge_image": "<充值图URL>"
+                      },
+                      "review_due_at": "2026-11-09T08:00:00+00:00",
+                      "overdue": false
+                    }
+                  },
+                  "request_id": "example-request"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "返回本人申请详情：campaign、id、user_id、agent_id、game_id、tx_price、price、pics、receive_name、receive_tel、status、target_status、sub_msg及时间字段。price/tx_price单位为元；pics为逗号连接URL字符串。审核通过后以审核时后台coins_per_yuan折算增加金币，同时写type=302流水；APP刷新wallet与coin-logs，不自行加余额。"
+      }
+    },
+    "/api/app/v1/wallet": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Wallet",
+        "operationId": "app_wallet_api_app_v1_wallet_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response App Wallet Api App V1 Wallet Get"
+                },
+                "example": {
+                  "data": {
+                    "coin": 110,
+                    "freeze_coin": 0,
+                    "coin_user": 110,
+                    "updated_at": "2026-11-08T08:00:00Z"
+                  },
+                  "request_id": "example-request"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "返回 coin=可用金币、freeze_coin=冻结金币、coin_user=累计收入字段、updated_at；以服务端余额为准。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/wallet/coin-logs": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Coin Logs",
+        "operationId": "app_coin_logs_api_app_v1_wallet_coin_logs_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 100000000,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 100,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page Size"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response App Coin Logs Api App V1 Wallet Coin Logs Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "本人金币流水分页；条目 id、type、coin_before、coin、coin_after、remark、source_id、created_at。coin 为本次增减值。补贴审核到账 type=302；source_id 当前固定 0，不能用它关联补贴 ID。"
+      }
+    },
+    "/api/app/v1/subsidy-campaigns": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Campaigns",
+        "operationId": "app_campaigns_api_app_v1_subsidy_campaigns_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "game_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Game Id"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 100000000,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 100,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page Size"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "补贴活动/补贴公告入口，按用户所属主体查询启用活动，可选 game_id。必须正确递增 page 或 offset，按 has_more 停止加载；不要每次只传 game_id。返回每条活动及当前用户资格、每日剩余名额。"
+      }
+    },
+    "/api/app/v1/subsidy-campaigns/{campaign_id}": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Campaign Detail",
+        "operationId": "app_campaign_detail_api_app_v1_subsidy_campaigns__campaign_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Campaign Id"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "data": {
+                    "id": 1,
+                    "game_id": 238,
+                    "title": "示例补贴活动",
+                    "enabled": 1,
+                    "daily_quota": 50,
+                    "withdrawal_cents": 500,
+                    "recharge_cents": 600,
+                    "reward_cents": 1200,
+                    "review_hours": 24,
+                    "instructions": "按说明完成并提交三类截图",
+                    "created_at": "2026-11-08T00:00:00Z",
+                    "updated_at": "2026-11-08T00:00:00Z",
+                    "quota_date": "2026-11-08",
+                    "used": 5,
+                    "remaining": 45,
+                    "confirmed_withdrawal_cents": 500,
+                    "eligible": true,
+                    "reasons": [],
+                    "required_images": [
+                      "download_image",
+                      "install_image",
+                      "recharge_image"
+                    ]
+                  },
+                  "request_id": "example-request"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "返回活动详情和最新 eligibility；不可仅靠列表缓存判定可提交。eligible=false 时展示 reasons，最终提交时服务端再次检查资格。"
+      }
+    },
+    "/api/app/v1/subsidy-campaigns/{campaign_id}/applications": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Apply Campaign",
+        "operationId": "apply_campaign_api_app_v1_subsidy_campaigns__campaign_id__applications_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "campaign_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Campaign Id"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CampaignApplication"
+              },
+              "example": {
+                "request_key": "subsidy-example-20261108-001",
+                "download_image": "/api/member-images/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png",
+                "install_image": "/api/member-images/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.png",
+                "recharge_image": "/api/member-images/cccccccccccccccccccccccccccccccccccccccccccccccc.png",
+                "receive_name": "示例姓名",
+                "receive_tel": "13800000000"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "data": {
+                    "id": 1,
+                    "user_id": 1,
+                    "agent_id": 1,
+                    "game_id": 238,
+                    "tx_price": 5,
+                    "price": 12,
+                    "pics": "/api/member-images/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png,/api/member-images/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.png,/api/member-images/cccccccccccccccccccccccccccccccccccccccccccccccc.png",
+                    "receive_name": "示例姓名",
+                    "receive_tel": "13800000000",
+                    "status": 0,
+                    "target_status": 0,
+                    "sub_msg": "",
+                    "created_at": "2026-11-08T08:00:00Z",
+                    "updated_at": "2026-11-08T08:00:00Z",
+                    "audited_at": null,
+                    "campaign": {
+                      "id": 1,
+                      "title": "示例补贴活动",
+                      "game_id": 238,
+                      "withdrawal_cents": 500,
+                      "recharge_cents": 600,
+                      "reward_cents": 1200,
+                      "review_hours": 24,
+                      "instructions": "示例说明",
+                      "confirmed_withdrawal_cents": 500,
+                      "quota_date": "2026-11-08",
+                      "evidence": {
+                        "download_image": "<下载图URL>",
+                        "install_image": "<安装来源图URL>",
+                        "recharge_image": "<充值图URL>"
+                      },
+                      "review_due_at": "2026-11-09T08:00:00+00:00",
+                      "overdue": false
+                    }
+                  },
+                  "request_id": "example-request"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "推荐申请入口。先上传三张不同凭证，再提交下载、安装来源、充值三种图片URL；请求键不变可重试。同一活动同会员北京时间每日一次；同游戏不能同时有待审申请。需要今日已确认转账的提现达到门槛，提交的提现金额/图片本身不代表满足条件。"
+      }
+    },
+    "/api/app/v1/me/alipay": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Get Alipay",
+        "operationId": "get_alipay_api_app_v1_me_alipay_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "GET 无绑定时 data=null，否则返回 account_masked、real_name、identity_verified=false。PUT 需验证当前登录密码；成功返回同类脱敏信息。存在待审核/支付处理中提现时不允许更换。绑定记录不代表已完成实名核验。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Bind Alipay",
+        "operationId": "bind_alipay_api_app_v1_me_alipay_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BindAlipay"
+              },
+              "example": {
+                "account": "13800000000",
+                "real_name": "示例姓名",
+                "current_password": "Example123!"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "GET 无绑定时 data=null，否则返回 account_masked、real_name、identity_verified=false。PUT 需验证当前登录密码；成功返回同类脱敏信息。存在待审核/支付处理中提现时不允许更换。绑定记录不代表已完成实名核验。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/withdrawal-options": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Withdrawal Options",
+        "operationId": "withdrawal_options_api_app_v1_withdrawal_options_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "game_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "title": "Game Id"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "data": {
+                    "tiers": [
+                      {
+                        "amount_cents": 100,
+                        "coin_cost": "100.000000"
+                      }
+                    ],
+                    "payment_available": false,
+                    "alipay_bound": true
+                  },
+                  "request_id": "example-request"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "必填 game_id；返回 tiers（amount_cents、coin_cost）、payment_available、alipay_bound。金额为分，coin_cost 为金币十进制字符串。payment_available=false 时不可提示用户已成功提交提现。"
+      }
+    },
+    "/api/app/v1/withdrawals": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Apply Withdrawal",
+        "operationId": "apply_withdrawal_api_app_v1_withdrawals_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WithdrawalApply"
+              },
+              "example": {
+                "request_key": "withdraw-example-20261108-001",
+                "game_id": 238,
+                "amount_cents": 100
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "POST 按服务端档位申请，成功冻结对应金币并返回提现记录；request_key 保持不变以处理断网重试，相同 key 不同内容返回 409。GET 为本人记录分页。支付服务未配置返回 503，不生成成功提现记录。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Withdrawals",
+        "operationId": "app_withdrawals_api_app_v1_withdrawals_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 100000000,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 100,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page Size"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "POST 按服务端档位申请，成功冻结对应金币并返回提现记录；request_key 保持不变以处理断网重试，相同 key 不同内容返回 409。GET 为本人记录分页。支付服务未配置返回 503，不生成成功提现记录。"
+      }
+    },
+    "/api/app/v1/withdrawals/{withdrawal_id}": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Withdrawal Detail",
+        "operationId": "app_withdrawal_detail_api_app_v1_withdrawals__withdrawal_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "withdrawal_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Withdrawal Id"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "data": {
+                    "id": 1,
+                    "user_id": 1,
+                    "agent_id": 1,
+                    "game_id": 238,
+                    "receive_name": "示例姓名",
+                    "exchange_value": 1,
+                    "exchange_type": 1,
+                    "good_name": "金币提现",
+                    "status": 0,
+                    "target_status": 0,
+                    "plan_status": 0,
+                    "payout": {
+                      "state": "pending_review",
+                      "amount_cents": 100,
+                      "coin_cost": "100.000000",
+                      "out_biz_no": "AMexample",
+                      "provider_order_id": "",
+                      "account_masked": "13***00",
+                      "error": ""
+                    },
+                    "created_at": "2026-11-08T08:00:00Z",
+                    "updated_at": "2026-11-08T08:00:00Z"
+                  },
+                  "request_id": "example-request"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "仅查询本人提现，含 status、target_status、plan_status 及 payout。payout.state 为 pending_review、queued、processing、succeeded、failed、rejected；仅 succeeded 代表渠道确认成功。payout 可能为 null（历史导入）。"
+      }
+    },
+    "/api/app/v1/device-risk/challenge": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Challenge",
+        "operationId": "challenge_api_app_v1_device_risk_challenge_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChallengeInput"
+              },
+              "example": {
+                "game_id": 238,
+                "install_id": "app-install-000000000001"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "启用风控时先申请挑战，返回 challenge_id、biz_id、expires_at；install_id 为 16–128 位安装实例标识。挑战有效 5 分钟，同会员每分钟最多 10 次申请。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/device-risk/verify": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Verify",
+        "operationId": "verify_api_app_v1_device_risk_verify_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckInput"
+              },
+              "example": {
+                "challenge_id": "<设备挑战接口返回值>",
+                "aliyun_device_token": "<阿里云SDK返回的设备token>"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "用阿里云 SDK 按 biz_id 得到 token，再提交。返回 risk_check_id、device_id、suspected_reset、limited、daily_limit、used、remaining。该 device_id 是后台风控设备数字 ID，不替换 APP 安装实例字符串。有效校验用于一次新的激励申请；申请重试沿用原凭证。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/device-risk/config": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "App Config",
+        "operationId": "app_config_api_app_v1_device_risk_config_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "game_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "title": "Game Id"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "必填 game_id；data 包含 enabled、limit_enabled、daily_limit。白名单可能返回 enabled=false。"
+      }
+    },
+    "/api/app/v1/policy": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Public Policy",
+        "operationId": "public_policy_api_app_v1_policy_get",
+        "parameters": [
+          {
+            "name": "game_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "title": "Game Id"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "公开策略；返回 require_alipay、require_invite、require_registration_invite、require_usage、announcement、announcement_version、invite_min_level。公告为登录/业务规则公告，不是补贴活动列表。"
+      }
+    },
+    "/api/app/v1/onboarding": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Onboarding",
+        "operationId": "onboarding_api_app_v1_onboarding_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "data": {
+                    "policy": {
+                      "require_alipay": false,
+                      "require_invite": false,
+                      "require_usage": false,
+                      "announcement": "示例公告",
+                      "announcement_version": 1
+                    },
+                    "level": 0,
+                    "invite_code": "A1B2C3",
+                    "parent_id": 0,
+                    "alipay_bound": false,
+                    "usage_granted": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "GET 返回 policy、level、invite_code、parent_id、alipay_bound、usage_granted。POST 绑定本应用正常团长/代理邀请关系；同一上级重复提交可重试，已有不同上级返回 409，禁止自邀/循环。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Bind Invite",
+        "operationId": "bind_invite_api_app_v1_onboarding_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteInput"
+              },
+              "example": {
+                "invite_code": "A1B2C3"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "GET 返回 policy、level、invite_code、parent_id、alipay_bound、usage_granted。POST 绑定本应用正常团长/代理邀请关系；同一上级重复提交可重试，已有不同上级返回 409，禁止自邀/循环。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/invite-code": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Get Invite Code",
+        "operationId": "get_invite_code_api_app_v1_invite_code_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "data": {
+                    "level": 0,
+                    "invite_code": "A1B2C3"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "所有会员均有 6 位大写英文与数字组合邀请码；返回 data.level 和 data.invite_code。身份 0=普通会员、1=团长、3=代理。展示邀请码不等于具备强制注册邀请资格。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/usage": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Save Usage",
+        "operationId": "save_usage_api_app_v1_usage_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UsageInput"
+              },
+              "example": {
+                "granted": true,
+                "report_date": "2026-11-08",
+                "items": [
+                  {
+                    "package_name": "com.example.ad",
+                    "duration_ms": 60000,
+                    "opens": 1
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "仅在用户授权后读取并同步应用使用统计；report_date 仅接受北京时间今天或昨天。撤销授权传 granted=false，不上报应用条目。require_usage 开启时授权同步超过 15 分钟会失效。返回 data.granted。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/commissions": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Commissions",
+        "operationId": "commissions_api_app_v1_commissions_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 100000000,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 100,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page Size"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "data": {
+                    "summary": {
+                      "total_earned": "10.000000",
+                      "today_earned": "2.000000",
+                      "direct_members": 1,
+                      "level": 1
+                    },
+                    "total": 1,
+                    "limit": 20,
+                    "offset": 0,
+                    "page": 1,
+                    "page_size": 20,
+                    "total_pages": 1,
+                    "has_more": false,
+                    "items": [
+                      {
+                        "id": 1,
+                        "amount": "2.000000",
+                        "kind": "commission_1",
+                        "source_member_id": 2,
+                        "ad_session_id": "ads_example",
+                        "created_at": "2026-11-08T08:00:00Z"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "返回 summary（total_earned、today_earned、direct_members、level）和分页 items；条目 id、amount、kind、source_member_id、ad_session_id、created_at。佣金已计入钱包，无额外领取接口。"
+      }
+    },
+    "/api/app/v1/commission-team": {
+      "get": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Commission Team",
+        "operationId": "commission_team_api_app_v1_commission_team_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 100000000,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "maximum": 100,
+                  "minimum": 1
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Page Size"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "只返回本人直属成员 items（id、level）及分页元数据，不返回手机号和收款信息。"
+      }
+    },
+    "/api/app/v1/auth/sms/password": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Sms Password",
+        "operationId": "sms_password_api_app_v1_auth_sms_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SmsPassword"
+              },
+              "example": {
+                "challenge_id": "<短信发送接口返回值>",
+                "code": "123456",
+                "new_password": "NewExample123!"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "需要已登录；验证码须属于当前会员的手机号（username）和游戏。返回 data.password_set=true。不是未登录忘记密码接口。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/auth/sms/send": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Send Code",
+        "operationId": "send_code_api_app_v1_auth_sms_send_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendCode"
+              },
+              "example": {
+                "phone": "13800000000",
+                "game_id": 238
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "发送 6 位短信验证码；data 为 challenge_id、retry_after=60、expires_in=300。手机号格式为中国大陆手机号。服务端还有每日手机号/IP限制，429 时停止倒计时外的重复请求。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/auth/sms/login": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Sms Login",
+        "operationId": "sms_login_api_app_v1_auth_sms_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SmsLogin"
+              },
+              "example": {
+                "device_id": "app-install-000000000001",
+                "app_id": "ad-member",
+                "app_version": "1.0.0",
+                "platform": "android",
+                "phone": "13800000000",
+                "game_id": 238,
+                "challenge_id": "<短信发送接口返回值>",
+                "code": "123456",
+                "invite_code": "A1B2C3",
+                "new_password": "Example123!"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "验证码有效且未使用时可登录/注册。首次注册需遵守邀请码策略。new_password 可选，传入会设置或修改登录密码；短信验证最多 5 次尝试。成功返回 user 和两枚 Token，此路径没有强制 request_id。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/ads/{ad_session_id}/metadata": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Ad Metadata",
+        "operationId": "ad_metadata_api_app_v1_ads__ad_session_id__metadata_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ad_session_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Ad Session Id"
+            }
+          },
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdMetadata"
+              },
+              "example": {
+                "session_token": "{{ad_session_token}}",
+                "event": "shown",
+                "network": "示例广告平台",
+                "source_id": "<SDK返回的广告源ID>",
+                "title": "示例广告名称",
+                "app_name": "示例应用",
+                "app_package": "com.example.ad",
+                "creative_id": "example-creative",
+                "advertiser": "示例广告主",
+                "network_placement_id": "example-placement",
+                "e_c_cny": "<SDK返回的人民币加密证明>",
+                "s_id": "<SDK返回的secretId>",
+                "sdk_request_id": "<SDK请求ID>",
+                "sdk_show_id": "<SDK展示ID>"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "description": "真实 SDK 事件采集接口；event=shown/clicked/reward/closed/downloaded/installed/opened。会话创建 24 小时内可补报，相同会话与 event 只保存一次，返回 data.recorded。名称来源于 SDK 或原生素材对象，缺失时留空，不猜测。extension_keys只传扩展字段名，每项最长100字符，不传整份SDK扩展数据。"
+      }
+    },
+    "/api/app/v1/ads/secondary-events": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Secondary Ad Event",
+        "description": "新增：真实开屏/横幅/插屏/信息流展示、点击、关闭上报。placement 与 ad_type 一致且为 splash/banner/interstitial/native；ad_unit_id 匹配配置。每次实际展示生成 UUID impression_id，该展示各事件共用；重复相同事件不重复记账。occurred_at 必须带时区且在过去24小时/未来5分钟内。只 shown 创建观看记录；副广金币始终为0。无需激励 session_token，返回 recorded、ad_session_id。",
+        "operationId": "secondary_ad_event_api_app_v1_ads_secondary_events_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SecondaryAdEvent"
+              },
+              "example": {
+                "game_id": 238,
+                "impression_id": "e0ebac50-9a88-43e6-8ae8-255e50fe4ef9",
+                "placement": "interstitial",
+                "ad_type": "interstitial",
+                "ad_unit_id": "<bootstrap配置的插屏广告位ID>",
+                "event": "shown",
+                "occurred_at": "2026-11-08T08:00:00Z",
+                "network": "示例广告平台",
+                "source_id": "example-source",
+                "title": "示例广告名称",
+                "app_name": "示例应用",
+                "app_package": "com.example.ad",
+                "creative_id": "example-creative",
+                "advertiser": "示例广告主",
+                "network_placement_id": "example-placement"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": {
+                  "data": {
+                    "recorded": true,
+                    "ad_session_id": "secondary_example"
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    },
+    "/api/app/v1/device-observations": {
+      "post": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Observe",
+        "operationId": "observe_api_app_v1_device_observations_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObservationInput"
+              },
+              "example": {
+                "battery": 80,
+                "charging": false
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "POST 上传电量/充电状态，定位仅在获得授权后上报；坐标、精度、采样年龄须同时存在或同时省略。采样年龄≤120秒，45秒内重复返回 recorded=false,retry_after=45。数据保留24小时。DELETE 清除本人观测，返回 deleted=true。不是定位权限申请接口。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "User APP"
+        ],
+        "summary": "Forget Observations",
+        "operationId": "forget_observations_api_app_v1_device_observations_delete",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "description": "POST 上传电量/充电状态，定位仅在获得授权后上报；坐标、精度、采样年龄须同时存在或同时省略。采样年龄≤120秒，45秒内重复返回 recorded=false,retry_after=45。数据保留24小时。DELETE 清除本人观测，返回 deleted=true。不是定位权限申请接口。",
+        "parameters": [
+          {
+            "name": "X-Device-Id",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "稳定安装实例标识；与请求体device_id一致"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AdMetadata": {
+        "properties": {
+          "session_token": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Session Token"
+          },
+          "event": {
+            "type": "string",
+            "enum": [
+              "shown",
+              "clicked",
+              "reward",
+              "closed",
+              "downloaded",
+              "installed",
+              "opened"
+            ],
+            "title": "Event"
+          },
+          "network": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "Network",
+            "default": ""
+          },
+          "source_id": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "Source Id",
+            "default": ""
+          },
+          "format": {
+            "type": "string",
+            "maxLength": 64,
+            "title": "Format",
+            "default": ""
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Title",
+            "default": ""
+          },
+          "app_name": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "App Name",
+            "default": ""
+          },
+          "creative_id": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Creative Id",
+            "default": ""
+          },
+          "app_package": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "App Package",
+            "default": ""
+          },
+          "advertiser": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Advertiser",
+            "default": ""
+          },
+          "network_placement_id": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Network Placement Id",
+            "default": ""
+          },
+          "extension_keys": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 50,
+            "title": "Extension Keys"
+          },
+          "e_c": {
+            "type": "string",
+            "maxLength": 8192,
+            "title": "E C",
+            "default": ""
+          },
+          "e_c_cny": {
+            "type": "string",
+            "maxLength": 8192,
+            "title": "E C Cny",
+            "default": ""
+          },
+          "s_id": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "S Id",
+            "default": ""
+          },
+          "publisher_revenue_cny": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000000.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,12}|(?=[\\d.]{1,25}0*$)\\d{0,12}\\.\\d{0,12}0*$)"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publisher Revenue Cny"
+          },
+          "sdk_request_id": {
+            "type": "string",
+            "maxLength": 256,
+            "title": "Sdk Request Id",
+            "default": ""
+          },
+          "sdk_show_id": {
+            "type": "string",
+            "maxLength": 256,
+            "title": "Sdk Show Id",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "session_token",
+          "event"
+        ],
+        "title": "AdMetadata"
+      },
+      "AppAdEventRequest": {
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Event Id"
+          },
+          "session_token": {
+            "type": "string",
+            "maxLength": 512,
+            "minLength": 20,
+            "title": "Session Token"
+          },
+          "occurred_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Occurred At"
+          },
+          "provider_event_id": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "Provider Event Id",
+            "default": ""
+          },
+          "watched_seconds": {
+            "type": "number",
+            "maximum": 86400.0,
+            "minimum": 0.0,
+            "title": "Watched Seconds",
+            "default": 0
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "Reason",
+            "default": ""
+          },
+          "publisher_revenue_cny": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000000.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,12}|(?=[\\d.]{1,25}0*$)\\d{0,12}\\.\\d{0,12}0*$)"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publisher Revenue Cny"
+          },
+          "e_c": {
+            "type": "string",
+            "maxLength": 8192,
+            "title": "E C",
+            "default": ""
+          },
+          "e_c_cny": {
+            "type": "string",
+            "maxLength": 8192,
+            "title": "E C Cny",
+            "default": ""
+          },
+          "s_id": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "S Id",
+            "default": ""
+          },
+          "sdk_request_id": {
+            "type": "string",
+            "maxLength": 256,
+            "title": "Sdk Request Id",
+            "default": ""
+          },
+          "sdk_show_id": {
+            "type": "string",
+            "maxLength": 256,
+            "title": "Sdk Show Id",
+            "default": ""
+          },
+          "source_id": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "Source Id",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "event_id",
+          "session_token"
+        ],
+        "title": "AppAdEventRequest"
+      },
+      "AppAdRequest": {
+        "properties": {
+          "app_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "App Id",
+            "default": "ad-member"
+          },
+          "app_version": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "App Version",
+            "default": ""
+          },
+          "platform": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "Platform",
+            "default": ""
+          },
+          "device_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Device Id"
+          },
+          "game_id": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Game Id"
+          },
+          "risk_check_id": {
+            "type": "string",
+            "maxLength": 64,
+            "title": "Risk Check Id",
+            "default": ""
+          },
+          "placement": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Placement",
+            "default": "rewarded"
+          },
+          "ad_type": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Ad Type",
+            "default": "rewarded"
+          },
+          "client_request_id": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "Client Request Id",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "device_id",
+          "game_id"
+        ],
+        "title": "AppAdRequest"
+      },
+      "AppLoginRequest": {
+        "properties": {
+          "app_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "App Id",
+            "default": "ad-member"
+          },
+          "app_version": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "App Version",
+            "default": ""
+          },
+          "platform": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "Platform",
+            "default": ""
+          },
+          "device_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Device Id"
+          },
+          "username": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "device_id",
+          "username",
+          "password"
+        ],
+        "title": "AppLoginRequest"
+      },
+      "AppLogoutRequest": {
+        "properties": {
+          "refresh_token": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 512,
+                "minLength": 20
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Refresh Token"
+          }
+        },
+        "type": "object",
+        "title": "AppLogoutRequest"
+      },
+      "AppPasswordChange": {
+        "properties": {
+          "current_password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Current Password"
+          },
+          "new_password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "New Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "current_password",
+          "new_password"
+        ],
+        "title": "AppPasswordChange"
+      },
+      "AppProfileUpdate": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "image_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Url"
+          },
+          "sex": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sex"
+          },
+          "real_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Real Name"
+          },
+          "receive_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Receive Name"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          }
+        },
+        "type": "object",
+        "title": "AppProfileUpdate"
+      },
+      "AppRefreshRequest": {
+        "properties": {
+          "refresh_token": {
+            "type": "string",
+            "maxLength": 512,
+            "minLength": 20,
+            "title": "Refresh Token"
+          },
+          "device_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Device Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "refresh_token",
+          "device_id"
+        ],
+        "title": "AppRefreshRequest"
+      },
+      "AppRegisterRequest": {
+        "properties": {
+          "app_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "App Id",
+            "default": "ad-member"
+          },
+          "app_version": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "App Version",
+            "default": ""
+          },
+          "platform": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "Platform",
+            "default": ""
+          },
+          "device_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Device Id"
+          },
+          "username": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 4,
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "Password"
+          },
+          "invite_code": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "Invite Code",
+            "default": ""
+          },
+          "agent_id": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Agent Id"
+          },
+          "game_id": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Game Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "device_id",
+          "username",
+          "password"
+        ],
+        "title": "AppRegisterRequest"
+      },
+      "AppSubsidyCreate": {
+        "properties": {
+          "game_id": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Game Id"
+          },
+          "tx_price": {
+            "anyOf": [
+              {
+                "type": "number",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,10}|(?=[\\d.]{1,13}0*$)\\d{0,10}\\.\\d{0,2}0*$)"
+              }
+            ],
+            "title": "Tx Price"
+          },
+          "pics": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 9,
+            "title": "Pics"
+          },
+          "receive_name": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Receive Name"
+          },
+          "receive_tel": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Receive Tel"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "tx_price",
+          "receive_name",
+          "receive_tel"
+        ],
+        "title": "AppSubsidyCreate",
+        "description": "Client submits the withdrawal condition; the reviewer sets price."
+      },
+      "AppWechatLoginRequest": {
+        "properties": {
+          "app_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "App Id",
+            "default": "ad-member"
+          },
+          "app_version": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "App Version",
+            "default": ""
+          },
+          "platform": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "Platform",
+            "default": ""
+          },
+          "device_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Device Id"
+          },
+          "invite_code": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "Invite Code",
+            "default": ""
+          },
+          "code": {
+            "type": "string",
+            "maxLength": 1024,
+            "minLength": 1,
+            "title": "Code"
+          },
+          "game_id": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Game Id"
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "mini_program",
+              "app"
+            ],
+            "title": "Provider",
+            "default": "mini_program"
+          },
+          "nickname": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "Nickname",
+            "default": ""
+          },
+          "avatar_url": {
+            "type": "string",
+            "maxLength": 512,
+            "title": "Avatar Url",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "device_id",
+          "code"
+        ],
+        "title": "AppWechatLoginRequest"
+      },
+      "AppWechatPasswordRequest": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 1024,
+            "minLength": 1,
+            "title": "Code"
+          },
+          "new_password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "New Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "new_password"
+        ],
+        "title": "AppWechatPasswordRequest"
+      },
+      "BindAlipay": {
+        "properties": {
+          "account": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 3,
+            "title": "Account"
+          },
+          "real_name": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 2,
+            "title": "Real Name"
+          },
+          "current_password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Current Password"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "account",
+          "real_name",
+          "current_password"
+        ],
+        "title": "BindAlipay"
+      },
+      "CampaignApplication": {
+        "properties": {
+          "request_key": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "Request Key"
+          },
+          "download_image": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Download Image"
+          },
+          "install_image": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Install Image"
+          },
+          "recharge_image": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Recharge Image"
+          },
+          "receive_name": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Receive Name"
+          },
+          "receive_tel": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Receive Tel"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_key",
+          "download_image",
+          "install_image",
+          "recharge_image",
+          "receive_name",
+          "receive_tel"
+        ],
+        "title": "CampaignApplication"
+      },
+      "ChallengeInput": {
+        "properties": {
+          "game_id": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Game Id"
+          },
+          "install_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 16,
+            "title": "Install Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "game_id",
+          "install_id"
+        ],
+        "title": "ChallengeInput"
+      },
+      "CheckInput": {
+        "properties": {
+          "challenge_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 20,
+            "title": "Challenge Id"
+          },
+          "aliyun_device_token": {
+            "type": "string",
+            "maxLength": 16384,
+            "minLength": 10,
+            "title": "Aliyun Device Token"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "challenge_id",
+          "aliyun_device_token"
+        ],
+        "title": "CheckInput"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "InviteInput": {
+        "properties": {
+          "invite_code": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Invite Code"
+          }
+        },
+        "type": "object",
+        "required": [
+          "invite_code"
+        ],
+        "title": "InviteInput"
+      },
+      "ObservationInput": {
+        "properties": {
+          "battery": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Battery"
+          },
+          "charging": {
+            "type": "boolean",
+            "title": "Charging"
+          },
+          "latitude": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 90.0,
+                "minimum": -90.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latitude"
+          },
+          "longitude": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 180.0,
+                "minimum": -180.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Longitude"
+          },
+          "accuracy": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 10000.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accuracy"
+          },
+          "location_age_seconds": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 120.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location Age Seconds"
+          }
+        },
+        "type": "object",
+        "required": [
+          "battery",
+          "charging"
+        ],
+        "title": "ObservationInput"
+      },
+      "SecondaryAdEvent": {
+        "properties": {
+          "session_token": {
+            "type": "string",
+            "maxLength": 256,
+            "title": "Session Token",
+            "default": ""
+          },
+          "event": {
+            "type": "string",
+            "enum": [
+              "shown",
+              "clicked",
+              "closed"
+            ],
+            "title": "Event"
+          },
+          "network": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "Network",
+            "default": ""
+          },
+          "source_id": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "Source Id",
+            "default": ""
+          },
+          "format": {
+            "type": "string",
+            "maxLength": 64,
+            "title": "Format",
+            "default": ""
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Title",
+            "default": ""
+          },
+          "app_name": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "App Name",
+            "default": ""
+          },
+          "creative_id": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Creative Id",
+            "default": ""
+          },
+          "app_package": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "App Package",
+            "default": ""
+          },
+          "advertiser": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Advertiser",
+            "default": ""
+          },
+          "network_placement_id": {
+            "type": "string",
+            "maxLength": 255,
+            "title": "Network Placement Id",
+            "default": ""
+          },
+          "extension_keys": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 50,
+            "title": "Extension Keys"
+          },
+          "e_c": {
+            "type": "string",
+            "maxLength": 8192,
+            "title": "E C",
+            "default": ""
+          },
+          "e_c_cny": {
+            "type": "string",
+            "maxLength": 8192,
+            "title": "E C Cny",
+            "default": ""
+          },
+          "s_id": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "S Id",
+            "default": ""
+          },
+          "publisher_revenue_cny": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000000.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,12}|(?=[\\d.]{1,25}0*$)\\d{0,12}\\.\\d{0,12}0*$)"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publisher Revenue Cny"
+          },
+          "sdk_request_id": {
+            "type": "string",
+            "maxLength": 256,
+            "title": "Sdk Request Id",
+            "default": ""
+          },
+          "sdk_show_id": {
+            "type": "string",
+            "maxLength": 256,
+            "title": "Sdk Show Id",
+            "default": ""
+          },
+          "impression_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Impression Id"
+          },
+          "game_id": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Game Id"
+          },
+          "ad_type": {
+            "type": "string",
+            "enum": [
+              "splash",
+              "banner",
+              "interstitial",
+              "native"
+            ],
+            "title": "Ad Type"
+          },
+          "placement": {
+            "type": "string",
+            "enum": [
+              "splash",
+              "banner",
+              "interstitial",
+              "native"
+            ],
+            "title": "Placement"
+          },
+          "ad_unit_id": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Ad Unit Id"
+          },
+          "occurred_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Occurred At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "event",
+          "impression_id",
+          "game_id",
+          "ad_type",
+          "placement",
+          "ad_unit_id",
+          "occurred_at"
+        ],
+        "title": "SecondaryAdEvent"
+      },
+      "SendCode": {
+        "properties": {
+          "phone": {
+            "type": "string",
+            "pattern": "^1[3-9]\\d{9}$",
+            "title": "Phone"
+          },
+          "game_id": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Game Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "phone",
+          "game_id"
+        ],
+        "title": "SendCode"
+      },
+      "SmsLogin": {
+        "properties": {
+          "app_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "App Id",
+            "default": "ad-member"
+          },
+          "app_version": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "App Version",
+            "default": ""
+          },
+          "platform": {
+            "type": "string",
+            "maxLength": 32,
+            "title": "Platform",
+            "default": ""
+          },
+          "device_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Device Id"
+          },
+          "invite_code": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "Invite Code",
+            "default": ""
+          },
+          "phone": {
+            "type": "string",
+            "pattern": "^1[3-9]\\d{9}$",
+            "title": "Phone"
+          },
+          "game_id": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Game Id"
+          },
+          "challenge_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Challenge Id"
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^\\d{6}$",
+            "title": "Code"
+          },
+          "new_password": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 8
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "New Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "device_id",
+          "phone",
+          "game_id",
+          "challenge_id",
+          "code"
+        ],
+        "title": "SmsLogin"
+      },
+      "SmsPassword": {
+        "properties": {
+          "challenge_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Challenge Id"
+          },
+          "code": {
+            "type": "string",
+            "pattern": "^\\d{6}$",
+            "title": "Code"
+          },
+          "new_password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "New Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "challenge_id",
+          "code",
+          "new_password"
+        ],
+        "title": "SmsPassword"
+      },
+      "UsageInput": {
+        "properties": {
+          "granted": {
+            "type": "boolean",
+            "title": "Granted"
+          },
+          "report_date": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "title": "Report Date"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/UsageItem"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "granted",
+          "report_date"
+        ],
+        "title": "UsageInput"
+      },
+      "UsageItem": {
+        "properties": {
+          "package_name": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.]+$",
+            "title": "Package Name"
+          },
+          "duration_ms": {
+            "type": "integer",
+            "maximum": 86400000.0,
+            "minimum": 0.0,
+            "title": "Duration Ms"
+          },
+          "opens": {
+            "type": "integer",
+            "maximum": 100000.0,
+            "minimum": 0.0,
+            "title": "Opens"
+          }
+        },
+        "type": "object",
+        "required": [
+          "package_name",
+          "duration_ms",
+          "opens"
+        ],
+        "title": "UsageItem"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "WithdrawalApply": {
+        "properties": {
+          "request_key": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "title": "Request Key"
+          },
+          "game_id": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Game Id"
+          },
+          "amount_cents": {
+            "type": "integer",
+            "maximum": 100000000.0,
+            "minimum": 1.0,
+            "title": "Amount Cents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_key",
+          "game_id",
+          "amount_cents"
+        ],
+        "title": "WithdrawalApply"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.example.invalid",
+      "description": "替换为实际 API 域名；不含 /api/app/v1"
+    }
+  ]
+}

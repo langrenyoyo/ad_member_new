@@ -334,7 +334,10 @@ def get_invite_code(member=Depends(m.require_app_member)):
         stored = m.get_or_404(session, m.Member, member.id, '会员')
         row = enrollment(session, stored)
         session.commit()
-        return {'data': {'level': row.level, 'invite_code': row.invite_code}}
+        from .invite_landing import invite_path
+        return {'data': {'level': row.level, 'invite_code': row.invite_code,
+            'invite_path': invite_path(stored.game_id, row.invite_code),
+            'registration_eligible': row.level in (1, 3)}}
 
 
 @m.app_api.post('/onboarding')

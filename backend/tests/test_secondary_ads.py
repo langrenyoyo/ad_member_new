@@ -43,10 +43,8 @@ class SecondaryAdTests(unittest.TestCase):
             self.assertEqual(s.scalar(select(func.count()).select_from(m.CoinLog)),0)
             self.assertEqual(s.scalar(select(func.count()).select_from(m.member_policy.RewardLedger)),0)
         history=self.client.get('/api/app/v1/ads/history',headers=self.auth).json()['data']
-        self.assertEqual(history['total'],4)
-        self.assertEqual({r['fu_type'] for r in history['items']},{1,2,3,4})
-        self.assertTrue(all(r['is_fu']==1 and r['coin_added']==0 for r in history['items']))
-        self.assertTrue(all(r['ad_title']=='示例游戏广告' and r['ad_creative_id']=='creative-123' for r in history['items']))
+        self.assertEqual(history['total'],0)
+        self.assertEqual(history['items'],[])
         admin=self.client.get('/api/v1/ads',headers=self.admin_headers(),params={'is_fu':1}).json()
         self.assertEqual(admin['total'],4)
         self.assertTrue(all(r['ad_app_package']=='example.ad.game' and r['ad_content_status']=='reported' for r in admin['items']))
@@ -61,18 +59,25 @@ class SecondaryAdTests(unittest.TestCase):
         self.assertEqual(self.post(self.body()).status_code,202)
         with self.factory() as s:
             self.assertEqual(s.scalar(select(func.count()).select_from(m.AdRecord)),2)
-        history=self.client.get('/api/app/v1/ads/history',headers=self.auth).json()['data']
-        closed=next(r for r in history['items'] if r['status']=='closed')
-        self.assertEqual(set(closed['ad_behaviors']),{'shown','clicked'})
+        self.assertEqual(self.client.get('/api/app/v1/ads/history',headers=self.auth).json()['data']['total'],0)
+        with self.factory() as s:
+            closed=s.scalar(select(m.AppAdSession).where(m.AppAdSession.status=='closed'))
+            self.assertIsNotNone(closed.impressed_at)
+            events=s.scalars(select(m.AppAdEvent).where(m.AppAdEvent.ad_session_id==closed.id,
+                m.AppAdEvent.event_type=='client_metadata')).all()
+            self.assertEqual({json.loads(event.result_json)['event'] for event in events}, {'shown','clicked','closed'})
 
     def test_out_of_order_close_then_show_keeps_closed_and_records_display(self):
         self.configure();body=self.body(event='closed')
         self.assertEqual(self.post(body).status_code,202)
         self.assertEqual(self.client.get('/api/app/v1/ads/history',headers=self.auth).json()['data']['total'],0)
         self.assertEqual(self.post({**body,'event':'shown'}).status_code,202)
-        row=self.client.get('/api/app/v1/ads/history',headers=self.auth).json()['data']['items'][0]
-        self.assertEqual(row['status'],'closed')
-        self.assertEqual(row['coin_added'],0)
+        self.assertEqual(self.client.get('/api/app/v1/ads/history',headers=self.auth).json()['data']['total'],0)
+        with self.factory() as s:
+            row=s.scalar(select(m.AppAdSession))
+            self.assertEqual(row.status,'closed')
+            self.assertIsNotNone(row.impressed_at)
+            self.assertIsNone(row.coin_log_id)
 
     def test_type_unit_and_time_cannot_be_forged_as_reward(self):
         self.configure()
@@ -102,7 +107,7 @@ class SecondaryAdTests(unittest.TestCase):
 
     def test_unknown_content_is_explicit_and_does_not_invent_name(self):
         self.configure();self.post(self.body(title='',app_name='',app_package='',creative_id=''))
-        row=self.client.get('/api/app/v1/ads/history',headers=self.auth).json()['data']['items'][0]
+        row=self.client.get('/api/v1/ads',headers=self.admin_headers()).json()['items'][0]
         self.assertEqual(row['ad_title'],'')
         self.assertEqual(row['ad_content_status'],'sdk_not_provided')
         self.assertEqual(row['ad_network'],'快手')
@@ -117,7 +122,7 @@ class SecondaryAdTests(unittest.TestCase):
         with self.factory() as s:
             s.add(m.AppAdSession(id='reward-content',member_id=1,game_id=1,agent_id=1,
                 request_id='req-reward-content',ad_type='rewarded',provider='taku',status='impressed',
-                session_token_hash=m._token_hash('secret'),expires_at=m.now()-timedelta(minutes=10)))
+                session_token_hash=m._token_hash('secret'),impressed_at=m.now()-timedelta(minutes=15),expires_at=m.now()-timedelta(minutes=10)))
             s.add(m.AdRecord(user_id=1,game_id=1,agent_id=1,request_id='req-reward-content'))
             s.commit()
         body={'session_token':'secret','event':'shown','title':'真实素材示例',

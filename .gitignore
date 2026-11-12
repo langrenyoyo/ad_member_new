@@ -41,9 +41,12 @@ serverdata.md
 /secrets/
 backend/uploads/
 
-# local builds, device evidence, and nested Android repository
-/apk/
+# Android source is versioned; its own .gitignore excludes builds and secrets.
+/apk/*
+!/apk/ya_zhi_yi_ji/
+# Device evidence and locally published APKs
 /artifacts/
+/public/downloads/*.apk
 /phone-*.png
 /Taku_*.xlsx
 /aaa.py

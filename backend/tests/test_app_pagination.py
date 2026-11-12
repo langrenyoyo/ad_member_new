@@ -39,7 +39,7 @@ class AppPaginationTests(unittest.TestCase):
                     sid = f'ads-{uid}-{i}'
                     s.add(m.AppAdSession(id=sid, member_id=uid, game_id=uid, agent_id=uid,
                         request_id='req-'+sid, session_token_hash='test',
-                        expires_at=m.now()+timedelta(minutes=5), created_at=m.now().replace(microsecond=0)))
+                        expires_at=m.now()+timedelta(minutes=5), impressed_at=m.now(), created_at=m.now().replace(microsecond=0)))
                     s.add(m.CoinLog(user_id=uid, game_id=uid, coin=1,
                                     created_at=m.now().replace(microsecond=0)))
                     s.add(m.Withdrawal(user_id=uid, game_id=uid, agent_id=uid))
@@ -117,6 +117,32 @@ class AppPaginationTests(unittest.TestCase):
         self.assertEqual(sizes, [20, 20, 5])
         self.assertEqual(len(set(ids)), 45)
         self.assertEqual(ids, sorted(ids, reverse=True))
+
+    def test_ad_history_filters_before_pagination_and_uses_actual_ledger(self):
+        with self.factory() as session:
+            for i in range(25):
+                log = m.CoinLog(user_id=1, game_id=1, coin='0.000010')
+                session.add(log)
+                session.flush()
+                session.add(m.AppAdSession(id=f'reward-extra-{i}', member_id=1, game_id=1, agent_id=1,
+                    placement='rewarded', ad_type='rewarded', provider='taku', status='rewarded',
+                    request_id=f'req-extra-{i}', session_token_hash='test', reward_coin=999,
+                    coin_log_id=log.id, impressed_at=m.now(), completed_at=m.now(),
+                    expires_at=m.now()+timedelta(minutes=5)))
+                for kind, shown in [('banner', True), ('rewarded', False)]:
+                    session.add(m.AppAdSession(id=f'{kind}-unwanted-{i}', member_id=1, game_id=1, agent_id=1,
+                        placement=kind, ad_type=kind, provider='taku_secondary' if shown else 'taku',
+                        request_id=f'req-{kind}-{i}', session_token_hash='test',
+                        impressed_at=m.now() if shown else None, expires_at=m.now()+timedelta(minutes=5)))
+            session.commit()
+        first = self.get('ads/history', page=1, page_size=20)
+        second = self.get('ads/history', page=2, page_size=20)
+        self.assertEqual((first['total'], len(first['items']), len(second['items'])), (30, 20, 10))
+        rows = first['items']+second['items']
+        self.assertEqual(len({row['id'] for row in rows}), 30)
+        self.assertTrue(all(row['ad_type']=='rewarded' and row['watched_at'] for row in rows))
+        self.assertTrue(all(row['coin_added']==0.00001 for row in rows if row['status']=='rewarded'))
+        self.assertFalse(second['has_more'])
 
     def test_filter_counts_and_empty_page_metadata(self):
         first=self.get('subsidies',status=1,page=1,page_size=1)

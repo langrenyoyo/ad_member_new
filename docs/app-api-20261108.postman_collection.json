@@ -1,0 +1,2514 @@
+{
+  "info": {
+    "name": "鸭只易记 APP API 20261108",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "49个操作；导入后修改base_url、game_id、设备及登录参数。请求示例含占位值，不会自动执行。支付/申请等写入操作请使用授权测试环境。"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://api.example.invalid"
+    },
+    {
+      "key": "access_token",
+      "value": ""
+    },
+    {
+      "key": "refresh_token",
+      "value": ""
+    },
+    {
+      "key": "device_id",
+      "value": "app-install-000000000001"
+    },
+    {
+      "key": "game_id",
+      "value": "238"
+    },
+    {
+      "key": "ad_session_id",
+      "value": ""
+    },
+    {
+      "key": "ad_session_token",
+      "value": ""
+    },
+    {
+      "key": "campaign_id",
+      "value": "1"
+    },
+    {
+      "key": "subsidy_id",
+      "value": "1"
+    },
+    {
+      "key": "withdrawal_id",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "POST /auth/register",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/auth/register",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "auth",
+            "register"
+          ],
+          "query": []
+        },
+        "description": "密码至少 8 位且同时包含英文字母和数字；用户名为 4–64 位字母、数字、点、下划线或连字符。建议固定传正确 game_id，由服务端推导所属主体。开启强制注册邀请码时必须传本应用团长/代理的邀请码；普通会员邀请码无效。成功返回 user 和两枚 Token。",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"device_id\": \"{{device_id}}\",\n  \"app_id\": \"ad-member\",\n  \"app_version\": \"1.0.0\",\n  \"platform\": \"android\",\n  \"username\": \"13800000000\",\n  \"password\": \"Example123!\",\n  \"game_id\": {{game_id}},\n  \"invite_code\": \"A1B2C3\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code >= 200 && pm.response.code < 300) {",
+              "  const d = pm.response.json().data || {};",
+              "  if (d.access_token && d.refresh_token) {",
+              "    pm.collectionVariables.set(\"access_token\", d.access_token);",
+              "    pm.collectionVariables.set(\"refresh_token\", d.refresh_token);",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /auth/wechat",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/auth/wechat",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "auth",
+            "wechat"
+          ],
+          "query": []
+        },
+        "description": "与 /auth/wechat-login 为同一实现。Android App 必须显式传 provider=app；默认 mini_program 用于小程序。code 由微信 SDK 获取，首次登录可创建会员并校验注册邀请码。",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"device_id\": \"{{device_id}}\",\n  \"app_id\": \"ad-member\",\n  \"app_version\": \"1.0.0\",\n  \"platform\": \"android\",\n  \"code\": \"<微信SDK授权code>\",\n  \"provider\": \"app\",\n  \"game_id\": {{game_id}},\n  \"invite_code\": \"A1B2C3\",\n  \"nickname\": \"示例昵称\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code >= 200 && pm.response.code < 300) {",
+              "  const d = pm.response.json().data || {};",
+              "  if (d.access_token && d.refresh_token) {",
+              "    pm.collectionVariables.set(\"access_token\", d.access_token);",
+              "    pm.collectionVariables.set(\"refresh_token\", d.refresh_token);",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /auth/wechat-login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/auth/wechat-login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "auth",
+            "wechat-login"
+          ],
+          "query": []
+        },
+        "description": "微信登录别名，规则同 /auth/wechat；微信服务未配置时返回 503。",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"device_id\": \"{{device_id}}\",\n  \"app_id\": \"ad-member\",\n  \"app_version\": \"1.0.0\",\n  \"platform\": \"android\",\n  \"code\": \"<微信SDK授权code>\",\n  \"provider\": \"app\",\n  \"game_id\": {{game_id}},\n  \"invite_code\": \"A1B2C3\",\n  \"nickname\": \"示例昵称\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code >= 200 && pm.response.code < 300) {",
+              "  const d = pm.response.json().data || {};",
+              "  if (d.access_token && d.refresh_token) {",
+              "    pm.collectionVariables.set(\"access_token\", d.access_token);",
+              "    pm.collectionVariables.set(\"refresh_token\", d.refresh_token);",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /auth/login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/auth/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "auth",
+            "login"
+          ],
+          "query": []
+        },
+        "description": "成功返回 user、access_token、refresh_token、expires_in、token_type。device_id 必须与本安装实例一致。无效账号、密码或停用账号可能返回 401，不要把所有 401 都显示成 Token 过期。",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"device_id\": \"{{device_id}}\",\n  \"app_id\": \"ad-member\",\n  \"app_version\": \"1.0.0\",\n  \"platform\": \"android\",\n  \"username\": \"13800000000\",\n  \"password\": \"Example123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code >= 200 && pm.response.code < 300) {",
+              "  const d = pm.response.json().data || {};",
+              "  if (d.access_token && d.refresh_token) {",
+              "    pm.collectionVariables.set(\"access_token\", d.access_token);",
+              "    pm.collectionVariables.set(\"refresh_token\", d.refresh_token);",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /auth/refresh",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/auth/refresh",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "auth",
+            "refresh"
+          ],
+          "query": []
+        },
+        "description": "Refresh Token 轮换：旧 refresh_token 在成功后撤销；原子保存响应中的 access_token 和 refresh_token。同一账号设备的刷新请求应串行合并。服务端默认 Access Token 120 分钟、Refresh Token 30 天，以部署配置及 expires_in 为准。",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"refresh_token\": \"{{refresh_token}}\",\n  \"device_id\": \"{{device_id}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code >= 200 && pm.response.code < 300) {",
+              "  const d = pm.response.json().data || {};",
+              "  if (d.access_token && d.refresh_token) {",
+              "    pm.collectionVariables.set(\"access_token\", d.access_token);",
+              "    pm.collectionVariables.set(\"refresh_token\", d.refresh_token);",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /auth/logout",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/auth/logout",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "auth",
+            "logout"
+          ],
+          "query": []
+        },
+        "description": "推荐提交当前 refresh_token 以撤销刷新会话；不传时仅返回 204。客户端清除本地令牌及当前账号状态。此接口不立即撤销已签发 Access JWT。204 没有 JSON 响应体。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"refresh_token\": \"{{refresh_token}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /me",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/me",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "me"
+          ],
+          "query": []
+        },
+        "description": "GET 返回会员资料和钱包概况；PATCH 只传需要修改的字段。不要把 /me 的 receive_name 当作已绑定支付宝；收款绑定以 /me/alipay 为准。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PATCH /me",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/me",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "me"
+          ],
+          "query": []
+        },
+        "description": "GET 返回会员资料和钱包概况；PATCH 只传需要修改的字段。不要把 /me 的 receive_name 当作已绑定支付宝；收款绑定以 /me/alipay 为准。 sex取值0–2；其具体展示标签需与APP约定，本文不臆造映射。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"示例昵称\",\n  \"sex\": 0\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /auth/wechat-password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/auth/wechat-password",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "auth",
+            "wechat-password"
+          ],
+          "query": []
+        },
+        "description": "需登录，并提供属于当前会员绑定微信 App 身份的新 code，成功 204；不能拿其他微信账号授权来设置密码。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"<当前账号的新微信App授权code>\",\n  \"new_password\": \"NewExample123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /auth/change-password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/auth/change-password",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "auth",
+            "change-password"
+          ],
+          "query": []
+        },
+        "description": "当前密码验证成功后修改；新密码必须同时含字母和数字，成功 204。当前实现不返回新 Token，也未在此路径批量撤销其他会话。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"current_password\": \"Example123!\",\n  \"new_password\": \"NewExample123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /games",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/games",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "games"
+          ],
+          "query": []
+        },
+        "description": "返回当前主体内 status=1 且 ad_status=1 的游戏 items 与 total；此列表没有通用分页参数。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /bootstrap",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/bootstrap?game_id={{game_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "bootstrap"
+          ],
+          "query": [
+            {
+              "key": "game_id",
+              "value": "{{game_id}}",
+              "disabled": false
+            }
+          ]
+        },
+        "description": "可选 game_id，默认账号游戏。返回 user、game、ad_config、server_time。ad_config 含 enabled、provider、app_id、app_key、placements；placements 含 placement、ad_type、ad_unit_id、cooldown_seconds、reward_coin。SDK 用真实配置初始化。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /ads/request",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/ads/request",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "ads",
+            "request"
+          ],
+          "query": []
+        },
+        "description": "TAKU 激励仅允许 placement=rewarded 且 ad_type=rewarded。返回 ad_session_id、request_id、session_token、provider、ad_unit_id、expires_at、status、reward、reward_verification、taku_user_id、taku_extra_data。未展示 issued 会话的相同 client_request_id 重试会轮换 session_token；保存最新值。不是所有状态下的永久幂等键。副广不调用本接口。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"device_id\": \"{{device_id}}\",\n  \"app_id\": \"ad-member\",\n  \"app_version\": \"1.0.0\",\n  \"platform\": \"android\",\n  \"game_id\": {{game_id}},\n  \"placement\": \"rewarded\",\n  \"ad_type\": \"rewarded\",\n  \"client_request_id\": \"reward-request-20261108-001\",\n  \"risk_check_id\": \"<开启风控时必填>\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "  const d = pm.response.json().data;",
+              "  pm.collectionVariables.set(\"ad_session_id\", d.ad_session_id);",
+              "  pm.collectionVariables.set(\"ad_session_token\", d.session_token);",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /ads/{ad_session_id}/impression",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/ads/{{ad_session_id}}/impression",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "ads",
+            "{{ad_session_id}}",
+            "impression"
+          ],
+          "query": []
+        },
+        "description": "真实 SDK 展示时调用；event_id 按事件生成唯一值，失败重试保持不变。返回 ad_session_id、status；不发金币。通常会话有效 5 分钟，按 expires_at 为准。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"event_id\": \"example-impression-20261108-001\",\n  \"session_token\": \"{{ad_session_token}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /ads/{ad_session_id}/complete",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/ads/{{ad_session_id}}/complete",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "ads",
+            "{{ad_session_id}}",
+            "complete"
+          ],
+          "query": []
+        },
+        "description": "仅 SDK 激励达成后调用。TAKU 必须传 e_c_cny、s_id、source_id，并传 SDK 请求/展示 ID；固定价格证明还必须先成功上报同展示 shown 元数据。人民币证明与展示不匹配会拒绝。成功 data 含 ad_session_id、status=rewarded、rewarded=true、coin_added、coin_balance、coin_log_id。重复完成不会重复发放；过期 TAKU 会话可在创建后 7 天内尝试补结算，仍须通过证明检查。publisher_revenue_cny 不能代替 SDK 加密证明。副广一律拒绝结算。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"event_id\": \"example-complete-20261108-001\",\n  \"session_token\": \"{{ad_session_token}}\",\n  \"e_c_cny\": \"<SDK返回的人民币加密证明>\",\n  \"s_id\": \"<SDK返回的secretId>\",\n  \"source_id\": \"<SDK返回的广告源ID>\",\n  \"sdk_request_id\": \"<SDK请求ID>\",\n  \"sdk_show_id\": \"<SDK展示ID>\",\n  \"watched_seconds\": 30\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /ads/{ad_session_id}/fail",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/ads/{{ad_session_id}}/fail",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "ads",
+            "{{ad_session_id}}",
+            "fail"
+          ],
+          "query": []
+        },
+        "description": "SDK 加载/展示失败时上报 reason，返回 ad_session_id、status=failed、rewarded=false。已奖励会话不能改成失败。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"event_id\": \"example-fail-20261108-001\",\n  \"session_token\": \"{{ad_session_token}}\",\n  \"reason\": \"sdk_load_failed\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /ads/history",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/ads/history?game_id={{game_id}}&page=1&page_size=20",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "ads",
+            "history"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "20",
+              "disabled": true
+            },
+            {
+              "key": "offset",
+              "value": "",
+              "disabled": true
+            },
+            {
+              "key": "game_id",
+              "value": "{{game_id}}",
+              "disabled": false
+            },
+            {
+              "key": "page",
+              "value": "1",
+              "disabled": false
+            },
+            {
+              "key": "page_size",
+              "value": "20",
+              "disabled": false
+            }
+          ]
+        },
+        "description": "本人广告历史，可选 game_id，支持通用分页。返回激励与已展示副广，含内容字段，副广关闭状态可为 closed；coin_added=0 不代表请求失败。激励未完成会话也可能出现在历史中。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /subsidies",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/subsidies",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "subsidies"
+          ],
+          "query": []
+        },
+        "description": "GET 查询本人补贴申请，可选 game_id、status=0/1/2（筛选驳回传2，不传target_status的4）。POST 为旧版无活动申请兼容入口，无request_key永久幂等承诺；该游戏一旦配置过活动即返回409，应走活动申请。旧入口 price由审核端设置，APP不能提交补贴金额。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"game_id\": {{game_id}},\n  \"tx_price\": \"5.00\",\n  \"pics\": [\n    \"/api/member-images/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png\"\n  ],\n  \"receive_name\": \"示例姓名\",\n  \"receive_tel\": \"13800000000\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /subsidies",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/subsidies?game_id={{game_id}}&page=1&page_size=20",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "subsidies"
+          ],
+          "query": [
+            {
+              "key": "game_id",
+              "value": "{{game_id}}",
+              "disabled": false
+            },
+            {
+              "key": "status",
+              "value": "",
+              "disabled": true
+            },
+            {
+              "key": "limit",
+              "value": "20",
+              "disabled": true
+            },
+            {
+              "key": "offset",
+              "value": "",
+              "disabled": true
+            },
+            {
+              "key": "page",
+              "value": "1",
+              "disabled": false
+            },
+            {
+              "key": "page_size",
+              "value": "20",
+              "disabled": false
+            }
+          ]
+        },
+        "description": "GET 查询本人补贴申请，可选 game_id、status=0/1/2（筛选驳回传2，不传target_status的4）。POST 为旧版无活动申请兼容入口，无request_key永久幂等承诺；该游戏一旦配置过活动即返回409，应走活动申请。旧入口 price由审核端设置，APP不能提交补贴金额。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /subsidies/images",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "image/png"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/subsidies/images",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "subsidies",
+            "images"
+          ],
+          "query": []
+        },
+        "description": "发送原始图片二进制（Content-Type:image/png 或 image/jpeg 等），不要用 multipart/form-data、Base64 或 JSON。最大2MB，PNG/JPEG/WebP/GIF，单边不超过4096像素。返回 data.url，相对路径可用于申请和展示；图片会标准化为PNG。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "file",
+          "file": {
+            "src": ""
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /subsidies/{subsidy_id}",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/subsidies/{{subsidy_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "subsidies",
+            "{{subsidy_id}}"
+          ],
+          "query": []
+        },
+        "description": "返回本人申请详情：campaign、id、user_id、agent_id、game_id、tx_price、price、pics、receive_name、receive_tel、status、target_status、sub_msg及时间字段。price/tx_price单位为元；pics为逗号连接URL字符串。审核通过后以审核时后台coins_per_yuan折算增加金币，同时写type=302流水；APP刷新wallet与coin-logs，不自行加余额。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /wallet",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/wallet",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "wallet"
+          ],
+          "query": []
+        },
+        "description": "返回 coin=可用金币、freeze_coin=冻结金币、coin_user=累计收入字段、updated_at；以服务端余额为准。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /wallet/coin-logs",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/wallet/coin-logs?page=1&page_size=20",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "wallet",
+            "coin-logs"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "20",
+              "disabled": true
+            },
+            {
+              "key": "offset",
+              "value": "",
+              "disabled": true
+            },
+            {
+              "key": "page",
+              "value": "1",
+              "disabled": false
+            },
+            {
+              "key": "page_size",
+              "value": "20",
+              "disabled": false
+            }
+          ]
+        },
+        "description": "本人金币流水分页；条目 id、type、coin_before、coin、coin_after、remark、source_id、created_at。coin 为本次增减值。补贴审核到账 type=302；source_id 当前固定 0，不能用它关联补贴 ID。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /subsidy-campaigns",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/subsidy-campaigns?game_id={{game_id}}&page=1&page_size=20",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "subsidy-campaigns"
+          ],
+          "query": [
+            {
+              "key": "game_id",
+              "value": "{{game_id}}",
+              "disabled": false
+            },
+            {
+              "key": "limit",
+              "value": "20",
+              "disabled": true
+            },
+            {
+              "key": "offset",
+              "value": "",
+              "disabled": true
+            },
+            {
+              "key": "page",
+              "value": "1",
+              "disabled": false
+            },
+            {
+              "key": "page_size",
+              "value": "20",
+              "disabled": false
+            }
+          ]
+        },
+        "description": "补贴活动/补贴公告入口，按用户所属主体查询启用活动，可选 game_id。必须正确递增 page 或 offset，按 has_more 停止加载；不要每次只传 game_id。返回每条活动及当前用户资格、每日剩余名额。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /subsidy-campaigns/{campaign_id}",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/subsidy-campaigns/{{campaign_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "subsidy-campaigns",
+            "{{campaign_id}}"
+          ],
+          "query": []
+        },
+        "description": "返回活动详情和最新 eligibility；不可仅靠列表缓存判定可提交。eligible=false 时展示 reasons，最终提交时服务端再次检查资格。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /subsidy-campaigns/{campaign_id}/applications",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/subsidy-campaigns/{{campaign_id}}/applications",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "subsidy-campaigns",
+            "{{campaign_id}}",
+            "applications"
+          ],
+          "query": []
+        },
+        "description": "推荐申请入口。先上传三张不同凭证，再提交下载、安装来源、充值三种图片URL；请求键不变可重试。同一活动同会员北京时间每日一次；同游戏不能同时有待审申请。需要今日已确认转账的提现达到门槛，提交的提现金额/图片本身不代表满足条件。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"request_key\": \"subsidy-example-20261108-001\",\n  \"download_image\": \"/api/member-images/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png\",\n  \"install_image\": \"/api/member-images/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.png\",\n  \"recharge_image\": \"/api/member-images/cccccccccccccccccccccccccccccccccccccccccccccccc.png\",\n  \"receive_name\": \"示例姓名\",\n  \"receive_tel\": \"13800000000\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /me/alipay",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/me/alipay",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "me",
+            "alipay"
+          ],
+          "query": []
+        },
+        "description": "GET 无绑定时 data=null，否则返回 account_masked、real_name、identity_verified=false。PUT 需验证当前登录密码；成功返回同类脱敏信息。存在待审核/支付处理中提现时不允许更换。绑定记录不代表已完成实名核验。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT /me/alipay",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/me/alipay",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "me",
+            "alipay"
+          ],
+          "query": []
+        },
+        "description": "GET 无绑定时 data=null，否则返回 account_masked、real_name、identity_verified=false。PUT 需验证当前登录密码；成功返回同类脱敏信息。存在待审核/支付处理中提现时不允许更换。绑定记录不代表已完成实名核验。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"account\": \"13800000000\",\n  \"real_name\": \"示例姓名\",\n  \"current_password\": \"Example123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /withdrawal-options",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/withdrawal-options?game_id={{game_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "withdrawal-options"
+          ],
+          "query": [
+            {
+              "key": "game_id",
+              "value": "{{game_id}}",
+              "disabled": false
+            }
+          ]
+        },
+        "description": "必填 game_id；返回 tiers（amount_cents、coin_cost）、payment_available、alipay_bound。金额为分，coin_cost 为金币十进制字符串。payment_available=false 时不可提示用户已成功提交提现。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /withdrawals",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/withdrawals",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "withdrawals"
+          ],
+          "query": []
+        },
+        "description": "POST 按服务端档位申请，成功冻结对应金币并返回提现记录；request_key 保持不变以处理断网重试，相同 key 不同内容返回 409。GET 为本人记录分页。支付服务未配置返回 503，不生成成功提现记录。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"request_key\": \"withdraw-example-20261108-001\",\n  \"game_id\": {{game_id}},\n  \"amount_cents\": 100\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /withdrawals",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/withdrawals?page=1&page_size=20",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "withdrawals"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "20",
+              "disabled": true
+            },
+            {
+              "key": "offset",
+              "value": "",
+              "disabled": true
+            },
+            {
+              "key": "page",
+              "value": "1",
+              "disabled": false
+            },
+            {
+              "key": "page_size",
+              "value": "20",
+              "disabled": false
+            }
+          ]
+        },
+        "description": "POST 按服务端档位申请，成功冻结对应金币并返回提现记录；request_key 保持不变以处理断网重试，相同 key 不同内容返回 409。GET 为本人记录分页。支付服务未配置返回 503，不生成成功提现记录。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /withdrawals/{withdrawal_id}",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/withdrawals/{{withdrawal_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "withdrawals",
+            "{{withdrawal_id}}"
+          ],
+          "query": []
+        },
+        "description": "仅查询本人提现，含 status、target_status、plan_status 及 payout。payout.state 为 pending_review、queued、processing、succeeded、failed、rejected；仅 succeeded 代表渠道确认成功。payout 可能为 null（历史导入）。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /device-risk/challenge",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/device-risk/challenge",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "device-risk",
+            "challenge"
+          ],
+          "query": []
+        },
+        "description": "启用风控时先申请挑战，返回 challenge_id、biz_id、expires_at；install_id 为 16–128 位安装实例标识。挑战有效 5 分钟，同会员每分钟最多 10 次申请。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"game_id\": {{game_id}},\n  \"install_id\": \"app-install-000000000001\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /device-risk/verify",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/device-risk/verify",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "device-risk",
+            "verify"
+          ],
+          "query": []
+        },
+        "description": "用阿里云 SDK 按 biz_id 得到 token，再提交。返回 risk_check_id、device_id、suspected_reset、limited、daily_limit、used、remaining。该 device_id 是后台风控设备数字 ID，不替换 APP 安装实例字符串。有效校验用于一次新的激励申请；申请重试沿用原凭证。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"challenge_id\": \"<设备挑战接口返回值>\",\n  \"aliyun_device_token\": \"<阿里云SDK返回的设备token>\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /device-risk/config",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/device-risk/config?game_id={{game_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "device-risk",
+            "config"
+          ],
+          "query": [
+            {
+              "key": "game_id",
+              "value": "{{game_id}}",
+              "disabled": false
+            }
+          ]
+        },
+        "description": "必填 game_id；data 包含 enabled、limit_enabled、daily_limit。白名单可能返回 enabled=false。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /policy",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/policy?game_id={{game_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "policy"
+          ],
+          "query": [
+            {
+              "key": "game_id",
+              "value": "{{game_id}}",
+              "disabled": false
+            }
+          ]
+        },
+        "description": "公开策略；返回 require_alipay、require_invite、require_registration_invite、require_usage、announcement、announcement_version、invite_min_level。公告为登录/业务规则公告，不是补贴活动列表。",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /onboarding",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/onboarding",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "onboarding"
+          ],
+          "query": []
+        },
+        "description": "GET 返回 policy、level、invite_code、parent_id、alipay_bound、usage_granted。POST 绑定本应用正常团长/代理邀请关系；同一上级重复提交可重试，已有不同上级返回 409，禁止自邀/循环。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /onboarding",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/onboarding",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "onboarding"
+          ],
+          "query": []
+        },
+        "description": "GET 返回 policy、level、invite_code、parent_id、alipay_bound、usage_granted。POST 绑定本应用正常团长/代理邀请关系；同一上级重复提交可重试，已有不同上级返回 409，禁止自邀/循环。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"invite_code\": \"A1B2C3\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /invite-code",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/invite-code",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "invite-code"
+          ],
+          "query": []
+        },
+        "description": "所有会员均有 6 位大写英文与数字组合邀请码；返回 data.level 和 data.invite_code。身份 0=普通会员、1=团长、3=代理。展示邀请码不等于具备强制注册邀请资格。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /usage",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/usage",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "usage"
+          ],
+          "query": []
+        },
+        "description": "仅在用户授权后读取并同步应用使用统计；report_date 仅接受北京时间今天或昨天。撤销授权传 granted=false，不上报应用条目。require_usage 开启时授权同步超过 15 分钟会失效。返回 data.granted。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"granted\": true,\n  \"report_date\": \"2026-11-08\",\n  \"items\": [\n    {\n      \"package_name\": \"com.example.ad\",\n      \"duration_ms\": 60000,\n      \"opens\": 1\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /commissions",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/commissions?page=1&page_size=20",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "commissions"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "20",
+              "disabled": true
+            },
+            {
+              "key": "offset",
+              "value": "",
+              "disabled": true
+            },
+            {
+              "key": "page",
+              "value": "1",
+              "disabled": false
+            },
+            {
+              "key": "page_size",
+              "value": "20",
+              "disabled": false
+            }
+          ]
+        },
+        "description": "返回 summary（total_earned、today_earned、direct_members、level）和分页 items；条目 id、amount、kind、source_member_id、ad_session_id、created_at。佣金已计入钱包，无额外领取接口。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /commission-team",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/commission-team?page=1&page_size=20",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "commission-team"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "20",
+              "disabled": true
+            },
+            {
+              "key": "offset",
+              "value": "",
+              "disabled": true
+            },
+            {
+              "key": "page",
+              "value": "1",
+              "disabled": false
+            },
+            {
+              "key": "page_size",
+              "value": "20",
+              "disabled": false
+            }
+          ]
+        },
+        "description": "只返回本人直属成员 items（id、level）及分页元数据，不返回手机号和收款信息。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /auth/sms/password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/auth/sms/password",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "auth",
+            "sms",
+            "password"
+          ],
+          "query": []
+        },
+        "description": "需要已登录；验证码须属于当前会员的手机号（username）和游戏。返回 data.password_set=true。不是未登录忘记密码接口。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"challenge_id\": \"<短信发送接口返回值>\",\n  \"code\": \"123456\",\n  \"new_password\": \"NewExample123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /auth/sms/send",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/auth/sms/send",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "auth",
+            "sms",
+            "send"
+          ],
+          "query": []
+        },
+        "description": "发送 6 位短信验证码；data 为 challenge_id、retry_after=60、expires_in=300。手机号格式为中国大陆手机号。服务端还有每日手机号/IP限制，429 时停止倒计时外的重复请求。",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"phone\": \"13800000000\",\n  \"game_id\": {{game_id}}\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /auth/sms/login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/auth/sms/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "auth",
+            "sms",
+            "login"
+          ],
+          "query": []
+        },
+        "description": "验证码有效且未使用时可登录/注册。首次注册需遵守邀请码策略。new_password 可选，传入会设置或修改登录密码；短信验证最多 5 次尝试。成功返回 user 和两枚 Token，此路径没有强制 request_id。",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"device_id\": \"{{device_id}}\",\n  \"app_id\": \"ad-member\",\n  \"app_version\": \"1.0.0\",\n  \"platform\": \"android\",\n  \"phone\": \"13800000000\",\n  \"game_id\": {{game_id}},\n  \"challenge_id\": \"<短信发送接口返回值>\",\n  \"code\": \"123456\",\n  \"invite_code\": \"A1B2C3\",\n  \"new_password\": \"Example123!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code >= 200 && pm.response.code < 300) {",
+              "  const d = pm.response.json().data || {};",
+              "  if (d.access_token && d.refresh_token) {",
+              "    pm.collectionVariables.set(\"access_token\", d.access_token);",
+              "    pm.collectionVariables.set(\"refresh_token\", d.refresh_token);",
+              "  }",
+              "}"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST /ads/{ad_session_id}/metadata",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/ads/{{ad_session_id}}/metadata",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "ads",
+            "{{ad_session_id}}",
+            "metadata"
+          ],
+          "query": []
+        },
+        "description": "真实 SDK 事件采集接口；event=shown/clicked/reward/closed/downloaded/installed/opened。会话创建 24 小时内可补报，相同会话与 event 只保存一次，返回 data.recorded。名称来源于 SDK 或原生素材对象，缺失时留空，不猜测。extension_keys只传扩展字段名，每项最长100字符，不传整份SDK扩展数据。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"session_token\": \"{{ad_session_token}}\",\n  \"event\": \"shown\",\n  \"network\": \"示例广告平台\",\n  \"source_id\": \"<SDK返回的广告源ID>\",\n  \"title\": \"示例广告名称\",\n  \"app_name\": \"示例应用\",\n  \"app_package\": \"com.example.ad\",\n  \"creative_id\": \"example-creative\",\n  \"advertiser\": \"示例广告主\",\n  \"network_placement_id\": \"example-placement\",\n  \"e_c_cny\": \"<SDK返回的人民币加密证明>\",\n  \"s_id\": \"<SDK返回的secretId>\",\n  \"sdk_request_id\": \"<SDK请求ID>\",\n  \"sdk_show_id\": \"<SDK展示ID>\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /ads/secondary-events",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/ads/secondary-events",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "ads",
+            "secondary-events"
+          ],
+          "query": []
+        },
+        "description": "新增：真实开屏/横幅/插屏/信息流展示、点击、关闭上报。placement 与 ad_type 一致且为 splash/banner/interstitial/native；ad_unit_id 匹配配置。每次实际展示生成 UUID impression_id，该展示各事件共用；重复相同事件不重复记账。occurred_at 必须带时区且在过去24小时/未来5分钟内。只 shown 创建观看记录；副广金币始终为0。无需激励 session_token，返回 recorded、ad_session_id。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"game_id\": {{game_id}},\n  \"impression_id\": \"e0ebac50-9a88-43e6-8ae8-255e50fe4ef9\",\n  \"placement\": \"interstitial\",\n  \"ad_type\": \"interstitial\",\n  \"ad_unit_id\": \"<bootstrap配置的插屏广告位ID>\",\n  \"event\": \"shown\",\n  \"occurred_at\": \"2026-11-08T08:00:00Z\",\n  \"network\": \"示例广告平台\",\n  \"source_id\": \"example-source\",\n  \"title\": \"示例广告名称\",\n  \"app_name\": \"示例应用\",\n  \"app_package\": \"com.example.ad\",\n  \"creative_id\": \"example-creative\",\n  \"advertiser\": \"示例广告主\",\n  \"network_placement_id\": \"example-placement\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /device-observations",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/device-observations",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "device-observations"
+          ],
+          "query": []
+        },
+        "description": "POST 上传电量/充电状态，定位仅在获得授权后上报；坐标、精度、采样年龄须同时存在或同时省略。采样年龄≤120秒，45秒内重复返回 recorded=false,retry_after=45。数据保留24小时。DELETE 清除本人观测，返回 deleted=true。不是定位权限申请接口。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"battery\": 80,\n  \"charging\": false\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE /device-observations",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "X-Device-Id",
+            "value": "{{device_id}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/app/v1/device-observations",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "app",
+            "v1",
+            "device-observations"
+          ],
+          "query": []
+        },
+        "description": "POST 上传电量/充电状态，定位仅在获得授权后上报；坐标、精度、采样年龄须同时存在或同时省略。采样年龄≤120秒，45秒内重复返回 recorded=false,retry_after=45。数据保留24小时。DELETE 清除本人观测，返回 deleted=true。不是定位权限申请接口。",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{access_token}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

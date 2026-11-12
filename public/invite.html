@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>鸭只易记 · 好友邀请</title>
+  <link rel="stylesheet" href="/invite.css">
+  <script src="/invite.js" defer></script>
+</head>
+<body><main>
+  <p class="eyebrow">YAZHI DAILY / 好友邀请</p>
+  <h1>一起积累，<br>慢慢成长。</h1>
+  <p>扫码后可在浏览器完成短信注册 / 登录，也可下载 APP 继续使用。</p>
+  <section aria-label="邀请信息"><span>专属邀请码</span><strong id="invite-code">加载中</strong><p id="eligibility"></p>
+    <button id="copy-code" disabled>复制邀请码</button></section>
+  <p id="status" role="status" aria-live="polite">正在核对邀请链接…</p>
+  <button id="retry" hidden>重新加载</button>
+  <form id="login-form">
+    <h2>验证码注册 / 登录</h2>
+    <p>未注册手机号通过验证后将创建账号，并按当前邀请规则绑定上级。</p>
+    <label>手机号<input id="phone" type="tel" autocomplete="tel" inputmode="numeric" maxlength="11" required pattern="1[3-9][0-9]{9}"></label>
+    <div class="sms"><label>短信验证码<input id="sms-code" autocomplete="one-time-code" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" required></label>
+      <button id="send-code" type="button" disabled>获取验证码</button></div>
+    <p id="announcement"></p>
+    <label class="consent"><input id="consent" type="checkbox" required>同意通过本手机号接收本次验证码，用于验证手机号及创建或登录鸭只易记账号。未注册时将按邀请规则建立账号与邀请关系。</label>
+    <button id="login" type="submit" disabled>验证码注册 / 登录</button>
+  </form>
+  <section aria-label="获取应用"><h2>在 APP 继续</h2>
+    <a id="open-app" class="button" hidden>已安装，打开 APP</a>
+    <a id="download" class="button" hidden>下载 Android APP</a><p id="download-note"></p>
+    <p>微信等内置浏览器若无法下载安装，请选择右上角菜单，通过系统浏览器打开。安装后可用同一手机号短信登录；浏览器中已绑定的邀请关系会保留。</p>
+  </section>
+</main></body></html>
