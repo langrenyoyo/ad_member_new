@@ -5,6 +5,7 @@ const state={view:location.hash.slice(1).split('?')[0]||'members',token:localSto
 let pageLoadGeneration=0;
 async function load(){
  const generation=++pageLoadGeneration,route=location.hash,content=document.querySelector('#content');
+ document.title=state.token?`${(views[state.view]||views.dashboard)[0]} - 管理系统`:'登录';
  if(state.view!=='members')document.querySelectorAll('[data-member-toolbar]').forEach(element=>element.remove());
  document.querySelector('#pageLoadError')?.remove();
  content.setAttribute('aria-busy','true');
