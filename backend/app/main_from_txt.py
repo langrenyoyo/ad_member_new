@@ -5407,7 +5407,7 @@ def list_whitelist(q: str | None = None, username: str | None = None, name: str 
                         game_name=game_name, agent_name=agent_name, sort=sort, order=order,
                         created_from=created_from, created_to=created_to, status_filter=status_filter,
                         is_white=1, is_true=None, game_addiction_enable=None, member_id=None, exchange_enable=None,
-                        limit=limit, offset=offset, admin=admin)
+                        member_level=None, limit=limit, offset=offset, admin=admin)
 
 
 @api.get("/risk/devices")

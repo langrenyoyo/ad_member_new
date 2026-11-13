@@ -10,6 +10,24 @@ class MemberLevelTests(unittest.TestCase):
     tearDown = fixtures.MemberPolicyTests.tearDown
     admin_headers = fixtures.MemberPolicyTests.admin_headers
 
+    def test_whitelist_without_identity_filter_lists_only_white_members(self):
+        headers = self.admin_headers()
+        with self.factory() as session:
+            session.get(m.Member, 1).is_white = 1
+            session.get(m.Member, 2).is_white = 1
+            session.add(m.Member(id=3, username='not-white', game_id=1, agent_id=1, status=1, is_white=0))
+            session.commit()
+        response = self.client.get('/api/v1/risk/whitelist?limit=1&offset=0&sort=id&order=desc', headers=headers)
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json()['total'], 2)
+        self.assertEqual(response.json()['items'][0]['id'], 2)
+        second = self.client.get('/api/v1/risk/whitelist?limit=1&offset=1&sort=id&order=desc', headers=headers)
+        self.assertEqual(second.status_code, 200, second.text)
+        self.assertEqual(second.json()['items'][0]['id'], 1)
+        filtered = self.client.get('/api/v1/risk/whitelist?username=not-white', headers=headers)
+        self.assertEqual(filtered.status_code, 200, filtered.text)
+        self.assertEqual(filtered.json()['total'], 0)
+
     def test_list_filter_pagination_and_missing_enrollment(self):
         headers = self.admin_headers()
         with self.factory() as session:
