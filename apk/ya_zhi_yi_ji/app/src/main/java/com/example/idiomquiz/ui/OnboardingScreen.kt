@@ -48,6 +48,7 @@ internal fun OnboardingScreen(state: UiState, model: QuizViewModel, invite: Bool
         }
         if (alipay) {
             Text("绑定支付宝收款信息（不等于支付宝授权登录或实名认证）")
+            Text("首次使用微信登录，请先填写密码和确认密码，再点击微信验证设置密码。提示设置成功后，再保存支付宝。这里填写的是本应用登录密码。")
             OutlinedTextField(account, { account = it }, label = { Text("支付宝账号") })
             OutlinedTextField(name, { name = it }, label = { Text("真实姓名") })
             OutlinedTextField(password, { password = it }, label = { Text("登录密码") }, visualTransformation = PasswordVisualTransformation())
@@ -62,7 +63,7 @@ internal fun OnboardingScreen(state: UiState, model: QuizViewModel, invite: Bool
                 SmsSendButton(state, enabled = !state.authBusy && !state.isBusy, onClick = { model.sendSms(phone) })
                 TextButton(onClick = { model.setPasswordWithSms(phone, code, password, confirmation) }, enabled = !state.isBusy && !state.authBusy) { Text("验证并设置密码") }
             }
-            Button(onClick = { model.bindAlipay(account, name, password) }, enabled = !state.isBusy) { Text("保存支付宝") }
+            Button(onClick = { model.bindAlipay(account, name, password) }, enabled = !state.isBusy) { Text(if (state.isBusy) "处理中…" else "保存支付宝") }
         }
         TextButton(onClick = model::refreshOnboarding, enabled = !state.onboardingBusy) { Text("刷新设置状态") }
         TextButton(onClick = model::logout) { Text("退出登录") }

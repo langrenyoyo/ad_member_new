@@ -199,6 +199,17 @@ fun IdiomQuizApp(state: UiState, viewModel: QuizViewModel) {
             }
         }
     }
+    // Render feedback before the onboarding return so it stays visible at any scroll position.
+    if (state.screen == AppScreen.WALLET) {
+        state.message?.let { message ->
+            AlertDialog(
+                onDismissRequest = viewModel::clearMessage,
+                title = { Text("操作提示") },
+                text = { Text(message) },
+                confirmButton = { TextButton(onClick = viewModel::clearMessage) { Text("知道了") } }
+            )
+        }
+    }
     val recoveryWallet = state.onboardingBlockCode == "DEVICE_COOLDOWN" && state.screen == AppScreen.WALLET
     if (state.currentUser != null && !recoveryWallet && onboardingBlocks(onboarding != null,
             state.onboardingBlockCode, needsInvite, needsUsage, needsAlipay, state.screen == AppScreen.WALLET)) {
@@ -262,7 +273,8 @@ fun IdiomQuizApp(state: UiState, viewModel: QuizViewModel) {
         AnyThinkAdManager.loadAndShowSplash(activity, placement)
     }
 
-    LaunchedEffect(state.message) {
+    LaunchedEffect(state.message, state.screen) {
+        if (state.screen == AppScreen.WALLET) return@LaunchedEffect
         state.message?.let {
             snackbarHostState.showSnackbar(it)
             viewModel.clearMessage()

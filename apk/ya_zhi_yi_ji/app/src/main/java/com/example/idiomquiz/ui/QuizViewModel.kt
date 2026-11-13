@@ -574,13 +574,28 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
     fun bindAlipay(account: String, realName: String, currentPassword: String) {
         if (_uiState.value.isBusy) return
+        if (account.isBlank() || realName.isBlank() || currentPassword.isBlank()) {
+            _uiState.update { it.copy(message = "请填写支付宝账号、真实姓名和本应用登录密码。首次微信登录请先完成微信验证设置密码。") }
+            return
+        }
         _uiState.update { it.copy(isBusy = true, message = null) }
         viewModelScope.launch {
             sessionCatching { authRepository.bindAlipay(account.trim(), realName.trim(), currentPassword) }
-                .onSuccess { value -> _uiState.update { it.copy(alipayAccount = value, isBusy = false, message = "支付宝绑定成功") }; refreshOnboarding() }
+                .onSuccess { value ->
+                    _uiState.update { current ->
+                        val updated = current.onboarding?.let { JSONObject(it.toString()).put("alipay_bound", value.bound) }
+                        current.copy(alipayAccount = value, onboarding = updated, isBusy = false,
+                            message = "支付宝保存成功，可以继续提现。")
+                    }
+                    refreshOnboarding()
+                }
                 .onFailure { error ->
-                if (error is CancellationException) throw error
- _uiState.update { it.copy(isBusy = false, message = "支付宝绑定失败：${error.message}") } }
+                    if (error is CancellationException) throw error
+                    val message = if (error is com.example.idiomquiz.data.UserApiException && error.statusCode == 401)
+                        "支付宝尚未保存：密码或登录验证未通过。首次微信登录请先点击“微信验证并设置上述密码”，看到设置成功后，再用该密码保存支付宝。"
+                    else "支付宝尚未保存：${error.message ?: "请稍后重试"}"
+                    _uiState.update { it.copy(isBusy = false, message = message) }
+                }
         }
     }
 
