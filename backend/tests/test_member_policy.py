@@ -369,6 +369,72 @@ class MemberPolicyTests(unittest.TestCase):
         self.assertEqual(response.json()['data']['invite_code'],code)
         self.assertEqual(self.client.get('/api/app/v1/invite-code').status_code,401)
 
+    def usage_snapshot_body(self):
+        stamp=m.now()-timedelta(seconds=30)
+        return {'granted':True,'report_date':(stamp+timedelta(hours=8)).date().isoformat(),
+            'collected_at':stamp.isoformat(),'consent_version':2,
+            'inventory_scope':'current_profile_visible','usage_source':'foreground_events_v1',
+            'installed_apps':[{'package_name':'com.used','app_name':'Used app','version_name':'1'},
+                {'package_name':'com.unused','app_name':'<img src=x onerror=alert(1)>','system_app':True}],
+            'items':[{'package_name':'com.used','duration_ms':65000,'opens':2}]}
+
+    def test_usage_inventory_snapshot_retries_revocation_and_member_isolation(self):
+        body=self.usage_snapshot_body()
+        for _ in range(2):
+            result=self.client.post('/api/app/v1/usage',headers=self.auth,json=body)
+            self.assertEqual(result.status_code,200,result.text)
+        headers=self.admin_headers()
+        path=f"/api/v1/members/1/usage?report_date={body['report_date']}"
+        report=self.client.get(path,headers=headers).json()
+        self.assertEqual(len(report['installed_apps']),2)
+        self.assertEqual(report['items'][0]['app_name'],'Used app')
+        self.assertEqual(report['items'][0]['duration_ms'],65000)
+        self.assertEqual(report['consent_version'],2)
+        self.assertEqual(self.client.get(path).status_code,401)
+        self.assertNotEqual(self.client.get(path,headers=self.other).status_code,200)
+        other=self.client.get(path.replace('/members/1/','/members/2/'),headers=headers).json()
+        self.assertEqual(other['items'],[])
+        self.assertEqual(other['installed_apps'],[])
+        self.assertEqual(self.client.get(path.replace('/members/1/','/members/999/'),headers=headers).status_code,404)
+        # Revocation keeps history but never accepts new inventory; an old retry cannot re-grant consent.
+        revoked={**body,'granted':False,'installed_apps':[{'package_name':'com.secret','app_name':'secret'}]}
+        self.assertEqual(self.client.post('/api/app/v1/usage',headers=self.auth,json=revoked).status_code,200)
+        self.client.post('/api/app/v1/usage',headers=self.auth,json=body)
+        report=self.client.get(path,headers=headers).json()
+        self.assertFalse(report['last_report_granted'])
+        self.assertEqual(len(report['installed_apps']),2)
+        with self.factory() as s:
+            self.assertEqual(len(s.scalars(select(p.UsageSnapshot)).all()),1)
+            self.assertEqual(len(s.scalars(select(p.UsageReport)).all()),1)
+
+    def test_usage_snapshot_validation_and_newer_snapshot_replacement(self):
+        body=self.usage_snapshot_body()
+        for change in [{'consent_version':None},{'collected_at':'2026-01-01T00:00:00'},
+                {'collected_at':(m.now()+timedelta(days=1)).isoformat()},
+                {'installed_apps':body['installed_apps']*2},{'items':body['items']*2}]:
+            response=self.client.post('/api/app/v1/usage',headers=self.auth,json={**body,**change})
+            self.assertEqual(response.status_code,422,response.text)
+        self.assertEqual(self.client.post('/api/app/v1/usage',headers=self.auth,json=body).status_code,200)
+        newer={**body,'collected_at':m.now().isoformat(),'installed_apps':[],'items':[]}
+        self.assertEqual(self.client.post('/api/app/v1/usage',headers=self.auth,json=newer).status_code,200)
+        self.client.post('/api/app/v1/usage',headers=self.auth,json=body)
+        with self.factory() as s:
+            self.assertEqual(len(s.scalars(select(p.UsageReport)).all()),0)
+            self.assertEqual(json.loads(s.get(p.UsageSnapshot,(1,body['report_date'])).inventory_json),[])
+
+    def test_usage_snapshot_migration_roundtrip(self):
+        path=Path(__file__).resolve().parents[1]/'alembic/versions/e940_usage_inventory.py'
+        spec=importlib.util.spec_from_file_location('usage_inventory_migration',path)
+        migration=importlib.util.module_from_spec(spec);spec.loader.exec_module(migration)
+        engine=create_engine('sqlite://')
+        with engine.begin() as connection:
+            with Operations.context(MigrationContext.configure(connection)):
+                migration.upgrade()
+                self.assertIn('member_usage_snapshots',sa.inspect(connection).get_table_names())
+                migration.downgrade()
+                self.assertNotIn('member_usage_snapshots',sa.inspect(connection).get_table_names())
+        engine.dispose()
+
     def test_usage_upsert_and_revocation_gate(self):
         self.policy(require_usage=True)
         body={'granted':True,'report_date':(m.now()+timedelta(hours=8)).date().isoformat(),

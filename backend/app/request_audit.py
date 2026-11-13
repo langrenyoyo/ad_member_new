@@ -24,9 +24,9 @@ def redact(value, depth=0):
         for key, item in value.items():
             normalized = ''.join(c for c in key.lower() if c.isalnum())
             private = (any(x in normalized for x in ('password', 'passwd', 'secret', 'token', 'authorization', 'privatekey'))
-                       or normalized in {'code', 'account', 'alipayaccount', 'realname', 'receivename',
+                       or normalized in {'wxsecert', 'code', 'account', 'alipayaccount', 'realname', 'receivename',
                                          'receivetel', 'phone', 'mobile', 'email', 'idcard', 'sign', 'signature',
-                                         'extradata', 'takuextradata', 'packagename', 'durationms', 'opens',
+                                         'extradata', 'takuextradata', 'packagename', 'durationms', 'opens', 'installedapps',
                                          'latitude', 'longitude', 'accuracy', 'battery', 'charging', 'locationageseconds',
                                          'ec', 'eccny'})
             result[key] = '[REDACTED]' if private else redact(item, depth + 1)

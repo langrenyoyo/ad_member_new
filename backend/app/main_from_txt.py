@@ -6418,6 +6418,7 @@ def delete_member(member_id: int) -> Response:
             (member_policy.Enrollment, member_policy.Enrollment.parent_id == member_id),
             (member_policy.RewardLedger, (member_policy.RewardLedger.member_id == member_id) | (member_policy.RewardLedger.beneficiary_id == member_id)),
             (member_policy.UsageReport, member_policy.UsageReport.member_id == member_id),
+            (member_policy.UsageSnapshot, member_policy.UsageSnapshot.member_id == member_id),
             (AppAdSession, AppAdSession.member_id == member_id),
             (AdRecord, AdRecord.user_id == member_id),
             (Withdrawal, Withdrawal.user_id == member_id),

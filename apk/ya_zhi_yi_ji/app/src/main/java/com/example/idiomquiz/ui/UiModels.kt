@@ -49,7 +49,10 @@ data class QuizResult(
         get() = if (total == 0) 0 else (correct * 100 / total)
 }
 
+data class RewardNotice(val sessionId: String, val coin: java.math.BigDecimal)
+
 data class UiState(
+    val rewardNotices: List<RewardNotice> = emptyList(),
     val detailOrigin: AppScreen = AppScreen.HOME,
     val noticeOrigin: AppScreen = AppScreen.HOME,
     val initialized: Boolean = false,

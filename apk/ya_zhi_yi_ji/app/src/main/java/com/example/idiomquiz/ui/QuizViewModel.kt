@@ -58,8 +58,30 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     private var entryAdJob: kotlinx.coroutines.Job? = null
     private var adHistoryJob: kotlinx.coroutines.Job? = null
     private var adHistoryRefreshRequest = true
+    private val rewardReceiptGate = com.example.idiomquiz.data.RewardReceiptGate()
+
+    private fun acceptRewardReceipt(receipt: com.example.idiomquiz.data.RewardReceipt) {
+        if (!rewardReceiptGate.accept(receipt, authRepository.sessionEpoch())) return
+        _uiState.update { it.copy(rewardNotices = it.rewardNotices + RewardNotice(receipt.sessionId, receipt.coin), message = null) }
+        viewModelScope.launch {
+            try {
+                authRepository.checkSession(receipt.epoch)
+                val balance = authRepository.walletBalance()
+                authRepository.checkSession(receipt.epoch)
+                _uiState.update { it.copy(serverCoin = balance, appBootstrap = it.appBootstrap?.copy(coin = balance)) }
+            } catch (e: CancellationException) { throw e }
+            catch (_: Exception) { /* Confirmed reward stays visible even if balance refresh is offline. */ }
+        }
+    }
+
+    fun dismissRewardNotice(sessionId: String) {
+        _uiState.update { it.copy(rewardNotices = it.rewardNotices.filterNot { notice -> notice.sessionId == sessionId }) }
+    }
 
     init {
+        viewModelScope.launch {
+            authRepository.rewardReceipts.collect { acceptRewardReceipt(it) }
+        }
         AnyThinkAdManager.setSecondaryEventReporter {
             val epoch = authRepository.sessionEpoch()
             val reporter: (JSONObject) -> Unit = { payload ->
@@ -93,7 +115,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
                             if (!_uiState.value.authBusy) return@collect
                             val result = authRepository.loginWithWeChatCode(event.code, registrationInvite)
-                            _uiState.update { it.copy(authBusy = false, currentUser = result.user,
+                            _uiState.update { it.copy(authBusy = false, currentUser = result.user, rewardNotices = emptyList(),
                                 authError = result.error, screen = if (result.user != null) AppScreen.PROFILE else AppScreen.LOGIN) }
                             if (result.user != null) { clearPendingInvitation(); initializeApp() }
                         }
@@ -294,16 +316,28 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     private suspend fun loadOnboarding() {
         val epoch = authRepository.sessionEpoch()
         val data = authRepository.memberRequest("GET", "onboarding").getJSONObject("data")
-        if (data.getJSONObject("policy").optBoolean("require_usage")) {
+        authRepository.checkSession(epoch)
+        val requireUsage = data.getJSONObject("policy").optBoolean("require_usage")
+        if (com.example.idiomquiz.security.AppUsageCollector.consented(getApplication())) {
+            try {
             data.put("usage_granted", com.example.idiomquiz.security.AppUsageCollector.granted(getApplication()))
             _uiState.update { it.copy(onboarding = data) }
             val report = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
                 com.example.idiomquiz.security.AppUsageCollector.collect(getApplication())
             }
             authRepository.checkSession(epoch)
-            authRepository.memberRequest("POST", "usage", report)
-            data.put("usage_granted", report.getBoolean("granted"))
+            val synced = authRepository.memberRequest("POST", "usage", report)
+            authRepository.checkSession(epoch)
+            data.put("usage_granted", synced.getJSONObject("data").getBoolean("granted"))
+            } catch (error: CancellationException) { throw error }
+            catch (error: Exception) {
+                authRepository.checkSession(epoch)
+                if (requireUsage) throw error
+                // Non-mandatory telemetry failures must not block learning/login; retry on the next foreground tick.
+                android.util.Log.w("AppUsage", "Usage sync failed; will retry on next foreground refresh")
+            }
         }
+        authRepository.checkSession(epoch)
         _uiState.update { it.copy(onboarding = data, onboardingError = null, onboardingBlockCode = null, blockedUntil = null) }
     }
 
@@ -691,15 +725,14 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                                 completion.onSuccess { response ->
                                     val data = response.optJSONObject("data")
                                     if (data?.optBoolean("rewarded", false) == true) {
-                                        val balance = data.optDouble("coin_balance", Double.NaN)
-                                        if (!balance.isNaN()) {
-                                            val coins = balance.toBigDecimal()
+                                        authRepository.checkSession(epoch)
+                                        val coins = data.opt("coin_balance")?.toString()?.toBigDecimalOrNull()
+                                        if (coins != null) {
                                             _uiState.update { it.copy(serverCoin = coins,
-                                                appBootstrap = it.appBootstrap?.copy(coin = coins), message = "奖励已到账") }
+                                                appBootstrap = it.appBootstrap?.copy(coin = coins)) }
                                         } else {
                                             viewModelScope.launch {
-                                                runCatching { refreshWalletState() }
-                                                _uiState.update { it.copy(message = "奖励已到账") }
+                                                sessionCatching { refreshWalletState() }
                                             }
                                         }
                                     } else if (data?.optString("status") == "queued") {
@@ -781,8 +814,13 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 catch (e: CancellationException) { throw e }
                 catch (e: java.io.IOException) { null }
             if (record?.status == "rewarded") {
-                val balance = authRepository.walletBalance()
-                _uiState.update { it.copy(serverCoin = balance, message = "奖励已到账") }
+                authRepository.checkSession(epoch)
+                acceptRewardReceipt(com.example.idiomquiz.data.RewardReceipt(epoch, session.id, record.coinAdded, null))
+                val balance = try { authRepository.walletBalance() }
+                    catch (e: CancellationException) { throw e }
+                    catch (e: java.io.IOException) { null }
+                authRepository.checkSession(epoch)
+                if (balance != null) _uiState.update { it.copy(serverCoin = balance, appBootstrap = it.appBootstrap?.copy(coin = balance)) }
                 return
             }
             delay(2000)
@@ -937,6 +975,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         _uiState.update {
             it.copy(
                 currentUser = null,
+                rewardNotices = emptyList(),
                 inviteCode = null,
                 inviteUrl = null,
                 inviteLevel = 0,
@@ -1235,6 +1274,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 it.copy(
                     screen = AppScreen.PROFILE,
                     currentUser = user,
+                    rewardNotices = emptyList(),
                     authBusy = false,
                     authError = null
                 )

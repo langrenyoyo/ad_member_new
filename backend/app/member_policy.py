@@ -1,13 +1,13 @@
 """Configurable member onboarding, reward policy and auditable commissions."""
 import json
 import secrets
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal, ROUND_DOWN
 from typing import Literal
 
 from fastapi import Depends, HTTPException, Query, Request
 from pydantic import BaseModel, Field, model_validator
-from sqlalchemy import BigInteger, Integer, String, Text, DateTime, Numeric, UniqueConstraint, select
+from sqlalchemy import BigInteger, Integer, String, Text, DateTime, Numeric, UniqueConstraint, select, delete
 from sqlalchemy.orm import Mapped, mapped_column
 from . import main_from_txt as m
 
@@ -31,6 +31,16 @@ class UsageReport(m.Base, m.TimestampMixin):
     package_name: Mapped[str] = mapped_column(String(255))
     duration_ms: Mapped[int] = mapped_column(BigInteger)
     opens: Mapped[int] = mapped_column(Integer)
+
+
+class UsageSnapshot(m.Base):
+    __tablename__ = 'member_usage_snapshots'
+    member_id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    report_date: Mapped[str] = mapped_column(String(10), primary_key=True)
+    collected_at: Mapped[object] = mapped_column(DateTime(timezone=True))
+    received_at: Mapped[object] = mapped_column(DateTime(timezone=True))
+    inventory_json: Mapped[str] = mapped_column(Text)
+    metadata_json: Mapped[str] = mapped_column(Text)
 
 
 class RewardLedger(m.Base, m.TimestampMixin):
@@ -480,10 +490,38 @@ class UsageItem(BaseModel):
     opens: int = Field(ge=0, le=100000)
 
 
+class InstalledApp(BaseModel):
+    package_name: str = Field(min_length=1, max_length=255, pattern=r'^[A-Za-z0-9_.]+$')
+    app_name: str = Field(max_length=255)
+    version_name: str = Field(default='', max_length=255)
+    system_app: bool = False
+
+
 class UsageInput(BaseModel):
     granted: bool
     report_date: str = Field(pattern=r'^\d{4}-\d{2}-\d{2}$')
     items: list[UsageItem] = Field(default_factory=list, max_length=1000)
+    installed_apps: list[InstalledApp] | None = Field(default=None, max_length=5000)
+    consent_version: int | None = None
+    collected_at: datetime | None = None
+    inventory_scope: Literal['current_profile_visible'] | None = None
+    inventory_truncated: bool = False
+    usage_source: Literal['foreground_events_v1'] | None = None
+
+    @model_validator(mode='after')
+    def validate_snapshot(self):
+        for values in (self.items, self.installed_apps or []):
+            if len({item.package_name for item in values}) != len(values):
+                raise ValueError('应用包名不能重复')
+        if self.granted and self.installed_apps is not None:
+            if self.consent_version != 2 or self.collected_at is None or self.collected_at.tzinfo is None:
+                raise ValueError('安装应用列表需要明确同意版本及带时区的采集时间')
+            if not self.inventory_scope or not self.usage_source:
+                raise ValueError('缺少采集范围或使用统计口径')
+            local_day = self.collected_at.astimezone(timezone(timedelta(hours=8))).date().isoformat()
+            if local_day != self.report_date or self.collected_at > m.now() + timedelta(minutes=5):
+                raise ValueError('采集时间与统计日期不一致或超出允许时间')
+        return self
 
 
 @m.app_api.post('/usage')
@@ -494,6 +532,24 @@ def save_usage(body: UsageInput, member=Depends(m.require_app_member)):
     with m.SessionLocal() as session:
         m.device_risk.game_lock(session, member.game_id)
         row = enrollment(session, member)
+        if body.granted and body.installed_apps is not None:
+            snapshot = session.get(UsageSnapshot, (member.id, body.report_date))
+            if snapshot is not None and body.collected_at <= snapshot.collected_at.replace(tzinfo=timezone.utc):
+                session.commit()
+                return {'data': {'granted': bool(row.usage_granted), 'stale_snapshot_ignored': True}}
+            if snapshot is None:
+                snapshot = UsageSnapshot(member_id=member.id, report_date=body.report_date)
+                session.add(snapshot)
+            snapshot.collected_at = body.collected_at
+            snapshot.received_at = m.now()
+            snapshot.inventory_json = json.dumps([app.model_dump() for app in body.installed_apps], ensure_ascii=False)
+            snapshot.metadata_json = json.dumps({'inventory_scope': body.inventory_scope,
+                'inventory_truncated': body.inventory_truncated, 'consent_version': body.consent_version,
+                'usage_source': body.usage_source})
+            # A new client sends a complete daily snapshot, not increments. Replace missing entries too.
+            session.execute(delete(UsageReport).where(UsageReport.member_id == member.id,
+                UsageReport.report_date == body.report_date,
+                UsageReport.package_name.not_in([item.package_name for item in body.items])))
         row.usage_granted = int(body.granted)
         row.usage_seen_at = m.now()
         for item in body.items if body.granted else []:
@@ -512,8 +568,21 @@ def save_usage(body: UsageInput, member=Depends(m.require_app_member)):
 @m.api.get('/members/{member_id}/usage')
 def get_usage(member_id: int, report_date: str = Query(pattern=r'^\d{4}-\d{2}-\d{2}$'), admin=Depends(m.allow_roles('superadmin'))):
     with m.SessionLocal() as session:
-        rows = session.scalars(select(UsageReport).where(UsageReport.member_id == member_id, UsageReport.report_date == report_date)).all()
-        return {'items': [{'package_name': r.package_name, 'duration_ms': r.duration_ms, 'opens': r.opens} for r in rows]}
+        if session.get(m.Member, member_id) is None:
+            raise HTTPException(404, '会员不存在')
+        rows = session.scalars(select(UsageReport).where(UsageReport.member_id == member_id,
+            UsageReport.report_date == report_date).order_by(UsageReport.duration_ms.desc(), UsageReport.package_name)).all()
+        snapshot = session.get(UsageSnapshot, (member_id, report_date))
+        enrolled = session.get(Enrollment, member_id)
+        installed = json.loads(snapshot.inventory_json) if snapshot else []
+        names = {app['package_name']: app['app_name'] for app in installed}
+        return {'items': [{'package_name': r.package_name, 'app_name': names.get(r.package_name, ''),
+            'duration_ms': r.duration_ms, 'opens': r.opens} for r in rows], 'installed_apps': installed,
+            'collected_at': snapshot.collected_at.replace(tzinfo=timezone.utc).isoformat() if snapshot else None,
+            'received_at': snapshot.received_at.replace(tzinfo=timezone.utc).isoformat() if snapshot else None,
+            'last_report_granted': bool(enrolled.usage_granted) if enrolled else None,
+            'usage_seen_at': enrolled.usage_seen_at.replace(tzinfo=timezone.utc).isoformat() if enrolled and enrolled.usage_seen_at else None,
+            **(json.loads(snapshot.metadata_json) if snapshot else {})}
 
 
 def calculate_reward(rule, member, source_id, proof):

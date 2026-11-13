@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
@@ -205,6 +206,33 @@ fun IdiomQuizApp(state: UiState, viewModel: QuizViewModel) {
         return
     }
 
+    val rewardNotice = state.rewardNotices.firstOrNull()
+    if (rewardNotice != null && !state.adBusy && state.currentUser != null) {
+        AlertDialog(
+            onDismissRequest = { viewModel.dismissRewardNotice(rewardNotice.sessionId) },
+            icon = {
+                Icon(Icons.Filled.AccountBalanceWallet, contentDescription = null,
+                    tint = MaterialTheme.colorScheme.secondary, modifier = Modifier.size(40.dp))
+            },
+            title = { Text("奖励已到账", fontWeight = FontWeight.Bold) },
+            text = {
+                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Text("本次观看广告获得", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("+${rewardNotice.coin.stripTrailingZeros().toPlainString()} 金币",
+                        style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary, textAlign = TextAlign.Center)
+                    Text("金币已计入您的钱包", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            },
+            confirmButton = {
+                Button(onClick = { viewModel.dismissRewardNotice(rewardNotice.sessionId) }, modifier = Modifier.fillMaxWidth()) {
+                    Text("知道了")
+                }
+            }
+        )
+    }
+
     if (state.showRiskConsent) {
         val uriHandler = androidx.compose.ui.platform.LocalUriHandler.current
         AlertDialog(
@@ -298,7 +326,7 @@ fun IdiomQuizApp(state: UiState, viewModel: QuizViewModel) {
 private fun StartupAnnouncement(state: UiState, viewModel: QuizViewModel) {
     val context = LocalContext.current
     androidx.activity.compose.BackHandler { context.findActivity()?.finishAndRemoveTask() }
-    Box(Modifier.fillMaxSize().background(Color(0xFFF8EFE5)))
+    Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background))
     AlertDialog(
         onDismissRequest = {},
         properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
@@ -346,7 +374,7 @@ private fun LoadingScreen() {
 
 @Composable
 private fun AppBottomBar(state: UiState, viewModel: QuizViewModel) {
-    NavigationBar {
+    NavigationBar(containerColor = MaterialTheme.colorScheme.surface, tonalElevation = 0.dp) {
         NavigationBarItem(
             selected = state.screen == AppScreen.HOME,
             onClick = viewModel::goHome,
@@ -369,105 +397,16 @@ private fun AppBottomBar(state: UiState, viewModel: QuizViewModel) {
 }
 
 @Composable
-private fun HomeScreen(state: UiState, viewModel: QuizViewModel) {
-    val stats = state.stats
-    val accuracy = if (stats.totalAnswered == 0) 0 else {
-        (stats.totalCorrect * 100f / stats.totalAnswered).roundToInt()
-    }
-    Column(Modifier.fillMaxSize().background(Color(0xFFF8EFE5))) {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .statusBarsPadding()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 22.dp),
-            verticalArrangement = Arrangement.spacedBy(0.dp)
-        ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(Modifier.weight(1f)) {
-                Text("鸭只易记", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-                Text("把日常，写成小小的进步", color = Color(0xFF98816E))
-            }
-            IconButton(onClick = viewModel::openNotice) {
-                Icon(Icons.Filled.NotificationsNone, contentDescription = "公告", tint = Color(0xFF514239))
-            }
-        }
-        Row(Modifier.padding(top = 30.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text(java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("dd")),
-                style = MaterialTheme.typography.displaySmall, color = Color(0xFFC44E4E), fontWeight = FontWeight.Medium)
-            Spacer(Modifier.width(16.dp))
-            Column {
-                Text(java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("M月 · EEEE",
-                    java.util.Locale.SIMPLIFIED_CHINESE)), color = Color(0xFF9B7A62))
-                Text("属于今天的一点新知", color = Color(0xFF9B7A62))
-            }
-        }
-        Text("TODAY'S CHAPTER", Modifier.padding(top = 28.dp), color = Color(0xFFC04D4D), style = MaterialTheme.typography.labelLarge)
-        Row(Modifier.fillMaxWidth().padding(top = 20.dp), verticalAlignment = Alignment.CenterVertically) {
-            Column(Modifier.weight(1f)) {
-                Text("翻开今天，\n记住一点。", style = MaterialTheme.typography.headlineLarge, lineHeight = MaterialTheme.typography.headlineLarge.lineHeight)
-                Text("10 道成语题，把积累留给自己。", Modifier.padding(top = 16.dp), color = Color(0xFF917965))
-                Button(onClick = viewModel::openModeSelection, modifier = Modifier.padding(top = 18.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC14D4D))) {
-                    Text("开始今日练习   →", modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp))
-                }
-            }
-            Image(painterResource(R.drawable.a_shuben3), contentDescription = "每日成语练习", modifier = Modifier.size(112.dp))
-        }
-        HorizontalDivider(Modifier.padding(top = 24.dp), color = Color(0xFFD7C0A8))
-        Row(Modifier.fillMaxWidth().padding(vertical = 18.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text("${stats.totalAnswered} 题已练", color = Color(0xFF715B49))
-            Text("$accuracy% 正确率", color = Color(0xFF715B49))
-            Text("${stats.studyStreakDays} 天连续", color = Color(0xFF715B49))
-        }
-        Row(Modifier.fillMaxWidth().clickable(onClick = viewModel::openNotice).padding(vertical = 15.dp),
-            verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Filled.NotificationsNone, contentDescription = null, tint = Color(0xFFC14D4D))
-            Text("  ${state.onboarding?.optJSONObject("policy")?.optString("announcement")?.takeIf { it.isNotBlank() } ?: "补贴申请前，请先读完活动说明"}",
-                Modifier.weight(1f), color = Color(0xFF92745D), maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "查看公告", tint = Color(0xFFC14D4D))
-        }
-        HorizontalDivider(color = Color(0xFFE8DCCF))
-        Row(Modifier.fillMaxWidth().padding(top = 18.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("学习目录", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-            Text("本地学习记录", color = Color(0xFF9B8775))
-        }
-        CatalogueEntry("01", "错题本", "${state.mistakeCount} 道待复习，再温习一点", viewModel::openMistakes)
-        CatalogueEntry("02", "我的收藏", "把喜欢的成语慢慢收集", viewModel::openFavorites)
-        CatalogueEntry("03", "学习统计", "查看这一周的进步", viewModel::openStats)
-        Row(Modifier.fillMaxWidth().padding(vertical = 24.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("每日\n一词", color = Color(0xFF9B7A62), modifier = Modifier.padding(end = 16.dp))
-            Column(Modifier.weight(1f)) {
-                Text("温故知新", style = MaterialTheme.typography.headlineSmall)
-                Text("温习旧的知识，获得新的理解。", color = Color(0xFF9B8775), modifier = Modifier.padding(top = 6.dp))
-                OutlinedButton(
-                    onClick = { state.idioms.firstOrNull()?.let { viewModel.openDetail(it.id) } },
-                    enabled = state.idioms.isNotEmpty(),
-                    modifier = Modifier.padding(top = 12.dp)
-                ) {
-                    Text("读懂这个成语  ↗", color = Color(0xFFC14D4D))
-                }
-            }
-        }
-        }
-    }
-}
-
-@Composable
-private fun CatalogueEntry(number: String, title: String, subtitle: String, onClick: () -> Unit) {
-    Row(Modifier.fillMaxWidth().clickable(onClick = onClick).padding(vertical = 20.dp),
+private fun CatalogueEntry(@Suppress("UNUSED_PARAMETER") number: String, title: String, subtitle: String, onClick: () -> Unit) {
+    Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).clickable(onClick = onClick).padding(vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically) {
-        Text(number, color = Color(0xFFAF9278), modifier = Modifier.width(50.dp))
         Column(Modifier.weight(1f)) {
             Text(title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
-            Text(subtitle, color = Color(0xFF9B8775), modifier = Modifier.padding(top = 5.dp))
+            if (subtitle.isNotBlank()) Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(top = 4.dp))
         }
-        Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "打开$title", tint = Color(0xFFC14D4D))
+        Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "打开$title", tint = MaterialTheme.colorScheme.outline, modifier = Modifier.size(18.dp))
     }
-    HorizontalDivider(color = Color(0xFFE8DCCF))
+    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 }
 
 @Composable
@@ -475,55 +414,56 @@ private fun BenefitsScreen(state: UiState, viewModel: QuizViewModel) {
     val campaigns = if (state.benefitOnlyEligible) {
         state.benefitCampaigns.filter { it.optBoolean("eligible") }
     } else state.benefitCampaigns
-    Column(Modifier.fillMaxSize().background(Color(0xFFF8EFE5))) {
-        Column(Modifier.weight(1f).statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp)) {
+    Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
+        Column(Modifier.weight(1f).statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = 18.dp)) {
             Row(Modifier.fillMaxWidth().padding(top = 12.dp, bottom = 22.dp), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text("福利中心", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-                    Text("先看清条件，再把收获带回家", color = Color(0xFF98816E))
                 }
                 IconButton(onClick = viewModel::openNotice) {
-                    Icon(Icons.Filled.NotificationsNone, contentDescription = "公告", tint = Color(0xFF514239))
+                    Icon(Icons.Filled.NotificationsNone, contentDescription = "公告", tint = MaterialTheme.colorScheme.onSurface)
                 }
             }
-            Text("04 / YAZHI DAILY", Modifier.padding(top = 22.dp), color = Color(0xFFB38F76), style = MaterialTheme.typography.labelLarge)
-            Text("每一份收获，\n都有迹可循。", Modifier.padding(top = 18.dp),
-                style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold, lineHeight = 46.sp)
-            Text("先确认活动资格，再提交三类凭证。", Modifier.padding(top = 10.dp, bottom = 24.dp), color = Color(0xFF98816E))
+            Row(Modifier.fillMaxWidth().padding(bottom = 16.dp), verticalAlignment = Alignment.CenterVertically) {
+                MemberAvatar(state.currentUser?.id, Modifier.size(36.dp))
+                Text(state.currentUser?.let { "ID：${it.id}" } ?: "登录后查看补贴资格",
+                    Modifier.weight(1f).padding(start = 10.dp), style = MaterialTheme.typography.bodyMedium)
+                TextButton(onClick = { viewModel.openMemberSection(MemberSection.SUBSIDIES) }) { Text("申请记录") }
+            }
             Row(Modifier.fillMaxWidth().padding(bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 Column(Modifier.weight(1f).clickable(onClick = { viewModel.openMemberSection(MemberSection.SUBSIDIES) })
-                    .background(Color(0xFFF4D7C0), RoundedCornerShape(4.dp)).padding(14.dp)) {
-                    Text("${state.pendingSubsidies} 笔", style = MaterialTheme.typography.titleLarge, color = Color(0xFF3D352F), fontWeight = FontWeight.Bold)
-                    Text("待审核申请 · 查看进度 ↗", Modifier.padding(top = 8.dp), color = Color(0xFF806F60), style = MaterialTheme.typography.bodySmall)
+                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp)).padding(14.dp)) {
+                    Text("${state.pendingSubsidies} 笔", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold)
+                    Text("待审核申请", Modifier.padding(top = 8.dp), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
                 }
                 Column(Modifier.weight(1f).clickable(onClick = viewModel::openWallet)
-                    .background(Color(0xFFFFFCF8), RoundedCornerShape(4.dp)).padding(14.dp)) {
+                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp)).padding(14.dp)) {
                     Text((state.serverCoin ?: state.appBootstrap?.coin ?: java.math.BigDecimal.ZERO).stripTrailingZeros().toPlainString(),
-                        style = MaterialTheme.typography.titleLarge, color = Color(0xFF3D352F), fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold,
                         maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    Text("可用金币 · 我的钱包 ↗", Modifier.padding(top = 8.dp), color = Color(0xFF806F60), style = MaterialTheme.typography.bodySmall)
+                    Text("可用金币", Modifier.padding(top = 8.dp), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
                 }
             }
             Row(Modifier.fillMaxWidth().clickable(onClick = viewModel::openNotice).padding(vertical = 14.dp),
                 verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Filled.NotificationsNone, contentDescription = null, tint = Color(0xFFC14D4D))
-                Text("当前公告 · 补贴申请须知", Modifier.weight(1f).padding(start = 10.dp), color = Color(0xFF806F60))
-                Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "查看公告", tint = Color(0xFFC14D4D))
+                Icon(Icons.Filled.NotificationsNone, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                Text("当前公告 · 补贴申请须知", Modifier.weight(1f).padding(start = 10.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "查看公告", tint = MaterialTheme.colorScheme.primary)
             }
-            HorizontalDivider(color = Color(0xFFD7C0A8))
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             Row(Modifier.fillMaxWidth().padding(vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text("补贴活动", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-                Text("已展示 ${state.benefitCampaigns.size} 条", color = Color(0xFF98816E))
+                Text("已展示 ${state.benefitCampaigns.size} 条", color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 listOf(false to "全部", true to "可申请").forEach { (eligibleOnly, label) ->
                     TextButton(onClick = { viewModel.toggleEligibleBenefits(eligibleOnly) }) {
-                        Text(label, color = if (state.benefitOnlyEligible == eligibleOnly) Color(0xFFC14D4D) else Color(0xFF98816E),
+                        Text(label, color = if (state.benefitOnlyEligible == eligibleOnly) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                             fontWeight = if (state.benefitOnlyEligible == eligibleOnly) FontWeight.SemiBold else FontWeight.Normal)
                     }
                 }
             }
-            HorizontalDivider(color = Color(0xFFCDB69E), thickness = 1.dp)
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 1.dp)
             state.benefitError?.let { error ->
                 Text(error, color = MaterialTheme.colorScheme.error)
                 TextButton(onClick = { viewModel.openBenefits() }) { Text("重新加载") }
@@ -534,24 +474,24 @@ private fun BenefitsScreen(state: UiState, viewModel: QuizViewModel) {
                 if (state.benefitCampaigns.isEmpty()) {
                     Column(
                         Modifier.fillMaxWidth().padding(top = 24.dp)
-                            .border(1.dp, Color(0xFFE3D0BE), RoundedCornerShape(6.dp))
-                            .background(Color(0xFFFFFCF8), RoundedCornerShape(6.dp))
+                            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(20.dp))
+                            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(20.dp))
                             .padding(horizontal = 24.dp, vertical = 40.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Box(Modifier.size(64.dp).background(Color(0xFFFBF0E2), RoundedCornerShape(50)),
+                        Box(Modifier.size(64.dp).background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(50)),
                             contentAlignment = Alignment.Center) {
-                            Icon(Icons.Filled.CardGiftcard, contentDescription = null, modifier = Modifier.size(38.dp), tint = Color(0xFFB38F76))
+                            Icon(Icons.Filled.CardGiftcard, contentDescription = null, modifier = Modifier.size(38.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                         Text("活动正在准备中", Modifier.padding(top = 18.dp), style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold, color = Color(0xFF3D352F))
-                        Text("有新活动时会在这里展示。", Modifier.padding(top = 8.dp), color = Color(0xFF98816E))
+                            fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                        Text("有新活动时会在这里展示。", Modifier.padding(top = 8.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
                         OutlinedButton(onClick = viewModel::goHome, modifier = Modifier.padding(top = 18.dp)) {
-                            Text("去学习", color = Color(0xFFC14D4D))
+                            Text("去学习", color = MaterialTheme.colorScheme.primary)
                         }
                     }
                 } else {
-                    Text("没有符合条件的活动", Modifier.padding(vertical = 28.dp), color = Color(0xFF98816E))
+                    Text("没有符合条件的活动", Modifier.padding(vertical = 28.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             } else campaigns.forEachIndexed { index, campaign ->
                 BenefitCampaignRow(index + 1, campaign) { viewModel.showCampaign(campaign.optString("id")) }
@@ -569,25 +509,25 @@ private fun BenefitsScreen(state: UiState, viewModel: QuizViewModel) {
 
 @Composable
 private fun BenefitCampaignRow(index: Int, campaign: org.json.JSONObject, onClick: () -> Unit) {
-    Column(Modifier.fillMaxWidth().clickable(onClick = onClick).padding(vertical = 18.dp)) {
+    Column(Modifier.fillMaxWidth().padding(top = 12.dp).clip(RoundedCornerShape(20.dp))
+        .background(MaterialTheme.colorScheme.surface).clickable(onClick = onClick).padding(18.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(index.toString().padStart(2, '0'), Modifier.width(48.dp), color = Color(0xFFAF9278))
+            Text(index.toString().padStart(2, '0'), Modifier.width(48.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text(campaign.optString("title", "补贴活动"), Modifier.weight(1f),
                 style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
             Text(if (campaign.optBoolean("eligible")) "可申请" else "暂不符合",
-                color = if (campaign.optBoolean("eligible")) Color(0xFF648052) else Color(0xFF9B8775))
+                color = if (campaign.optBoolean("eligible")) Color(0xFF648052) else MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Text("剩余 ${campaign.optInt("remaining")} / ${campaign.optInt("daily_quota")} 个名额",
-            Modifier.padding(start = 48.dp, top = 7.dp), color = Color(0xFF98816E))
+            Modifier.padding(start = 48.dp, top = 7.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
         Text("奖励 ¥${centsText(campaign.optLong("reward_cents"))}",
-            Modifier.padding(start = 48.dp, top = 2.dp), color = Color(0xFFC14D4D))
+            Modifier.padding(start = 48.dp, top = 2.dp), color = MaterialTheme.colorScheme.primary)
         campaign.optJSONArray("reasons")?.takeIf { it.length() > 0 }?.let { reasons ->
-            Text(reasons.opt(0)?.toString().orEmpty(), Modifier.padding(top = 5.dp), color = Color(0xFF98816E),
+            Text(reasons.opt(0)?.toString().orEmpty(), Modifier.padding(top = 5.dp), color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodySmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
-        Text("查看活动详情  →", Modifier.padding(top = 10.dp), color = Color(0xFFC14D4D))
+        Text("查看活动详情  →", Modifier.padding(top = 10.dp), color = MaterialTheme.colorScheme.primary)
     }
-    HorizontalDivider(color = Color(0xFFE8DCCF))
 }
 
 @Composable
@@ -595,24 +535,23 @@ private fun NoticeScreen(state: UiState, viewModel: QuizViewModel) {
     val announcement = state.onboarding?.optJSONObject("policy")?.optString("announcement")
         ?.takeIf { it.isNotBlank() && it != "null" } ?: "暂无公告内容"
     androidx.activity.compose.BackHandler(onBack = viewModel::closeNotice)
-    Column(Modifier.fillMaxSize().background(Color(0xFFF8EFE5)).statusBarsPadding()
+    Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).statusBarsPadding()
         .verticalScroll(rememberScrollState()).padding(horizontal = 22.dp)) {
         AppTopBar(title = "公告", onBack = viewModel::closeNotice)
-        Text("NOTICE / 当前公告", Modifier.padding(top = 28.dp), color = Color(0xFFC04D4D), style = MaterialTheme.typography.labelLarge)
-        Text("申请之前，\n把这几件事记好。", Modifier.padding(top = 20.dp),
-            style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Medium)
-        Text("当前应用公告 · 请以最新内容为准", Modifier.padding(top = 18.dp, bottom = 22.dp), color = Color(0xFF98816E))
-        HorizontalDivider(color = Color(0xFFCDB69E))
+        Text("申请须知", Modifier.padding(top = 16.dp),
+            style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Medium)
+        Text("当前应用公告 · 请以最新内容为准", Modifier.padding(top = 18.dp, bottom = 22.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
         Text(announcement, Modifier.fillMaxWidth().padding(vertical = 18.dp)
-            .background(Color(0xFFFFE5C8), RoundedCornerShape(4.dp)).padding(16.dp),
-            style = MaterialTheme.typography.bodyLarge, color = Color(0xFF806F60), lineHeight = 26.sp)
+            .background(MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(4.dp)).padding(16.dp),
+            style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant, lineHeight = 26.sp)
         NoticeRule("01", "先确认活动资格", "每个活动的提现要求、充值条件和名额可能不同。请先完整阅读活动详情；申请前会重新核对资格。")
         NoticeRule("02", "三份凭证，分别上传", "下载截图、安装来源和充值截图请分别提供。图片应清晰完整，三张凭证不能重复使用同一张图片。")
         NoticeRule("03", "补贴金额与金币到账", "补贴金额以元展示。审核通过后按审核时后台配置比例发放金币，不会转为支付宝现金；请在钱包和金币流水中核对实际记录。")
         NoticeRule("04", "邀请码注册资格", "所有会员都可以查看自己的邀请码；强制注册规则开启时，只有符合规则的团长或代理邀请码可用于注册。")
         Text("认真对待每一步体验。\n鸭只易记，陪你把每一天慢慢记好。",
             Modifier.fillMaxWidth().padding(top = 20.dp, bottom = 28.dp),
-            color = Color(0xFF98816E), style = MaterialTheme.typography.bodyLarge, lineHeight = 26.sp)
+            color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyLarge, lineHeight = 26.sp)
         Spacer(Modifier.height(28.dp))
     }
 }
@@ -621,12 +560,12 @@ private fun NoticeScreen(state: UiState, viewModel: QuizViewModel) {
 private fun NoticeRule(number: String, title: String, description: String) {
     Column(Modifier.fillMaxWidth().padding(top = 22.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(number, Modifier.width(42.dp), color = Color(0xFFC04D4D), style = MaterialTheme.typography.titleMedium)
-            Text(title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = Color(0xFF3D352F))
+            Text(number, Modifier.width(42.dp), color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.titleMedium)
+            Text(title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
         }
         Text(description, Modifier.padding(start = 42.dp, top = 14.dp, bottom = 20.dp),
-            color = Color(0xFF806F60), style = MaterialTheme.typography.bodyLarge, lineHeight = 27.sp)
-        HorizontalDivider(color = Color(0xFFE8DCCF))
+            color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyLarge, lineHeight = 27.sp)
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
     }
 }
 
@@ -651,14 +590,13 @@ internal fun Context.findActivity(): Activity? = when (this) {
 
 @Composable
 private fun ModeSelectionScreen(state: UiState, viewModel: QuizViewModel) {
-    Column(Modifier.fillMaxSize().background(Color(0xFFF8EFE5))) {
+    Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Column(Modifier.weight(1f).statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp)) {
             AppTopBar(title = "开始学习", onBack = viewModel::goHome)
-            Text("01 / YAZHI DAILY", Modifier.padding(top = 34.dp), color = Color(0xFFB38F76), style = MaterialTheme.typography.labelLarge)
-            Text("选一种方式，\n打开今天。", Modifier.padding(top = 24.dp),
-                style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold, lineHeight = MaterialTheme.typography.headlineLarge.lineHeight)
-            Text("每局 10 题 · 学习积分单独累计", Modifier.padding(top = 12.dp, bottom = 24.dp), color = Color(0xFF98816E))
-            HorizontalDivider(color = Color(0xFFE8DCCF))
+            Text("选择练习方式", Modifier.padding(top = 16.dp),
+                style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold)
+            Text("每局 10 题 · 学习积分单独累计", Modifier.padding(top = 12.dp, bottom = 24.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             StudyModeRow("01", "释义选择题", "读释义，选出正确成语", state.selectedMode == QuizMode.DEFINITION) {
                 viewModel.selectMode(QuizMode.DEFINITION)
             }
@@ -667,7 +605,7 @@ private fun ModeSelectionScreen(state: UiState, viewModel: QuizViewModel) {
             }
             Row(Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text("难度", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-                Text("按自己的节奏", color = Color(0xFF98816E))
+                Text("按自己的节奏", color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 DifficultyChip("全部", null, state.selectedDifficulty, viewModel::selectDifficulty)
@@ -682,17 +620,17 @@ private fun ModeSelectionScreen(state: UiState, viewModel: QuizViewModel) {
                     FilterChip(selected = state.selectedCategory == category, onClick = { viewModel.selectCategory(category) }, label = { Text(category) })
                 }
             }
-            Row(Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 18.dp).background(Color(0xFFFFEDCF), RoundedCornerShape(6.dp)).padding(14.dp),
+            Row(Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 18.dp).background(MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(6.dp)).padding(14.dp),
                 verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Filled.Info, contentDescription = null, tint = Color(0xFF9D7547))
+                Icon(Icons.Filled.Info, contentDescription = null, tint = MaterialTheme.colorScheme.onSecondaryContainer)
                 Spacer(Modifier.width(10.dp))
-                Text("答题增加学习积分，不增加可提现的钱包金币。", color = Color(0xFF8A6E4D), style = MaterialTheme.typography.bodyMedium)
+                Text("答题增加学习积分，不增加可提现的钱包金币。", color = MaterialTheme.colorScheme.onSecondaryContainer, style = MaterialTheme.typography.bodyMedium)
             }
         }
-        Surface(color = Color(0xFFFFFCF8), shadowElevation = 2.dp) {
+        Surface(color = MaterialTheme.colorScheme.surface, shadowElevation = 2.dp) {
             Button(onClick = viewModel::startQuiz, enabled = !state.isBusy,
                 modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 22.dp, vertical = 12.dp).height(56.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC14D4D))) {
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)) {
                 if (state.isBusy) CircularProgressIndicator(Modifier.size(20.dp), strokeWidth = 2.dp, color = Color.White)
                 else Text("开始本局 · 10 题  →", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             }
@@ -704,15 +642,15 @@ private fun ModeSelectionScreen(state: UiState, viewModel: QuizViewModel) {
 private fun StudyModeRow(number: String, title: String, subtitle: String, selected: Boolean, onClick: () -> Unit) {
     Row(Modifier.fillMaxWidth().clickable(onClick = onClick).padding(vertical = 20.dp), verticalAlignment = Alignment.CenterVertically) {
         Text(number, Modifier.width(58.dp), style = MaterialTheme.typography.headlineMedium,
-            color = if (selected) Color(0xFFC14D4D) else Color(0xFFC6A88E))
+            color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant)
         Column(Modifier.weight(1f)) {
             Text(title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-            Text(subtitle, Modifier.padding(top = 5.dp), color = Color(0xFF98816E))
+            Text(subtitle, Modifier.padding(top = 5.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        Surface(shape = RoundedCornerShape(50), color = if (selected) Color(0xFFC14D4D) else Color.Transparent,
-            border = if (selected) null else BorderStroke(1.dp, Color(0xFFD7C0A8)), modifier = Modifier.size(22.dp)) {}
+        Surface(shape = RoundedCornerShape(50), color = if (selected) MaterialTheme.colorScheme.primary else Color.Transparent,
+            border = if (selected) null else BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant), modifier = Modifier.size(22.dp)) {}
     }
-    HorizontalDivider(color = Color(0xFFE8DCCF))
+    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 }
 
 @Composable
@@ -721,7 +659,7 @@ private fun QuizScreen(state: UiState, viewModel: QuizViewModel) {
     val haptic = LocalHapticFeedback.current
     val isLastQuestion = state.questionIndex == state.questions.lastIndex
 
-    Column(Modifier.fillMaxSize().background(Color(0xFFF8EFE5)).statusBarsPadding()) {
+    Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).statusBarsPadding()) {
         TopAppBar(
             title = { Text("成语练习", fontWeight = FontWeight.Bold) },
             navigationIcon = {
@@ -729,7 +667,7 @@ private fun QuizScreen(state: UiState, viewModel: QuizViewModel) {
                     Icon(Icons.Filled.Close, contentDescription = "退出答题")
                 }
             },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFFF8EFE5))
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
         )
         Column(
             modifier = Modifier
@@ -740,21 +678,21 @@ private fun QuizScreen(state: UiState, viewModel: QuizViewModel) {
         ) {
             Row(Modifier.fillMaxWidth().padding(top = 18.dp, bottom = 16.dp), verticalAlignment = Alignment.Bottom) {
                 Text((state.questionIndex + 1).toString().padStart(2, '0'), style = MaterialTheme.typography.displayLarge,
-                    color = Color(0xFFC14D4D), fontWeight = FontWeight.Medium)
+                    color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Medium)
                 Text(" / ${state.questions.size}", Modifier.padding(start = 8.dp, bottom = 12.dp),
-                    style = MaterialTheme.typography.titleLarge, color = Color(0xFFB38F76))
+                    style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            HorizontalDivider(color = Color(0xFFCDB69E))
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             Text(if (question.mode == QuizMode.DEFINITION) "释义题" else "填空题",
                 Modifier.padding(top = 22.dp, bottom = 20.dp),
-                color = Color(0xFFB38F76), style = MaterialTheme.typography.labelLarge)
+                color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelLarge)
             Text(question.prompt, style = MaterialTheme.typography.headlineSmall, lineHeight = 36.sp, fontWeight = FontWeight.Medium)
-            HorizontalDivider(Modifier.padding(top = 24.dp), color = Color(0xFFCDB69E))
+            HorizontalDivider(Modifier.padding(top = 24.dp), color = MaterialTheme.colorScheme.outlineVariant)
             LinearProgressIndicator(progress = { state.progress }, modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
-                color = Color(0xFFE56A6A), trackColor = Color(0xFFE9DDCE))
+                color = MaterialTheme.colorScheme.primary, trackColor = Color(0xFFE9DDCE))
             Text(
                 if (state.answerSubmitted) "答案已记录" else "选出最恰当的一项。",
-                Modifier.padding(top = 16.dp, bottom = 22.dp), style = MaterialTheme.typography.bodyLarge, color = Color(0xFF98816E)
+                Modifier.padding(top = 16.dp, bottom = 22.dp), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             question.options.forEachIndexed { index, option ->
@@ -781,7 +719,7 @@ private fun QuizScreen(state: UiState, viewModel: QuizViewModel) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
             tonalElevation = 0.dp,
-            color = Color(0xFFFFFCF8)
+            color = MaterialTheme.colorScheme.surface
         ) {
             Button(
                 onClick = viewModel::nextQuestion,
@@ -791,7 +729,7 @@ private fun QuizScreen(state: UiState, viewModel: QuizViewModel) {
                     .navigationBarsPadding()
                     .padding(horizontal = 22.dp, vertical = 12.dp)
                     .height(58.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC14D4D))
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 Text(if (isLastQuestion) "查看本局结果  →" else "下一题  →", fontWeight = FontWeight.Bold)
                 Spacer(Modifier.width(8.dp))
@@ -804,38 +742,38 @@ private fun QuizScreen(state: UiState, viewModel: QuizViewModel) {
 @Composable
 private fun ResultScreen(state: UiState, viewModel: QuizViewModel) {
     val result = state.lastResult ?: return
-    Column(Modifier.fillMaxSize().background(Color(0xFFF8EFE5))) {
+    Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Column(Modifier.weight(1f).statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp)) {
             AppTopBar(title = "本局结果", onBack = viewModel::goHome)
-            Text("本局新增学习积分", Modifier.padding(top = 28.dp), style = MaterialTheme.typography.titleMedium, color = Color(0xFF9B7A62))
+            Text("本局新增学习积分", Modifier.padding(top = 28.dp), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text(result.score.toString(), Modifier.padding(top = 12.dp), style = MaterialTheme.typography.displayLarge,
-                color = Color(0xFFC14D4D), fontWeight = FontWeight.Bold)
+                color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
             Row(Modifier.padding(top = 12.dp, bottom = 28.dp), verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Filled.Star, contentDescription = null, tint = Color(0xFFB68A3A))
-                Text(" 认真完成，就是新的积累", color = Color(0xFF98816E))
+                Text(" 认真完成，就是新的积累", color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Text("一点一滴，都算进步。", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
             Row(Modifier.fillMaxWidth().padding(vertical = 24.dp)) {
                 ResultMetric("${result.correct}", "答对题数", Modifier.weight(1f))
-                VerticalDivider(Modifier.height(66.dp), color = Color(0xFFE8DCCF))
+                VerticalDivider(Modifier.height(66.dp), color = MaterialTheme.colorScheme.outlineVariant)
                 ResultMetric("${result.total - result.correct}", "答错题数", Modifier.weight(1f))
-                VerticalDivider(Modifier.height(66.dp), color = Color(0xFFE8DCCF))
+                VerticalDivider(Modifier.height(66.dp), color = MaterialTheme.colorScheme.outlineVariant)
                 ResultMetric("${result.accuracy}%", "正确率", Modifier.weight(1f))
             }
             Text("接下来，巩固一下", Modifier.padding(top = 8.dp, bottom = 8.dp), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
             CatalogueEntry("01", "复习本局错题", "把不熟悉的成语再看一遍", viewModel::openMistakes)
             CatalogueEntry("02", "看看学习统计", "记录这一周的进步", viewModel::openStats)
-            Row(Modifier.fillMaxWidth().padding(vertical = 18.dp).background(Color(0xFFFFEDCF), RoundedCornerShape(6.dp)).padding(14.dp),
+            Row(Modifier.fillMaxWidth().padding(vertical = 18.dp).background(MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(6.dp)).padding(14.dp),
                 verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Filled.Info, null, tint = Color(0xFF9D7547))
-                Text("  本局增加的是学习积分，不会改变钱包金币余额。", color = Color(0xFF8A6E4D))
+                Icon(Icons.Filled.Info, null, tint = MaterialTheme.colorScheme.onSecondaryContainer)
+                Text("  本局增加的是学习积分，不会改变钱包金币余额。", color = MaterialTheme.colorScheme.onSecondaryContainer)
             }
         }
-        Surface(color = Color(0xFFFFFCF8)) {
+        Surface(color = MaterialTheme.colorScheme.surface) {
             Column(Modifier.navigationBarsPadding().padding(horizontal = 22.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(onClick = viewModel::openModeSelection, modifier = Modifier.fillMaxWidth().height(56.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC14D4D))) { Text("再练一局  →", fontWeight = FontWeight.Bold) }
-                OutlinedButton(onClick = viewModel::goHome, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("回到学习首页", color = Color(0xFF80634C)) }
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)) { Text("再练一局  →", fontWeight = FontWeight.Bold) }
+                OutlinedButton(onClick = viewModel::goHome, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("回到学习首页", color = MaterialTheme.colorScheme.onSurfaceVariant) }
             }
         }
     }
@@ -847,18 +785,17 @@ private fun InviteScreen(state: UiState, viewModel: QuizViewModel) {
     androidx.activity.compose.BackHandler(onBack = viewModel::openProfile)
     val isQualified = state.inviteLevel == 1 || state.inviteLevel == 3
     val level = when (state.inviteLevel) { 1 -> "团长"; 3 -> "代理"; else -> "普通会员" }
-    Column(Modifier.fillMaxSize().background(Color(0xFFF8EFE5)).statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp)) {
+    Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp)) {
         TopAppBar(title = { Text("我的邀请码", fontWeight = FontWeight.Bold) },
             navigationIcon = { IconButton(onClick = viewModel::openProfile) { Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回") } },
-            actions = { TextButton(onClick = { viewModel.openMemberSection(MemberSection.COMMISSIONS) }) { Text("邀请收益", color = Color(0xFFC14D4D)) } },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFFF8EFE5)))
-        Text("07 / YAZHI DAILY", Modifier.padding(top = 28.dp), color = Color(0xFFB38F76), style = MaterialTheme.typography.labelLarge)
-        Text("一起积累，\n慢慢成长。", Modifier.padding(top = 18.dp), style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
-        Text("每位会员，都有自己的专属邀请码。", Modifier.padding(top = 10.dp, bottom = 36.dp), color = Color(0xFF98816E))
-        HorizontalDivider(color = Color(0xFFC14D4D), thickness = 2.dp)
-        Text("我的邀请码 · $level", Modifier.padding(top = 24.dp), color = Color(0xFF98816E))
+            actions = { TextButton(onClick = { viewModel.openMemberSection(MemberSection.COMMISSIONS) }) { Text("邀请收益", color = MaterialTheme.colorScheme.primary) } },
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background))
+        Text("邀请好友", Modifier.padding(top = 18.dp), style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
+        Text("每位会员，都有自己的专属邀请码。", Modifier.padding(top = 10.dp, bottom = 36.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+        HorizontalDivider(color = MaterialTheme.colorScheme.primary, thickness = 2.dp)
+        Text("我的邀请码 · $level", Modifier.padding(top = 24.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
         Text(state.inviteCode ?: if (state.inviteCodeLoading) "邀请码加载中" else "邀请码暂不可用", Modifier.padding(top = 24.dp, bottom = 14.dp),
-            style = MaterialTheme.typography.displayMedium, color = Color(0xFFC14D4D), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            style = MaterialTheme.typography.displayMedium, color = MaterialTheme.colorScheme.primary, maxLines = 1, overflow = TextOverflow.Ellipsis)
         state.inviteCodeError?.let { error ->
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(error, Modifier.weight(1f), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
@@ -871,7 +808,7 @@ private fun InviteScreen(state: UiState, viewModel: QuizViewModel) {
                 clipboard.setPrimaryClip(android.content.ClipData.newPlainText("邀请码", code))
             }
         }, enabled = state.inviteCode != null, modifier = Modifier.fillMaxWidth().height(54.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC14D4D))) { Text("复制邀请码") }
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)) { Text("复制邀请码") }
         state.inviteUrl?.let { url ->
             val qr = remember(url) { runCatching { invitationQr(url).asImageBitmap() }.getOrNull() }
             Text("邀请链接", Modifier.padding(top = 22.dp), style = MaterialTheme.typography.titleMedium)
@@ -895,24 +832,24 @@ private fun InviteScreen(state: UiState, viewModel: QuizViewModel) {
                 .align(Alignment.CenterHorizontally).padding(top = 16.dp).size(220.dp))
             else Text("二维码生成失败，请复制邀请链接", color = MaterialTheme.colorScheme.error)
             Text("使用浏览器扫码，可下载应用或通过短信注册 / 登录。已安装用户可在邀请页打开 APP。",
-                Modifier.padding(top = 12.dp), color = Color(0xFF98816E))
+                Modifier.padding(top = 12.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        HorizontalDivider(Modifier.padding(vertical = 24.dp), color = Color(0xFFCDB69E))
+        HorizontalDivider(Modifier.padding(vertical = 24.dp), color = MaterialTheme.colorScheme.outlineVariant)
         if (isQualified) {
             Row(Modifier.fillMaxWidth().padding(top = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                 Box(Modifier.width(4.dp).height(92.dp).background(Color(0xFFDA6A68)))
                 Column(Modifier.padding(start = 14.dp)) {
                     Text("可用于强制邀请码注册", style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold, color = Color(0xFF3D352F))
+                        fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                     Text("你是本应用的$level，账号有效时，此码可用于本应用的强制邀请码注册。",
-                        Modifier.padding(top = 10.dp), color = Color(0xFF806F60), lineHeight = 24.sp)
+                        Modifier.padding(top = 10.dp), color = MaterialTheme.colorScheme.onSurfaceVariant, lineHeight = 24.sp)
                 }
             }
         } else {
             Text("普通会员码，不具备强制注册资格",
-                style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = Color(0xFF3D352F))
+                style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
             Text("开启强制注册时，新用户需使用本应用有效团长或代理的邀请码。",
-                Modifier.padding(top = 10.dp), color = Color(0xFF806F60), lineHeight = 24.sp)
+                Modifier.padding(top = 10.dp), color = MaterialTheme.colorScheme.onSurfaceVariant, lineHeight = 24.sp)
         }
         WalletDetailRow("当前身份", level)
         WalletDetailRow("用于强制注册", if (isQualified) "具备资格" else "不具备资格")
@@ -923,8 +860,8 @@ private fun InviteScreen(state: UiState, viewModel: QuizViewModel) {
 @Composable
 private fun ResultMetric(value: String, label: String, modifier: Modifier) {
     Column(modifier.padding(horizontal = 8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        Text(value, style = MaterialTheme.typography.headlineMedium, color = Color(0xFF3D352F))
-        Text(label, style = MaterialTheme.typography.bodySmall, color = Color(0xFF98816E))
+        Text(value, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
+        Text(label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 
@@ -934,29 +871,28 @@ private fun MistakesScreen(state: UiState, viewModel: QuizViewModel) {
     var showFavorites by rememberSaveable { mutableStateOf(false) }
     val source = if (showFavorites) state.idioms.filter { it.isFavorite } else state.mistakes
     val filtered = source.filter { it.word.contains(query.trim(), true) || it.explanation.contains(query.trim(), true) }
-    Column(Modifier.fillMaxSize().background(Color(0xFFF8EFE5)).statusBarsPadding()) {
+    Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).statusBarsPadding()) {
         AppTopBar(title = "学习资料", onBack = viewModel::goHome,
             action = if (showFavorites) null else viewModel::openStats)
         LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(horizontal = 22.dp, vertical = 8.dp)) {
             item {
-                Text("02 / YAZHI DAILY", Modifier.padding(top = 18.dp), color = Color(0xFFB38F76), style = MaterialTheme.typography.labelLarge)
-                Text("把没记牢的，\n再翻一遍。", Modifier.padding(top = 18.dp, bottom = 20.dp),
-                    style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
+                Text("复习错题", Modifier.padding(top = 16.dp, bottom = 16.dp),
+                    style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold)
                 OutlinedTextField(value = query, onValueChange = { query = it }, modifier = Modifier.fillMaxWidth(),
                     placeholder = { Text("搜索成语或释义") }, leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
                     singleLine = true, shape = RoundedCornerShape(6.dp))
                 Row(Modifier.fillMaxWidth().padding(top = 18.dp), verticalAlignment = Alignment.CenterVertically) {
-                    TextButton(onClick = { showFavorites = false }) { Text("错题本", color = if (!showFavorites) Color(0xFFC14D4D) else Color(0xFF98816E)) }
-                    TextButton(onClick = { showFavorites = true }) { Text("收藏", color = if (showFavorites) Color(0xFFC14D4D) else Color(0xFF98816E)) }
+                    TextButton(onClick = { showFavorites = false }) { Text("错题本", color = if (!showFavorites) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant) }
+                    TextButton(onClick = { showFavorites = true }) { Text("收藏", color = if (showFavorites) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant) }
                     Spacer(Modifier.weight(1f))
                     if (!showFavorites && state.mistakes.isNotEmpty()) TextButton(onClick = viewModel::startMistakeReview) { Text("开始复习") }
                 }
-                HorizontalDivider(color = Color(0xFFCDB69E))
-                Text("${source.size} 个成语 · ${if (showFavorites) "收藏" else "错题本"}", Modifier.padding(vertical = 14.dp), color = Color(0xFF98816E))
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                Text("${source.size} 个成语 · ${if (showFavorites) "收藏" else "错题本"}", Modifier.padding(vertical = 14.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             if (filtered.isEmpty()) item {
                 Text(if (source.isEmpty()) if (showFavorites) "还没有收藏" else "还没有错题" else "没有匹配的成语",
-                    Modifier.fillMaxWidth().padding(vertical = 32.dp), color = Color(0xFF98816E))
+                    Modifier.fillMaxWidth().padding(vertical = 32.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             items(filtered, key = { it.id }) { idiom ->
                 StudyMaterialRow(idiom, onClick = { viewModel.openDetail(idiom.id) },
@@ -970,13 +906,13 @@ private fun MistakesScreen(state: UiState, viewModel: QuizViewModel) {
 private fun StudyMaterialRow(idiom: IdiomEntity, onClick: () -> Unit, onDelete: (() -> Unit)?) {
     Column(Modifier.fillMaxWidth().clickable(onClick = onClick).padding(vertical = 18.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(idiom.word, Modifier.weight(1f), style = MaterialTheme.typography.headlineSmall, color = Color(0xFF3D352F))
-            onDelete?.let { IconButton(onClick = it) { Icon(Icons.Outlined.DeleteOutline, contentDescription = "移除错题", tint = Color(0xFF98816E)) } }
+            Text(idiom.word, Modifier.weight(1f), style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onSurface)
+            onDelete?.let { IconButton(onClick = it) { Icon(Icons.Outlined.DeleteOutline, contentDescription = "移除错题", tint = MaterialTheme.colorScheme.onSurfaceVariant) } }
         }
-        Text(idiom.pinyin, color = Color(0xFFB38F76), style = MaterialTheme.typography.bodySmall)
-        Text(idiom.explanation, Modifier.padding(top = 8.dp), color = Color(0xFF806F60), maxLines = 2, overflow = TextOverflow.Ellipsis)
+        Text(idiom.pinyin, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
+        Text(idiom.explanation, Modifier.padding(top = 8.dp), color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2, overflow = TextOverflow.Ellipsis)
     }
-    HorizontalDivider(color = Color(0xFFE8DCCF))
+    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 }
 
 @Composable
@@ -1019,60 +955,59 @@ private fun StatsScreen(state: UiState, viewModel: QuizViewModel) {
     val monthWeekCount = (monthLeadingDays + today.lengthOfMonth() + 6) / 7
     val weeklyAnswered = days.sumOf { counts[it.toString()] ?: 0 }
     val maxCount = (days.maxOfOrNull { counts[it.toString()] ?: 0 } ?: 0).coerceAtLeast(1)
-    Column(Modifier.fillMaxSize().background(Color(0xFFF8EFE5)).statusBarsPadding()
+    Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).statusBarsPadding()
         .verticalScroll(rememberScrollState()).padding(horizontal = 22.dp)) {
         AppTopBar(title = "学习统计", onBack = viewModel::goHome)
-        Text("03 / YAZHI DAILY", Modifier.padding(top = 20.dp), color = Color(0xFFB38F76), style = MaterialTheme.typography.labelLarge)
-        Text("看见每一点\n向前的痕迹。", Modifier.padding(top = 18.dp, bottom = 24.dp),
+        Text("学习概况", Modifier.padding(top = 18.dp, bottom = 24.dp),
             style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
         Row(Modifier.fillMaxWidth().padding(bottom = 34.dp)) {
             Column(Modifier.weight(1f)) {
-                Text("累计答题", color = Color(0xFF98816E))
+                Text("累计答题", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Row(verticalAlignment = Alignment.Bottom) {
-                    Text(stats.totalAnswered.toString(), style = MaterialTheme.typography.displayLarge, color = Color(0xFFC14D4D))
-                    Text(" 题", Modifier.padding(bottom = 10.dp), color = Color(0xFF98816E))
+                    Text(stats.totalAnswered.toString(), style = MaterialTheme.typography.displayLarge, color = MaterialTheme.colorScheme.primary)
+                    Text(" 题", Modifier.padding(bottom = 10.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                Text("本周已练 $weeklyAnswered 题", color = Color(0xFF98816E))
+                Text("本周已练 $weeklyAnswered 题", color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            VerticalDivider(Modifier.height(120.dp).padding(horizontal = 10.dp), color = Color(0xFFE8DCCF))
+            VerticalDivider(Modifier.height(120.dp).padding(horizontal = 10.dp), color = MaterialTheme.colorScheme.outlineVariant)
             Column(Modifier.weight(1f).padding(start = 18.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 Column {
-                    Text("$accuracy%", style = MaterialTheme.typography.headlineLarge, color = Color(0xFF3D352F))
-                    Text("正确率", color = Color(0xFF98816E))
+                    Text("$accuracy%", style = MaterialTheme.typography.headlineLarge, color = MaterialTheme.colorScheme.onSurface)
+                    Text("正确率", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 Column {
-                    Text(stats.totalScore.toString(), style = MaterialTheme.typography.headlineMedium, color = Color(0xFF3D352F))
-                    Text("学习积分", color = Color(0xFF98816E))
+                    Text(stats.totalScore.toString(), style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurface)
+                    Text("学习积分", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }
         Row(Modifier.fillMaxWidth().padding(bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
             Text("最近一周", Modifier.weight(1f), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-            Text("每日答题量", color = Color(0xFF98816E))
+            Text("每日答题量", color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        HorizontalDivider(color = Color(0xFFCDB69E))
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
         Row(Modifier.fillMaxWidth().height(190.dp).padding(top = 16.dp, bottom = 10.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.Bottom) {
             days.forEachIndexed { index, day ->
                 val count = counts[day.toString()] ?: 0
                 Column(Modifier.weight(1f).fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Bottom) {
-                    if (count > 0) Text(count.toString(), color = Color(0xFF98816E), style = MaterialTheme.typography.labelSmall)
+                    if (count > 0) Text(count.toString(), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
                     Box(Modifier.fillMaxWidth().height((if (count == 0) 3 else (count * 120f / maxCount).roundToInt().coerceAtLeast(8)).dp)
-                        .background(if (index == days.lastIndex) Color(0xFFE56A6A) else Color(0xFFF2D3C2), RoundedCornerShape(topStart = 5.dp, topEnd = 5.dp)))
+                        .background(if (index == days.lastIndex) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(topStart = 5.dp, topEnd = 5.dp)))
                     Text(day.dayOfWeek.getDisplayName(java.time.format.TextStyle.SHORT, java.util.Locale.SIMPLIFIED_CHINESE),
-                        Modifier.padding(top = 8.dp), color = Color(0xFFB38F76), style = MaterialTheme.typography.labelSmall)
+                        Modifier.padding(top = 8.dp), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall)
                 }
             }
         }
-        HorizontalDivider(Modifier.padding(top = 8.dp), color = Color(0xFFCDB69E))
+        HorizontalDivider(Modifier.padding(top = 8.dp), color = MaterialTheme.colorScheme.outlineVariant)
         Row(Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 12.dp), verticalAlignment = Alignment.CenterVertically) {
             Text("${today.monthValue}月 · 学习足迹", Modifier.weight(1f), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-            Text("连续 ${stats.studyStreakDays} 天", color = Color(0xFF98816E))
+            Text("连续 ${stats.studyStreakDays} 天", color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(7.dp)) {
             listOf("一", "二", "三", "四", "五", "六", "日").forEach { weekday ->
-                Text(weekday, Modifier.weight(1f), color = Color(0xFFB38F76), style = MaterialTheme.typography.labelSmall,
+                Text(weekday, Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelSmall,
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center)
             }
         }
@@ -1085,12 +1020,12 @@ private fun StatsScreen(state: UiState, viewModel: QuizViewModel) {
                         val count = counts[day.toString()] ?: 0
                         val isToday = day == today
                         Box(Modifier.weight(1f).height(38.dp).background(
-                            when { isToday -> Color(0xFFE56A6A); count > 0 -> Color(0xFFF2D3C2); else -> Color.Transparent },
+                            when { isToday -> MaterialTheme.colorScheme.primary; count > 0 -> MaterialTheme.colorScheme.primaryContainer; else -> Color.Transparent },
                             RoundedCornerShape(6.dp)), contentAlignment = Alignment.Center) {
                             Text(dayNumber.toString(), color = when {
                                 isToday -> Color.White
-                                count > 0 -> Color(0xFF9C574A)
-                                else -> Color(0xFF514239)
+                                count > 0 -> MaterialTheme.colorScheme.onPrimaryContainer
+                                else -> MaterialTheme.colorScheme.onSurface
                             })
                         }
                     } else {
@@ -1100,88 +1035,6 @@ private fun StatsScreen(state: UiState, viewModel: QuizViewModel) {
             }
         }
         Spacer(Modifier.height(28.dp))
-    }
-}
-
-@Composable
-private fun ProfileScreen(state: UiState, viewModel: QuizViewModel) {
-    val user = state.currentUser
-    val coinBalance = state.serverCoin ?: state.appBootstrap?.coin ?: java.math.BigDecimal.ZERO
-    val levelLabel = when (state.inviteLevel) { 1 -> "团长"; 3 -> "代理"; else -> "普通会员" }
-    Column(Modifier.fillMaxSize().background(Color(0xFFF8EFE5))) {
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .statusBarsPadding()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 22.dp),
-            verticalArrangement = Arrangement.spacedBy(0.dp)
-        ) {
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Column(Modifier.weight(1f)) {
-                Text("我的", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
-                Text("学习与收获，分开记好", color = Color(0xFF98816E))
-            }
-        }
-        Text("MY LITTLE ACCOUNT", Modifier.padding(top = 42.dp), color = Color(0xFFC04D4D), style = MaterialTheme.typography.labelLarge)
-        Row(Modifier.fillMaxWidth().padding(top = 18.dp, bottom = 24.dp), verticalAlignment = Alignment.CenterVertically) {
-            Column(Modifier.weight(1f)) {
-                Text(user?.displayName ?: "认真学习的\n鸭同学", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
-                Text(if (user == null) "登录后同步学习身份和账号状态" else "ID ${user.id} · $levelLabel",
-                    Modifier.padding(top = 8.dp), color = Color(0xFF98816E))
-            }
-            MemberAvatar(user?.id, Modifier.size(74.dp))
-        }
-        HorizontalDivider(color = Color(0xFFD7C0A8))
-        Row(Modifier.fillMaxWidth().padding(top = 20.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("━  账户 / 可用金币", Modifier.weight(1f), color = Color(0xFF9B7A62))
-            Text("余额可核对", color = Color(0xFF8A641E), modifier = Modifier
-                .background(Color(0xFFFFEDC4), RoundedCornerShape(4.dp)).padding(horizontal = 10.dp, vertical = 6.dp))
-        }
-        Text(coinBalance.stripTrailingZeros().toPlainString(), Modifier.padding(top = 16.dp),
-            style = MaterialTheme.typography.displaySmall, color = Color(0xFFC14D4D), maxLines = 1, overflow = TextOverflow.Ellipsis)
-        Row(Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 22.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("金币与学习积分分开累计", Modifier.weight(1f), color = Color(0xFF98816E))
-            Button(onClick = viewModel::openWallet, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC14D4D))) {
-                Text("进入钱包  ↗")
-            }
-        }
-        HorizontalDivider(color = Color(0xFFD7C0A8))
-        Row(Modifier.fillMaxWidth().padding(vertical = 20.dp), verticalAlignment = Alignment.CenterVertically) {
-            Column(Modifier.weight(1f)) {
-                Text("我的邀请码 · $levelLabel", color = Color(0xFF9B8775))
-                Text(state.inviteCode ?: if (state.inviteCodeLoading) "邀请码加载中" else "邀请码暂不可用", Modifier.padding(top = 5.dp),
-                    style = MaterialTheme.typography.headlineSmall, color = Color(0xFF3D352F), maxLines = 1)
-                state.inviteCodeError?.let { error ->
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(error, Modifier.weight(1f), color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodySmall)
-                        TextButton(onClick = viewModel::retryInviteCode, enabled = !state.inviteCodeLoading) {
-                            Text("重试", color = Color(0xFFC14D4D))
-                        }
-                    }
-                }
-            }
-            TextButton(onClick = viewModel::openInvite, enabled = user != null) {
-                Text("资格与邀请 ↗", color = Color(0xFFC14D4D))
-            }
-        }
-        HorizontalDivider(color = Color(0xFFD7C0A8))
-        Row(Modifier.fillMaxWidth().padding(top = 24.dp, bottom = 6.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("服务目录", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
-        }
-        CatalogueEntry("01", "广告奖励", "观看广告，查看金币奖励", viewModel::openAdDemo)
-        CatalogueEntry("02", "广告记录", "查看激励广告观看时间与所得金币", viewModel::openAdHistory)
-        CatalogueEntry("03", "补贴申请", "查看审核进度与结果") { viewModel.openMemberSection(MemberSection.SUBSIDIES) }
-        CatalogueEntry("04", "邀请与收益", "查看关系与已产生佣金") { viewModel.openMemberSection(MemberSection.COMMISSIONS) }
-        CatalogueEntry("05", "账户设置", "个人信息、收款信息与偏好", viewModel::openSettings)
-        if (user == null) {
-            Button(onClick = viewModel::openLogin, modifier = Modifier.fillMaxWidth().padding(vertical = 20.dp)) {
-                Text("微信 / 验证码登录")
-            }
-        }
-        Spacer(Modifier.height(20.dp))
-        }
     }
 }
 
@@ -1212,13 +1065,13 @@ private fun ProfileMenuRow(icon: Int, title: String, onClick: () -> Unit) {
             title,
             modifier = Modifier.weight(1f),
             style = MaterialTheme.typography.titleLarge,
-            color = Color(0xFF76574F),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = FontWeight.SemiBold
         )
         Icon(
             Icons.AutoMirrored.Filled.ArrowForward,
             contentDescription = "进入$title",
-            tint = Color(0xFFB7ADA8),
+            tint = MaterialTheme.colorScheme.outlineVariant,
             modifier = Modifier.size(28.dp)
         )
     }
@@ -1233,38 +1086,41 @@ private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
     val context = LocalContext.current
     androidx.activity.compose.BackHandler(onBack = viewModel::openProfile)
     LaunchedEffect(Unit) { if (state.registrationPolicy == null) viewModel.loadRegistrationPolicy() }
-    Column(Modifier.fillMaxSize().background(Color(0xFFF8EFE5)).statusBarsPadding()
-        .verticalScroll(rememberScrollState()).padding(horizontal = 22.dp),
+    Box(Modifier.fillMaxSize()) {
+    Column(Modifier.fillMaxSize().background(androidx.compose.ui.graphics.Brush.verticalGradient(
+        listOf(AppPalette.PrimarySoft, Color.White, AppPalette.Background))).statusBarsPadding()
+        .verticalScroll(rememberScrollState()).padding(start = 24.dp, end = 24.dp, top = 56.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)) {
-        AppTopBar(title = "登录鸭只易记", onBack = viewModel::openProfile)
-        Text("回来就好，\n从这里继续。", Modifier.padding(top = 16.dp),
-            style = MaterialTheme.typography.headlineLarge, lineHeight = 48.sp)
-        Text("未注册的手机号或微信，验证后将自动创建账号。", color = Color(0xFF98816E))
-        OutlinedTextField(phone, { phone = it.filter { char -> char in '0'..'9' }.take(11); viewModel.clearAuthError() },
-            modifier = Modifier.fillMaxWidth(), label = { Text("手机号") }, singleLine = true,
+        Text("你好，\n欢迎使用鸭只易记", color = AppPalette.Primary,
+            fontSize = 28.sp, fontWeight = FontWeight.Bold, lineHeight = 36.sp)
+        Text("账号登录", color = AppPalette.Text, fontSize = 15.sp, lineHeight = 22.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 4.dp, bottom = 8.dp))
+        Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
+        ReferenceInput(phone, { phone = it.filter { char -> char in '0'..'9' }.take(11); viewModel.clearAuthError() },
+            hint = "请输入手机号", prefix = "+86",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone))
-        OutlinedTextField(smsCode, { smsCode = it.filter { char -> char in '0'..'9' }.take(6); viewModel.clearAuthError() },
-            modifier = Modifier.fillMaxWidth(), label = { Text("短信验证码") }, singleLine = true,
+        ReferenceInput(smsCode, { smsCode = it.filter { char -> char in '0'..'9' }.take(6); viewModel.clearAuthError() },
+            hint = "短信验证码",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
         SmsSendButton(state, enabled = !state.authBusy && consented, onClick = { viewModel.sendSms(phone) })
-        OutlinedTextField(registrationInvite,
+        ReferenceInput(registrationInvite,
             { registrationInvite = it.uppercase(Locale.ROOT).filter { char -> char in 'A'..'Z' || char in '0'..'9' }.take(6); viewModel.clearAuthError() },
-            modifier = Modifier.fillMaxWidth(), singleLine = true,
-            label = { Text(if (state.registrationPolicy?.requireRegistrationInvite == true) "上级邀请码（新用户必填）" else "上级邀请码（选填）") })
+            hint = if (state.registrationPolicy?.requireRegistrationInvite == true) "上级邀请码（新用户必填）" else "上级邀请码（选填）")
         Text("新用户邀请码适用于微信与短信两种方式；需使用本应用有效团长或代理的邀请码。已有账号登录无需填写。",
-            style = MaterialTheme.typography.bodySmall, color = Color(0xFF98816E))
+            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         state.authError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
         state.registrationPolicyError?.let {
             Text(it, color = MaterialTheme.colorScheme.error)
             TextButton(onClick = viewModel::loadRegistrationPolicy) { Text("重新加载") }
         }
+        Button(onClick = { viewModel.loginWithSms(phone, smsCode, "", registrationInvite) },
+            enabled = !state.authBusy && consented, modifier = Modifier.fillMaxWidth().height(50.dp)
+                .clip(RoundedCornerShape(25.dp)).background(MobanButton),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)) {
+            Text(if (state.authBusy) "正在验证…" else "验证码注册 / 登录", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        }
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Checkbox(checked = consented, onCheckedChange = { consented = it })
             Text("已阅读并同意《用户协议》和《隐私政策》", style = MaterialTheme.typography.bodySmall)
-        }
-        Button(onClick = { viewModel.loginWithSms(phone, smsCode, "", registrationInvite) },
-            enabled = !state.authBusy && consented, modifier = Modifier.fillMaxWidth().height(50.dp)) {
-            Text(if (state.authBusy) "正在验证…" else "验证码注册 / 登录")
         }
         OutlinedButton(onClick = { viewModel.loginWithWeChat(context, registrationInvite) },
             enabled = !state.authBusy && consented, modifier = Modifier.fillMaxWidth().height(50.dp),
@@ -1272,17 +1128,21 @@ private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
             Icon(Icons.AutoMirrored.Filled.Chat, contentDescription = null)
             Spacer(Modifier.width(8.dp)); Text("微信登录")
         }
+        }
         Spacer(Modifier.height(20.dp))
+    }
+    IconButton(onClick = viewModel::openProfile, modifier = Modifier.align(Alignment.TopStart).statusBarsPadding()) {
+        Icon(Icons.AutoMirrored.Filled.ArrowBack, "返回", tint = AppPalette.Primary)
+    }
     }
 }
 
 @Composable
 private fun SettingsScreen(state: UiState, viewModel: QuizViewModel) {
     androidx.activity.compose.BackHandler(onBack = viewModel::openProfile)
-    Column(Modifier.fillMaxSize().background(Color(0xFFF8EFE5)).statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp)) {
+    Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp)) {
         AppTopBar(title = "偏好与账户", onBack = viewModel::openProfile)
-        Text("09 / YAZHI DAILY", Modifier.padding(top = 20.dp), color = Color(0xFFB38F76), style = MaterialTheme.typography.labelLarge)
-        Text("按你的习惯，\n安排每一天。", Modifier.padding(top = 18.dp, bottom = 28.dp), style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
+        Text("偏好设置", Modifier.padding(top = 18.dp, bottom = 28.dp), style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
         Text("学习偏好", Modifier.padding(bottom = 8.dp), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
         SettingRow(
             icon = if (state.settings.soundEnabled) {
@@ -1314,27 +1174,27 @@ private fun SettingsScreen(state: UiState, viewModel: QuizViewModel) {
                 )
             }
         )
-        HorizontalDivider(Modifier.padding(vertical = 18.dp), color = Color(0xFFCDB69E))
+        HorizontalDivider(Modifier.padding(vertical = 18.dp), color = MaterialTheme.colorScheme.outlineVariant)
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text("账\n户\n安\n全", Modifier.padding(end = 18.dp), color = Color(0xFFB38F76), style = MaterialTheme.typography.titleMedium)
+            Text("账户", Modifier.padding(end = 18.dp), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelLarge)
             Column(Modifier.weight(1f)) {
         CatalogueEntry("01", "会员资料", "个人信息与收款资料") { viewModel.openMemberSection(MemberSection.PROFILE) }
         CatalogueEntry("02", "修改密码", "更新账户登录密码") { viewModel.openMemberSection(MemberSection.PASSWORD) }
         CatalogueEntry("03", "支付宝收款信息", "钱包余额和提现账户") { viewModel.openWallet() }
             }
         }
-        HorizontalDivider(Modifier.padding(vertical = 18.dp), color = Color(0xFFCDB69E))
+        HorizontalDivider(Modifier.padding(vertical = 18.dp), color = MaterialTheme.colorScheme.outlineVariant)
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text("关\n于\n应\n用", Modifier.padding(end = 18.dp), color = Color(0xFFB38F76), style = MaterialTheme.typography.titleMedium)
+            Text("关于", Modifier.padding(end = 18.dp), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.labelLarge)
             Column(Modifier.weight(1f)) {
                 Row(Modifier.fillMaxWidth().padding(vertical = 18.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text("当前版本", Modifier.weight(1f), color = Color(0xFF806F60))
-                    Text(com.example.idiomquiz.BuildConfig.VERSION_NAME, color = Color(0xFF98816E))
+                    Text("当前版本", Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(com.example.idiomquiz.BuildConfig.VERSION_NAME, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }
         OutlinedButton(onClick = viewModel::logout, modifier = Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 24.dp)) {
-            Text("退出登录", color = Color(0xFFC14D4D))
+            Text("退出登录", color = MaterialTheme.colorScheme.primary)
         }
     }
 }
@@ -1362,7 +1222,7 @@ private fun AdHistoryScreen(state: UiState, viewModel: QuizViewModel) {
         }
     }
     val balance = state.serverCoin ?: state.appBootstrap?.coin ?: java.math.BigDecimal.ZERO
-    Box(Modifier.fillMaxSize().background(Color(0xFFF4EBDD))) {
+    Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -1395,7 +1255,7 @@ private fun AdHistoryScreen(state: UiState, viewModel: QuizViewModel) {
                             Text(formatAdRecordTime(record.watchedAt.orEmpty()), Modifier.weight(1f),
                                 style = MaterialTheme.typography.bodyMedium)
                             Text("${record.coinAdded.stripTrailingZeros().toPlainString()} 金币",
-                                fontWeight = FontWeight.Bold, color = Color(0xFFC14D4D))
+                                fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                         }
                     }
                 }
@@ -1460,31 +1320,33 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
             selectedWithdrawalId = state.withdrawalOptions.firstOrNull()?.id
         }
     }
-    Column(Modifier.fillMaxSize().background(Color(0xFFF8EFE5))) {
-        Column(Modifier.weight(1f).statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = 22.dp)) {
-            AppTopBar(title = "金币钱包", onBack = viewModel::openProfile) {
-                viewModel.openMemberSection(MemberSection.COINS)
+    Column(Modifier.fillMaxSize().background(MobanGoldPage)) {
+        Column(Modifier.weight(1f).statusBarsPadding().verticalScroll(rememberScrollState()).padding(horizontal = 14.dp)) {
+            ReferenceToolbar("提现", viewModel::openProfile, titleSize = 18) {
+                IconButton(onClick = { viewModel.openMemberSection(MemberSection.COINS) }) { Icon(Icons.Filled.ReceiptLong, "金币记录") }
             }
-            HorizontalDivider(Modifier.padding(top = 8.dp), color = Color(0xFFCDB69E))
-            Row(Modifier.fillMaxWidth().padding(top = 24.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text("━  账户 / 可用金币", Modifier.weight(1f), color = Color(0xFF9B7A62))
-                TextButton(onClick = viewModel::openWallet, enabled = !state.isBusy) { Text("刷新", color = Color(0xFFC14D4D)) }
+            ReferencePanel(modifier = Modifier.padding(top = 10.dp), radius = 24.dp, padding = 18.dp) {
+                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Row {
+                        Text(balance.stripTrailingZeros().toPlainString(), Modifier.alignByBaseline(), fontSize = 38.sp, lineHeight = 46.sp,
+                            fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface, textAlign = TextAlign.Center)
+                        Text("金币", Modifier.padding(start = 3.dp).alignByBaseline(), fontSize = 18.sp, lineHeight = 26.sp)
+                    }
+                    Text("当前余额", Modifier.padding(top = 8.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text("冻结 ${state.appBootstrap?.freezeCoin ?: 0L}", style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(top = 6.dp))
+                }
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                    TextButton(onClick = viewModel::openWallet, enabled = !state.isBusy) { Text("刷新余额") }
+                    TextButton(onClick = { viewModel.openMemberSection(MemberSection.COINS) }) { Text("金币明细") }
+                }
             }
-            Text(balance.stripTrailingZeros().toPlainString(), Modifier.padding(top = 12.dp),
-                style = MaterialTheme.typography.displaySmall, color = Color(0xFFC14D4D), maxLines = 1, overflow = TextOverflow.Ellipsis)
-            Row(Modifier.fillMaxWidth().padding(top = 8.dp, bottom = 18.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text("金币与学习积分分开累计", Modifier.weight(1f), color = Color(0xFF98816E))
-                Text("冻结 ${state.appBootstrap?.freezeCoin ?: 0L}", color = Color(0xFF80634C),
-                    modifier = Modifier.background(Color(0xFFF1E3D3), RoundedCornerShape(5.dp)).padding(horizontal = 10.dp, vertical = 6.dp))
-            }
-            OutlinedButton(onClick = { viewModel.openMemberSection(MemberSection.COINS) }, modifier = Modifier.fillMaxWidth()) {
-                Text("金币明细", color = Color(0xFF80634C))
-            }
-            HorizontalDivider(Modifier.padding(vertical = 22.dp), color = Color(0xFFCDB69E))
+
+            Column(Modifier.fillMaxWidth().padding(top = 18.dp, bottom = 18.dp)) {
             Text("提现金额", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-            Text("选择提现档位，所需金币以服务端配置为准", Modifier.padding(top = 4.dp, bottom = 10.dp), color = Color(0xFF98816E))
+            Text("选择提现档位，所需金币以服务端配置为准", Modifier.padding(top = 4.dp, bottom = 10.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
             if (state.withdrawalOptions.isEmpty()) {
-                Text("暂无可用提现档位", Modifier.padding(vertical = 14.dp), color = Color(0xFF98816E))
+                Text("暂无可用提现档位", Modifier.padding(vertical = 14.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
             } else {
                 state.withdrawalOptions.chunked(2).forEach { rowOptions ->
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -1495,16 +1357,16 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
                                 onClick = { selectedWithdrawalId = option.id },
                                 enabled = !state.isBusy && !state.adBusy,
                                 modifier = Modifier.weight(1f).padding(bottom = 8.dp).heightIn(min = 82.dp),
-                                border = BorderStroke(1.dp, if (selected) Color(0xFFC14D4D) else Color(0xFFCDB69E)),
+                                border = BorderStroke(1.dp, if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant),
                                 colors = ButtonDefaults.outlinedButtonColors(
-                                    containerColor = if (selected) Color(0xFFFFE9E4) else Color(0xFFFFFCF8)
+                                    containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface
                                 )
                             ) {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                     Text("¥${centsText(option.amountCents)}", fontWeight = FontWeight.Bold,
-                                        color = if (selected) Color(0xFFC14D4D) else Color(0xFF514239))
+                                        color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface)
                                     Text("${option.coin.stripTrailingZeros().toPlainString()} 金币", style = MaterialTheme.typography.bodySmall,
-                                        color = if (affordable) Color(0xFF98816E) else MaterialTheme.colorScheme.error)
+                                        color = if (affordable) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.error)
                                 }
                             }
                         }
@@ -1518,16 +1380,16 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
             selectedWithdrawal?.let { option ->
                 Surface(
                     modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
-                    color = Color(0xFFFFFCF8),
+                    color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(4.dp),
-                    border = BorderStroke(1.dp, Color(0xFFE8DCCF))
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                 ) {
                     Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
                         WalletDetailRow("提现至", if (state.alipayAccount?.bound == true) "支付宝 · ${state.alipayAccount.accountMasked.orEmpty()}" else "尚未绑定")
                         WalletDetailRow("本次冻结", "${option.coin.stripTrailingZeros().toPlainString()} 金币")
                         WalletDetailRow("提现金额", "¥${centsText(option.amountCents)}")
                         TextButton(onClick = { showBindDialog = true }, enabled = !state.isBusy) {
-                            Text("核对收款账户 ↗", color = Color(0xFFC14D4D))
+                            Text("核对收款账户 ↗", color = MaterialTheme.colorScheme.primary)
                         }
                     }
                 }
@@ -1537,10 +1399,13 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
                     Text("确认上次 ${amount / 100.0} 元提现结果")
                 }
             }
+            ReferencePanel(Modifier.padding(top = 14.dp), radius = 24.dp, padding = 12.dp) {
+            Text("提现方式", fontSize = 16.sp, lineHeight = 24.sp, fontWeight = FontWeight.Bold)
             Row(Modifier.fillMaxWidth().padding(top = 12.dp, bottom = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text("支付宝收款", Modifier.weight(1f), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                Image(painterResource(R.drawable.moban_alipay), null, Modifier.size(24.dp))
+                Text("支付宝", Modifier.weight(1f).padding(start = 8.dp), style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold)
                 val account = state.alipayAccount
-                Text(if (account?.bound == true) "已绑定" else "未绑定", color = Color(0xFF98816E))
+                Text(if (account?.bound == true) "已绑定" else "未绑定", color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             val account = state.alipayAccount
             WalletDetailRow("提现至", if (account?.bound == true) "支付宝 · ${account.accountMasked.orEmpty()}" else "尚未绑定")
@@ -1556,8 +1421,8 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
             }
             Text(
                 "申请成功后会冻结对应金币；审核通过不代表已到账，请以支付渠道确认结果为准。",
-                Modifier.fillMaxWidth().padding(top = 14.dp).background(Color(0xFFFFE9C9), RoundedCornerShape(5.dp)).padding(14.dp),
-                color = Color(0xFF80634C), style = MaterialTheme.typography.bodyMedium
+                Modifier.fillMaxWidth().padding(top = 14.dp).background(AppPalette.PrimarySoft, RoundedCornerShape(5.dp)).padding(14.dp),
+                color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyMedium
             )
             if (!state.paymentAvailable) {
                 Text(
@@ -1569,34 +1434,36 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
             if (state.currentUser?.provider == com.example.idiomquiz.data.AuthProvider.WECHAT) {
                 TextButton(onClick = { showPasswordDialog = true }, enabled = !state.isBusy) { Text("微信验证并设置密码") }
             }
-            Text("提现记录", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+            }
+            Text("提现记录", Modifier.padding(top = 18.dp), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
             if (state.withdrawals.isEmpty()) {
-                Text("暂无提现记录", color = Color(0xFF98816E), modifier = Modifier.padding(vertical = 14.dp))
+                Text("暂无提现记录", color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(vertical = 14.dp))
             } else {
                 state.withdrawals.forEach { record ->
                     Column(Modifier.fillMaxWidth().padding(vertical = 14.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text("¥${centsText(record.amountCents)}", Modifier.weight(1f), style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold, color = Color(0xFFC14D4D))
-                            Text(record.statusLabel, color = Color(0xFF80634C))
+                                fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
+                            Text(record.statusLabel, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
-                        Text(formatAdRecordTime(record.createdAt), Modifier.padding(top = 5.dp), color = Color(0xFF98816E), style = MaterialTheme.typography.bodySmall)
-                        HorizontalDivider(Modifier.padding(top = 12.dp), color = Color(0xFFE8DCCF))
+                        Text(formatAdRecordTime(record.createdAt), Modifier.padding(top = 5.dp), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
+                        HorizontalDivider(Modifier.padding(top = 12.dp), color = MaterialTheme.colorScheme.outlineVariant)
                     }
                 }
             }
         }
-        Surface(color = Color(0xFFFFFCF8)) {
+        }
+        Surface(color = MaterialTheme.colorScheme.surface) {
             Column(Modifier.navigationBarsPadding().padding(horizontal = 22.dp, vertical = 12.dp)) {
-                if (!state.paymentAvailable) Text("提现服务暂不可用", Modifier.padding(bottom = 8.dp), color = Color(0xFF98816E))
-                else if (state.alipayAccount?.bound != true) Text("请先绑定支付宝收款账号", Modifier.padding(bottom = 8.dp), color = Color(0xFF98816E))
+                if (!state.paymentAvailable) Text("提现服务暂不可用", Modifier.padding(bottom = 8.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                else if (state.alipayAccount?.bound != true) Text("请先绑定支付宝收款账号", Modifier.padding(bottom = 8.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Button(onClick = {
                     selectedWithdrawal?.let { option ->
                         viewModel.enterWithInterstitial(activity) { viewModel.createWithdrawal(option.amountCents) }
                     }
                 },
                     enabled = !state.isBusy && !state.adBusy && state.paymentAvailable && state.alipayAccount?.bound == true && selectedWithdrawal != null && balance >= (selectedWithdrawal?.coin ?: java.math.BigDecimal.ZERO),
-                    modifier = Modifier.fillMaxWidth().height(56.dp), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC14D4D))) {
+                    modifier = Modifier.fillMaxWidth().height(56.dp), colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)) {
                     Text(if (state.adBusy) "正在加载插屏…" else selectedWithdrawal?.let { "申请提现 ¥${centsText(it.amountCents)}" } ?: "暂无可用档位", fontWeight = FontWeight.Bold)
                 }
             }
@@ -1634,10 +1501,10 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
 @Composable
 private fun WalletDetailRow(label: String, value: String) {
     Row(Modifier.fillMaxWidth().padding(vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-        Text(label, Modifier.weight(1f), color = Color(0xFF98816E))
-        Text(value, color = Color(0xFF514239), textAlign = TextAlign.End)
+        Text(label, Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(value, color = MaterialTheme.colorScheme.onSurface, textAlign = TextAlign.End)
     }
-    HorizontalDivider(color = Color(0xFFE8DCCF))
+    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 }
 
 private fun centsText(value: Long): String = java.math.BigDecimal.valueOf(value, 2).setScale(2).toPlainString()
@@ -1849,18 +1716,18 @@ private fun DetailScreen(state: UiState, viewModel: QuizViewModel) {
     }
     androidx.activity.compose.BackHandler(onBack = backAction)
 
-    Column(Modifier.fillMaxSize().background(Color(0xFFF8EFE5)).statusBarsPadding()) {
+    Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).statusBarsPadding()) {
         TopAppBar(title = { Text("成语释义", fontWeight = FontWeight.Bold) }, navigationIcon = {
             IconButton(onClick = backAction) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "返回") }
-        }, colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFFF8EFE5)))
+        }, colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background))
         Row(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(horizontal = 22.dp, vertical = 24.dp)) {
             Text(idiom.word.toList().joinToString("\n"), Modifier.width(74.dp), style = MaterialTheme.typography.headlineLarge,
-                lineHeight = 54.sp, color = Color(0xFFC14D4D), fontWeight = FontWeight.Medium)
-            VerticalDivider(Modifier.fillMaxHeight().padding(horizontal = 12.dp), color = Color(0xFFCDB69E))
+                lineHeight = 54.sp, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Medium)
+            VerticalDivider(Modifier.fillMaxHeight().padding(horizontal = 12.dp), color = MaterialTheme.colorScheme.outlineVariant)
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(0.dp)) {
-                Text(idiom.pinyin, color = Color(0xFFB38F76), style = MaterialTheme.typography.titleMedium)
+                Text(idiom.pinyin, color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.titleMedium)
                 Text(idiom.category + " · " + difficultyText(idiom.difficulty), Modifier.padding(top = 8.dp, bottom = 18.dp),
-                    color = Color(0xFF98816E), style = MaterialTheme.typography.bodySmall)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
                 EditorialSection("释义", idiom.explanation)
                 EditorialSection("出处", idiom.origin)
                 EditorialSection("这样用一用", idiom.example)
@@ -1868,10 +1735,10 @@ private fun DetailScreen(state: UiState, viewModel: QuizViewModel) {
                 EditorialSection("反义词", idiom.antonyms)
             }
         }
-        Surface(color = Color(0xFFFFFCF8)) {
+        Surface(color = MaterialTheme.colorScheme.surface) {
             Button(onClick = { viewModel.toggleFavorite(idiom.id) }, modifier = Modifier.fillMaxWidth()
                 .navigationBarsPadding().padding(horizontal = 22.dp, vertical = 12.dp).height(58.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC14D4D))) {
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)) {
                 Icon(if (idiom.isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder, contentDescription = null)
                 Spacer(Modifier.width(8.dp))
                 Text(if (idiom.isFavorite) "取消收藏" else "收藏这个成语", fontWeight = FontWeight.Bold)
@@ -1885,8 +1752,8 @@ private fun EditorialSection(title: String, text: String) {
     Column(Modifier.fillMaxWidth().padding(bottom = 14.dp)) {
         Text(title, color = Color(0xFFAD7552), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
         Text(text.ifBlank { "暂无内容" }, Modifier.padding(top = 8.dp, bottom = 10.dp),
-            color = Color(0xFF514239), style = MaterialTheme.typography.bodyLarge, lineHeight = 28.sp)
-        HorizontalDivider(color = Color(0xFFE8DCCF))
+            color = MaterialTheme.colorScheme.onSurface, style = MaterialTheme.typography.bodyLarge, lineHeight = 28.sp)
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
     }
 }
 
@@ -1916,7 +1783,7 @@ private fun AnswerOption(
                 shape = RoundedCornerShape(50),
                 color = when {
                     isCorrect -> Color(0xFF648052)
-                    isSelectedWrong -> Color(0xFFC14D4D)
+                    isSelectedWrong -> MaterialTheme.colorScheme.primary
                     isSelected -> Color(0xFFEBCFB7)
                     else -> Color(0xFFF1E0CF)
                 }
@@ -1937,7 +1804,7 @@ private fun AnswerOption(
                 option,
                 modifier = Modifier.weight(1f),
                 style = MaterialTheme.typography.titleMedium,
-                color = Color(0xFF3D352F),
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = if (isCorrect || isSelectedWrong || isSelected) FontWeight.SemiBold else FontWeight.Normal
             )
             if (isCorrect) {
@@ -1954,7 +1821,7 @@ private fun AnswerOption(
                 )
             }
         }
-        HorizontalDivider(color = Color(0xFFE8DCCF))
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
     }
 }
 
@@ -2254,7 +2121,7 @@ private fun QuickAction(
             .heightIn(min = 82.dp)
             .clickable(onClick = onClick),
         shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFFFFCF8))
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 10.dp),
@@ -2283,7 +2150,7 @@ private fun QuickAction(
             Icon(
                 Icons.AutoMirrored.Filled.ArrowForward,
                 contentDescription = "进入$title",
-                tint = Color(0xFFB7ADA8),
+                tint = MaterialTheme.colorScheme.outlineVariant,
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -2304,10 +2171,11 @@ private fun AppTopBar(
     title: String,
     onBack: () -> Unit,
     actionLabel: String = "金币记录",
+    lightContent: Boolean = false,
     action: (() -> Unit)? = null
 ) {
-    TopAppBar(
-        title = { Text(title) },
+    androidx.compose.material3.CenterAlignedTopAppBar(
+        title = { Text(title, style = MaterialTheme.typography.titleLarge) },
         navigationIcon = {
             IconButton(onClick = onBack) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "返回")
@@ -2321,7 +2189,10 @@ private fun AppTopBar(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Transparent
+            containerColor = Color.Transparent,
+            titleContentColor = if (lightContent) Color.White else MaterialTheme.colorScheme.onSurface,
+            navigationIconContentColor = if (lightContent) Color.White else MaterialTheme.colorScheme.onSurface,
+            actionIconContentColor = if (lightContent) Color.White else MaterialTheme.colorScheme.onSurface
         )
     )
 }

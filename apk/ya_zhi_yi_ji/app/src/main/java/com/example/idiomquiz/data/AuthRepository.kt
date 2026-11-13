@@ -12,6 +12,7 @@ import java.util.UUID
 import org.json.JSONObject
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.flow.receiveAsFlow
 
 enum class AuthProvider {
     PHONE,
@@ -31,6 +32,14 @@ data class AuthResult(
 )
 
 class AuthRepository(context: Context) {
+    private val receiptChannel = kotlinx.coroutines.channels.Channel<RewardReceipt>(kotlinx.coroutines.channels.Channel.UNLIMITED)
+    internal val rewardReceipts = receiptChannel.receiveAsFlow()
+
+    private fun publishRewardReceipt(epoch: Long, sessionId: String, result: JSONObject) {
+        rewardReceipt(epoch, sessionId, result)?.let { receipt ->
+            sessions.withCurrent(epoch) { receiptChannel.trySend(receipt) }
+        }
+    }
     private val preferences = context.applicationContext.getSharedPreferences(
         "idiom_quiz_auth",
         Context.MODE_PRIVATE
@@ -357,6 +366,7 @@ class AuthRepository(context: Context) {
                             record.optString("source_id")) }
                     }
                     if (result.optJSONObject("data")?.optBoolean("rewarded", false) == true) {
+                        publishRewardReceipt(epoch, record.getString("id"), result)
                         sessions.withCurrent(epoch) { preferences.edit().remove(key).commit() }
                     } else {
                         retryLater = true
@@ -416,6 +426,7 @@ class AuthRepository(context: Context) {
                 }
             }
             if (result.optJSONObject("data")?.optBoolean("rewarded", false) == true) {
+                publishRewardReceipt(epoch, session.id, result)
                 sessions.withCurrent(epoch) { preferences.edit().remove(key).commit() }
             } else {
                 scheduleRewardCompletions()

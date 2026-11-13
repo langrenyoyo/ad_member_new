@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 
 with sync_playwright() as p:
-    browser = p.chromium.launch(headless=True)
+    browser = p.chromium.launch(executable_path='C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',headless=True)
     page = browser.new_page()
     page.set_content('<div id="host"></div>')
     page.add_script_tag(content="""
@@ -19,7 +19,11 @@ with sync_playwright() as p:
       if(!options && path.endsWith('/member-policy') && savedPolicy)return savedPolicy;
       if(path.endsWith('/reward-preview'))return {coin:'8.000000'};
       if(path.endsWith('/level'))return {invite_code:'ABC'};
-      if(path.includes('/usage?'))return {items:[{package_name:'com.test.app',duration_ms:60000,opens:3}]};
+      if(path.includes('/usage?'))return {items:[{package_name:'com.test.app',app_name:'Used app',duration_ms:60000,opens:3}],
+        installed_apps:[{package_name:'com.test.app',app_name:'Used app',version_name:'1',system_app:false},
+          {package_name:'com.unused.app',app_name:'<img src=x onerror=alert(1)>',version_name:'2',system_app:true}],
+        collected_at:'2026-10-10T01:00:00Z',received_at:'2026-10-10T01:00:01Z',usage_seen_at:'2026-10-10T01:00:01Z',
+        last_report_granted:true,usage_source:'foreground_events_v1'};
       if(path.includes('/reward-ledgers?')){
         const offset=Number(new URLSearchParams(path.split('?')[1]).get('offset'));
         return {total:51,items:Array.from({length:offset===0?50:1},(_,i)=>({id:offset+i+1,ad_session_id:'ad',member_id:1,beneficiary_id:2,kind:'commission_1',amount:'2'}))};
@@ -81,6 +85,11 @@ with sync_playwright() as p:
     page.locator('[name=date]').fill('2026-10-10')
     page.locator('[data-usage]').click()
     assert 'com.test.app' in page.locator('[data-report]').inner_text()
+    assert 'com.unused.app' in page.locator('[data-report]').inner_text()
+    assert '未观测到' in page.locator('[data-report]').inner_text()
+    assert page.locator('[data-report] tbody tr').count()==2
+    assert page.locator('[data-report] img').count()==0
+    assert '2026/10/10 09:00:00' in page.locator('[data-report]').inner_text()
     page.set_viewport_size({'width':390,'height':844})
     assert page.locator('[data-save] button[type=submit]').is_visible()
     browser.close()

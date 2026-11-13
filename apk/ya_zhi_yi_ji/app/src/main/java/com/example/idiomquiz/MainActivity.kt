@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
     @android.annotation.SuppressLint("InvalidFragmentVersionForActivityResult")
     private val usageSettings = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         waitingForAccess = false
-        usageAllowed.value = AppUsageCollector.granted(this)
+        usageAllowed.value = AppUsageCollector.consented(this) && AppUsageCollector.granted(this)
         if (!usageAllowed.value) finishAndRemoveTask()
     }
     private val viewModel: QuizViewModel by viewModels {
@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         waitingForAccess = savedInstanceState?.getBoolean("waitingForAccess") ?: false
-        usageAllowed.value = AppUsageCollector.granted(this)
+        usageAllowed.value = AppUsageCollector.consented(this) && AppUsageCollector.granted(this)
         setContent {
             if (usageAllowed.value) {
                 val state = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -44,11 +44,16 @@ class MainActivity : ComponentActivity() {
             } else {
                 IdiomQuizTheme {
                     StartupAccessScreen(onAuthorize = {
-                        waitingForAccess = true
-                        runCatching { usageSettings.launch(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS,
+                        AppUsageCollector.acceptConsent(this)
+                        if (AppUsageCollector.granted(this)) {
+                            usageAllowed.value = true
+                        } else {
+                            waitingForAccess = true
+                            runCatching { usageSettings.launch(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS,
                             Uri.parse("package:$packageName"))) }.onFailure {
                             runCatching { usageSettings.launch(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)) }
                                 .onFailure { waitingForAccess = false; finishAndRemoveTask() }
+                            }
                         }
                     }, onExit = { finishAndRemoveTask() })
                 }
@@ -78,7 +83,7 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         if (!waitingForAccess) {
-            val granted = AppUsageCollector.granted(this)
+            val granted = AppUsageCollector.consented(this) && AppUsageCollector.granted(this)
             if (usageAllowed.value && !granted) finishAndRemoveTask()
             usageAllowed.value = granted
         }

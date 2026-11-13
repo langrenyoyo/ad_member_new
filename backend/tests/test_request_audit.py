@@ -49,6 +49,20 @@ class RequestAuditTests(unittest.TestCase):
         self.assertIn('oversize_omitted', log.call_args.args[0])
         self.assertLess(len(log.call_args.args[0]), 1000)
 
+    def test_legacy_wechat_secret_field_is_redacted(self):
+        from app.request_audit import redact
+        self.assertEqual(redact({'wx_secert': 'private-wechat-secret', 'wx_appid': 'wx-test'}),
+                         {'wx_secert': '[REDACTED]', 'wx_appid': 'wx-test'})
+
+    def test_installed_application_inventory_is_not_copied_to_service_logs(self):
+        body={'installed_apps':[{'app_name':'Private App Name','package_name':'com.private.app','version_name':'1'}],
+              'items':[{'package_name':'com.private.app','duration_ms':777,'opens':123}]}
+        with patch('app.request_audit.logger.info') as log:
+            response=self.client.post('/api/app/v1/echo',json=body)
+        self.assertEqual(response.json(),body)
+        for value in ('Private App Name','com.private.app','777','123'):
+            self.assertNotIn(value,log.call_args.args[0].split('"body":',1)[1].split('"body_state"',1)[0])
+
     def test_invalid_json_does_not_expose_partial_secret(self):
         with patch('app.request_audit.logger.info') as log:
             response = self.client.post('/api/app/v1/validate', content='{"password":"hidden',

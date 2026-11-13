@@ -88,10 +88,13 @@ android {
             "Aliyun device risk requires an AppKey and app/libs/Android-AliyunDevice-<version>.aar"
         }
     }
+    val wechatConfig = Properties().apply {
+        rootProject.file("wechat.properties").inputStream().use { load(it) }
+    }
     val wechatAppId = providers.gradleProperty("wechatAppId")
-        .getOrElse("wx78490a3096bdafb0")
+        .getOrElse(wechatConfig.getProperty("appId"))
     val androidApplicationId = providers.gradleProperty("androidApplicationId")
-        .getOrElse("com.heshangzhilian.yazhiyiji")
+        .getOrElse(wechatConfig.getProperty("applicationId"))
 
     // Release signing secrets live in root keystore.properties (gitignored).
     val keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -106,8 +109,8 @@ android {
         applicationId = androidApplicationId
         minSdk = 26
         targetSdk = 35
-        versionCode = 6
-        versionName = "1.0.5"
+        versionCode = 16
+        versionName = "1.0.15"
         val sourceDigest = MessageDigest.getInstance("SHA-256")
         (fileTree("src/main").files + file("build.gradle.kts")).sortedBy { it.relativeTo(projectDir).invariantSeparatorsPath }
             .forEach { sourceFile ->
@@ -122,7 +125,7 @@ android {
             .getOrElse("https://admember.yunjizhilian.asia/api/app/v1/").trimEnd('/') + "/"
         require(apiBaseUrl.startsWith("https://")) { "userApiBaseUrl must use HTTPS" }
         require(!apiBaseUrl.contains('"') && !apiBaseUrl.contains('\\') && !apiBaseUrl.contains('\n'))
-        val registrationGameId = providers.gradleProperty("registrationGameId").getOrElse("238").toInt()
+        val registrationGameId = providers.gradleProperty("registrationGameId").getOrElse(wechatConfig.getProperty("gameId")).toInt()
         require(registrationGameId > 0)
         buildConfigField("String", "USER_API_BASE_URL", "\"$apiBaseUrl\"")
         buildConfigField("int", "REGISTRATION_GAME_ID", registrationGameId.toString())

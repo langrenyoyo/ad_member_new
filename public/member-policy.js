@@ -97,5 +97,30 @@ async function mountMemberPolicy(host) {
  host.querySelector('[data-ledger]').onclick=()=>loadLedger();
  const member=host.querySelector('[data-member]');
  member.onsubmit=async e=>{e.preventDefault();try{const d=new FormData(member);const r=await api(`/members/${Number(d.get('member'))}/level`,{method:'PUT',body:JSON.stringify({level:Number(d.get('level'))})});status.textContent='等级已保存，邀请码：'+r.invite_code;}catch(error){status.textContent=error.message;}};
- member.querySelector('[data-usage]').onclick=async()=>{try{const d=new FormData(member);const r=await api(`/members/${Number(d.get('member'))}/usage?report_date=${encodeURIComponent(d.get('date'))}`);host.querySelector('[data-report]').innerHTML='<table><thead><tr><th>应用包名</th><th>使用分钟</th><th>估算打开次数</th></tr></thead><tbody>'+r.items.map(i=>`<tr><td>${esc(i.package_name)}</td><td>${esc((i.duration_ms/60000).toFixed(1))}</td><td>${esc(i.opens)}</td></tr>`).join('')+'</tbody></table>';}catch(error){status.textContent=error.message;}};
+ let usageGeneration=0;
+ member.querySelector('[name=date]').value=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+ member.querySelector('[data-usage]').textContent='查看安装应用与使用情况';
+ member.querySelector('[data-usage]').onclick=async()=>{
+  const version=++usageGeneration, report=host.querySelector('[data-report]'), d=new FormData(member);
+  const id=Number(d.get('member')), date=String(d.get('date'));
+  report.textContent='正在加载…';
+  try {
+   if(!Number.isInteger(id)||id<1||!/^\d{4}-\d{2}-\d{2}$/.test(date))throw Error('请填写有效会员 ID 和统计日期');
+   const r=await api(`/members/${id}/usage?report_date=${encodeURIComponent(date)}`);
+   if(version!==usageGeneration||!host.isConnected)return;
+   if(Number(member.elements.member.value)!==id||member.elements.date.value!==date){report.textContent='查询条件已变化，请重新查询';return;}
+   const installed=r.installed_apps||[], usage=new Map(r.items.map(item=>[item.package_name,item]));
+   const rows=installed.map(app=>({...app,...(usage.get(app.package_name)||{}),installed:true}));
+   const packages=new Set(installed.map(app=>app.package_name));
+   r.items.filter(item=>!packages.has(item.package_name)).forEach(item=>rows.push({...item,installed:false}));
+   const time=value=>value?new Date(value).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}):'暂无';
+   report.innerHTML=`<h4>会员 ${esc(id)} · ${esc(date)}（北京时间）</h4>
+    <p>已安装应用：${r.collected_at?esc(installed.length):'未上报安装列表'}；采集时间：${esc(time(r.collected_at))}；后台收到：${esc(time(r.received_at))}</p>
+    <p>最近上报授权：${r.last_report_granted==null?'未知':r.last_report_granted?'已授权':'已撤销'}；最近同步：${esc(time(r.usage_seen_at))}。这是最近同步状态，不代表手机当前实时权限。</p>
+    <p>安装列表限当前手机用户空间内系统允许读取的应用${r.inventory_truncated?'（达到数量上限，列表已截断）':''}。使用时长为前台时间，打开次数按前台切换估算；无使用事件不代表未安装。${r.usage_source==='foreground_events_v1'?'同一应用内部短暂页面切换会合并。':'旧版统计可能采用系统聚合口径。'}</p>
+    <div class="table-wrap"><table><thead><tr><th>应用名称</th><th>应用包名</th><th>版本</th><th>安装状态</th><th>应用类型</th><th>前台使用分钟</th><th>估算打开次数</th></tr></thead><tbody>`+
+    rows.map(i=>`<tr><td>${esc(i.app_name||'—')}</td><td>${esc(i.package_name)}</td><td>${esc(i.version_name||'—')}</td><td>${i.installed?'采集时已安装':'使用记录存在，安装状态未知'}</td><td>${i.installed?(i.system_app?'系统应用':'用户应用'):'—'}</td><td>${i.duration_ms==null?'未观测到':esc((i.duration_ms/60000).toFixed(2))}</td><td>${i.opens==null?'未观测到':esc(i.opens)}</td></tr>`).join('')+
+    (rows.length?'':'<tr><td colspan="7">该日期暂无上报数据，请确认用户已同意采集、开启系统权限，并登录应用完成同步。</td></tr>')+'</tbody></table></div>';
+  } catch(error){if(version===usageGeneration){report.textContent=error.message;status.textContent=error.message;}}
+ };
 }
