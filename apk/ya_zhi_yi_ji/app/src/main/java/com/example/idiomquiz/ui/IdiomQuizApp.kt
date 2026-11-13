@@ -201,8 +201,8 @@ fun IdiomQuizApp(state: UiState, viewModel: QuizViewModel) {
     }
     val recoveryWallet = state.onboardingBlockCode == "DEVICE_COOLDOWN" && state.screen == AppScreen.WALLET
     if (state.currentUser != null && !recoveryWallet && onboardingBlocks(onboarding != null,
-            state.onboardingBlockCode, needsInvite, needsUsage, needsAlipay)) {
-        OnboardingScreen(state, viewModel, needsInvite, needsUsage, needsAlipay)
+            state.onboardingBlockCode, needsInvite, needsUsage, needsAlipay, state.screen == AppScreen.WALLET)) {
+        OnboardingScreen(state, viewModel, needsInvite, needsUsage, needsAlipay && state.screen == AppScreen.WALLET)
         return
     }
 

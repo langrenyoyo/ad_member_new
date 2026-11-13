@@ -234,8 +234,7 @@ def require_onboarding(session, member, path):
     row = session.get(Enrollment, member.id)
     if rule.require_invite and (row is None or not row.parent_id):
         raise HTTPException(403, {'code': 'INVITE_REQUIRED', 'message': '请先绑定邀请码'})
-    if rule.require_alipay and session.get(m.payouts.AlipayAccount, member.id) is None:
-        raise HTTPException(403, {'code': 'ALIPAY_REQUIRED', 'message': '请先绑定支付宝'})
+    # Collection details are required by apply_withdrawal, not by general app access.
     if rule.require_usage and (row is None or not row.usage_granted or row.usage_seen_at is None or row.usage_seen_at.replace(tzinfo=m.UTC) < m.now()-timedelta(minutes=15)):
         raise HTTPException(403, {'code': 'USAGE_REQUIRED', 'message': '请授权并同步应用使用情况'})
 

@@ -23,10 +23,13 @@ internal fun OnboardingScreen(state: UiState, model: QuizViewModel, invite: Bool
     var code by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmation by remember { mutableStateOf("") }
+    val withdrawing = state.screen == AppScreen.WALLET
+    if (withdrawing) androidx.activity.compose.BackHandler(onBack = model::goHome)
     Column(Modifier.fillMaxSize().safeDrawingPadding().verticalScroll(rememberScrollState()).padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text("完成账户设置", style = MaterialTheme.typography.headlineSmall)
-        Text("根据当前应用规则，完成以下步骤后继续使用。")
+        if (withdrawing) TextButton(onClick = model::goHome) { Text("返回首页") }
+        Text(if (withdrawing) "完善提现信息" else "完成账户设置", style = MaterialTheme.typography.headlineSmall)
+        Text(if (withdrawing) "提现前请完成以下设置，保存后继续提现。" else "根据当前应用规则，完成以下步骤后继续使用。")
         state.onboardingError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
         state.message?.let { Text(it) }
         state.authError?.let { Text(it, color = MaterialTheme.colorScheme.error) }

@@ -24,6 +24,8 @@ class OnboardingGateTest {
     @Test fun revokedPermissionAndOtherRequirementsRemainGated() {
         assertTrue(onboardingBlocks(true, null, false, true, false))
         assertTrue(onboardingBlocks(true, null, true, false, false))
-        assertTrue(onboardingBlocks(true, null, false, false, true))
+        assertFalse(onboardingBlocks(true, null, false, false, true))
+        assertTrue(onboardingBlocks(true, null, false, false, true, withdrawing = true))
+        assertFalse(onboardingBlocks(true, null, false, false, false, withdrawing = true))
     }
 }

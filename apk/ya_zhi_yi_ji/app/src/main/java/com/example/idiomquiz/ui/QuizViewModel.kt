@@ -116,7 +116,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                             if (!_uiState.value.authBusy) return@collect
                             val result = authRepository.loginWithWeChatCode(event.code, registrationInvite)
                             _uiState.update { it.copy(authBusy = false, currentUser = result.user, rewardNotices = emptyList(),
-                                authError = result.error, screen = if (result.user != null) AppScreen.PROFILE else AppScreen.LOGIN) }
+                                authError = result.error, screen = if (result.user != null) AppScreen.HOME else AppScreen.LOGIN) }
                             if (result.user != null) { clearPendingInvitation(); initializeApp() }
                         }
 
@@ -137,7 +137,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
             val restoredUser = authRepository.restoreSession()
             _uiState.update { it.copy(currentUser = restoredUser ?: authRepository.currentUser()) }
             if (restoredUser != null) {
-                _uiState.update { it.copy(screen = if (it.screen == AppScreen.LOGIN) AppScreen.PROFILE else it.screen) }
+                _uiState.update { it.copy(screen = if (it.screen == AppScreen.LOGIN) AppScreen.HOME else it.screen) }
                 clearPendingInvitation()
                 initializeApp()
             }
@@ -382,7 +382,6 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         val data = _uiState.value.onboarding ?: return false
         val policy = data.getJSONObject("policy")
         return (!policy.optBoolean("require_invite") || data.optInt("parent_id") > 0) &&
-            (!policy.optBoolean("require_alipay") || data.optBoolean("alipay_bound")) &&
             (!policy.optBoolean("require_usage") || data.optBoolean("usage_granted"))
     }
 
@@ -1272,7 +1271,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         _uiState.update {
             if (user != null) {
                 it.copy(
-                    screen = AppScreen.PROFILE,
+                    screen = AppScreen.HOME,
                     currentUser = user,
                     rewardNotices = emptyList(),
                     authBusy = false,

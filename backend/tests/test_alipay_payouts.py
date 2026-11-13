@@ -108,6 +108,7 @@ class AlipayPayoutTests(unittest.TestCase):
         self.assertEqual(result.json()['payout']['state'], 'succeeded')
         self.assertEqual(result.json()['plan_status'], 1)
         self.assertIsNotNone(result.json()['transferred_at'])
+
         self.assertEqual(self.balance(), (80, 0))
         self.assertEqual(self.client.post(path, headers=self.admin_auth).status_code, 200)
         self.assertEqual(len(self.provider.sends), 1)
@@ -117,6 +118,15 @@ class AlipayPayoutTests(unittest.TestCase):
         self.assertEqual(self.client.get(f'/api/app/v1/withdrawals/{wid}', headers=self.other_auth).status_code, 404)
         with self.factory() as session:
             self.assertEqual(session.scalar(select(func.count()).select_from(m.CoinLog)), 2)
+
+    def test_missing_collection_account_rejects_withdrawal_without_freezing_coins(self):
+        with self.factory() as session:
+            session.delete(session.get(m.payouts.AlipayAccount, 1))
+            session.commit()
+        response = self.apply()
+        self.assertEqual(response.status_code, 409, response.text)
+        self.assertEqual(response.json()['detail']['code'], 'WITHDRAWAL_NOT_CREATED')
+        self.assertEqual(self.balance(), (100, 0))
 
     def test_all_rejection_entries_refund_once(self):
         for index, mode in enumerate(['reject', 'refuse', 'batch-reject', 'batch-refuse', 'patch']):

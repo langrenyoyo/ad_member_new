@@ -1,8 +1,8 @@
 package com.example.idiomquiz.ui
 
 /** A transport failure must not replace a previously loaded policy with a business denial. */
-internal fun onboardingBlocks(loaded: Boolean, blockCode: String?, invite: Boolean, usage: Boolean, alipay: Boolean): Boolean =
-    !loaded || blockCode != null || invite || usage || alipay
+internal fun onboardingBlocks(loaded: Boolean, blockCode: String?, invite: Boolean, usage: Boolean, alipay: Boolean, withdrawing: Boolean = false): Boolean =
+    !loaded || blockCode != null || invite || usage || (withdrawing && alipay)
 
 internal fun onboardingFailureCode(status: Int?, code: String?): String? = when (status) {
     401 -> "SESSION_EXPIRED"

@@ -20,6 +20,16 @@ from app import member_policy as p, sms_auth as sms
 
 
 class MemberPolicyTests(unittest.TestCase):
+    def test_missing_alipay_does_not_block_home_business_requests(self):
+        self.policy(require_alipay=True, require_invite=False, require_usage=False)
+        with self.factory() as session:
+            member = session.get(m.Member, 1)
+            self.assertIsNone(session.get(m.payouts.AlipayAccount, member.id))
+            for path in ('/api/app/v1/wallet', '/api/app/v1/ad-sessions',
+                         '/api/app/v1/withdrawal-options', '/api/app/v1/withdrawals'):
+                p.require_onboarding(session, member, path)
+        # Withdrawal creation retains its own mandatory collection-account validation.
+
     def test_six_character_invite_code_migration_preserves_enrollment_links(self):
         path=Path(__file__).resolve().parents[1]/'alembic/versions/e939_six_char_invite_codes.py'
         spec=importlib.util.spec_from_file_location('six_char_invites_migration',path)
