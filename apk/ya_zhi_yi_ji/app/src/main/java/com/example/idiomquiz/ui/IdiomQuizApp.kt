@@ -199,6 +199,10 @@ fun IdiomQuizApp(state: UiState, viewModel: QuizViewModel) {
             }
         }
     }
+    if (state.currentUser != null && onboarding?.optBoolean("system_password_required") == true) {
+        SystemPasswordScreen(state, viewModel)
+        return
+    }
     // Render feedback before the onboarding return so it stays visible at any scroll position.
     if (state.screen == AppScreen.WALLET) {
         state.message?.let { message ->
@@ -1336,7 +1340,6 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
     androidx.compose.runtime.DisposableEffect(viewModel) {
         onDispose { viewModel.cancelEntryAd() }
     }
-    var showPasswordDialog by remember { mutableStateOf(false) }
     var showBindDialog by remember { mutableStateOf(false) }
     var selectedWithdrawalId by rememberSaveable { mutableStateOf<String?>(null) }
     val balance = state.serverCoin ?: state.appBootstrap?.coin ?: java.math.BigDecimal.ZERO
@@ -1458,9 +1461,7 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
                     color = Color(0xFF9D504A), style = MaterialTheme.typography.bodyMedium
                 )
             }
-            if (state.currentUser?.provider == com.example.idiomquiz.data.AuthProvider.WECHAT) {
-                TextButton(onClick = { showPasswordDialog = true }, enabled = !state.isBusy) { Text("微信验证并设置密码") }
-            }
+
             }
             Text("提现记录", Modifier.padding(top = 18.dp), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
             if (state.withdrawals.isEmpty()) {
@@ -1495,24 +1496,6 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
                 }
             }
         }
-    }
-    if (showPasswordDialog) {
-        var password by remember { mutableStateOf("") }
-        var confirmation by remember { mutableStateOf("") }
-        AlertDialog(
-            onDismissRequest = { showPasswordDialog = false },
-            title = { Text("设置登录密码") },
-            text = { Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("输入 8–128 位字母和数字组合密码，再授权当前账号绑定的微信。")
-                OutlinedTextField(password, { password = it }, label = { Text("新密码") }, singleLine = true, visualTransformation = PasswordVisualTransformation())
-                OutlinedTextField(confirmation, { confirmation = it }, label = { Text("确认密码") }, singleLine = true, visualTransformation = PasswordVisualTransformation())
-            } },
-            confirmButton = { TextButton(onClick = {
-                showPasswordDialog = false
-                viewModel.setPasswordWithWeChat(context, password, confirmation)
-            }) { Text("微信验证") } },
-            dismissButton = { TextButton(onClick = { showPasswordDialog = false }) { Text("取消") } }
-        )
     }
     if (showBindDialog) {
         BindAlipayDialog(

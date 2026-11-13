@@ -107,7 +107,14 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                                 if (_uiState.value.currentUser?.id == pending.first) {
                                     sessionCatching { authRepository.memberRequest("POST", "auth/wechat-password",
                                         JSONObject().put("code", event.code).put("new_password", pending.second)) }
-                                        .onSuccess { _uiState.update { it.copy(isBusy = false, message = "密码已设置，请使用新密码绑定支付宝") } }
+                                        .onSuccess {
+                                            _uiState.update { current ->
+                                                current.copy(isBusy = false, screen = AppScreen.HOME,
+                                                    onboarding = current.onboarding?.let { JSONObject(it.toString()).put("system_password_required", false) },
+                                                    message = "系统密码设置成功")
+                                            }
+                                            initializeApp()
+                                        }
                                         .onFailure { error -> _uiState.update { it.copy(isBusy = false, message = error.message) } }
                                 }
                                 return@collect
@@ -380,6 +387,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun onboardingComplete(): Boolean {
         val data = _uiState.value.onboarding ?: return false
+        if (data.optBoolean("system_password_required")) return false
         val policy = data.getJSONObject("policy")
         return (!policy.optBoolean("require_invite") || data.optInt("parent_id") > 0) &&
             (!policy.optBoolean("require_usage") || data.optBoolean("usage_granted"))
@@ -575,7 +583,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     fun bindAlipay(account: String, realName: String, currentPassword: String) {
         if (_uiState.value.isBusy) return
         if (account.isBlank() || realName.isBlank() || currentPassword.isBlank()) {
-            _uiState.update { it.copy(message = "请填写支付宝账号、真实姓名和本应用登录密码。首次微信登录请先完成微信验证设置密码。") }
+            _uiState.update { it.copy(message = "请填写支付宝账号、真实姓名和登录时设置的系统密码。") }
             return
         }
         _uiState.update { it.copy(isBusy = true, message = null) }
@@ -592,7 +600,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 .onFailure { error ->
                     if (error is CancellationException) throw error
                     val message = if (error is com.example.idiomquiz.data.UserApiException && error.statusCode == 401)
-                        "支付宝尚未保存：密码或登录验证未通过。首次微信登录请先点击“微信验证并设置上述密码”，看到设置成功后，再用该密码保存支付宝。"
+                        "支付宝尚未保存：密码或登录验证未通过。请使用登录时设置的系统密码。"
                     else "支付宝尚未保存：${error.message ?: "请稍后重试"}"
                     _uiState.update { it.copy(isBusy = false, message = message) }
                 }

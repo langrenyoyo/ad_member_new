@@ -19,10 +19,7 @@ internal fun OnboardingScreen(state: UiState, model: QuizViewModel, invite: Bool
     var inviteCode by rememberSaveable(state.currentUser?.id) { mutableStateOf("") }
     var account by rememberSaveable(state.currentUser?.id) { mutableStateOf("") }
     var name by rememberSaveable(state.currentUser?.id) { mutableStateOf("") }
-    var phone by rememberSaveable(state.currentUser?.id) { mutableStateOf("") }
-    var code by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var confirmation by remember { mutableStateOf("") }
     val withdrawing = state.screen == AppScreen.WALLET
     if (withdrawing) androidx.activity.compose.BackHandler(onBack = model::goHome)
     Column(Modifier.fillMaxSize().safeDrawingPadding().verticalScroll(rememberScrollState()).padding(20.dp),
@@ -52,17 +49,6 @@ internal fun OnboardingScreen(state: UiState, model: QuizViewModel, invite: Bool
             OutlinedTextField(account, { account = it }, label = { Text("支付宝账号") })
             OutlinedTextField(name, { name = it }, label = { Text("真实姓名") })
             OutlinedTextField(password, { password = it }, label = { Text("登录密码") }, visualTransformation = PasswordVisualTransformation())
-            if (state.currentUser?.provider == com.example.idiomquiz.data.AuthProvider.WECHAT) {
-                OutlinedTextField(confirmation, { confirmation = it }, label = { Text("首次设密：确认密码") }, visualTransformation = PasswordVisualTransformation())
-                TextButton(onClick = { model.setPasswordWithWeChat(context, password, confirmation) }, enabled = !state.isBusy) { Text("微信验证并设置上述密码") }
-            } else {
-                Text("没有设置密码？验证当前账号手机号即可设置，无需退出登录。")
-                OutlinedTextField(phone, { phone = it.filter(Char::isDigit).take(11) }, label = { Text("当前账号手机号") })
-                OutlinedTextField(code, { code = it.filter(Char::isDigit).take(6) }, label = { Text("短信验证码") })
-                OutlinedTextField(confirmation, { confirmation = it }, label = { Text("确认上述密码") }, visualTransformation = PasswordVisualTransformation())
-                SmsSendButton(state, enabled = !state.authBusy && !state.isBusy, onClick = { model.sendSms(phone) })
-                TextButton(onClick = { model.setPasswordWithSms(phone, code, password, confirmation) }, enabled = !state.isBusy && !state.authBusy) { Text("验证并设置密码") }
-            }
             Button(onClick = { model.bindAlipay(account, name, password) }, enabled = !state.isBusy) { Text(if (state.isBusy) "处理中…" else "保存支付宝") }
         }
         TextButton(onClick = model::refreshOnboarding, enabled = !state.onboardingBusy) { Text("刷新设置状态") }

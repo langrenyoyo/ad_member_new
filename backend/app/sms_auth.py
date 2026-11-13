@@ -87,6 +87,7 @@ def sms_password(body: SmsPassword, member=Depends(m.require_app_member)):
             session.commit()
             raise HTTPException(401, '验证码不正确')
         stored.password_hash, stored.password_salt = m.hash_password(body.new_password)
+        stored.system_password_set = True
         row.state = 'used'
         session.commit()
         return {'data': {'password_set': True}}
@@ -152,6 +153,7 @@ def sms_login(body: SmsLogin, request: Request):
             raise HTTPException(403, '账号不可用于当前应用')
         if body.new_password:
             member.password_hash, member.password_salt = m.hash_password(body.new_password)
+            member.system_password_set = True
         device = session.get(m.MemberDevice, member.id)
         if device and device.device_id_ban and device.device_id != body.device_id:
             raise HTTPException(403, '设备不可用')

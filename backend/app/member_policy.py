@@ -331,6 +331,7 @@ def onboarding(member=Depends(m.require_app_member)):
         rule = policy(session, member.game_id)
         result = {'policy': rule.model_dump(mode='json', include={'require_alipay', 'require_invite', 'require_usage', 'announcement', 'announcement_version'}),
             'level': row.level, 'invite_code': row.invite_code,
+            'system_password_required': not member.system_password_set,
             'parent_id': row.parent_id, 'alipay_bound': session.get(m.payouts.AlipayAccount, member.id) is not None,
             'usage_granted': bool(row.usage_granted)}
         session.commit()

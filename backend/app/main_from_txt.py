@@ -28,7 +28,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from .payment import configured_provider
 from .member_images import MAX_UPLOAD_BYTES, image_directory, save_image
 from starlette.concurrency import run_in_threadpool
-from sqlalchemy import Date, DateTime, Float, Numeric, Integer, String, Text, and_, case, create_engine, func, inspect, or_, select, text
+from sqlalchemy import Boolean, Date, DateTime, Float, Numeric, Integer, String, Text, and_, case, create_engine, func, inspect, or_, select, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 from sqlalchemy import cast
 from sqlalchemy import UniqueConstraint
@@ -173,6 +173,7 @@ class Member(Base, TimestampMixin):
     parent_id: Mapped[int] = mapped_column(Integer, default=0)
     is_true: Mapped[int | None] = mapped_column(Integer, nullable=True)
     username: Mapped[str] = mapped_column(String(128), nullable=False)
+    system_password_set: Mapped[bool] = mapped_column(Boolean, default=True, server_default="1", nullable=False)
     ip: Mapped[str] = mapped_column(String(64), default="", server_default="")
     name: Mapped[str] = mapped_column(String(128), default="")
     image_url: Mapped[str] = mapped_column(String(255), default="")
@@ -3013,7 +3014,7 @@ def app_wechat_login(payload: AppWechatLoginRequest, request: Request) -> dict[s
             password, salt = hash_password(secrets.token_urlsafe(32))
             member = Member(agent_id=game.agent_id, game_id=game.id, username=_wechat_username(session, identity["openid"]),
                             name=payload.nickname.strip(), image_url=payload.avatar_url.strip(), password_hash=password,
-                            password_salt=salt, status=1)
+                            password_salt=salt, status=1, system_password_set=False)
             session.add(member)
             session.flush()
             stored = WechatIdentity(member_id=member.id, provider=payload.provider, app_id=app_id,
@@ -3120,6 +3121,7 @@ def app_wechat_password(payload: AppWechatPasswordRequest, member: Member = Depe
         if linked is None:
             raise HTTPException(status_code=403, detail="Please authorize the WeChat account linked to this member")
         stored.password_hash, stored.password_salt = hash_password(payload.new_password)
+        stored.system_password_set = True
         session.commit()
     return Response(status_code=204)
 
@@ -3132,6 +3134,7 @@ def app_change_password(payload: AppPasswordChange, member: Member = Depends(req
         if not verify_password(payload.current_password, stored.password_hash, stored.password_salt):
             raise _app_auth_error("Current password is incorrect")
         stored.password_hash, stored.password_salt = hash_password(payload.new_password)
+        stored.system_password_set = True
         session.commit()
     return Response(status_code=204)
 

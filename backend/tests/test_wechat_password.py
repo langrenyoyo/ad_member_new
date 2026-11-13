@@ -14,6 +14,29 @@ from app import main_from_txt as m
 
 
 class WechatPasswordTests(unittest.TestCase):
+    def test_migration_marks_legacy_oauth_accounts_without_changing_hashes(self):
+        import importlib.util
+        from alembic.migration import MigrationContext
+        from alembic.operations import Operations
+        from sqlalchemy import text
+        path = Path(__file__).resolve().parents[1] / 'alembic/versions/e941_system_password.py'
+        spec = importlib.util.spec_from_file_location('password_migration', path)
+        migration = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(migration)
+        engine = create_engine('sqlite://')
+        try:
+            with engine.begin() as connection:
+                connection.execute(text('CREATE TABLE members (id INTEGER PRIMARY KEY, username TEXT, password_hash TEXT)'))
+                connection.execute(text('CREATE TABLE wechat_identities (member_id INTEGER)'))
+                connection.execute(text("INSERT INTO members VALUES (1, 'wx_legacy', 'old-hash'), (2, 'phone-user', 'phone-hash')"))
+                connection.execute(text('INSERT INTO wechat_identities VALUES (1)'))
+                with Operations.context(MigrationContext.configure(connection)):
+                    migration.upgrade()
+                self.assertEqual(connection.execute(text('SELECT system_password_set, password_hash FROM members ORDER BY id')).all(),
+                                 [(0, 'old-hash'), (1, 'phone-hash')])
+        finally:
+            engine.dispose()
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.engine = create_engine('sqlite:///' + str(Path(self.temp.name) / 'test.db'),
@@ -48,15 +71,26 @@ class WechatPasswordTests(unittest.TestCase):
             return response
 
     def test_owner_can_set_password_and_bind_alipay(self):
+        with self.factory() as session:
+            session.get(m.Member, 1).system_password_set = False
+            session.commit()
+        before = self.client.get('/api/app/v1/onboarding', headers=self.auth)
+        self.assertTrue(before.json()['data']['system_password_required'])
         self.assertEqual(self.submit('owner').status_code, 204)
+        after = self.client.get('/api/app/v1/onboarding', headers=self.auth)
+        self.assertFalse(after.json()['data']['system_password_required'])
         response = self.client.put('/api/app/v1/me/alipay', headers=self.auth,
             json={'account': '13000000000', 'real_name': 'Test Member', 'current_password': 'NewPassword123'})
         self.assertEqual(response.status_code, 200, response.text)
 
     def test_other_wechat_cannot_reset_password(self):
+        with self.factory() as session:
+            session.get(m.Member, 1).system_password_set = False
+            session.commit()
         self.assertEqual(self.submit('someone-else').status_code, 403)
         with self.factory() as session:
             user = session.get(m.Member, 1)
+            self.assertFalse(user.system_password_set)
             self.assertTrue(m.verify_password('OldPassword123', user.password_hash, user.password_salt))
 
     def test_missing_login_and_weak_password_rejected(self):
@@ -71,6 +105,19 @@ class WechatPasswordTests(unittest.TestCase):
             linked.app_id = 'another-app'
             session.commit()
         self.assertEqual(self.submit('owner').status_code, 403)
+
+    def test_new_wechat_account_requires_password_setup(self):
+        import json
+        with self.factory() as session:
+            session.get(m.Game, 1).settings_json = json.dumps({'member_policy': {'require_registration_invite': False}})
+            session.commit()
+        with patch.object(m, '_wechat_exchange_code', return_value={'openid': 'new-owner', 'unionid': ''}):
+            result = self.client.post('/api/app/v1/auth/wechat', json={
+                'provider': 'app', 'code': 'fresh-code', 'game_id': 1, 'device_id': 'test-device'})
+        self.assertEqual(result.status_code, 200, result.text)
+        with self.factory() as session:
+            identity = session.query(m.WechatIdentity).filter_by(openid='new-owner').one()
+            self.assertFalse(session.get(m.Member, identity.member_id).system_password_set)
 
 
 if __name__ == '__main__':
