@@ -1086,6 +1086,17 @@ private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
     val context = LocalContext.current
     androidx.activity.compose.BackHandler(onBack = viewModel::openProfile)
     LaunchedEffect(Unit) { if (state.registrationPolicy == null) viewModel.loadRegistrationPolicy() }
+    state.authError?.let { error ->
+        AlertDialog(
+            onDismissRequest = viewModel::clearAuthError,
+            title = { Text("登录未完成") },
+            text = { Text(if (error == "邀请码必须是6位英文或数字" && registrationInvite.isBlank())
+                "首次登录需要填写本应用团长或代理提供的6位邀请码。请填写后重新点击微信登录。" else error) },
+            confirmButton = {
+                TextButton(onClick = viewModel::clearAuthError) { Text("知道了") }
+            }
+        )
+    }
     Box(Modifier.fillMaxSize()) {
     Column(Modifier.fillMaxSize().background(androidx.compose.ui.graphics.Brush.verticalGradient(
         listOf(AppPalette.PrimarySoft, Color.White, AppPalette.Background))).statusBarsPadding()
@@ -1126,7 +1137,11 @@ private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
             enabled = !state.authBusy && consented, modifier = Modifier.fillMaxWidth().height(50.dp),
             colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF1AAD19))) {
             Icon(Icons.AutoMirrored.Filled.Chat, contentDescription = null)
-            Spacer(Modifier.width(8.dp)); Text("微信登录")
+            Spacer(Modifier.width(8.dp)); Text(if (state.authBusy) "正在完成登录…" else "微信登录")
+        }
+        if (state.registrationPolicy?.requireRegistrationInvite == true) {
+            Text("首次微信登录需填写上方6位邀请码；已有账号可直接登录。",
+                style = MaterialTheme.typography.bodySmall, color = AppPalette.Primary)
         }
         }
         Spacer(Modifier.height(20.dp))
