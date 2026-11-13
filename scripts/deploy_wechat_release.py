@@ -58,7 +58,7 @@ try:
   assert row==(CONFIG['appid'],CONFIG['secret'])
   revision=db.execute('select version_num from alembic_version').fetchone()[0]
  # The running process must reach WeChat code validation, not missing-config handling.
- request=urllib.request.Request('http://127.0.0.1:8001/api/app/v1/auth/wechat-login',data=json.dumps({'provider':'app','code':'deployment-invalid-code','game_id':CONFIG['game_id']}).encode(),headers={'Content-Type':'application/json'})
+ request=urllib.request.Request('http://127.0.0.1:8001/api/app/v1/auth/wechat-login',data=json.dumps({'provider':'app','code':'deployment-invalid-code','game_id':CONFIG['game_id'],'device_id':'deployment-verification','platform':'android','app_version':'1.0.15'}).encode(),headers={'Content-Type':'application/json'})
  try:
   urllib.request.urlopen(request,timeout=15)
   raise RuntimeError('Invalid authorization code unexpectedly accepted')
