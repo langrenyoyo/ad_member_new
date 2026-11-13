@@ -690,12 +690,16 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
     fun cancelAdGroup() { adGroupJob?.cancel() }
 
+    fun adUnavailableMessage(): String = adFailureMessage(
+        _uiState.value.onboarding?.optJSONObject("policy")?.optString("ad_unavailable_message")
+            ?: _uiState.value.registrationPolicy?.adUnavailableMessage)
+
     fun showRewardedAd(activity: Activity, placement: AdPlacement, onClosed: () -> Unit = {}) {
         if (_uiState.value.adBusy) return
         val interstitial = _uiState.value.appBootstrap?.let(AnyThinkAdManager::interstitialPlacement)
             ?.takeIf { it.adUnitId.isNotBlank() }
         if (interstitial == null) {
-            _uiState.update { it.copy(message = "未配置插屏广告，无法展示广告组") }
+            _uiState.update { it.copy(message = adUnavailableMessage()) }
             return
         }
         _uiState.update { it.copy(adBusy = true, message = "正在加载广告组") }
@@ -804,7 +808,8 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 throw e
             } catch (e: Exception) {
                 authRepository.checkSession(epoch)
-                _uiState.update { it.copy(message = "广告组未完成：${e.message}") }
+                Log.w(AD_FLOW_TAG, "Ad group failed", e)
+                _uiState.update { it.copy(message = adUnavailableMessage()) }
                 if (!earned && !rewardClosed) requestedSession?.let { reportAdFailure(it, "GROUP_FAILED") }
             } finally {
                 // An old group must never unlock a new account's request.

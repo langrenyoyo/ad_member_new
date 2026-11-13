@@ -174,6 +174,7 @@ class Policy(BaseModel):
     commission_rates: list[Decimal] = Field(default_factory=lambda: [Decimal('0')] * 4, min_length=4, max_length=4)
     agent_member_id: int = Field(default=0, ge=0)
     announcement: str = Field(default='', max_length=5000)
+    ad_unavailable_message: str = Field(default='暂时无法获得广告', max_length=200)
     announcement_version: int = Field(default=1, ge=1)
 
     @model_validator(mode='after')
@@ -243,7 +244,7 @@ def require_onboarding(session, member, path):
 def public_policy(game_id: int = Query(ge=1)):
     with m.SessionLocal() as session:
         rule = policy(session, game_id)
-        return {'data': rule.model_dump(mode='json', include={'require_alipay', 'require_invite', 'require_registration_invite', 'require_usage', 'announcement', 'announcement_version', 'invite_min_level'})}
+        return {'data': rule.model_dump(mode='json', include={'require_alipay', 'require_invite', 'require_registration_invite', 'require_usage', 'ad_unavailable_message', 'announcement', 'announcement_version', 'invite_min_level'})}
 
 
 @m.api.get('/games/{game_id}/member-policy')
@@ -271,7 +272,7 @@ def set_policy(game_id: int, body: Policy, admin=Depends(m.allow_roles('superadm
         # Management must remain available during a keyring outage. Admission
         # retains its independent fail-closed validation.
         original = policy(session, game_id)
-        independent = {'announcement', 'announcement_version', 'require_alipay', 'require_invite', 'require_registration_invite',
+        independent = {'ad_unavailable_message', 'announcement', 'announcement_version', 'require_alipay', 'require_invite', 'require_registration_invite',
             'invite_min_level', 'require_usage', 'block_signals', 'reset_login_block', 'whitelist_risk_exempt'}
         settlement_changed = original.model_dump(exclude=independent) != body.model_dump(exclude=independent)
         if settlement_changed and body.reward_enabled and (body.reward_basis == 'verified_cny_ecpm' or body.source_networks):
@@ -329,7 +330,7 @@ def onboarding(member=Depends(m.require_app_member)):
         m.device_risk.game_lock(session, member.game_id)
         row = enrollment(session, member)
         rule = policy(session, member.game_id)
-        result = {'policy': rule.model_dump(mode='json', include={'require_alipay', 'require_invite', 'require_usage', 'announcement', 'announcement_version'}),
+        result = {'policy': rule.model_dump(mode='json', include={'require_alipay', 'require_invite', 'require_usage', 'ad_unavailable_message', 'announcement', 'announcement_version'}),
             'level': row.level, 'invite_code': row.invite_code,
             'system_password_required': not member.system_password_set,
             'parent_id': row.parent_id, 'alipay_bound': session.get(m.payouts.AlipayAccount, member.id) is not None,

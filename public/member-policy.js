@@ -21,6 +21,7 @@ async function mountMemberPolicy(host) {
    <fieldset><legend>分佣比例（按最终用户奖励另计）</legend>${[[0,'用户'],[1,'团长'],[3,'代理每层比例']].map(([i,l])=>`<label>${l}<input name="commission_${i}" type="number" min="0" max="1" step="0.001" value="${esc(p.commission_rates[i])}" required></label>`).join('')}</fieldset>
    <fieldset><legend>命中以下设备信号时阻断</legend>${['emulator','root','hook','developer','accessibility','bluetooth'].map(k=>`<label><input name="signal" type="checkbox" value="${k}" ${p.block_signals.includes(k)?'checked':''}>${esc(k)}</label>`).join('')}</fieldset>
    <label style="display:block">广告源对应平台（每行：数字广告源ID=平台代码）<textarea name="sources" rows="5">${esc(Object.entries(p.source_networks).map(([k,v])=>`${k}=${v}`).join('\n'))}</textarea></label>
+   <label style="display:block">无法获取广告时的提示<input name="ad_unavailable_message" maxlength="200" value="${esc(p.ad_unavailable_message??'暂时无法获得广告')}" placeholder="暂时无法获得广告"></label>
    <label style="display:block">公告内容<textarea name="announcement" rows="5" maxlength="5000">${esc(p.announcement)}</textarea></label><button>保存规则</button></form>`;
    area.querySelector('[name=reward_basis]').value=p.reward_basis;
    const readiness=document.createElement('p');area.prepend(readiness);
@@ -36,7 +37,7 @@ async function mountMemberPolicy(host) {
    const sections=[
     ['会员准入',['require_alipay','require_registration_invite','require_invite','require_usage','reset_login_block']],
     ['奖励与分佣',['reward_enabled','commission_enabled','reward_basis','fixed_ecpm','coins_per_yuan','whitelist_multiplier','max_reward','agent_member_id']],
-    ['广告来源与公告',['sources','announcement_version','announcement']]
+    ['广告来源与公告',['sources','ad_unavailable_message','announcement_version','announcement']]
    ];
    const groups=sections.map(([title,names])=>{
     const group=document.createElement('fieldset'),legend=document.createElement('legend');
@@ -62,6 +63,7 @@ async function mountMemberPolicy(host) {
     const data=new FormData(form),body={...p};Object.keys(labels).forEach(k=>body[k]=data.has(k));
     for(const k of ['fixed_ecpm','coins_per_yuan','whitelist_multiplier','max_reward','agent_member_id','announcement_version'])body[k]=Number(data.get(k));
     body.reward_basis=data.get('reward_basis');body.announcement=data.get('announcement');body.block_signals=data.getAll('signal');
+    body.ad_unavailable_message=String(data.get('ad_unavailable_message')||'').trim()||'暂时无法获得广告';
     body.network_rates=Object.fromEntries(Object.keys(p.network_rates).map(k=>[k,Number(data.get('rate_'+k))]));
     body.commission_rates=[0,1,2,3].map(i=>Number(data.get('commission_'+i)));
     body.source_networks=Object.fromEntries(String(data.get('sources')).split('\n').filter(l=>l.trim()).map(l=>{const parts=l.trim().split('=');if(parts.length!==2)throw Error('广告来源格式应为 ID=平台代码');return parts.map(v=>v.trim());}));

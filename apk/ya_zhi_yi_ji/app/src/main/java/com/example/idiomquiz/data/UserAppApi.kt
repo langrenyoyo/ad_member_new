@@ -42,14 +42,16 @@ data class RegistrationPolicy(
     val requireRegistrationInvite: Boolean,
     val requireInvite: Boolean,
     val announcement: String = "",
-    val announcementVersion: String = ""
+    val announcementVersion: String = "",
+    val adUnavailableMessage: String = ""
 )
 
 internal fun parseRegistrationPolicy(data: JSONObject) = RegistrationPolicy(
     requireRegistrationInvite = data.getBoolean("require_registration_invite"),
     requireInvite = data.getBoolean("require_invite"),
     announcement = data.optString("announcement"),
-    announcementVersion = data.optString("announcement_version")
+    announcementVersion = data.optString("announcement_version"),
+    adUnavailableMessage = data.optString("ad_unavailable_message")
 )
 
 data class DeviceRiskConfig(

@@ -1578,6 +1578,7 @@ private fun formatAdRecordTime(value: String): String {
 
 @Composable
 private fun AdDemoScreen(state: UiState, viewModel: QuizViewModel) {
+    val unavailableMessage = viewModel.adUnavailableMessage()
     androidx.activity.compose.BackHandler(onBack = viewModel::openProfile)
     val context = LocalContext.current
     val activity = context.findActivity()
@@ -1654,7 +1655,7 @@ private fun AdDemoScreen(state: UiState, viewModel: QuizViewModel) {
                 update = {}
             )
         } else {
-            Text("未配置横幅广告", color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(unavailableMessage, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         Spacer(Modifier.weight(1f))
         Button(
@@ -1680,9 +1681,7 @@ private fun AdDemoScreen(state: UiState, viewModel: QuizViewModel) {
             Text(
                 if (cooldownRemaining > 0L) "激励视频冷却中（" + cooldownRemaining + "秒）"
                 else if (state.adBusy) "广告组展示中…"
-                else if (rewardedPlacement == null) "暂无可用激励广告"
-                else if (interstitialPlacement == null) "暂无可用插屏广告"
-                else if (!state.adSdkReady) "广告服务暂不可用"
+                else if (rewardedPlacement == null || interstitialPlacement == null || !state.adSdkReady) unavailableMessage
                 else "获取更多金币"
             )
         }
@@ -1700,9 +1699,7 @@ private fun AdDemoScreen(state: UiState, viewModel: QuizViewModel) {
             }
         } else {
             Text(when {
-                nativePlacement == null -> "未配置原生广告"
-                !state.adSdkReady -> "广告服务暂不可用"
-                nativeError != null -> nativeError!!
+                nativePlacement == null || !state.adSdkReady || nativeError != null -> unavailableMessage
                 else -> "原生广告加载中…"
             }, color = MaterialTheme.colorScheme.onSurfaceVariant)
             if (nativeError != null && state.adSdkReady && nativePlacement != null) {

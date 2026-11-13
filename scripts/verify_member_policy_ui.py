@@ -53,8 +53,11 @@ with sync_playwright() as p:
     page.locator('[data-load] button').click()
     assert not page.locator('[name=require_registration_invite]').is_checked()
     page.locator('[name=require_registration_invite]').check()
+    assert page.locator('[name=ad_unavailable_message]').input_value() == '暂时无法获得广告'
+    page.locator('[name=ad_unavailable_message]').fill('请稍后再试')
     page.locator('[data-save] button[type=submit]').click()
     page.locator('[data-load] button').click()
+    assert page.locator('[name=ad_unavailable_message]').input_value() == '请稍后再试'
     assert page.locator('[name=require_registration_invite]').is_checked()
     page.locator('[data-ledger]').click()
     assert page.locator('[data-ledgers] tbody tr').count() == 50

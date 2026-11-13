@@ -20,6 +20,15 @@ from app import member_policy as p, sms_auth as sms
 
 
 class MemberPolicyTests(unittest.TestCase):
+    def test_ad_unavailable_copy_defaults_and_is_exposed_to_app(self):
+        response = self.client.get('/api/app/v1/policy?game_id=1')
+        self.assertEqual(response.json()['data']['ad_unavailable_message'], '暂时无法获得广告')
+        self.policy(ad_unavailable_message='请稍后再试')
+        public = self.client.get('/api/app/v1/policy?game_id=1').json()['data']
+        onboarding = self.client.get('/api/app/v1/onboarding', headers=self.auth).json()['data']
+        self.assertEqual(public['ad_unavailable_message'], '请稍后再试')
+        self.assertEqual(onboarding['policy']['ad_unavailable_message'], '请稍后再试')
+
     def test_missing_alipay_does_not_block_home_business_requests(self):
         self.policy(require_alipay=True, require_invite=False, require_usage=False)
         with self.factory() as session:
