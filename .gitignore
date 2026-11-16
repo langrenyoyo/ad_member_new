@@ -39,11 +39,14 @@ backend/app.db
 *.db
 serverdata.md
 /secrets/
+/JKS/
+/crt/
 backend/uploads/
 
 # Android source is versioned; its own .gitignore excludes builds and secrets.
 /apk/*
 !/apk/ya_zhi_yi_ji/
+!/apk/guangjiyexing/
 # Device evidence and locally published APKs
 /artifacts/
 /public/downloads/*.apk

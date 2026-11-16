@@ -1,0 +1,5 @@
+ZXing Core 3.5.3
+Copyright ZXing authors.
+https://github.com/zxing/zxing
+Unmodified com.google.zxing:core:3.5.3, licensed under Apache License 2.0.
+Used for local invitation QR encoding. See ZXing-LICENSE.txt for the license.

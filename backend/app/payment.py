@@ -1,5 +1,6 @@
-"""RSA2 public-key mode for Alipay unified transfer and signed order query."""
+"""RSA2 public-key/certificate modes for Alipay transfers and signed queries."""
 import base64
+import hashlib
 import json
 import os
 import re
@@ -10,6 +11,7 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 from cryptography.hazmat.primitives import hashes, serialization
+from cryptography import x509
 from cryptography.hazmat.primitives.asymmetric import padding, rsa
 
 
@@ -38,6 +40,29 @@ def canonical(params):
     return '&'.join(f'{key}={params[key]}' for key in sorted(params) if params[key] not in (None, ''))
 
 
+def certificate_sn(cert):
+    return hashlib.md5((cert.issuer.rfc4514_string() + str(cert.serial_number)).encode('utf-8')).hexdigest()
+
+
+def root_certificate_sn(path):
+    serials = []
+    for block in re.findall(rb'-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----', Path(path).read_bytes(), re.S):
+        try:
+            cert = x509.load_pem_x509_certificate(block)
+        except ValueError:
+            # Alipay bundles EC roots whose AlgorithmIdentifier is unsupported
+            # by OpenSSL. Only RSA-signed roots participate in RSA2 root SN.
+            der = base64.b64decode(block.split(b'-----')[2])
+            if not any(oid in der[:80] for oid in (bytes.fromhex('06082a8648ce3d040303'), bytes.fromhex('06082a811ccf55018375'))):
+                raise
+            continue
+        if cert.signature_algorithm_oid.dotted_string.startswith('1.2.840.113549.1.1.'):
+            serials.append(certificate_sn(cert))
+    if not serials:
+        raise ValueError('No RSA root certificate')
+    return '_'.join(serials)
+
+
 class AlipayProvider(PaymentProvider):
     name = 'alipay'
     available = True
@@ -50,7 +75,22 @@ class AlipayProvider(PaymentProvider):
         self.gateway = ('https://openapi.alipay.com/gateway.do' if self.environment == 'production'
                         else 'https://openapi-sandbox.dl.alipaydev.com/gateway.do')
         self.private_key = serialization.load_pem_private_key(Path(os.environ['ALIPAY_PRIVATE_KEY_PATH']).read_bytes(), password=None)
-        self.public_key = serialization.load_pem_public_key(Path(os.environ['ALIPAY_PUBLIC_KEY_PATH']).read_bytes())
+        self.certificate_params = {}
+        if os.getenv('ALIPAY_APP_CERT_PATH', '').strip():
+            cert = x509.load_pem_x509_certificate(Path(os.environ['ALIPAY_APP_CERT_PATH']).read_bytes())
+            alipay_cert = x509.load_pem_x509_certificate(Path(os.environ['ALIPAY_CERT_PATH']).read_bytes())
+            now = datetime.now(timezone.utc)
+            for item in (cert, alipay_cert):
+                if not item.not_valid_before_utc <= now <= item.not_valid_after_utc:
+                    raise ValueError('Certificate expired or not yet valid')
+            if cert.public_key().public_numbers() != self.private_key.public_key().public_numbers():
+                raise ValueError('Application certificate and private key mismatch')
+            self.public_key = alipay_cert.public_key()
+            self.alipay_cert_sn = certificate_sn(alipay_cert)
+            self.certificate_params = {'app_cert_sn': certificate_sn(cert),
+                'alipay_root_cert_sn': root_certificate_sn(os.environ['ALIPAY_ROOT_CERT_PATH'])}
+        else:
+            self.public_key = serialization.load_pem_public_key(Path(os.environ['ALIPAY_PUBLIC_KEY_PATH']).read_bytes())
         if not isinstance(self.private_key, rsa.RSAPrivateKey) or not isinstance(self.public_key, rsa.RSAPublicKey):
             raise ValueError('RSA keys required')
         if self.private_key.key_size < 2048 or self.public_key.key_size < 2048: raise ValueError('RSA2 requires 2048 bits')
@@ -66,6 +106,7 @@ class AlipayProvider(PaymentProvider):
             'version': '1.0', 'biz_content': json.dumps(biz, ensure_ascii=False, separators=(',', ':'))}
         if method == 'alipay.fund.trans.uni.transfer' and getattr(self, 'notify_url', ''):
             params['notify_url'] = self.notify_url
+        params.update(getattr(self, 'certificate_params', {}))
         params['sign'] = base64.b64encode(self.private_key.sign(canonical(params).encode(), padding.PKCS1v15(), hashes.SHA256())).decode()
         request = Request(self.gateway, data=urlencode(params).encode(), headers={'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'})
         with urlopen(request, timeout=self.timeout) as response:

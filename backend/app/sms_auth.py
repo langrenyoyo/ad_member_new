@@ -1,4 +1,4 @@
-"""One-use SMS login codes; Aliyun SendSms credentials remain server-side."""
+"""One-use SMS login codes; provider credentials remain server-side."""
 import base64
 import hashlib
 import hmac
@@ -33,6 +33,12 @@ def digest(value):
 
 
 def send_sms(phone, code):
+    provider = os.getenv('SMS_PROVIDER', 'aliyun').strip().lower()
+    if provider == 'zthy':
+        from .zthy_sms import send_sms as send_zthy_sms
+        return send_zthy_sms(phone, code)
+    if provider != 'aliyun':
+        raise HTTPException(503, '短信服务配置有误')
     key, secret, sign, template = [os.getenv(n, '').strip() for n in
         ('SMS_ALIYUN_ACCESS_KEY_ID', 'SMS_ALIYUN_ACCESS_KEY_SECRET', 'SMS_ALIYUN_SIGN_NAME', 'SMS_ALIYUN_TEMPLATE_CODE')]
     if not all((key, secret, sign, template)): raise HTTPException(503, '短信服务尚未配置')
