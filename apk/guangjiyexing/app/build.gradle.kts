@@ -109,8 +109,8 @@ android {
         applicationId = androidApplicationId
         minSdk = 26
         targetSdk = 35
-        versionCode = 5
-        versionName = "1.0.4"
+        versionCode = 6
+        versionName = "1.0.5"
         val sourceDigest = MessageDigest.getInstance("SHA-256")
         (fileTree("src/main").files + file("build.gradle.kts")).sortedBy { it.relativeTo(projectDir).invariantSeparatorsPath }
             .forEach { sourceFile ->
@@ -122,7 +122,7 @@ android {
         buildConfigField("String", "SOURCE_FINGERPRINT", "\"$sourceFingerprint\"")
 
         val apiBaseUrl = providers.gradleProperty("userApiBaseUrl")
-            .getOrElse("https://guangjiyexing.hehkun.cn/api/app/v1/").trimEnd('/') + "/"
+            .getOrElse("https://hehe.hehkun.cn/api/app/v1/").trimEnd('/') + "/"
         require(apiBaseUrl.startsWith("https://")) { "userApiBaseUrl must use HTTPS" }
         require(!apiBaseUrl.contains('"') && !apiBaseUrl.contains('\\') && !apiBaseUrl.contains('\n'))
         val registrationGameId = providers.gradleProperty("registrationGameId").getOrElse(wechatConfig.getProperty("gameId")).toInt()
