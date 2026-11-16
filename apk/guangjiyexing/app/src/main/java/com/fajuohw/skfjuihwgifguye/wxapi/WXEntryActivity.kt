@@ -1,4 +1,4 @@
-package com.guangji.nightroad.wxapi
+package com.fajuohw.skfjuihwgifguye.wxapi
 
 import android.app.Activity
 import android.content.Intent

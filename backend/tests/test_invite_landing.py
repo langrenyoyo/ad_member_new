@@ -55,6 +55,13 @@ class InviteLandingTests(unittest.TestCase):
             with patch.dict(os.environ, {'APP_DOWNLOAD_URL': value}):
                 self.assertEqual(self.resolve().json()['data']['download_url'], expected)
 
+    def test_app_link_uses_deployment_scheme_and_rejects_unexpected_schemes(self):
+        for value, expected in [('hehe', 'hehe'), ('guangjiyexing', 'guangjiyexing'),
+                                ('javascript', 'yazhiyiji')]:
+            with patch.dict(os.environ, {'APP_INVITE_SCHEME': value}):
+                self.assertEqual(self.resolve().json()['data']['app_open_url'],
+                                 expected + '://invite?game_id=1&invite_code=' + self.code())
+
     def test_browser_sms_auto_registration_binds_verified_invite_and_rejects_replay(self):
         phone, challenge, code = '13900001111', 'browser-test', '123456'
         with self.factory() as s:

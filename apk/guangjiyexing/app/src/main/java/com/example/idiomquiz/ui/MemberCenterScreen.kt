@@ -122,7 +122,7 @@ internal fun MemberCenterScreen(model: MemberCenterViewModel, entryModel: QuizVi
                 MemberSection.OBSERVATIONS -> DeviceObservationScreen()
                 else -> {
                     if (state.section == MemberSection.SUBSIDIES) {
-                        Text("06 / YAZHI DAILY", Modifier.padding(top = 20.dp), color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        Text("06 / HEHE DAILY", Modifier.padding(top = 20.dp), color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.labelLarge)
                         Text("每一步进度，\n都清楚记录。", Modifier.padding(top = 18.dp),
                             style = MaterialTheme.typography.headlineLarge, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
@@ -300,7 +300,7 @@ private fun PasswordForm(busy: Boolean, model: MemberCenterViewModel) {
     var current by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmation by remember { mutableStateOf("") }
-    Text("修改密码需要当前密码。首次绑定支付宝时，可在账户设置页通过微信或短信验证设置密码；微信用户也可从钱包进入微信验证设密。")
+    Text("修改密码需要输入当前系统密码。微信首次登录时设置系统密码；绑定支付宝时使用已有密码验证，无需重新设置。")
     OutlinedTextField(current, { current = it }, enabled = !busy, label = { Text("当前密码") }, visualTransformation = PasswordVisualTransformation())
     OutlinedTextField(password, { password = it }, enabled = !busy, label = { Text("新密码") }, visualTransformation = PasswordVisualTransformation())
     OutlinedTextField(confirmation, { confirmation = it }, enabled = !busy, label = { Text("确认新密码") }, visualTransformation = PasswordVisualTransformation())

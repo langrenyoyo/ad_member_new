@@ -70,7 +70,7 @@ class MainActivity : ComponentActivity() {
 
     private fun acceptInvitation(intent: Intent?) {
         val uri = intent?.data ?: return
-        if (uri.scheme != "guangjiyexing" || uri.host != "invite") return
+        if (uri.scheme !in setOf("hehe", "guangjiyexing") || uri.host != "invite") return
         if (uri.getQueryParameter("game_id")?.toIntOrNull() != BuildConfig.REGISTRATION_GAME_ID) return
         val code = uri.getQueryParameter("invite_code")?.uppercase() ?: return
         if (Regex("[A-Z0-9]{6}").matches(code)) {

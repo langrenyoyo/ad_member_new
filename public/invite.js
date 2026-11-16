@@ -50,8 +50,10 @@
       $("copy-code").disabled = false;
       $("eligibility").textContent = invitation.registration_eligible ? "团长或代理邀请码，可按规则绑定邀请关系。" :
         "普通会员邀请码不具备强制邀请码注册资格。新用户请联系团长或代理获取有效邀请码；已有账号可继续登录。";
-      $("open-app").href = "yazhiyiji://invite?" + new URLSearchParams({game_id:gameId,invite_code:inviteCode});
-      $("open-app").hidden = false;
+      const openUrl = invitation.app_open_url || "";
+      const validOpenUrl = /^(hehe|guangjiyexing|yazhiyiji):\/\/invite\?/.test(openUrl);
+      $("open-app").hidden = !validOpenUrl;
+      if (validOpenUrl) $("open-app").href = openUrl;
       const download = safeDownload(invitation.download_url);
       if (download) { $("download").href = download; $("download").hidden = false; }
       $("download-note").textContent = download ? "请保存本页或邀请码，以便安装后继续。" : "下载包暂未发布，请联系运营方获取安装包。";

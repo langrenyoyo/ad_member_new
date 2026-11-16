@@ -44,4 +44,11 @@ def resolve_invitation(game_id: int = Query(..., ge=1), invite_code: str = Query
             'registration_eligible': row.level in (1, 3),
             'require_registration_invite': rule.require_registration_invite,
             'invite_path': invite_path(game_id, code), 'download_url': download_url(),
-            'app_open_url': 'yazhiyiji://invite?' + urlencode({'game_id': game_id, 'invite_code': code})}}
+            'app_open_url': app_open_url(game_id, code)}}
+
+
+def app_open_url(game_id, code):
+    scheme = os.getenv('APP_INVITE_SCHEME', 'yazhiyiji').strip()
+    if scheme not in ('yazhiyiji', 'guangjiyexing', 'hehe'):
+        scheme = 'yazhiyiji'
+    return scheme + '://invite?' + urlencode({'game_id': game_id, 'invite_code': code})

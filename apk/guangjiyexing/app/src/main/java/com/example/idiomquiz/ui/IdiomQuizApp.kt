@@ -829,7 +829,7 @@ private fun InviteScreen(state: UiState, viewModel: QuizViewModel) {
             actions = { TextButton(onClick = { viewModel.openMemberSection(MemberSection.COMMISSIONS) }) { Text("邀请收益", color = MaterialTheme.colorScheme.primary) } },
             colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background))
         Text("邀请好友", Modifier.padding(top = 18.dp), style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
-        Text("每位会员，都有自己的专属邀请码。", Modifier.padding(top = 10.dp, bottom = 36.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(if (isQualified) "你的邀请码可用于本应用的新用户注册。" else "普通会员邀请码不能用于强制注册，新用户需使用团长或代理的邀请码。", Modifier.padding(top = 10.dp, bottom = 36.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
         HorizontalDivider(color = MaterialTheme.colorScheme.primary, thickness = 2.dp)
         Text("我的邀请码 · $level", Modifier.padding(top = 24.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
         Text(state.inviteCode ?: if (state.inviteCodeLoading) "邀请码加载中" else "邀请码暂不可用", Modifier.padding(top = 24.dp, bottom = 14.dp),

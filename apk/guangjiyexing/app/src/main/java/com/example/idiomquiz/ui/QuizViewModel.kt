@@ -926,7 +926,8 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 val policy = authRepository.registrationPolicy()
-                _uiState.update { it.copy(registrationPolicy = policy, registrationPolicyLoading = false) }
+                _uiState.update { it.copy(registrationPolicy = policy, registrationPolicyLoading = false,
+                    announcementPending = it.announcementPending && policy.announcement.isNotBlank()) }
             } catch (error: CancellationException) {
                 throw error
             } catch (error: Exception) {

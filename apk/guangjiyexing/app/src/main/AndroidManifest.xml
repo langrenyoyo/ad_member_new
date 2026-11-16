@@ -38,10 +38,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="guangjiyexing" android:host="invite" />
+                <data android:scheme="hehe" android:host="invite" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.guangji.nightroad.wxapi.WXEntryActivity"
+            android:name="com.fajuohw.skfjuihwgifguye.wxapi.WXEntryActivity"
             android:exported="true"
             android:excludeFromRecents="true"
             android:launchMode="singleTask"
