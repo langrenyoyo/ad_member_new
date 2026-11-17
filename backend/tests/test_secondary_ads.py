@@ -13,6 +13,32 @@ class SecondaryAdTests(unittest.TestCase):
     tearDown = fixtures.MemberPolicyTests.tearDown
     admin_headers = fixtures.MemberPolicyTests.admin_headers
 
+    def test_display_prices_from_historical_shown_metadata_do_not_credit_wallet(self):
+        self.configure()
+        sid = self.post(self.body()).json()['data']['ad_session_id']
+        with self.factory() as s:
+            event = s.scalar(select(m.AppAdEvent).where(m.AppAdEvent.event_id == 'metadata:'+sid+':shown'))
+            data = json.loads(event.result_json)
+            data['revenue_diagnostic'] = {'status':'decrypted', 'prices':[
+                {'currency':'USD','ecpm':'18'}, {'currency':'CNY','ecpm':'120'}]}
+            event.result_json = json.dumps(data)
+            s.commit()
+        headers = self.admin_headers()
+        rows = self.client.get('/api/v1/ads',headers=headers).json()['items']
+        self.assertEqual(rows[0]['sdk_ecpm_cny'], '120')
+        self.assertEqual(rows[0]['estimated_ad_revenue_cny'], '0.12')
+        with self.factory() as s:
+            self.assertEqual(s.get(m.Member,1).coin,0)
+            self.assertEqual(s.scalar(select(func.count()).select_from(m.CoinLog)),0)
+        with self.factory() as s:
+            event = s.scalar(select(m.AppAdEvent).where(m.AppAdEvent.event_id == 'metadata:'+sid+':shown'))
+            data['revenue_diagnostic']['status'] = 'invalid_proof'
+            event.result_json = json.dumps(data)
+            s.commit()
+        row = self.client.get('/api/v1/ads',headers=headers).json()['items'][0]
+        self.assertIsNone(row['sdk_ecpm_cny'])
+        self.assertIsNone(row['estimated_ad_revenue_cny'])
+
     def configure(self):
         with self.factory() as s:
             game = s.get(m.Game, 1)

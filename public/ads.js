@@ -37,7 +37,7 @@ function renderAdsPagination(total,count){
  panel.querySelector('[data-ads-jump]').onclick=jump;
  panel.querySelector('input').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();jump();}};
 }
-const adCols=[['id','Id'],['parent_id','上级Id'],['parent_payment_name','上级支付宝姓名'],['user_id','会员ID'],['user_account','用户账号'],['receive_name','支付宝姓名'],['game_name','游戏名称'],['agent_name','代理商名称'],['ecpm','ECPM'],['coin','金币'],['ad_network_platform_name','广告平台'],['is_lottery','抽奖'],['is_rw','任务'],['reward_type','奖励类型'],['ad_type','广告类型'],['sub_ad_type','副广类型'],['status','状态'],['watched_at','观看时间'],['ad_code','广告代码位'],['request_id','广告request_id'],['trans_id','交易trans_id']];
+const adCols=[['id','Id'],['parent_id','上级Id'],['parent_payment_name','上级支付宝姓名'],['user_id','会员ID'],['user_account','用户账号'],['receive_name','支付宝姓名'],['game_name','游戏名称'],['agent_name','代理商名称'],['ecpm','结算ECPM'],['sdk_ecpm_cny','展示ECPM（元）'],['estimated_ad_revenue_cny','预估广告收益（元）'],['coin','金币'],['ad_network_platform_name','广告平台'],['is_lottery','抽奖'],['is_rw','任务'],['reward_type','奖励类型'],['ad_type','广告类型'],['sub_ad_type','副广类型'],['status','状态'],['watched_at','观看时间'],['ad_code','广告代码位'],['request_id','广告request_id'],['trans_id','交易trans_id']];
 adCols.push(['ad_category','广告品类'],['ad_title','广告名称'],['ad_behaviors','看广行为']);
 adCols.push(['ad_app_name','广告应用'],['ad_app_package','广告包名'],['ad_creative_id','素材ID'],['ad_network','实际广告来源'],['ad_source_id','广告源ID'],['ad_advertiser','广告主'],['ad_content_status','内容采集状态']);
 if(!adsState.visible.size)adCols.forEach(([key])=>{if(key!=='agent_name')adsState.visible.add(key)});
@@ -99,6 +99,7 @@ function attachAdsCellSearch(){
  });
 }
 function adsCell(row,key){
+ if(['sdk_ecpm_cny','estimated_ad_revenue_cny'].includes(key))return row[key]==null?'—':`<span title="SDK 展示报价，仅供收益参考，不代表平台最终结算">${esc(Number(row[key]).toFixed(key==='sdk_ecpm_cny'?4:6))}</span>`;
  if(key==='ad_category')return esc(({game:'游戏',social:'交友',ecommerce:'电商购物',finance:'金融理财'})[row[key]]||'未知');
  if(['ad_title','ad_app_name','ad_app_package','ad_creative_id','ad_network','ad_source_id','ad_network_placement_id','ad_advertiser'].includes(key))return esc(String(row[key]??'').trim()?row[key]:'未知');
  if(key==='ad_content_status')return esc(({reported:'已采集',sdk_not_provided:'SDK未提供名称',not_collected:'未采集'})[row[key]]||'未采集');
@@ -186,7 +187,7 @@ async function loadAdsData(){
   if(generation!==adsState.generation||panel!==$('#adsTable')||state.view!=='ads')return;
   const last=adsState.size==='All'?1:Math.max(1,Math.ceil(d.total/adsState.size));if(adsState.page>last){adsState.page=last;return loadAdsData();}
   $('#adsError').textContent='';
-  $('#adsSummary').innerHTML=[['ECPM',d.summary?.ecpm,''],['金币',d.summary?.coin,''],['已提现',d.summary?.withdrawn,'元'],['提现中',d.summary?.pending_withdrawal,'元']].map(([label,value,unit])=>`<span>${label}：${esc(value||0)}${unit}</span>`).join('');
+  $('#adsSummary').innerHTML=[['结算ECPM',d.summary?.ecpm,''],['金币',d.summary?.coin,''],['已提现',d.summary?.withdrawn,'元'],['提现中',d.summary?.pending_withdrawal,'元']].map(([label,value,unit])=>`<span>${label}：${esc(value||0)}${unit}</span>`).join('');
   $('#adsTable').innerHTML=`<div class="table-wrap"><table class="ads-table"><thead><tr>${adCols.map(c=>`<th data-ads-field="${c[0]}" ${adsState.visible.has(c[0])?'':'hidden'}>${adsHeader(c)}</th>`).join('')}</tr></thead><tbody>${d.items.map(r=>`<tr>${adCols.map(c=>`<td data-ads-field="${c[0]}" ${adsState.visible.has(c[0])?'':'hidden'}>${adsCell(r,c[0])}</td>`).join('')}</tr>`).join('')||`<tr class="ads-empty"><td colspan="${adCols.length}">没有找到匹配的记录</td></tr>`}</tbody></table></div>`;
   renderAdsPagination(d.total,d.items.length);attachAdsSorting();attachAdsCellSearch();attachAdsTools();if(window.applyAdsColumns)window.applyAdsColumns();
  }catch(e){if(generation!==adsState.generation||panel!==$('#adsTable')||state.view!=='ads')return;showAdsLoadError(e);}

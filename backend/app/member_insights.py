@@ -259,6 +259,18 @@ def enrich_ad_list(s, rows):
             ad = None
         review = reviews.get(ad.id) if ad else None
         metadata = events.get(ad.id, []) if ad else []
+        row['sdk_ecpm_cny'] = None
+        row['estimated_ad_revenue_cny'] = None
+        for item in metadata:
+            diagnostic = item.get('revenue_diagnostic', {})
+            if item.get('event') != 'shown' or diagnostic.get('status') != 'decrypted':
+                continue
+            price = next((p for p in diagnostic.get('prices', []) if p.get('currency') == 'CNY'), None)
+            if price is not None:
+                value = Decimal(price['ecpm'])
+                row['sdk_ecpm_cny'] = format(value, 'f')
+                row['estimated_ad_revenue_cny'] = format(value / Decimal(1000), 'f')
+                break
         row['ad_category'] = review.category if review else 'unknown'
         row.update(metadata_summary(metadata, review))
         row['ad_behaviors'] = sorted({e.get('event') for e in metadata if e.get('event') in
