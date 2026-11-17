@@ -300,7 +300,7 @@ private fun PasswordForm(busy: Boolean, model: MemberCenterViewModel) {
     var current by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmation by remember { mutableStateOf("") }
-    Text("修改密码需要输入当前系统密码。微信首次登录时设置系统密码；绑定支付宝时使用已有密码验证，无需重新设置。")
+    Text("首次绑定支付宝时设置系统密码。已设置密码的账号，修改密码或更换收款账号时需验证当前系统密码。")
     OutlinedTextField(current, { current = it }, enabled = !busy, label = { Text("当前密码") }, visualTransformation = PasswordVisualTransformation())
     OutlinedTextField(password, { password = it }, enabled = !busy, label = { Text("新密码") }, visualTransformation = PasswordVisualTransformation())
     OutlinedTextField(confirmation, { confirmation = it }, enabled = !busy, label = { Text("确认新密码") }, visualTransformation = PasswordVisualTransformation())

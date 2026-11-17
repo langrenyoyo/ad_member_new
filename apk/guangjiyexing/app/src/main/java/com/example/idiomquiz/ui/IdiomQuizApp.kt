@@ -200,10 +200,6 @@ fun IdiomQuizApp(state: UiState, viewModel: QuizViewModel) {
             }
         }
     }
-    if (state.currentUser != null && onboarding?.optBoolean("system_password_required") == true) {
-        SystemPasswordScreen(state, viewModel)
-        return
-    }
     // Render feedback before the onboarding return so it stays visible at any scroll position.
     if (state.screen == AppScreen.WALLET) {
         state.message?.let { message ->
@@ -1151,17 +1147,19 @@ private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
             hint = "短信验证码",
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
         SmsSendButton(state, enabled = !state.authBusy && consented, onClick = { viewModel.sendSms(phone) })
+        if (state.registrationPolicy?.requireRegistrationInvite == true) {
         ReferenceInput(registrationInvite,
             { registrationInvite = it.uppercase(Locale.ROOT).filter { char -> char in 'A'..'Z' || char in '0'..'9' }.take(6); viewModel.clearAuthError() },
             hint = if (state.registrationPolicy?.requireRegistrationInvite == true) "上级邀请码（新用户必填）" else "上级邀请码（选填）")
         Text("新用户邀请码适用于微信与短信两种方式；需使用本应用有效团长或代理的邀请码。已有账号登录无需填写。",
             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
         state.authError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
         state.registrationPolicyError?.let {
             Text(it, color = MaterialTheme.colorScheme.error)
             TextButton(onClick = viewModel::loadRegistrationPolicy) { Text("重新加载") }
         }
-        Button(onClick = { viewModel.loginWithSms(phone, smsCode, "", registrationInvite) },
+        Button(onClick = { viewModel.loginWithSms(phone, smsCode, "", if (state.registrationPolicy?.requireRegistrationInvite == true) registrationInvite else "") },
             enabled = !state.authBusy && consented, modifier = Modifier.fillMaxWidth().height(50.dp)
                 .clip(RoundedCornerShape(25.dp)).background(MobanButton),
             colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)) {
@@ -1171,7 +1169,7 @@ private fun LoginScreen(state: UiState, viewModel: QuizViewModel) {
             Checkbox(checked = consented, onCheckedChange = { consented = it })
             Text("已阅读并同意《用户协议》和《隐私政策》", style = MaterialTheme.typography.bodySmall)
         }
-        OutlinedButton(onClick = { viewModel.loginWithWeChat(context, registrationInvite) },
+        OutlinedButton(onClick = { viewModel.loginWithWeChat(context, if (state.registrationPolicy?.requireRegistrationInvite == true) registrationInvite else "") },
             enabled = !state.authBusy && consented, modifier = Modifier.fillMaxWidth().height(50.dp),
             colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF1AAD19))) {
             Icon(Icons.AutoMirrored.Filled.Chat, contentDescription = null)
@@ -1521,6 +1519,7 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
     }
     if (showBindDialog) {
         BindAlipayDialog(
+            needsPassword = state.onboarding?.optBoolean("system_password_required") == true,
             onDismiss = { showBindDialog = false },
             onSubmit = { account, realName, password ->
                 showBindDialog = false
@@ -1543,12 +1542,14 @@ private fun centsText(value: Long): String = java.math.BigDecimal.valueOf(value,
 
 @Composable
 private fun BindAlipayDialog(
+    needsPassword: Boolean,
     onDismiss: () -> Unit,
     onSubmit: (String, String, String) -> Unit
 ) {
     var account by remember { mutableStateOf("") }
     var realName by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var confirmation by remember { mutableStateOf("") }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("绑定支付宝") },
@@ -1556,14 +1557,17 @@ private fun BindAlipayDialog(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(account, { account = it }, label = { Text("支付宝账号") }, singleLine = true)
                 OutlinedTextField(realName, { realName = it }, label = { Text("真实姓名") }, singleLine = true)
-                OutlinedTextField(password, { password = it }, label = { Text("当前登录密码") }, singleLine = true, visualTransformation = PasswordVisualTransformation())
+                Text(if (needsPassword) "首次绑定时设置系统密码，需8–128位并包含字母和数字。这不是支付宝支付密码。" else "请输入已有系统密码验证绑定。")
+                OutlinedTextField(password, { password = it }, label = { Text(if (needsPassword) "设置系统密码" else "当前系统密码") }, singleLine = true, visualTransformation = PasswordVisualTransformation())
+                if (needsPassword) OutlinedTextField(confirmation, { confirmation = it }, label = { Text("确认系统密码") }, singleLine = true, visualTransformation = PasswordVisualTransformation())
             }
         },
         dismissButton = { TextButton(onClick = onDismiss) { Text("取消") } },
         confirmButton = {
             TextButton(
                 onClick = { onSubmit(account, realName, password) },
-                enabled = account.isNotBlank() && realName.isNotBlank() && password.isNotBlank()
+                enabled = account.isNotBlank() && realName.isNotBlank() && password.isNotBlank() &&
+                    (!needsPassword || (password == confirmation && password.length in 8..128 && password.any { it in 'a'..'z' || it in 'A'..'Z' } && password.any { it in '0'..'9' }))
             ) { Text("保存") }
         }
     )

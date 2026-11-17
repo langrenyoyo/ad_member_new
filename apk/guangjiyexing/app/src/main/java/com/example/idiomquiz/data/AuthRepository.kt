@@ -242,8 +242,8 @@ class AuthRepository(context: Context) {
         return authenticated { token -> api.getAlipay(token, deviceId()) }
     }
 
-    suspend fun bindAlipay(account: String, realName: String, currentPassword: String): AlipayAccount {
-        return authenticated { token -> api.bindAlipay(token, deviceId(), account, realName, currentPassword) }
+    suspend fun bindAlipay(account: String, realName: String, currentPassword: String, newPassword: String? = null): AlipayAccount {
+        return authenticated { token -> api.bindAlipay(token, deviceId(), account, realName, currentPassword, newPassword) }
     }
 
     suspend fun withdrawalOptions(gameId: Int): WithdrawalAvailability {

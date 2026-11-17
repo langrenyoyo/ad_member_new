@@ -265,9 +265,9 @@ internal class UserAppApi(context: android.content.Context) {
         return parseAlipay(data.takeIf { it.has("account_masked") })
     }
 
-    suspend fun bindAlipay(accessToken: String, deviceId: String, account: String, realName: String, currentPassword: String): AlipayAccount {
+    suspend fun bindAlipay(accessToken: String, deviceId: String, account: String, realName: String, currentPassword: String, newPassword: String? = null): AlipayAccount {
         val data = requestJson("PUT", "me/alipay", deviceId, accessToken,
-            JSONObject().put("account", account).put("real_name", realName).put("current_password", currentPassword)
+            JSONObject().put("account", account).put("real_name", realName).put("current_password", currentPassword).apply { newPassword?.let { put("new_password", it) } }
         ).optJSONObject("data")
         return parseAlipay(data)
     }

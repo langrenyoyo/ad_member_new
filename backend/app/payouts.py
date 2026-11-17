@@ -43,7 +43,8 @@ class BindAlipay(BaseModel):
     model_config = ConfigDict(extra='forbid', str_strip_whitespace=True)
     account: str = Field(min_length=3, max_length=64)
     real_name: str = Field(min_length=2, max_length=64)
-    current_password: str = Field(min_length=1, max_length=128)
+    current_password: str = Field(default='', max_length=128)
+    new_password: str | None = Field(default=None, min_length=8, max_length=128)
 
     @field_validator('account')
     @classmethod
@@ -129,8 +130,14 @@ def bind_alipay(payload: BindAlipay, member: m.Member = Depends(m.require_app_me
     with m.SessionLocal() as session:
         lock(session)
         user = session.scalar(select(m.Member).where(m.Member.id == member.id).with_for_update())
-        if user is None or user.status != 1 or not m.verify_password(payload.current_password, user.password_hash, user.password_salt):
+        if user is None or user.status != 1:
+            raise HTTPException(401, '账号不可用，请重新登录')
+        if user.system_password_set and (payload.new_password is not None or not m.verify_password(payload.current_password, user.password_hash, user.password_salt)):
             raise HTTPException(401, '请验证当前登录密码后绑定收款账号')
+        if not user.system_password_set:
+            if not payload.new_password:
+                raise HTTPException(422, '首次绑定支付宝，请设置系统密码')
+            m._app_validate_password(payload.new_password)
         if session.scalar(select(Payout.id).where(Payout.member_id == user.id,
             Payout.state.in_(['pending_review', 'queued', 'processing']))) is not None:
             raise HTTPException(409, '存在处理中提现，暂不能更换支付宝账号')
@@ -139,6 +146,9 @@ def bind_alipay(payload: BindAlipay, member: m.Member = Depends(m.require_app_me
             account = AlipayAccount(member_id=user.id)
             session.add(account)
         account.account, account.real_name = payload.account, payload.real_name
+        if not user.system_password_set:
+            user.password_hash, user.password_salt = m.hash_password(payload.new_password)
+            user.system_password_set = True
         session.commit()
         return {'data': {'account_masked': mask(account.account), 'real_name': account.real_name,
                          'identity_verified': False}, 'request_id': secrets.token_urlsafe(12)}

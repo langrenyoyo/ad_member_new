@@ -92,6 +92,27 @@ class AlipayPayoutTests(unittest.TestCase):
         r = self.client.post(f'/api/v1/withdrawals/{wid}/approve', headers=self.admin_auth)
         self.assertEqual(r.status_code, 200, r.text)
 
+    def test_first_binding_sets_password_atomically_and_cannot_reset_existing_password(self):
+        with self.factory() as session:
+            session.delete(session.get(m.payouts.AlipayAccount, 1))
+            session.get(m.Member, 1).system_password_set = False
+            session.commit()
+        body = dict(account='13000000000', real_name='测试用户', new_password='New-Password-456')
+        invalid = self.client.put('/api/app/v1/me/alipay', json={**body, 'new_password':'12345678'}, headers=self.auth)
+        self.assertEqual(invalid.status_code, 422)
+        with self.factory() as session:
+            self.assertFalse(session.get(m.Member, 1).system_password_set)
+            self.assertIsNone(session.get(m.payouts.AlipayAccount, 1))
+        response = self.client.put('/api/app/v1/me/alipay', json=body, headers=self.auth)
+        self.assertEqual(response.status_code, 200, response.text)
+        with self.factory() as session:
+            member = session.get(m.Member, 1)
+            self.assertTrue(member.system_password_set)
+            self.assertTrue(m.verify_password(body['new_password'], member.password_hash, member.password_salt))
+        self.assertEqual(self.client.put('/api/app/v1/me/alipay', json=body, headers=self.auth).status_code, 401)
+        self.assertEqual(self.client.put('/api/app/v1/me/alipay', json={**self.binding,
+            'current_password':body['new_password']}, headers=self.auth).status_code, 200)
+
     def test_apply_freeze_success_query_and_duplicate(self):
         r = self.apply()
         self.assertEqual(r.status_code, 201, r.text)

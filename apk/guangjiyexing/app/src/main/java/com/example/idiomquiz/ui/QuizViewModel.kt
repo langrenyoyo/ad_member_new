@@ -387,7 +387,6 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun onboardingComplete(): Boolean {
         val data = _uiState.value.onboarding ?: return false
-        if (data.optBoolean("system_password_required")) return false
         val policy = data.getJSONObject("policy")
         return (!policy.optBoolean("require_invite") || data.optInt("parent_id") > 0) &&
             (!policy.optBoolean("require_usage") || data.optBoolean("usage_granted"))
@@ -583,15 +582,17 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
     fun bindAlipay(account: String, realName: String, currentPassword: String) {
         if (_uiState.value.isBusy) return
         if (account.isBlank() || realName.isBlank() || currentPassword.isBlank()) {
-            _uiState.update { it.copy(message = "请填写支付宝账号、真实姓名和登录时设置的系统密码。") }
+            _uiState.update { it.copy(message = "请填写支付宝账号、真实姓名和系统密码。") }
             return
         }
         _uiState.update { it.copy(isBusy = true, message = null) }
         viewModelScope.launch {
-            sessionCatching { authRepository.bindAlipay(account.trim(), realName.trim(), currentPassword) }
+            sessionCatching { authRepository.bindAlipay(account.trim(), realName.trim(),
+                if (_uiState.value.onboarding?.optBoolean("system_password_required") == true) "" else currentPassword,
+                if (_uiState.value.onboarding?.optBoolean("system_password_required") == true) currentPassword else null) }
                 .onSuccess { value ->
                     _uiState.update { current ->
-                        val updated = current.onboarding?.let { JSONObject(it.toString()).put("alipay_bound", value.bound) }
+                        val updated = current.onboarding?.let { JSONObject(it.toString()).put("alipay_bound", value.bound).put("system_password_required", false) }
                         current.copy(alipayAccount = value, onboarding = updated, isBusy = false,
                             message = "支付宝保存成功，可以继续提现。")
                     }
@@ -600,7 +601,7 @@ class QuizViewModel(application: Application) : AndroidViewModel(application) {
                 .onFailure { error ->
                     if (error is CancellationException) throw error
                     val message = if (error is com.example.idiomquiz.data.UserApiException && error.statusCode == 401)
-                        "支付宝尚未保存：密码或登录验证未通过。请使用登录时设置的系统密码。"
+                        "支付宝尚未保存：密码或登录验证未通过。请使用已有系统密码。"
                     else "支付宝尚未保存：${error.message ?: "请稍后重试"}"
                     _uiState.update { it.copy(isBusy = false, message = message) }
                 }
