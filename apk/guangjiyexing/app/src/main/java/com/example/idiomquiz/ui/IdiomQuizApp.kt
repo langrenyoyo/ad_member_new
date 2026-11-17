@@ -177,6 +177,16 @@ private const val SPLASH_AD_ENABLED = false
 fun IdiomQuizApp(state: UiState, viewModel: QuizViewModel) {
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
+    androidx.compose.runtime.DisposableEffect(state.currentUser?.id, state.appBootstrap, context) {
+        onDispose { AnyThinkAdManager.clearInterstitialPreload() }
+    }
+    LaunchedEffect(state.currentUser?.id, state.adSdkReady, state.adBusy, state.appBootstrap) {
+        if (state.currentUser != null && state.adSdkReady && !state.adBusy) {
+            val activity = context.findActivity()
+            val placement = state.appBootstrap?.let(AnyThinkAdManager::interstitialPlacement)
+            if (activity != null && placement != null) AnyThinkAdManager.preloadInterstitial(activity, placement)
+        }
+    }
     if (state.announcementPending) {
         StartupAnnouncement(state, viewModel)
         return

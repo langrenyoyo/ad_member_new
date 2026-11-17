@@ -44,6 +44,45 @@ object AnyThinkAdManager {
     private var splashRequested = false
     private var splashAd: ATSplashAd? = null
     private var interstitialAd: ATInterstitial? = null
+    private data class WarmInterstitial(val activity: Activity, val unit: String, val ad: ATInterstitial,
+        val started: Long = android.os.SystemClock.elapsedRealtime(), var ready: Boolean = false,
+        var loaded: (() -> Unit)? = null, var failed: ((String) -> Unit)? = null)
+    private var warmInterstitial: WarmInterstitial? = null
+
+    fun clearInterstitialPreload() {
+        warmInterstitial?.ad?.destroyAd()
+        warmInterstitial = null
+    }
+
+    /** Load only; no impression or reward is reported until an explicit show. */
+    fun preloadInterstitial(activity: Activity, placement: AdPlacement) {
+        if (!initialized || placement.adUnitId.isBlank() || activity.isFinishing || activity.isDestroyed) return
+        warmInterstitial?.let {
+            if (it.activity === activity && it.unit == placement.adUnitId &&
+                android.os.SystemClock.elapsedRealtime() - it.started < 120_000) return
+        }
+        clearInterstitialPreload()
+        val ad = ATInterstitial(activity, placement.adUnitId)
+        val warm = WarmInterstitial(activity, placement.adUnitId, ad)
+        warmInterstitial = warm
+        ad.setAdListener(object : ATInterstitialListener {
+            override fun onInterstitialAdLoaded() { mainHandler.post {
+                warm.ready = true; warm.loaded?.invoke()
+            } }
+            override fun onInterstitialAdLoadFail(error: AdError) { mainHandler.post {
+                if (warmInterstitial === warm) clearInterstitialPreload()
+                warm.failed?.invoke("插屏广告加载失败")
+            } }
+            override fun onInterstitialAdClicked(info: ATAdInfo) = Unit
+            override fun onInterstitialAdShow(info: ATAdInfo) = Unit
+            override fun onInterstitialAdClose(info: ATAdInfo) = Unit
+            override fun onInterstitialAdVideoStart(info: ATAdInfo) = Unit
+            override fun onInterstitialAdVideoEnd(info: ATAdInfo) = Unit
+            override fun onInterstitialAdVideoError(error: AdError) = Unit
+        })
+        mainHandler.postDelayed({ if (warmInterstitial === warm) clearInterstitialPreload() }, 120_000L)
+        runCatching { ad.load() }.onFailure { if (warmInterstitial === warm) clearInterstitialPreload() }
+    }
     private var rewardedAd: ATRewardVideoAd? = null
     private val mainHandler = Handler(Looper.getMainLooper())
     @Volatile private var secondaryEventReporter: (() -> (JSONObject) -> Unit)? = null
@@ -245,6 +284,7 @@ object AnyThinkAdManager {
                     loadAndShowInterstitial(activity, interstitial, isCurrent, closed, failed)
                 }
                 checkOwner()
+                preloadInterstitial(activity, interstitial)
                 gate.open()
                 reward.await()
                 checkOwner()
@@ -265,7 +305,11 @@ object AnyThinkAdManager {
         onClosed: () -> Unit,
         onFailure: (String) -> Unit
     ): () -> Unit {
-        val ad = ATInterstitial(activity, placement.adUnitId)
+        val warm = warmInterstitial?.takeIf { it.activity === activity && it.unit == placement.adUnitId &&
+            android.os.SystemClock.elapsedRealtime() - it.started < 120_000 }
+        if (warm == null) clearInterstitialPreload() else warmInterstitial = null
+        val ad = warm?.ad ?: ATInterstitial(activity, placement.adUnitId)
+        val requestedAt = android.os.SystemClock.elapsedRealtime()
         val reporter = secondaryEventReporter?.invoke()
         interstitialAd = ad
         val lifecycle = RewardedLifecycle()
@@ -274,6 +318,8 @@ object AnyThinkAdManager {
         fun release() {
             if (!lifecycle.end()) return
             mainHandler.removeCallbacks(timeout)
+            warm?.loaded = null
+            warm?.failed = null
             if (interstitialAd === ad) interstitialAd = null
             ad.destroyAd()
         }
@@ -283,7 +329,7 @@ object AnyThinkAdManager {
             onFailure(message)
         }
         timeout = Runnable { fail("插屏广告加载或展示超时，请重试") }
-        ad.setAdListener(object : ATInterstitialListener {
+        val listener = object : ATInterstitialListener {
             override fun onInterstitialAdLoaded() {
                 mainHandler.post {
                     if (interstitialAd !== ad || !lifecycle.loaded()) return@post
@@ -292,6 +338,7 @@ object AnyThinkAdManager {
                         return@post
                     }
                     // Keep the watchdog until the SDK actually confirms the show.
+                    Log.d(TAG, "Interstitial ready after ${android.os.SystemClock.elapsedRealtime() - requestedAt}ms; preloaded=${warm != null}")
                     runCatching { ad.show(activity) }.onFailure { fail("插屏广告展示失败") }
                 }
             }
@@ -305,6 +352,7 @@ object AnyThinkAdManager {
                 mainHandler.post {
                     if (lifecycle.impression()) {
                         mainHandler.removeCallbacks(timeout)
+                        Log.d(TAG, "Interstitial shown after ${android.os.SystemClock.elapsedRealtime() - requestedAt}ms")
                         impressionId = UUID.randomUUID().toString()
                         reportSecondaryEvent(reporter, placement, impressionId!!, "shown", adInfo)
                     }
@@ -323,9 +371,14 @@ object AnyThinkAdManager {
             override fun onInterstitialAdVideoError(error: AdError) {
                 mainHandler.post { fail("插屏广告播放失败：${error.fullErrorInfo}") }
             }
-        })
+        }
+        ad.setAdListener(listener)
+        warm?.loaded = { listener.onInterstitialAdLoaded() }
+        warm?.failed = { fail(it) }
         mainHandler.postDelayed(timeout, 60_000L)
-        runCatching { ad.load() }.onFailure { fail("插屏广告加载失败") }
+        if (warm != null) {
+            if (warm.ready || ad.isAdReady) listener.onInterstitialAdLoaded()
+        } else runCatching { ad.load() }.onFailure { fail("插屏广告加载失败") }
         return { release() }
     }
 
