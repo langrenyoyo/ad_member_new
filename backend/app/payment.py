@@ -156,6 +156,11 @@ class AlipayProvider(PaymentProvider):
                 'payee_info': {'identity': order['account'], 'identity_type': 'ALIPAY_LOGON_ID', 'name': order['real_name']}}
             if reports:
                 payload['transfer_scene_report_infos'] = reports
+            sub_scene = os.getenv('ALIPAY_TRANSFER_SUB_BIZ_SCENE', '').strip()
+            if sub_scene:
+                if sub_scene != 'REDPACKET':
+                    return PaymentResult(message='支付宝转账子场景配置有误')
+                payload['business_params'] = json.dumps({'sub_biz_scene': sub_scene}, separators=(',', ':'))
             result = self.call('alipay.fund.trans.uni.transfer', payload)
             return self._result(result, order)
         except Exception:
