@@ -109,8 +109,8 @@ android {
         applicationId = androidApplicationId
         minSdk = 26
         targetSdk = 35
-        versionCode = 14
-        versionName = "1.0.13"
+        versionCode = 15
+        versionName = "1.0.14"
         val sourceDigest = MessageDigest.getInstance("SHA-256")
         (fileTree("src/main").files + file("build.gradle.kts")).sortedBy { it.relativeTo(projectDir).invariantSeparatorsPath }
             .forEach { sourceFile ->

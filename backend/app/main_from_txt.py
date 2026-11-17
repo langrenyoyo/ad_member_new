@@ -1851,6 +1851,11 @@ def complete_subsidy_review(session: Session, item: Subsidy, target_status: int,
         raise HTTPException(409, "补贴记录已处理，不能重复审核")
     if target_status == 1:
         grant_subsidy_coins(session, item)
+    elif target_status == 2:
+        reservation = session.scalar(select(subsidy_campaigns.SubsidyReservation).where(
+            subsidy_campaigns.SubsidyReservation.subsidy_id == item.id).with_for_update())
+        if reservation is not None:
+            reservation.active = 0
     item.status = target_status
     mark_audit(item, admin)
 

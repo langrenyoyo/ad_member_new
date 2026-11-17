@@ -192,6 +192,7 @@ def apply_withdrawal(payload: WithdrawalApply, member: m.Member = Depends(m.requ
         if account is None: raise HTTPException(409, {'code': 'WITHDRAWAL_NOT_CREATED', 'message': '请先绑定支付宝账号'})
         _, day_start, day_end = m.subsidy_campaigns.day_bounds()
         count = session.scalar(select(func.count()).select_from(Payout).where(Payout.member_id == user.id,
+            Payout.state.notin_(['failed', 'rejected']),
             Payout.game_id == game.id, Payout.created_at >= day_start, Payout.created_at < day_end)) or 0
         if game.exchange_num <= 0 or count >= game.exchange_num: raise HTTPException(409, {'code': 'WITHDRAWAL_NOT_CREATED', 'message': '已达到今日提现次数限制'})
         if session.scalar(select(m.WithdrawalBlacklist.id).where(m.WithdrawalBlacklist.receive_name == account.real_name,
@@ -276,6 +277,7 @@ def record_result(withdrawal_id, result):
                 coin_before=user.coin, coin=0, coin_after=user.coin, type=202, remark=f'提现到账 #{item.id}'))
         elif result.state == 'failed':
             release_funds(session, item, 'failed')
+            item.status = 2
             item.plan_status = 0
             item.sub_msg = result.message[:255]
         session.commit()
@@ -289,12 +291,12 @@ def transfer(withdrawal_id, admin, query_only=False, scheduled=False, retry=Fals
         lock(session)
         item = session.scalar(select(m.Withdrawal).where(m.Withdrawal.id == withdrawal_id).with_for_update())
         if item is None: raise HTTPException(404, '提现不存在')
-        if item.status != 1: raise HTTPException(409, '请先审核通过')
         payout = session.scalar(select(Payout).where(Payout.withdrawal_id == item.id).with_for_update())
         if payout is None: raise HTTPException(409, '历史提现没有资金冻结订单，不能自动打款')
+        if payout.state in ('succeeded', 'failed', 'rejected'): return withdrawal_payload(session, item)
+        if item.status != 1: raise HTTPException(409, '请先审核通过')
         if payout.provider_scope != getattr(provider, 'scope', ''):
             raise HTTPException(409, '支付宝应用或环境与原订单不同，请恢复原配置后处理')
-        if payout.state in ('succeeded', 'failed', 'rejected'): return withdrawal_payload(session, item)
         if query_only and payout.state not in ('processing',): return withdrawal_payload(session, item)
         send = payout.state in ('pending_review', 'queued') and not query_only
         if send:
@@ -319,12 +321,29 @@ def transfer(withdrawal_id, admin, query_only=False, scheduled=False, retry=Fals
                 path=f'/api/v1/withdrawals/{item.id}/transfer', ip=''))
         session.commit()
         if scheduled: return withdrawal_payload(session, item)
+        previous_error = payout.error
         order = dict(out_biz_no=payout.out_biz_no, amount_cents=payout.amount_cents, account=payout.account, real_name=payout.real_name)
     # Network calls occur outside the transaction. A crash leaves a durable
     # processing order, which the reconciler queries using the SAME out_biz_no.
     result = provider.send(order) if send else provider.query(order)
-    if retry and not send and result.state == 'not_found':
+    from .payment import PAYEE_ERRORS, PaymentResult
+    if result.state == 'payee_rejected':
+        reason = result.message
+        confirmation = provider.query(order)
+        result = (PaymentResult('failed', reason) if confirmation.state in ('not_found', 'failed')
+                  else confirmation if confirmation.state == 'succeeded'
+                  else PaymentResult(message=reason))
+    elif result.state == 'not_found' and previous_error in PAYEE_ERRORS.values():
+        result = PaymentResult('failed', previous_error)
+    elif retry and not send and result.state == 'not_found':
         result = provider.send(order)  # same immutable merchant order number
+        if result.state == 'payee_rejected':
+            confirmation = provider.query(order)
+            result = (PaymentResult('failed', result.message) if confirmation.state in ('not_found', 'failed')
+                      else confirmation if confirmation.state == 'succeeded'
+                      else PaymentResult(message=result.message))
+    elif previous_error in PAYEE_ERRORS.values() and result.state == 'processing':
+        result = PaymentResult(message=previous_error)
     return record_result(withdrawal_id, result)
 
 

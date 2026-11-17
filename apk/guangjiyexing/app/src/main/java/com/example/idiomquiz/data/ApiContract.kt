@@ -46,7 +46,9 @@ internal fun parseWithdrawal(data: JSONObject): WithdrawalRecord {
         state = data.opt("status")?.toString() ?: "unknown",
         createdAt = data.optString("created_at"),
         payoutState = payout?.optString("state"),
-        statusLabel = withdrawalStatus(data)
+        statusLabel = withdrawalStatus(data),
+        failureMessage = if (payout?.optString("state") in listOf("failed", "rejected"))
+            payout?.optString("error").orEmpty().ifBlank { data.optString("sub_msg") } else ""
     )
 }
 

@@ -374,8 +374,11 @@ class AppSubsidyTests(unittest.TestCase):
         self.assertEqual(detail['campaign']['reward_cents'], 1200)
         self.assertTrue(detail['campaign']['overdue'])
         self.assertEqual(self.client.post(f'/api/v1/subsidies/{sid}/reject', json={'message':'invalid receipt'}, headers=self.admin_auth).status_code, 200)
+        restored = self.client.get(path, headers=self.auth).json()['data']
+        self.assertEqual((restored['used'], restored['remaining'], restored['eligible']), (0, 50, True))
+        self.assertEqual(self.client.post(path+'/applications', json=self.campaign_body, headers=self.auth).json()['data']['id'], sid)
         fresh = {**self.campaign_body, 'request_key': 'test-request-002'}
-        self.assertEqual(self.client.post(path+'/applications', json=fresh, headers=self.auth).status_code, 409)
+        self.assertEqual(self.client.post(path+'/applications', json=fresh, headers=self.auth).status_code, 201)
         self.assertEqual(self.client.delete(f'/api/v1/subsidies/{sid}', headers=self.admin_auth).status_code, 204)
         info = self.client.get(path, headers=self.auth).json()['data']
         self.assertEqual((info['used'], info['remaining']), (1, 49))

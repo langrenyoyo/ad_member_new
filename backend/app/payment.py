@@ -14,6 +14,14 @@ from cryptography.hazmat.primitives import hashes, serialization
 from cryptography import x509
 from cryptography.hazmat.primitives.asymmetric import padding, rsa
 
+PAYEE_ERRORS = {
+    'PAYEE_NOT_EXIST': '支付宝收款账号不存在，请修改支付宝账号后重新申请',
+    'PAYEE_USER_INFO_ERROR': '支付宝账号与姓名不一致，请核对修改后重新申请',
+    'PAYEE_ACCOUNT_ABNORMAL': '支付宝收款账号状态异常，请修改收款账号后重新申请',
+    'PAYEE_ACCOUNT_FROZEN': '支付宝收款账号已冻结，请修改收款账号后重新申请',
+    'REALNAME_CHECK_FAIL': '支付宝实名信息校验失败，请核对账号与姓名后重新申请',
+}
+
 
 @dataclass(frozen=True)
 class PaymentResult:
@@ -127,6 +135,8 @@ class AlipayProvider(PaymentProvider):
 
     def _result(self, result, order):
         if result.get('code') != '10000':
+            if result.get('sub_code') in PAYEE_ERRORS:
+                return PaymentResult('payee_rejected', PAYEE_ERRORS[result['sub_code']])
             # A rejected HTTP/API request is not proof the merchant order was
             # never accepted. Query instead of releasing frozen funds.
             return PaymentResult(message='支付宝返回 ' + str(result.get('sub_code') or result.get('code') or 'UNKNOWN')[:128])

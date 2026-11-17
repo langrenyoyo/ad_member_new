@@ -92,6 +92,31 @@ class AlipayPayoutTests(unittest.TestCase):
         r = self.client.post(f'/api/v1/withdrawals/{wid}/approve', headers=self.admin_auth)
         self.assertEqual(r.status_code, 200, r.text)
 
+    def test_payee_rejection_confirmed_missing_refunds_once_and_restores_daily_slot(self):
+        with self.factory() as s:
+            s.get(m.Game,1).exchange_num = 1
+            s.commit()
+        wid = self.apply().json()['data']['id']
+        self.approve(wid)
+        self.provider.result = payment.PaymentResult('payee_rejected', payment.PAYEE_ERRORS['PAYEE_NOT_EXIST'])
+        with patch.object(self.provider, 'query', return_value=payment.PaymentResult('not_found')):
+            result = self.client.post(f'/api/v1/withdrawals/{wid}/transfer',headers=self.admin_auth)
+        self.assertEqual(result.json()['payout']['state'], 'failed', result.text)
+        self.assertEqual(self.balance(), (100,0))
+        m.payouts.record_result(wid, payment.PaymentResult('failed'))
+        self.assertEqual(self.balance(), (100,0))
+        self.assertEqual(self.client.put('/api/app/v1/me/alipay',json={**self.binding,'account':'13100000000'},headers=self.auth).status_code,200)
+        self.assertEqual(self.apply(request_key='corrected-account').status_code,201)
+
+    def test_payee_error_with_uncertain_query_keeps_funds_held(self):
+        wid = self.apply().json()['data']['id']
+        self.approve(wid)
+        self.provider.result = payment.PaymentResult('payee_rejected', payment.PAYEE_ERRORS['PAYEE_NOT_EXIST'])
+        with patch.object(self.provider, 'query', return_value=payment.PaymentResult()):
+            result = self.client.post(f'/api/v1/withdrawals/{wid}/transfer',headers=self.admin_auth)
+        self.assertEqual(result.json()['payout']['state'], 'processing',result.text)
+        self.assertEqual(self.balance(),(80,20))
+
     def test_first_binding_sets_password_atomically_and_cannot_reset_existing_password(self):
         with self.factory() as session:
             session.delete(session.get(m.payouts.AlipayAccount, 1))

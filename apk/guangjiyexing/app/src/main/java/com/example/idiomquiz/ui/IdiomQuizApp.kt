@@ -1506,6 +1506,11 @@ private fun WalletScreen(state: UiState, viewModel: QuizViewModel) {
                                 fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                             Text(record.statusLabel, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
+                        if (record.payoutState in listOf("failed", "rejected")) {
+                            Text(record.failureMessage.ifBlank { "提现未完成，请核对收款资料" }, color = MaterialTheme.colorScheme.error)
+                            Text("金币及提现次数已退回，可修改支付宝后重新申请", style = MaterialTheme.typography.bodySmall)
+                            TextButton(onClick = { showBindDialog = true }) { Text("修改支付宝账号") }
+                        }
                         Text(formatAdRecordTime(record.createdAt), Modifier.padding(top = 5.dp), color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
                         HorizontalDivider(Modifier.padding(top = 12.dp), color = MaterialTheme.colorScheme.outlineVariant)
                     }

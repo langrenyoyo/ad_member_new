@@ -8,7 +8,7 @@ from typing import Literal
 
 from fastapi import Depends, HTTPException, Query, Request
 from pydantic import BaseModel, ConfigDict, Field, model_validator
-from sqlalchemy import Date, DateTime, Integer, String, Text, UniqueConstraint, func, select, text
+from sqlalchemy import Date, DateTime, Integer, String, Text, UniqueConstraint, Index, func, select, text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from . import main_from_txt as m
@@ -30,9 +30,9 @@ class SubsidyCampaign(m.Base, m.TimestampMixin):
 
 class SubsidyReservation(m.Base):
     __tablename__ = 'subsidy_reservations'
-    __table_args__ = (UniqueConstraint('campaign_id', 'member_id', 'quota_date', name='uq_subsidy_daily_member'),
-                      UniqueConstraint('member_id', 'request_key', name='uq_subsidy_request_key'))
+    __table_args__ = (UniqueConstraint('member_id', 'request_key', name='uq_subsidy_request_key'),)
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    active: Mapped[int] = mapped_column(Integer, default=1, server_default='1')
     campaign_id: Mapped[int] = mapped_column(Integer, index=True)
     member_id: Mapped[int] = mapped_column(Integer, index=True)
     subsidy_id: Mapped[int] = mapped_column(Integer, unique=True)
@@ -41,6 +41,10 @@ class SubsidyReservation(m.Base):
     request_json: Mapped[str] = mapped_column(Text)
     snapshot_json: Mapped[str] = mapped_column(Text)
     review_due_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+
+
+Index('uq_subsidy_active_daily', SubsidyReservation.campaign_id, SubsidyReservation.member_id,
+      SubsidyReservation.quota_date, unique=True, sqlite_where=text('active=1'), postgresql_where=text('active=1'))
 
 
 class CampaignInput(BaseModel):
@@ -86,6 +90,7 @@ def write_lock(session):
 def campaign_payload(session, campaign, at=None):
     day, _, _ = day_bounds(at)
     used = session.scalar(select(func.count()).select_from(SubsidyReservation).where(
+        SubsidyReservation.active == 1,
         SubsidyReservation.campaign_id == campaign.id, SubsidyReservation.quota_date == day)) or 0
     result = m.serialize(campaign, list(campaign.__table__.columns.keys()))
     result.update(quota_date=day.isoformat(), used=used, remaining=max(0, campaign.daily_quota - used))
@@ -105,6 +110,7 @@ def eligibility(session, campaign, member, at=None):
     confirmed = sum((Decimal(str(x)) for x in amounts), Decimal(0))
     confirmed_cents = int(confirmed * 100)
     used = session.scalar(select(SubsidyReservation.id).where(
+        SubsidyReservation.active == 1,
         SubsidyReservation.member_id == member.id, SubsidyReservation.campaign_id == campaign.id,
         SubsidyReservation.quota_date == day)) is not None
     pending = session.scalar(select(m.Subsidy.id).where(m.Subsidy.user_id == member.id,

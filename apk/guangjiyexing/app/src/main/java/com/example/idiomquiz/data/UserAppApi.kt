@@ -95,7 +95,8 @@ data class WithdrawalRecord(
     val state: String,
     val createdAt: String,
     val payoutState: String?,
-    val statusLabel: String = "状态待确认"
+    val statusLabel: String = "状态待确认",
+    val failureMessage: String = ""
 )
 
 data class AdHistoryRecord(
