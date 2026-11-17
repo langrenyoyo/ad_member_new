@@ -16,7 +16,7 @@ import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 
-/** An advisory update check after startup consent; failure never blocks entry. */
+/** Release policy is fetched after consent. Mandatory prompts cannot be skipped. */
 @Composable
 fun StartupUpdatePrompt(): Boolean {
     val context = LocalContext.current
@@ -28,7 +28,7 @@ fun StartupUpdatePrompt(): Boolean {
             runCatching {
                 val origin = URL(BuildConfig.USER_API_BASE_URL)
                 val connection = URL(origin.protocol, origin.host, origin.port,
-                    "/downloads/hehe-update.json").openConnection() as HttpURLConnection
+                    origin.path.trimEnd('/') + "/app-update?game_id=${BuildConfig.REGISTRATION_GAME_ID}").openConnection() as HttpURLConnection
                 connection.connectTimeout = 4000
                 connection.readTimeout = 4000
                 connection.useCaches = false
@@ -36,7 +36,7 @@ fun StartupUpdatePrompt(): Boolean {
                     val body = connection.inputStream.bufferedReader().use { it.readText() }
                     val info = JSONObject(body)
                     val download = URL(info.getString("download_url"))
-                    if (info.getString("package_name") == BuildConfig.APPLICATION_ID &&
+                    if (info.optBoolean("enabled") && info.getString("package_name") == BuildConfig.APPLICATION_ID &&
                         info.getInt("version_code") > BuildConfig.VERSION_CODE &&
                         download.protocol == "https" && download.host == origin.host &&
                         download.userInfo == null) body else null
@@ -47,18 +47,20 @@ fun StartupUpdatePrompt(): Boolean {
     }
     pending?.let { raw ->
         val info = JSONObject(raw)
+        val forced = info.optBoolean("force_update")
         AlertDialog(
-            onDismissRequest = { pending = null },
+            onDismissRequest = { if (!forced) pending = null },
+            properties = androidx.compose.ui.window.DialogProperties(dismissOnBackPress = !forced, dismissOnClickOutside = !forced),
             title = { Text("发现新版本 ${info.optString("version_name")}") },
             text = { Text(info.optString("notes", "新版本已发布，请下载更新。")) },
             confirmButton = { TextButton(onClick = {
                 runCatching {
                     context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(info.getString("download_url"))))
-                }.onSuccess { pending = null }.onFailure {
+                }.onSuccess { if (!forced) pending = null }.onFailure {
                     Toast.makeText(context, "无法打开下载链接，请稍后重试", Toast.LENGTH_SHORT).show()
                 }
             }) { Text("立即更新") } },
-            dismissButton = { TextButton(onClick = { pending = null }) { Text("稍后再说") } }
+            dismissButton = { if (!forced) TextButton(onClick = { pending = null }) { Text("稍后再说") } }
         )
     }
     return checked && pending == null

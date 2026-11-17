@@ -80,6 +80,16 @@ async function mountMemberPolicy(host) {
      await api(`/games/${loadedGame}/member-policy`,{method:'PUT',body:JSON.stringify(body)});if(version===generation)status.textContent='规则已保存';
     }catch(error){if(version===generation)status.textContent=error.message;}finally{button.disabled=false;}
    };
+   const release=await api(`/games/${loadedGame}/app-update`);
+   if(version!==generation||!host.isConnected)return;
+   const updateForm=document.createElement('form');
+   updateForm.innerHTML=`<fieldset><legend>APP 版本更新</legend><label><input name="enabled" type="checkbox" ${release.enabled?'checked':''}>启用更新提示</label><label>更新方式<select name="force_update"><option value="false">用户选择更新</option><option value="true">强制更新</option></select></label>${[['package_name','APK 包名'],['version_code','版本号 versionCode（整数）'],['version_name','版本名称'],['download_url','HTTPS 下载地址']].map(([key,label])=>`<label style="display:block">${label}<input name="${key}" value="${esc(release[key])}" ${key==='version_code'?'type="number" min="1" step="1"':'type="text"'} required></label>`).join('')}<label style="display:block">更新说明<textarea name="notes" maxlength="5000">${esc(release.notes)}</textarea></label><p>先上传签名安装包，再填写该安装包的版本号。仅高于用户已安装版本时提示；下载地址须与 APP 服务域名一致。强制更新不允许跳过，仅禾合 1.0.15 起支持。</p><button type="submit">保存更新设置</button><p data-update-status role="status"></p></fieldset>`;
+   updateForm.elements.force_update.value=String(release.force_update);
+   updateForm.onsubmit=async event=>{
+    event.preventDefault();const button=updateForm.querySelector('button'),output=updateForm.querySelector('[data-update-status]'),data=new FormData(updateForm);button.disabled=true;
+    try{await api(`/games/${loadedGame}/app-update`,{method:'PUT',body:JSON.stringify({enabled:data.has('enabled'),force_update:data.get('force_update')==='true',package_name:String(data.get('package_name')).trim(),version_code:Number(data.get('version_code')),version_name:String(data.get('version_name')).trim(),download_url:String(data.get('download_url')).trim(),notes:String(data.get('notes'))})});output.textContent='更新设置已保存';}catch(error){output.textContent=error.message;}finally{button.disabled=false;}
+   };
+   area.append(updateForm);
   }catch(error){status.textContent=error.message;}
  };
  async function loadLedger(offset=0) {

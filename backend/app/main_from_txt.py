@@ -6799,6 +6799,7 @@ from . import member_policy
 from . import sms_auth
 from . import invite_landing
 from . import member_insights
+from . import app_updates
 from . import taku_settings
 from . import taku_reports
 from . import taku_report_sync
