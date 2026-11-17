@@ -1711,7 +1711,6 @@ private fun AdDemoScreen(state: UiState, viewModel: QuizViewModel) {
                 else "获取更多金币"
             )
         }
-        Text("每组依次展示：插屏 → 激励视频 → 插屏", color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.weight(1f))
         if (nativeView != null) {
             androidx.compose.runtime.key(nativeView) {
