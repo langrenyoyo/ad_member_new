@@ -142,10 +142,21 @@ class AlipayProvider(PaymentProvider):
 
     def send(self, order):
         try:
-            result = self.call('alipay.fund.trans.uni.transfer', {
+            scene = os.getenv('ALIPAY_TRANSFER_SCENE_NAME', '').strip()
+            if not scene:
+                return PaymentResult(message='支付宝转账场景未配置，请配置 ALIPAY_TRANSFER_SCENE_NAME 后查询并重试原订单')
+            reports = json.loads(os.getenv('ALIPAY_TRANSFER_SCENE_REPORT_INFOS', '').strip() or '[]')
+            if not isinstance(reports, list) or any(not isinstance(x, dict) or
+                set(x) != {'info_type', 'info_content'} or any(not isinstance(v, str) or not v.strip() for v in x.values()) for x in reports):
+                return PaymentResult(message='支付宝转账场景报备参数格式有误')
+            payload = {
                 'out_biz_no': order['out_biz_no'], 'trans_amount': f"{order['amount_cents']//100}.{order['amount_cents']%100:02d}",
                 'product_code': 'TRANS_ACCOUNT_NO_PWD', 'biz_scene': 'DIRECT_TRANSFER', 'order_title': '金币提现',
-                'payee_info': {'identity': order['account'], 'identity_type': 'ALIPAY_LOGON_ID', 'name': order['real_name']}})
+                'transfer_scene_name': scene,
+                'payee_info': {'identity': order['account'], 'identity_type': 'ALIPAY_LOGON_ID', 'name': order['real_name']}}
+            if reports:
+                payload['transfer_scene_report_infos'] = reports
+            result = self.call('alipay.fund.trans.uni.transfer', payload)
             return self._result(result, order)
         except Exception:
             # Do not expose account details, private key paths or raw replies.

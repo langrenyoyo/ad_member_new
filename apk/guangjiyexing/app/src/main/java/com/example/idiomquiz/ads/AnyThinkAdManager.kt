@@ -34,6 +34,9 @@ import org.json.JSONObject
 import org.json.JSONArray
 import java.time.Instant
 import java.util.UUID
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.CoroutineStart
 
 object AnyThinkAdManager {
     private const val TAG = "IdiomQuizAds"
@@ -227,21 +230,32 @@ object AnyThinkAdManager {
         val dispose: (() -> Unit) -> Unit = { cancel ->
             if (Looper.myLooper() == Looper.getMainLooper()) cancel() else mainHandler.post { cancel() }
         }
-        runRewardedAdGroup(
-            showInterstitial = {
+        coroutineScope {
+            val gate = RewardedShowGate()
+            val reward = async(start = CoroutineStart.UNDISPATCHED) {
+                awaitAdClose(dispose) { closed, failed ->
+                    showRewarded(activity, session, onReward,
+                        onClosed = { onRewardClosed(); closed() }, onShown, failed, onMetadata, isCurrent,
+                        deferShow = gate::ready)
+                }
+            }
+            try {
                 checkOwner()
                 awaitAdClose(dispose) { closed, failed ->
                     loadAndShowInterstitial(activity, interstitial, isCurrent, closed, failed)
                 }
-            },
-            showRewarded = {
+                checkOwner()
+                gate.open()
+                reward.await()
                 checkOwner()
                 awaitAdClose(dispose) { closed, failed ->
-                    showRewarded(activity, session, onReward,
-                        onClosed = { onRewardClosed(); closed() }, onShown, failed, onMetadata, isCurrent)
+                    loadAndShowInterstitial(activity, interstitial, isCurrent, closed, failed)
                 }
+            } finally {
+                gate.cancel()
+                reward.cancel()
             }
-        )
+        }
     }
 
     private fun loadAndShowInterstitial(
@@ -324,7 +338,8 @@ object AnyThinkAdManager {
         onShown: () -> Unit,
         onFailure: (String) -> Unit,
         onMetadata: (String, org.json.JSONObject) -> Unit = { _, _ -> },
-        isCurrent: () -> Boolean = { true }
+        isCurrent: () -> Boolean = { true },
+        deferShow: ((() -> Unit) -> Unit) = { it() }
     ): () -> Unit {
         if (!initialized || rewardedAd != null) {
             onFailure("广告尚未就绪或正在加载")
@@ -377,15 +392,20 @@ object AnyThinkAdManager {
             override fun onRewardedVideoAdLoaded() {
                 mainHandler.post {
                     if (rewardedAd !== ad || !lifecycle.loaded()) return@post
+                    mainHandler.removeCallbacks(timeout)
+                    deferShow show@{
+                    if (lifecycle.ended) return@show
                     if (!isCurrent() || activity.isFinishing || activity.isDestroyed) {
                         fail("页面已关闭或登录状态已变更")
-                        return@post
+                        return@show
                     }
                     if (session.expiresAtEpochMillis?.let { it <= System.currentTimeMillis() } == true) {
                         fail("广告会话已过期，请重试")
-                        return@post
+                        return@show
                     }
+                    mainHandler.postDelayed(timeout, 15_000L)
                     runCatching { ad.show(activity) }.onFailure { fail("广告展示失败") }
+                    }
                 }
             }
             override fun onRewardedVideoAdFailed(error: AdError) {

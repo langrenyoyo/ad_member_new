@@ -277,6 +277,10 @@ class AlipayPayoutTests(unittest.TestCase):
 
 class AlipaySignatureTests(unittest.TestCase):
     def setUp(self):
+        scene = patch.dict(os.environ, {'ALIPAY_TRANSFER_SCENE_NAME':'approved-test-scene',
+                                       'ALIPAY_TRANSFER_SCENE_REPORT_INFOS':'[]'})
+        scene.start()
+        self.addCleanup(scene.stop)
         from app import payment
         self.payment = payment
         self.app_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
