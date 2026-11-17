@@ -171,11 +171,12 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 private val CardShape = RoundedCornerShape(20.dp)
-private const val SPLASH_AD_ENABLED = false
+private const val SPLASH_AD_ENABLED = true
 
 @Composable
 fun IdiomQuizApp(state: UiState, viewModel: QuizViewModel) {
     val context = LocalContext.current
+    val updateCheckFinished = StartupUpdatePrompt()
     val snackbarHostState = remember { SnackbarHostState() }
     androidx.compose.runtime.DisposableEffect(state.currentUser?.id, state.appBootstrap, context) {
         onDispose { AnyThinkAdManager.clearInterstitialPreload() }
@@ -274,7 +275,8 @@ fun IdiomQuizApp(state: UiState, viewModel: QuizViewModel) {
         )
     }
 
-    LaunchedEffect(state.appBootstrap, state.adSdkReady) {
+    LaunchedEffect(state.appBootstrap, state.adSdkReady, updateCheckFinished) {
+        if (!updateCheckFinished) return@LaunchedEffect
         if (!SPLASH_AD_ENABLED) return@LaunchedEffect
         if (!state.adSdkReady) return@LaunchedEffect
 
