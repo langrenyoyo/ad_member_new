@@ -83,6 +83,41 @@ class WechatPasswordTests(unittest.TestCase):
             json={'account': '13000000000', 'real_name': 'Test Member', 'current_password': 'NewPassword123'})
         self.assertEqual(response.status_code, 200, response.text)
 
+    def test_registration_invite_does_not_gate_existing_wechat_relogin(self):
+        import json
+        from app import member_policy as p
+        with self.factory() as session:
+            session.get(m.Game, 1).settings_json = json.dumps({'member_policy': {
+                'require_registration_invite': True, 'require_invite': False, 'require_usage': False}})
+            parent = m.Member(id=2, username='invite-parent', game_id=1, agent_id=1, status=1)
+            session.add(parent)
+            session.flush()
+            enrollment = p.enrollment(session, parent)
+            enrollment.level = 1
+            code = enrollment.invite_code
+            session.commit()
+        body = {'provider': 'app', 'code': 'fresh-code', 'game_id': 1, 'device_id': 'test-device'}
+        with patch.object(m, '_wechat_exchange_code', return_value={'openid': 'owner', 'unionid': ''}):
+            for _ in range(2):
+                result = self.client.post('/api/app/v1/auth/wechat', json=body)
+                self.assertEqual(result.status_code, 200, result.text)
+                headers = {'Authorization': 'Bearer ' + result.json()['data']['access_token']}
+                onboarding = self.client.get('/api/app/v1/onboarding', headers=headers)
+                self.assertEqual(onboarding.status_code, 200, onboarding.text)
+                self.assertFalse(onboarding.json()['data']['policy']['require_invite'])
+                self.assertEqual(onboarding.json()['data']['parent_id'], 0)
+                self.assertEqual(self.client.post('/api/app/v1/auth/logout', headers=headers, json={}).status_code, 204)
+        with patch.object(m, '_wechat_exchange_code', return_value={'openid': 'new-owner', 'unionid': ''}):
+            self.assertEqual(self.client.post('/api/app/v1/auth/wechat', json=body).status_code, 422)
+            with self.factory() as session:
+                self.assertIsNone(session.query(m.WechatIdentity).filter_by(openid='new-owner').first())
+            result = self.client.post('/api/app/v1/auth/wechat', json={**body, 'invite_code': code})
+            self.assertEqual(result.status_code, 200, result.text)
+        with self.factory() as session:
+            identity = session.query(m.WechatIdentity).filter_by(openid='new-owner').one()
+            self.assertEqual(session.get(m.Member, identity.member_id).parent_id, 2)
+            self.assertEqual(session.get(m.Member, 1).parent_id, 0)
+
     def test_other_wechat_cannot_reset_password(self):
         with self.factory() as session:
             session.get(m.Member, 1).system_password_set = False
