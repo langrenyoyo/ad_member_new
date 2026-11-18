@@ -3066,7 +3066,7 @@ def app_wechat_login(payload: AppWechatLoginRequest, request: Request) -> dict[s
             stored.avatar_url = avatar_url
         device = session.get(MemberDevice, member.id)
         if device and device.device_id and device.device_id != payload.device_id and device.device_id_ban:
-            raise HTTPException(status_code=403, detail="Device is blocked")
+            raise device_blocks.denied(member, 403, '该账号已限制更换登录设备', 'device_banned')
         _app_device(session, member, payload.device_id, request, payload.app_version)
         session.add(MemberLoginLog(user_id=member.id, game_id=member.game_id, device_id=payload.device_id, ip=request.client.host if request.client else ""))
         tokens = _app_tokens(session, member, payload.device_id)
@@ -3083,7 +3083,7 @@ def app_login(payload: AppLoginRequest, request: Request) -> dict[str, Any]:
             raise _app_auth_error("Invalid username or password")
         device = session.get(MemberDevice, member.id)
         if device and device.device_id and device.device_id != payload.device_id and device.device_id_ban:
-            raise HTTPException(status_code=403, detail="Device is blocked")
+            raise device_blocks.denied(member, 403, '该账号已限制更换登录设备', 'device_banned')
         _app_device(session, member, payload.device_id, request, payload.app_version)
         session.add(MemberLoginLog(user_id=member.id, game_id=member.game_id, device_id=payload.device_id, ip=request.client.host if request.client else ""))
         tokens = _app_tokens(session, member, payload.device_id)
@@ -6824,6 +6824,7 @@ def get_kuaishou_risk(assessment_id: int, admin: AdminUser = Depends(require_adm
 from . import subsidy_campaigns
 from . import payouts
 from . import device_risk
+from . import device_blocks
 from . import member_policy
 from . import sms_auth
 from . import invite_landing

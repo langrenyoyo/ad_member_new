@@ -191,7 +191,7 @@ def challenge(payload:ChallengeInput,member:m.Member=Depends(m.require_app_membe
         if rule is None or not rule.enabled: raise HTTPException(409,'该游戏未开启设备识别')
         recent=session.scalar(select(func.count()).select_from(DeviceCheck).where(DeviceCheck.member_id==member.id,
             DeviceCheck.created_at>=m.now()-timedelta(minutes=1))) or 0
-        if recent>=10: raise HTTPException(429,'设备校验请求过于频繁')
+        if recent>=10: raise m.device_blocks.denied(member,429,'设备校验请求过于频繁','check_rate_limit')
         item=DeviceCheck(id=secrets.token_urlsafe(24),member_id=member.id,game_id=game.id,
             install_hash=m._token_hash(payload.install_id),expires_at=m.now()+timedelta(minutes=5))
         session.add(item);session.commit()
@@ -202,24 +202,24 @@ def challenge(payload:ChallengeInput,member:m.Member=Depends(m.require_app_membe
 def verify(payload:CheckInput,member:m.Member=Depends(m.require_app_member)):
     with m.SessionLocal() as session:
         item=session.get(DeviceCheck,payload.challenge_id)
-        if item is None or item.member_id!=member.id: raise HTTPException(404,'设备校验不存在')
+        if item is None or item.member_id!=member.id: raise m.device_blocks.denied(member,404,'设备校验不存在','check_missing')
         gid=item.game_id
     with m.SessionLocal() as session:
         game=game_lock(session,gid);scoped_game(game,member)
         item=session.get(DeviceCheck,payload.challenge_id)
-        if item.expires_at.replace(tzinfo=UTC)<=m.now() or item.status!='issued': raise HTTPException(409,'校验已使用或过期，请重新申请')
+        if item.expires_at.replace(tzinfo=UTC)<=m.now() or item.status!='issued': raise m.device_blocks.denied(member,409,'校验已使用或过期，请重新申请','check_expired')
         item.status='checking';session.commit()
     try:
         provider_device,tags,request_id=aliyun_check(payload.aliyun_device_token,payload.challenge_id)
-    except HTTPException:
+    except HTTPException as exc:
         with m.SessionLocal() as session:
             game_lock(session,gid);item=session.get(DeviceCheck,payload.challenge_id);item.status='failed';session.commit()
-        raise
+        raise m.device_blocks.denied(member, exc.status_code, exc.detail, 'verification_failed') from exc
     with m.SessionLocal() as session:
         game=game_lock(session,gid);scoped_game(game,member)
         item=session.get(DeviceCheck,payload.challenge_id)
         rule=session.get(DeviceRule,gid)
-        if not rule or not rule.enabled or item.expires_at.replace(tzinfo=UTC)<=m.now(): raise HTTPException(409,'校验或规则已失效')
+        if not rule or not rule.enabled or item.expires_at.replace(tzinfo=UTC)<=m.now(): raise m.device_blocks.denied(member,409,'校验或规则已失效','check_expired')
         key=m._token_hash('aliyun:device_risk_pro:'+provider_device)
         device=session.scalar(select(RiskDevice).where(RiskDevice.game_id==gid,RiskDevice.device_key==key))
         if device is None:
@@ -256,15 +256,13 @@ def authorize_ad(session,payload,member,ad_id):
     check=session.get(DeviceCheck,payload.risk_check_id) if payload.risk_check_id else None
     if (check is None or check.member_id!=member.id or check.game_id!=payload.game_id or check.status!='verified'
         or check.expires_at.replace(tzinfo=UTC)<=m.now()):
-        raise HTTPException(403,'请先完成阿里云设备校验')
+        raise m.device_blocks.denied(member,403,'缺少有效的阿里云设备校验，请重新校验','check_required')
     device=session.get(RiskDevice,check.device_id)
     m.member_policy.check_cooldown(session, member)
     rolling = m.member_policy.admit_rolling(session, device, member, rule.daily_limit) if rule.limit_enabled and risky(device) else False
     if rule.limit_enabled and risky(device) and not rolling and usage(session,device,member.id)>=rule.daily_limit:
-        session.add(m.AdFlowLog(member_id=member.id,game_id=payload.game_id,event_type='device_limit_rejected',
-            status='blocked',provider='aliyun',detail_json=json.dumps({'device_id':device.id,'daily_limit':rule.daily_limit})))
-        session.commit()
-        raise HTTPException(429,'今日风险设备广告次数已达上限')
+        raise m.device_blocks.denied(member,429,'今日风险设备广告次数已达上限','daily_limit',device.id,
+            limit=rule.daily_limit,used=usage(session,device,member.id),risk_reason=device.reason)
     check.status='consumed'
     session.add(DeviceAdAdmission(device_id=device.id,member_id=member.id,game_id=payload.game_id,
         ad_session_id=ad_id,check_id=check.id,quota_date=(m.now()+timedelta(hours=8)).date()))
@@ -279,7 +277,7 @@ def authorize_retry(session, payload, existing):
         return
     admission = session.scalar(select(DeviceAdAdmission).where(DeviceAdAdmission.ad_session_id == existing.id))
     if admission is None or admission.check_id != payload.risk_check_id:
-        raise HTTPException(403, '重试须使用原广告申请的设备校验凭证')
+        raise m.device_blocks.denied(member,403,'重试须使用原广告申请的设备校验凭证','retry_mismatch')
 
 
 @m.app_api.get('/device-risk/config')

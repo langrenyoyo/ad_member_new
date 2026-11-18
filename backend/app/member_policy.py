@@ -91,7 +91,7 @@ def check_cooldown(session, member, install_id=None):
         device = session.get(d.RiskDevice, device_id)
         cooldown = session.get(DeviceCooldown, device_id)
         if device and device.game_id == member.game_id and d.risky(device) and cooldown and cooldown.blocked_until.replace(tzinfo=m.UTC) > m.now():
-            raise HTTPException(403, {'code': 'DEVICE_COOLDOWN', 'message': '风险设备暂时禁止登录', 'blocked_until': cooldown.blocked_until.isoformat()})
+            raise m.device_blocks.denied(member, 403, {'code': 'DEVICE_COOLDOWN', 'message': '风险设备暂时禁止登录', 'blocked_until': cooldown.blocked_until.isoformat()}, 'cooldown', device_id, blocked_until=cooldown.blocked_until.isoformat(), risk_reason=device.reason)
 
 
 def check_access(session, member, request):
@@ -105,7 +105,8 @@ def check_access(session, member, request):
     if not member.is_white:
         signals = set(request.headers.get('X-Device-Risk', '').split(','))
         if signals & set(rule.block_signals):
-            raise HTTPException(403, {'code': 'DEVICE_POLICY_BLOCKED', 'message': '设备状态不符合当前使用规则'})
+            matched = sorted(signals & set(rule.block_signals))
+            raise m.device_blocks.denied(member, 403, {'code': 'DEVICE_POLICY_BLOCKED', 'message': '设备状态不符合当前使用规则'}, 'device_signals', signals=matched)
     require_onboarding(session, member, path)
 
 
@@ -125,7 +126,7 @@ def admit_rolling(session, device, member, limit):
     if not rule.reset_login_block: return False
     cooldown = session.get(DeviceCooldown, device.id)
     if cooldown and cooldown.blocked_until.replace(tzinfo=m.UTC) > m.now():
-        raise HTTPException(403, '风险设备处于 24 小时限制期')
+        raise m.device_blocks.denied(member, 403, '风险设备处于 24 小时限制期', 'cooldown', device.id, blocked_until=cooldown.blocked_until.isoformat(), risk_reason=device.reason)
     if cooldown and cooldown.window_start.replace(tzinfo=m.UTC) < cooldown.blocked_until.replace(tzinfo=m.UTC):
         cooldown.window_start = m.now()
     used = rolling_usage(session, device)
@@ -136,7 +137,7 @@ def admit_rolling(session, device, member, limit):
         cooldown.blocked_until = m.now()+timedelta(hours=24)
         if used >= limit:
             session.commit()
-            raise HTTPException(429, '风险设备额度已耗尽，24 小时后恢复')
+            raise m.device_blocks.denied(member, 429, '风险设备额度已耗尽，24 小时后恢复', 'rolling_limit', device.id, used=used, limit=limit, blocked_until=cooldown.blocked_until.isoformat(), risk_reason=device.reason)
     return True
 
 

@@ -162,7 +162,7 @@ def sms_login(body: SmsLogin, request: Request):
             member.system_password_set = True
         device = session.get(m.MemberDevice, member.id)
         if device and device.device_id_ban and device.device_id != body.device_id:
-            raise HTTPException(403, '设备不可用')
+            raise m.device_blocks.denied(member, 403, '该账号已限制更换登录设备', 'device_banned')
         row.state = 'used'
         m._app_device(session, member, body.device_id, request, body.app_version)
         tokens = m._app_tokens(session, member, body.device_id)

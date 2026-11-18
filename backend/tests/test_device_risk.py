@@ -72,6 +72,50 @@ class DeviceRiskTests(unittest.TestCase):
         return self.client.post('/api/app/v1/ads/request', headers=auth or self.auth,
             json={'game_id': 1, 'device_id': 'untrusted-client-id', 'risk_check_id': check, 'client_request_id': key})
 
+    def test_block_records_survive_rollback_and_enforce_permissions(self):
+        self.assertEqual(self.ad().status_code, 403)
+        result = self.client.get('/api/v1/device-risk/blocks?game_id=1&member_id=1&code=check_required', headers=self.admin)
+        self.assertEqual(result.status_code, 200, result.text)
+        self.assertEqual(result.json()['total'], 1)
+        item = result.json()['items'][0]
+        self.assertIsNone(item['device_id'])
+        self.assertIn('校验', item['reason'])
+        self.assertEqual(self.client.get('/api/v1/device-risk/blocks?member_id=2', headers=self.admin).json()['total'], 0)
+        self.assertEqual(self.client.get('/api/v1/device-risk/blocks', headers=self.reviewer).status_code, 403)
+        self.assertEqual(self.client.get('/api/v1/device-risk/blocks', headers=self.auth).status_code, 401)
+        with self.factory() as s:
+            self.assertEqual(s.scalar(select(func.count()).select_from(m.AppAdSession)), 0)
+
+    def test_signal_and_verification_failure_have_reasons_without_tokens(self):
+        with self.factory() as s:
+            s.get(m.Game,1).settings_json=json.dumps({'member_policy':{'block_signals':['root']}})
+            s.commit()
+        result=self.client.get('/api/app/v1/onboarding',headers={**self.auth,'X-Device-Risk':'root'})
+        self.assertEqual(result.status_code,403)
+        cid=self.challenge()
+        with patch.object(r,'aliyun_check',side_effect=HTTPException(503,'设备校验服务暂不可用')):
+            self.assertEqual(self.client.post('/api/app/v1/device-risk/verify',headers=self.auth,
+                json={'challenge_id':cid,'aliyun_device_token':'sensitive-sdk-token'}).status_code,503)
+        result=self.client.get('/api/v1/device-risk/blocks',headers=self.admin)
+        self.assertEqual(result.json()['total'],2)
+        self.assertNotIn('sensitive-sdk-token',result.text)
+        self.assertEqual(result.json()['items'][1]['context']['signals'],['root'])
+
+    def test_cooldown_rejection_is_recorded_with_device_and_deadline(self):
+        from app import member_policy as p
+        verified=self.verify()
+        with self.factory() as s:
+            s.get(m.Game,1).settings_json=json.dumps({'member_policy':{'reset_login_block':True}})
+            device=s.get(r.RiskDevice,verified['device_id'])
+            device.override='restrict'
+            s.add(p.DeviceCooldown(device_id=device.id,window_start=m.now(),blocked_until=m.now()+timedelta(hours=24)))
+            s.commit()
+        self.assertEqual(self.client.get('/api/app/v1/onboarding',headers=self.auth).status_code,403)
+        result=self.client.get('/api/v1/device-risk/blocks?code=cooldown',headers=self.admin)
+        self.assertEqual(result.json()['total'],1)
+        self.assertEqual(result.json()['items'][0]['device_id'],verified['device_id'])
+        self.assertTrue(result.json()['items'][0]['context']['blocked_until'])
+
     def test_reset_and_shared_device_quota(self):
         first = self.verify()
         self.assertFalse(first['suspected_reset'])
@@ -82,6 +126,11 @@ class DeviceRiskTests(unittest.TestCase):
         self.assertEqual(self.ad(second['risk_check_id'], self.other).status_code, 201)
         third = self.verify()
         self.assertEqual(self.ad(third['risk_check_id']).status_code, 429)
+        blocks = self.client.get('/api/v1/device-risk/blocks?game_id=1&code=daily_limit', headers=self.admin)
+        self.assertEqual(blocks.status_code, 200, blocks.text)
+        self.assertEqual(blocks.json()['total'], 1)
+        self.assertEqual(blocks.json()['items'][0]['context']['limit'], 2)
+        self.assertEqual(blocks.json()['items'][0]['device_id'], third['device_id'])
         with self.factory() as s:
             self.assertEqual(s.scalar(select(func.count()).select_from(m.AppAdSession)), 2)
             self.assertEqual(s.scalar(select(func.count()).select_from(r.DeviceAdAdmission)), 2)
