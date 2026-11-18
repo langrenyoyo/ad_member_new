@@ -23,9 +23,12 @@ class MemberContractTest {
         }
         assertEquals("0.01", centsText(1))
     }
-    @Test fun passwordMatchesServerAsciiPolicyAndConfirmation() {
+    @Test fun passwordMatchesServerLengthPolicyAndConfirmation() {
         validateNewPassword("abc12345", "abc12345")
-        assertThrows(IllegalArgumentException::class.java) { validateNewPassword("中文中文1234", "中文中文1234") }
+        for (password in listOf("123456", "abcdef", "!@#$%^", "中文中文1234")) {
+            validateNewPassword(password, password)
+        }
+        assertThrows(IllegalArgumentException::class.java) { validateNewPassword("12345", "12345") }
         assertThrows(IllegalArgumentException::class.java) { validateNewPassword("abc12345", "other") }
     }
     @Test fun payoutStateTakesPrecedenceOverReviewStatus() {

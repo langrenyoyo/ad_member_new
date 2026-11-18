@@ -2633,6 +2633,28 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="广告会员后台", version="0.1.0", lifespan=lifespan, docs_url=None)
+from fastapi.exceptions import RequestValidationError
+from fastapi.exception_handlers import request_validation_exception_handler
+from fastapi.responses import JSONResponse
+
+
+@app.exception_handler(RequestValidationError)
+async def app_validation_error(request: Request, exc: RequestValidationError):
+    if request.url.path.startswith('/api/app/v1/'):
+        for error in exc.errors():
+            field = str(error.get('loc', [''])[-1])
+            if field in ('password', 'new_password', 'current_password'):
+                message = '请输入密码'
+                if error['type'] == 'string_too_short':
+                    message = f"密码至少需要{error.get('ctx', {}).get('min_length', 6)}位"
+                elif error['type'] == 'string_too_long':
+                    message = '密码不能超过128位'
+                elif error['type'] != 'missing':
+                    message = '密码格式不正确，请重新输入'
+                return JSONResponse(status_code=422, content={'detail': message})
+    return await request_validation_exception_handler(request, exc)
+
+
 from .request_audit import AppRequestAudit
 app.add_middleware(AppRequestAudit)
 
@@ -2668,7 +2690,7 @@ class AppClient(BaseModel):
 
 class AppRegisterRequest(AppClient):
     username: str = Field(min_length=4, max_length=64)
-    password: str = Field(min_length=8, max_length=128)
+    password: str = Field(min_length=6, max_length=128)
     invite_code: str = Field(default="", max_length=128)
     agent_id: int | None = Field(default=None, ge=1)
     game_id: int | None = Field(default=None, ge=1)
@@ -2718,7 +2740,7 @@ class AppSubsidyCreate(BaseModel):
 
 class AppPasswordChange(BaseModel):
     current_password: str = Field(min_length=1, max_length=128)
-    new_password: str = Field(min_length=8, max_length=128)
+    new_password: str = Field(min_length=6, max_length=128)
 
 
 class AppAdRequest(AppClient):
@@ -2844,8 +2866,8 @@ def require_app_member(request: Request, credentials: HTTPAuthorizationCredentia
 
 
 def _app_validate_password(password: str) -> None:
-    if len(password) < 8 or not re.search(r"[A-Za-z]", password) or not re.search(r"\d", password):
-        raise HTTPException(status_code=422, detail="Password must contain at least 8 characters, letters and numbers")
+    if not 6 <= len(password) <= 128:
+        raise HTTPException(status_code=422, detail="密码须为6～128位，不限制字符组合")
 
 
 def _app_game_for_member(session: Session, member: Member, game_id: int | None = None) -> Game:
@@ -3111,7 +3133,7 @@ def app_update_me(payload: AppProfileUpdate, member: Member = Depends(require_ap
 
 class AppWechatPasswordRequest(BaseModel):
     code: str = Field(min_length=1, max_length=1024)
-    new_password: str = Field(min_length=8, max_length=128)
+    new_password: str = Field(min_length=6, max_length=128)
 
 
 @app_api.post("/auth/wechat-password", status_code=204)

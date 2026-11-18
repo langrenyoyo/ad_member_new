@@ -1576,7 +1576,7 @@ private fun BindAlipayDialog(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(account, { account = it }, label = { Text("支付宝账号") }, singleLine = true)
                 OutlinedTextField(realName, { realName = it }, label = { Text("真实姓名") }, singleLine = true)
-                Text(if (needsPassword) "首次绑定时设置系统密码，需8–128位并包含字母和数字。这不是支付宝支付密码。" else "请输入已有系统密码验证绑定。")
+                Text(if (needsPassword) "首次绑定时设置系统密码，需6～128位，不限制字符组合。这不是支付宝支付密码。" else "请输入已有系统密码验证绑定。")
                 OutlinedTextField(password, { password = it }, label = { Text(if (needsPassword) "设置系统密码" else "当前系统密码") }, singleLine = true, visualTransformation = PasswordVisualTransformation())
                 if (needsPassword) OutlinedTextField(confirmation, { confirmation = it }, label = { Text("确认系统密码") }, singleLine = true, visualTransformation = PasswordVisualTransformation())
             }
@@ -1586,7 +1586,7 @@ private fun BindAlipayDialog(
             TextButton(
                 onClick = { onSubmit(account, realName, password) },
                 enabled = account.isNotBlank() && realName.isNotBlank() && password.isNotBlank() &&
-                    (!needsPassword || (password == confirmation && password.length in 8..128 && password.any { it in 'a'..'z' || it in 'A'..'Z' } && password.any { it in '0'..'9' }))
+                    (!needsPassword || (password == confirmation && password.length in 6..128))
             ) { Text("保存") }
         }
     )

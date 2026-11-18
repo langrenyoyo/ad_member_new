@@ -24,8 +24,8 @@ internal fun moneyInput(value: String): BigDecimal {
 }
 
 internal fun validateNewPassword(password: String, confirmation: String) {
-    require(password.length in 8..128 && password.any { it in 'a'..'z' || it in 'A'..'Z' } && password.any { it in '0'..'9' }) {
-        "新密码须为 8～128 位，并包含英文字母和数字"
+    require(password.length in 6..128) {
+        "新密码须为6～128位，不限制字符组合"
     }
     require(password == confirmation) { "两次输入的新密码不一致" }
 }

@@ -528,7 +528,7 @@ class AuthRepository(context: Context) {
         error.errorCode == "USERNAME_EXISTS" || error.statusCode == 409 ->
             "该手机号已经注册，请直接登录"
         error.errorCode == "PASSWORD_WEAK" ->
-            "密码至少 8 位，并同时包含字母和数字"
+            "密码须为6～128位，不限制字符组合"
         error.errorCode == "ACCOUNT_DISABLED" -> "账号已停用，请联系管理员"
         error.errorCode == "DEVICE_BLOCKED" -> "当前设备不可用，请联系管理员"
         error.statusCode == 401 -> "手机号或密码不正确"
@@ -657,8 +657,8 @@ class AuthRepository(context: Context) {
 
         fun validatePhoneAndPassword(phone: String, password: String): String? {
             if (!phone.matches(PHONE_PATTERN)) return "请输入有效的 11 位手机号"
-            if (password.length < 8 || !password.any(Char::isLetter) || !password.any(Char::isDigit)) {
-                return "密码至少 8 位，并同时包含字母和数字"
+            if (password.length !in 6..128) {
+                return "密码须为6～128位，不限制字符组合"
             }
             return null
         }

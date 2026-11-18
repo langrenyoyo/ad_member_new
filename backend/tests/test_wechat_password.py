@@ -97,7 +97,7 @@ class WechatPasswordTests(unittest.TestCase):
         response = self.client.post('/api/app/v1/auth/wechat-password',
             json={'code': 'fresh-code', 'new_password': 'NewPassword123'})
         self.assertEqual(response.status_code, 401)
-        self.assertEqual(self.submit('owner', '12345678').status_code, 422)
+        self.assertEqual(self.submit('owner', '12345').status_code, 422)
 
     def test_other_app_identity_cannot_reset_password(self):
         with self.factory() as session:

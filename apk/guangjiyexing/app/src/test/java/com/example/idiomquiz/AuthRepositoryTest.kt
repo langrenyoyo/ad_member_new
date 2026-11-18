@@ -13,9 +13,10 @@ class AuthRepositoryTest {
             AuthRepository.validatePhoneAndPassword("1380013800", "123456")
         )
         assertEquals(
-            "密码至少 8 位，并同时包含字母和数字",
-            AuthRepository.validatePhoneAndPassword("13800138000", "123456")
+            "密码须为6～128位，不限制字符组合",
+            AuthRepository.validatePhoneAndPassword("13800138000", "12345")
         )
         assertNull(AuthRepository.validatePhoneAndPassword("13800138000", "abc12345"))
+        assertNull(AuthRepository.validatePhoneAndPassword("13800138000", "123456"))
     }
 }

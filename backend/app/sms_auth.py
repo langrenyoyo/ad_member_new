@@ -70,13 +70,13 @@ class SmsLogin(m.AppClient):
     game_id: int = Field(ge=1)
     challenge_id: str = Field(min_length=1, max_length=64)
     code: str = Field(pattern=r'^\d{6}$')
-    new_password: str | None = Field(default=None, min_length=8, max_length=128)
+    new_password: str | None = Field(default=None, min_length=6, max_length=128)
 
 
 class SmsPassword(BaseModel):
     challenge_id: str = Field(min_length=1, max_length=64)
     code: str = Field(pattern=r'^\d{6}$')
-    new_password: str = Field(min_length=8, max_length=128)
+    new_password: str = Field(min_length=6, max_length=128)
 
 
 @m.app_api.post('/auth/sms/password')

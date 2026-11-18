@@ -44,7 +44,7 @@ class BindAlipay(BaseModel):
     account: str = Field(min_length=3, max_length=64)
     real_name: str = Field(min_length=2, max_length=64)
     current_password: str = Field(default='', max_length=128)
-    new_password: str | None = Field(default=None, min_length=8, max_length=128)
+    new_password: str | None = Field(default=None, min_length=6, max_length=128)
 
     @field_validator('account')
     @classmethod

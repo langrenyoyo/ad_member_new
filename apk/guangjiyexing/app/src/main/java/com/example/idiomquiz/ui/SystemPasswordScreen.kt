@@ -25,7 +25,7 @@ internal fun SystemPasswordScreen(state: UiState, model: QuizViewModel) {
         verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text("设置系统密码", style = MaterialTheme.typography.headlineMedium)
         Text("微信登录成功，请先设置本应用的系统密码，完成后进入首页。已设置的账号以后无需重复设置。")
-        Text("请使用8–128位字母和数字组合。这不是微信密码或支付宝支付密码。")
+        Text("请设置6～128位密码，不限制字符组合。这不是微信密码或支付宝支付密码。")
         OutlinedTextField(password, { password = it }, modifier = Modifier.fillMaxWidth(),
             label = { Text("系统密码") }, singleLine = true, visualTransformation = PasswordVisualTransformation())
         OutlinedTextField(confirmation, { confirmation = it }, modifier = Modifier.fillMaxWidth(),

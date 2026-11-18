@@ -185,9 +185,10 @@ class AlipayPayoutTests(unittest.TestCase):
             session.delete(session.get(m.payouts.AlipayAccount, 1))
             session.get(m.Member, 1).system_password_set = False
             session.commit()
-        body = dict(account='13000000000', real_name='测试用户', new_password='New-Password-456')
-        invalid = self.client.put('/api/app/v1/me/alipay', json={**body, 'new_password':'12345678'}, headers=self.auth)
+        body = dict(account='13000000000', real_name='测试用户', new_password='123456')
+        invalid = self.client.put('/api/app/v1/me/alipay', json={**body, 'new_password':'12345'}, headers=self.auth)
         self.assertEqual(invalid.status_code, 422)
+        self.assertEqual(invalid.json()['detail'], '密码至少需要6位')
         with self.factory() as session:
             self.assertFalse(session.get(m.Member, 1).system_password_set)
             self.assertIsNone(session.get(m.payouts.AlipayAccount, 1))
