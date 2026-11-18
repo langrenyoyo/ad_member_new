@@ -64,6 +64,54 @@ class MemberPolicyTests(unittest.TestCase):
                 self.assertEqual([(row['member_id'],row['parent_id'],row['level']) for row in rows],[(1,0,0),(2,1,1),(3,2,0)])
         finally:engine.dispose()
 
+    def test_shared_base_viewer_and_upstream_split_and_snapshot(self):
+        self.policy(commission_enabled=True, commission_basis='shared_base', commission_rates=['.5','.2','0','.1'])
+        with self.factory() as s:
+            user=s.get(m.Member,1);p.enrollment(s,user).parent_id=2
+            s.get(p.Enrollment,2).level=1
+            agent=m.Member(id=3,username='upper',game_id=1,agent_id=1,status=1,coin=0)
+            s.add(agent);s.flush();p.enrollment(s,agent).level=3
+            s.get(p.Enrollment,2).parent_id=3;s.flush()
+            captured=p.settlement_snapshot(s,user,1)
+            s.add(m.AppAdEvent(event_id='policy:shared',ad_session_id='shared',member_id=1,
+                event_type='policy_snapshot',result_json=json.dumps(captured)));s.flush()
+            reward=p.settle(s,user,SimpleNamespace(id='shared',game_id=1),'',None,1)
+            self.assertEqual(reward,Decimal('.5'))
+            self.assertEqual(s.get(m.Member,2).coin,Decimal('.2'))
+            self.assertEqual(s.get(m.Member,3).coin,Decimal('.1'))
+            s.flush()
+            ledger=s.scalar(select(p.RewardLedger).where(p.RewardLedger.kind=='reward'))
+            self.assertEqual(ledger.amount,Decimal('.5'))
+            self.assertEqual(json.loads(ledger.rule_json)['distribution_base'],'1.000000')
+
+    def test_shared_base_without_parent_and_commission_disabled_still_pays_half(self):
+        self.policy(commission_enabled=False,commission_basis='shared_base',commission_rates=['.5','.2','0','.1'])
+        with self.factory() as s:
+            user=s.get(m.Member,1)
+            self.assertEqual(p.settle(s,user,SimpleNamespace(id='no-parent',game_id=1),'',None,Decimal('.05909')),Decimal('.029545'))
+
+    def test_old_snapshot_keeps_original_reward_after_shared_mode_enabled(self):
+        self.policy(commission_enabled=True,commission_rates=['.5','.2','0','.1'])
+        with self.factory() as s:
+            user=s.get(m.Member,1)
+            captured=p.settlement_snapshot(s,user,1)
+            captured['rule'].pop('commission_basis',None)
+            s.add(m.AppAdEvent(event_id='policy:old',ad_session_id='old',member_id=1,
+                event_type='policy_snapshot',result_json=json.dumps(captured)))
+            s.commit()
+        self.policy(commission_enabled=True,commission_basis='shared_base',commission_rates=['.5','.2','0','.1'])
+        with self.factory() as s:
+            self.assertEqual(p.settle(s,s.get(m.Member,1),SimpleNamespace(id='old',game_id=1),'',None,1),1)
+
+    def test_shared_base_preview_matches_ecpm_settlement(self):
+        rule=p.Policy(reward_enabled=True,reward_basis='fixed_ecpm',fixed_ecpm=1000,coins_per_yuan=1,
+            commission_basis='shared_base',commission_rates=['.5','.2','0','.1'])
+        preview=p.reward_preview(p.RewardPreview(policy=rule,ecpm=1000),None)
+        self.assertEqual(Decimal(preview['coin']),Decimal('.5'))
+        self.policy(**rule.model_dump(mode='json'))
+        with self.factory() as s:
+            self.assertEqual(p.settle(s,s.get(m.Member,1),SimpleNamespace(id='ecpm-split',game_id=1),'',None,0),Decimal('.5'))
+
     def test_all_upstream_agents_paid_with_snapshot(self):
         self.policy(commission_enabled=True,commission_rates=[0,0,0,'0.1'])
         with self.factory() as s:

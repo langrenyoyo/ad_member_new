@@ -6,7 +6,7 @@ async function mountMemberPolicy(host) {
  const status=host.querySelector('[data-status]'), area=host.querySelector('[data-form]');
  let game=0,generation=0,ledgerOffset=0;
  host.querySelector('[data-ledger]').textContent='查看奖励与分佣流水';
- const labels={require_alipay:'强制绑定支付宝',require_registration_invite:'强制推荐码注册（团长 / 代理）',require_invite:'未绑定账号须补绑上级（限制业务使用）',require_usage:'要求应用使用情况授权',reset_login_block:'清机额度耗尽后限制登录 24 小时',reward_enabled:'启用自定义奖励策略',commission_enabled:'启用分佣（按最终奖励另计）'};
+ const labels={require_alipay:'强制绑定支付宝',require_registration_invite:'强制推荐码注册（团长 / 代理）',require_invite:'未绑定账号须补绑上级（限制业务使用）',require_usage:'要求应用使用情况授权',reset_login_block:'清机额度耗尽后限制登录 24 小时',reward_enabled:'启用自定义奖励策略',commission_enabled:'启用上级分佣'};
  host.querySelector('[data-load]').onsubmit=async e=>{
   e.preventDefault();const version=++generation;game=Number(new FormData(e.target).get('game'));area.replaceChildren();ledgerOffset=0;host.querySelector('[data-ledgers]').replaceChildren();
   try {
@@ -18,12 +18,14 @@ async function mountMemberPolicy(host) {
    <label>奖励基数 <select name="reward_basis"><option value="verified_cny_ecpm">可信人民币 ECPM</option><option value="fixed_ecpm">后台自定义 ECPM</option></select></label>
    ${[['fixed_ecpm','自定义 ECPM'],['coins_per_yuan','每元折算金币'],['whitelist_multiplier','白名单奖励倍率'],['max_reward','单次奖励上限'],['agent_member_id','全应用代理会员 ID（0 不指定）'],['announcement_version','公告版本']].map(([k,l])=>`<label style="display:block">${l}<input type="number" min="0" step="any" name="${k}" value="${esc(p[k])}" required></label>`).join('')}
    <fieldset><legend>各平台释放比例（0–1）</legend>${Object.entries({kuaishou:'快手',gdt:'优量汇',csj:'穿山甲',baidu:'百度',other:'其他'}).map(([k,l])=>`<label>${l}<input name="rate_${k}" type="number" min="0" max="1" step="0.001" value="${esc(p.network_rates[k])}" required></label>`).join('')}</fieldset>
-   <fieldset><legend>分佣比例（按最终用户奖励另计）</legend>${[[0,'用户'],[1,'团长'],[3,'代理每层比例']].map(([i,l])=>`<label>${l}<input name="commission_${i}" type="number" min="0" max="1" step="0.001" value="${esc(p.commission_rates[i])}" required></label>`).join('')}</fieldset>
+   <label>分配模式 <select name="commission_basis"><option value="shared_base">同一收益基数分配（用户比例为本人所得）</option><option value="legacy_additive">旧模式（用户全额，上级另计）</option></select></label>
+   <fieldset><legend>分配比例（0–1；同一基数模式下用户比例用于本人奖励）</legend>${[[0,'用户'],[1,'团长'],[3,'代理每层比例']].map(([i,l])=>`<label>${l}<input name="commission_${i}" type="number" min="0" max="1" step="0.001" value="${esc(p.commission_rates[i])}" required></label>`).join('')}</fieldset>
    <fieldset><legend>命中以下设备信号时阻断</legend>${['emulator','root','hook','developer','accessibility','bluetooth'].map(k=>`<label><input name="signal" type="checkbox" value="${k}" ${p.block_signals.includes(k)?'checked':''}>${esc(k)}</label>`).join('')}</fieldset>
    <label style="display:block">广告源对应平台（每行：数字广告源ID=平台代码）<textarea name="sources" rows="5">${esc(Object.entries(p.source_networks).map(([k,v])=>`${k}=${v}`).join('\n'))}</textarea></label>
    <label style="display:block">无法获取广告时的提示<input name="ad_unavailable_message" maxlength="200" value="${esc(p.ad_unavailable_message??'暂时无法获得广告')}" placeholder="暂时无法获得广告"></label>
    <label style="display:block">公告内容<textarea name="announcement" rows="5" maxlength="5000">${esc(p.announcement)}</textarea></label><button>保存规则</button></form>`;
    area.querySelector('[name=reward_basis]').value=p.reward_basis;
+   area.querySelector('[name=commission_basis]').value=p.commission_basis||'legacy_additive';
    const readiness=document.createElement('p');area.prepend(readiness);
    api(`/games/${loadedGame}/reward-readiness`).then(r=>{if(version===generation)readiness.textContent=r.message||'';}).catch(error=>{if(version===generation)readiness.textContent=error.message;});
    const tierBox=document.createElement('fieldset');
@@ -62,7 +64,7 @@ async function mountMemberPolicy(host) {
    function buildBody(form){
     const data=new FormData(form),body={...p};Object.keys(labels).forEach(k=>body[k]=data.has(k));
     for(const k of ['fixed_ecpm','coins_per_yuan','whitelist_multiplier','max_reward','agent_member_id','announcement_version'])body[k]=Number(data.get(k));
-    body.reward_basis=data.get('reward_basis');body.announcement=data.get('announcement');body.block_signals=data.getAll('signal');
+    body.commission_basis=data.get('commission_basis');body.reward_basis=data.get('reward_basis');body.announcement=data.get('announcement');body.block_signals=data.getAll('signal');
     body.ad_unavailable_message=String(data.get('ad_unavailable_message')||'').trim()||'暂时无法获得广告';
     body.network_rates=Object.fromEntries(Object.keys(p.network_rates).map(k=>[k,Number(data.get('rate_'+k))]));
     body.commission_rates=[0,1,2,3].map(i=>Number(data.get('commission_'+i)));

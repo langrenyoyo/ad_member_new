@@ -162,6 +162,7 @@ class Policy(BaseModel):
     label_threshold: Decimal = Field(default=Decimal('0.5'), ge=Decimal('0.5'), lt=1)
     label_rewards: dict[Literal['game', 'social', 'finance', 'ecommerce', 'other'], Decimal] = Field(default_factory=dict)
     commission_enabled: bool | None = None
+    commission_basis: Literal['legacy_additive', 'shared_base'] = 'legacy_additive'
     reward_basis: Literal['verified_cny_ecpm', 'fixed_ecpm'] = 'verified_cny_ecpm'
     fixed_ecpm: Decimal = Field(default=Decimal('0'), ge=0, le=100000)
     coins_per_yuan: Decimal = Field(default=Decimal('1'), gt=0, le=1000000)
@@ -635,6 +636,10 @@ def reward_preview(body: RewardPreview, admin=Depends(m.allow_roles('superadmin'
         raise HTTPException(422, '请先启用自定义奖励策略；关闭时使用旧结算')
     amount, detail = calculate_reward(body.policy, SimpleNamespace(is_white=body.is_white, ad_label=body.ad_label), body.source_id,
         {'prices': [{'currency': 'CNY', 'ecpm': str(body.ecpm)}]})
+    if body.policy.commission_basis == 'shared_base':
+        detail['distribution_base'] = str(amount)
+        amount = (amount * body.policy.commission_rates[0]).quantize(Decimal('.000001'), rounding=ROUND_DOWN)
+        detail['user_rate'] = str(body.policy.commission_rates[0])
     return {'coin': str(amount), 'detail': detail, 'simulation': True}
 
 
@@ -680,7 +685,7 @@ def settle(session, member, ad, source_id, proof, legacy_reward, allow_fallback=
     rule = Policy.model_validate(captured['rule'] if modern else captured) if event else policy(session, ad.game_id)
     commission_on = rule.commission_enabled if rule.commission_enabled is not None else rule.reward_enabled
     range_reward = captured.get('whitelist_range_reward') if modern and captured.get('is_white') else None
-    if not rule.reward_enabled and not commission_on and range_reward is None:
+    if not rule.reward_enabled and not commission_on and range_reward is None and rule.commission_basis != 'shared_base':
         return legacy_reward
     if range_reward is not None:
         reward = Decimal(range_reward).quantize(Decimal('.000001'))
@@ -704,6 +709,13 @@ def settle(session, member, ad, source_id, proof, legacy_reward, allow_fallback=
         reward = Decimal(str(legacy_reward)).quantize(Decimal('.000001'), rounding=ROUND_DOWN)
         snapshot = {'basis': 'legacy_reward', 'rule': rule.model_dump(mode='json')}
     selected = {int(k): v for k, v in captured['recipients'].items()} if modern else commission_recipients(session, member, rule)
+    commission_base = reward
+    if rule.commission_basis == 'shared_base':
+        # Index zero belongs to the viewer, never an ordinary ancestor.
+        selected.pop(0, None)
+        reward = (commission_base * rule.commission_rates[0]).quantize(Decimal('.000001'), rounding=ROUND_DOWN)
+        snapshot.update(distribution_base=str(commission_base), user_rate=str(rule.commission_rates[0]),
+                        user_reward=str(reward), commission_basis='shared_base')
     snapshot['recipients'] = selected
     recipient_pairs = sorted((level, beneficiary) for level, values in selected.items()
         for beneficiary in (values if isinstance(values, list) else [values]))
@@ -744,7 +756,7 @@ def settle(session, member, ad, source_id, proof, legacy_reward, allow_fallback=
             outcome['reason'] = '游戏不一致'
             commission_outcomes.append(outcome)
             continue
-        amount = (reward * rule.commission_rates[level]).quantize(Decimal('.000001'), rounding=ROUND_DOWN)
+        amount = (commission_base * rule.commission_rates[level]).quantize(Decimal('.000001'), rounding=ROUND_DOWN)
         outcome.update(eligible=True, amount=str(amount))
         commission_outcomes.append(outcome)
         if not amount:
