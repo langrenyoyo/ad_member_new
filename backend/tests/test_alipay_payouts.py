@@ -155,6 +155,41 @@ class AlipayPayoutTests(unittest.TestCase):
             unchanged = self.client.put('/api/app/v1/me/alipay', json=self.binding, headers=self.auth)
             self.assertEqual(unchanged.status_code, 200)
 
+    def test_batch_approve_and_pay_is_idempotent_and_reports_partial_errors(self):
+        first=self.apply().json()['data']['id']
+        second=self.apply(request_key='second-batch-order').json()['data']['id']
+        path='/api/v1/withdrawals/batch-approve-transfer'
+        self.assertEqual(self.client.post(path,json={'ids':[first]},headers=self.auth).status_code,401)
+        result=self.client.post(path,json={'ids':[first,first,second,99999]},headers=self.admin_auth)
+        self.assertEqual(result.status_code,200,result.text)
+        self.assertEqual(result.json()['updated'],2)
+        self.assertEqual(result.json()['errors'][0]['id'],99999)
+        self.assertEqual(self.balance(),(60,0))
+        self.assertEqual(len(self.provider.sends),2)
+        repeated=self.client.post(path,json={'ids':[first,second]},headers=self.admin_auth)
+        self.assertTrue(repeated.json()['payment_confirmed'])
+        self.assertEqual(len(self.provider.sends),2)
+        self.assertEqual(self.balance(),(60,0))
+
+    def test_batch_payment_unavailable_does_not_approve(self):
+        wid=self.apply().json()['data']['id']
+        self.provider.available=False
+        result=self.client.post('/api/v1/withdrawals/batch-approve-transfer',json={'ids':[wid]},headers=self.admin_auth)
+        self.assertEqual(result.status_code,503)
+        with self.factory() as session:
+            self.assertEqual(session.get(m.Withdrawal,wid).status,0)
+
+    def test_batch_uncertain_payment_stays_frozen_without_resending(self):
+        wid=self.apply().json()['data']['id']
+        self.provider.result=payment.PaymentResult('processing')
+        path='/api/v1/withdrawals/batch-approve-transfer'
+        for _ in range(2):
+            response=self.client.post(path,json={'ids':[wid]},headers=self.admin_auth)
+            self.assertFalse(response.json()['payment_confirmed'])
+            self.assertEqual(response.json()['items'][0]['payout']['state'],'processing')
+        self.assertEqual(len(self.provider.sends),1)
+        self.assertEqual(self.balance(),(80,20))
+
     def test_payee_rejection_confirmed_missing_refunds_once_and_restores_daily_slot(self):
         with self.factory() as s:
             s.get(m.Game,1).exchange_num = 1

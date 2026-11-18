@@ -49,6 +49,10 @@ function attachWithdrawalSelection(items,summary={},permissions={}){
   finally{button.disabled=false;}
  });
  let busy=false;
+ const approveTransfer=document.createElement('button');
+ approveTransfer.id='withdrawalBatchApproveTransfer';approveTransfer.textContent='批量审核并提现';
+ approveTransfer.hidden=permissions.review===false||permissions.transfer===false;
+ buttons[1].before(approveTransfer);buttons.push(approveTransfer);
  const update=()=>{
   const count=boxes.filter(box=>box.checked).length;
   all.checked=count>0&&count===boxes.length;all.indeterminate=count>0&&count<boxes.length;
@@ -60,13 +64,24 @@ function attachWithdrawalSelection(items,summary={},permissions={}){
   if(busy||!ids.length)return;
   busy=true;update();
   const transfer=button.id==='withdrawalBatchTransfer';
+  const approve=button.id==='withdrawalBatchApproveTransfer';
   try{
-   if(!await withdrawalConfirm(transfer?'确认批量支付宝转账(实时)吗':'确认批量拒绝吗')||!active())return;
+   const selected=items.filter(x=>ids.includes(Number(x.id)));
+   if(approve&&selected.some(x=>!x.payout||![0,1].includes(Number(x.status))))throw Error('请选择申请中或已审核的支付宝提现记录');
+   const cents=selected.reduce((sum,x)=>sum+Number(x.payout?.amount_cents||0),0);
+   const confirmation=approve?`确认审核通过并向支付宝打款？共 ${ids.length} 笔，合计 ${(cents/100).toFixed(2)} 元。此操作会实际转账。`:transfer?'确认批量支付宝转账(实时)吗':'确认批量拒绝吗';
+   if(!await withdrawalConfirm(confirmation)||!active())return;
    panel.querySelector('#reviewError').textContent='';
-   const result=await api('/withdrawals/'+(transfer?'batch-transfer':'batch-refuse'),{method:'POST',body:JSON.stringify({ids})});
+   const result=await api('/withdrawals/'+(approve?'batch-approve-transfer':transfer?'batch-transfer':'batch-refuse'),{method:'POST',body:JSON.stringify({ids})});
    if(active()){
     await renderReviewPage('withdrawals');
     if(state.view==='withdrawals'&&result.errors?.length)document.querySelector('#reviewError').textContent=result.errors.map(x=>'#'+x.id+' '+x.detail).join('；');
+    if(state.view==='withdrawals'&&approve){
+     const paid=(result.items||[]).filter(x=>x.payout?.state==='succeeded').length;
+     const failed=(result.items||[]).filter(x=>['failed','rejected'].includes(x.payout?.state)).length;
+     const pending=(result.items||[]).length-paid-failed;
+     document.querySelector('#reviewError').textContent=`本批到账 ${paid} 笔，待确认 ${pending} 笔，失败 ${failed} 笔，未完成 ${result.errors?.length||0} 笔。`+(result.errors||[]).map(x=>'#'+x.id+' '+(typeof x.detail==='string'?x.detail:JSON.stringify(x.detail))).join('；');
+    }
    }
   }catch(error){if(active())panel.querySelector('#reviewError').textContent=error.message;}
   finally{busy=false;update();}

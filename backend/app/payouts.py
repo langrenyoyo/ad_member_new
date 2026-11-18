@@ -359,6 +359,35 @@ def transfer(withdrawal_id, admin, query_only=False, scheduled=False, retry=Fals
     return record_result(withdrawal_id, result)
 
 
+@m.api.post('/withdrawals/batch-approve-transfer')
+def batch_approve_transfer(payload: m.WithdrawalBatch, admin=Depends(m.allow_roles('reviewer'))):
+    ids = list(dict.fromkeys(payload.ids))
+    if not ids or len(ids) > 100:
+        raise HTTPException(422, '请选择1至100条提现记录')
+    m.require_payment_integration()
+    results, errors = [], []
+    for wid in ids:
+        try:
+            with m.SessionLocal() as session:
+                lock(session)
+                item = session.scalar(select(m.Withdrawal).where(m.Withdrawal.id == wid).with_for_update())
+                if item is None: raise HTTPException(404, '提现不存在')
+                payout = session.scalar(select(Payout).where(Payout.withdrawal_id == wid).with_for_update())
+                if payout is None: raise HTTPException(409, '历史记录不能自动打款')
+                if item.status == 2 or payout.state in ('failed', 'rejected'):
+                    raise HTTPException(409, '提现已拒绝或失败，请勿重复打款')
+                if item.status == 0:
+                    if payout.state != 'pending_review': raise HTTPException(409, '提现状态异常，请核对')
+                    item.status = 1
+                    m.mark_audit(item, admin)
+                session.commit()
+            results.append(transfer(wid, admin))
+        except HTTPException as exc:
+            errors.append({'id': wid, 'detail': exc.detail})
+    return {'updated': len(results), 'items': results, 'errors': errors,
+            'payment_confirmed': not errors and all(x['payout']['state'] == 'succeeded' for x in results)}
+
+
 def batch_transfer(ids, admin, scheduled=False):
     if not ids: raise HTTPException(422, '请选择提现记录')
     ids = list(dict.fromkeys(ids))

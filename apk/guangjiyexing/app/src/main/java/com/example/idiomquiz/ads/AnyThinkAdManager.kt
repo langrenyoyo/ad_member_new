@@ -272,7 +272,7 @@ object AnyThinkAdManager {
         awaitAdClose(dispose = { cancel ->
             if (Looper.myLooper() == Looper.getMainLooper()) cancel() else mainHandler.post { cancel() }
         }) { closed, failed ->
-            loadAndShowInterstitial(activity, placement, isCurrent, closed, failed)
+            loadAndShowInterstitial(activity, placement, isCurrent, closed, failed, loadTimeoutMs = 3_000L)
         }
     }
 
@@ -331,7 +331,8 @@ object AnyThinkAdManager {
         placement: AdPlacement,
         isCurrent: () -> Boolean,
         onClosed: () -> Unit,
-        onFailure: (String) -> Unit
+        onFailure: (String) -> Unit,
+        loadTimeoutMs: Long = 60_000L
     ): () -> Unit {
         val warm = warmInterstitial?.takeIf { it.activity === activity && it.unit == placement.adUnitId &&
             android.os.SystemClock.elapsedRealtime() - it.started < 120_000 }
@@ -349,7 +350,7 @@ object AnyThinkAdManager {
             warm?.loaded = null
             warm?.failed = null
             if (interstitialAd === ad) interstitialAd = null
-            ad.destroyAd()
+            runCatching { ad.destroyAd() }
         }
         fun fail(message: String) {
             if (lifecycle.ended) return
@@ -389,9 +390,9 @@ object AnyThinkAdManager {
             override fun onInterstitialAdClose(adInfo: ATAdInfo) {
                 mainHandler.post {
                     if (lifecycle.ended) return@post
-                    impressionId?.let { reportSecondaryEvent(reporter, placement, it, "closed", adInfo) }
                     release()
                     onClosed()
+                    impressionId?.let { reportSecondaryEvent(reporter, placement, it, "closed", adInfo) }
                 }
             }
             override fun onInterstitialAdVideoStart(adInfo: ATAdInfo) = Unit
@@ -403,7 +404,7 @@ object AnyThinkAdManager {
         ad.setAdListener(listener)
         warm?.loaded = { listener.onInterstitialAdLoaded() }
         warm?.failed = { fail(it) }
-        mainHandler.postDelayed(timeout, 60_000L)
+        mainHandler.postDelayed(timeout, loadTimeoutMs)
         if (warm != null) {
             if (warm.ready || ad.isAdReady) listener.onInterstitialAdLoaded()
         } else runCatching { ad.load() }.onFailure { fail("插屏广告加载失败") }
