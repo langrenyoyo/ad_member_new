@@ -24,10 +24,12 @@ async function renderDeviceBlocks(){
    table.innerHTML=`<div class="device-blocks-table-wrap"><table class="table"><thead><tr>${['时间（北京时间）','游戏','会员 / 昵称','设备编号','拦截原因','补充说明','请求路径'].map(s=>`<th>${s}</th>`).join('')}</tr></thead><tbody>${result.items.map(row=>{
     const c=row.context||{}, details=[];
     if(c.risk_reason)details.push(c.risk_reason);
+    if(c.identity_note)details.push(c.identity_note);
+    if(c.stage==='login')details.push('登录 / 注册阶段');
     if(c.signals?.length)details.push('命中：'+c.signals.map(x=>signals[x]||x).join('、')+'（客户端上报）');
     if(c.limit!=null||c.daily_limit!=null)details.push('上限：'+(c.limit??c.daily_limit)+(c.used!=null?'，已用：'+c.used:''));
     if(c.blocked_until)details.push('限制截止：'+new Date(/Z$|[+]\d\d:\d\d$/.test(c.blocked_until)?c.blocked_until:c.blocked_until+'Z').toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}));
-    return '<tr>'+[new Date(row.created_at).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}),row.game_name+' #'+row.game_id,'#'+row.member_id+' '+(row.nickname||''),row.device_id?'#'+row.device_id:'未完成设备识别',row.reason,details.join('；')||'—',row.path||'历史记录未保存'].map(x=>`<td>${esc(x)}</td>`).join('')+'</tr>';
+    return '<tr>'+[new Date(row.created_at).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}),row.game_name+' #'+row.game_id,row.member_id?'#'+row.member_id+' '+(row.nickname||''):'注册未完成',row.device_id?'#'+row.device_id:c.client_device_hash?'安装标识 '+c.client_device_hash.slice(0,16)+'…':'未完成设备识别',row.reason,details.join('；')||'—',row.path||'历史记录未保存'].map(x=>`<td>${esc(x)}</td>`).join('')+'</tr>';
    }).join('')||'<tr><td colspan="7" class="device-blocks-empty"><strong>暂无拦截记录</strong><span>可以调整筛选条件后重新查询</span></td></tr>'}</tbody></table></div>`;
    host.querySelector('[data-page]').textContent=`第 ${Math.floor(offset/20)+1} 页，共 ${result.total} 条`;
    host.querySelector('[data-prev]').disabled=offset===0;host.querySelector('[data-next]').disabled=offset+20>=result.total;

@@ -23,6 +23,8 @@ async def record_denial(request: Request, exc: HTTPException):
     if data:
         try:
             with m.SessionLocal() as session:
+                if session.get(m.Member, data['member_id']) is None:
+                    data = {**data, 'member_id': 0, 'identity_note': '注册未完成，尚未建立会员身份'}
                 session.add(m.AdFlowLog(member_id=data['member_id'], game_id=data['game_id'],
                     event_type='device_blocked', status='blocked', provider='device_policy',
                     error_code=data['code'], detail_json=json.dumps({**data,

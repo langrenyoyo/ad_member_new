@@ -118,6 +118,28 @@ class WechatPasswordTests(unittest.TestCase):
             self.assertEqual(session.get(m.Member, identity.member_id).parent_id, 2)
             self.assertEqual(session.get(m.Member, 1).parent_id, 0)
 
+    def test_login_risk_denial_is_persisted_for_existing_and_new_members(self):
+        import json
+        with self.factory() as session:
+            session.get(m.Game,1).settings_json=json.dumps({'member_policy':{
+                'block_signals':['root'], 'require_registration_invite':False}})
+            session.commit()
+        for openid in ('owner','new-blocked-owner'):
+            with patch.object(m,'_wechat_exchange_code',return_value={'openid':openid,'unionid':''}):
+                result=self.client.post('/api/app/v1/auth/wechat',headers={'X-Device-Risk':'root,developer'},json={
+                    'provider':'app','code':'fresh-code','game_id':1,'device_id':'private-device-id'})
+            self.assertEqual(result.status_code,403,result.text)
+        with self.factory() as session:
+            records=session.query(m.AdFlowLog).filter_by(event_type='device_blocked').order_by(m.AdFlowLog.id).all()
+            self.assertEqual(len(records),2)
+            self.assertEqual([r.member_id for r in records],[1,0])
+            for record in records:
+                detail=json.loads(record.detail_json)
+                self.assertEqual(detail['signals'],['root'])
+                self.assertEqual(detail['stage'],'login')
+                self.assertNotIn('private-device-id',record.detail_json)
+            self.assertIsNone(session.query(m.WechatIdentity).filter_by(openid='new-blocked-owner').first())
+
     def test_other_wechat_cannot_reset_password(self):
         with self.factory() as session:
             session.get(m.Member, 1).system_password_set = False

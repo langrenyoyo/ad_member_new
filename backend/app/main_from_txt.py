@@ -2883,7 +2883,9 @@ def _app_game_for_member(session: Session, member: Member, game_id: int | None =
 def _app_device(session: Session, member: Member, device_id: str, request: Request, app_version: str = "") -> None:
     policy = member_policy.policy(session, member.game_id)
     if not member.is_white and set(request.headers.get('X-Device-Risk', '').split(',')) & set(policy.block_signals):
-        raise HTTPException(403, '设备状态不符合当前使用规则')
+        raise device_blocks.denied(member, 403, '设备状态不符合当前使用规则', 'device_signals',
+            signals=sorted(set(request.headers.get('X-Device-Risk', '').split(',')) & set(policy.block_signals)),
+            client_device_hash=_token_hash(device_id), stage='login')
     device = session.get(MemberDevice, member.id)
     if device is None:
         device = MemberDevice(user_id=member.id)
