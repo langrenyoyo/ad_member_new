@@ -569,17 +569,21 @@ def save_usage(body: UsageInput, member=Depends(m.require_app_member)):
 
 
 @m.api.get('/members/{member_id}/usage')
-def get_usage(member_id: int, report_date: str = Query(pattern=r'^\d{4}-\d{2}-\d{2}$'), admin=Depends(m.allow_roles('superadmin'))):
+def get_usage(member_id: int, report_date: str | None = Query(None, pattern=r'^\d{4}-\d{2}-\d{2}$'), admin=Depends(m.allow_roles('superadmin'))):
     with m.SessionLocal() as session:
         if session.get(m.Member, member_id) is None:
             raise HTTPException(404, '会员不存在')
+        if report_date is None:
+            snapshot_day = session.scalar(select(m.func.max(UsageSnapshot.report_date)).where(UsageSnapshot.member_id == member_id))
+            usage_day = session.scalar(select(m.func.max(UsageReport.report_date)).where(UsageReport.member_id == member_id))
+            report_date = max(filter(None, [snapshot_day, usage_day]), default=(m.now()+timedelta(hours=8)).date().isoformat())
         rows = session.scalars(select(UsageReport).where(UsageReport.member_id == member_id,
             UsageReport.report_date == report_date).order_by(UsageReport.duration_ms.desc(), UsageReport.package_name)).all()
         snapshot = session.get(UsageSnapshot, (member_id, report_date))
         enrolled = session.get(Enrollment, member_id)
         installed = json.loads(snapshot.inventory_json) if snapshot else []
         names = {app['package_name']: app['app_name'] for app in installed}
-        return {'items': [{'package_name': r.package_name, 'app_name': names.get(r.package_name, ''),
+        return {'report_date': report_date, 'items': [{'package_name': r.package_name, 'app_name': names.get(r.package_name, ''),
             'duration_ms': r.duration_ms, 'opens': r.opens} for r in rows], 'installed_apps': installed,
             'collected_at': snapshot.collected_at.replace(tzinfo=timezone.utc).isoformat() if snapshot else None,
             'received_at': snapshot.received_at.replace(tzinfo=timezone.utc).isoformat() if snapshot else None,

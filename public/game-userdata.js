@@ -542,20 +542,30 @@ function openMemberAppUsage(userId,gameId,parent){
   if(dialog.open)return;
   closed=true;request.abort();drag=null;parent.removeEventListener('close',close);window.removeEventListener('hashchange',close);dialog.remove();
  });
+ let selectedDate='',generation=0;
  async function load(){
+  const version=++generation;
   main.innerHTML='<p class="behavior-loading">加载中</p>';
   try{
-   const query=new URLSearchParams({limit:200,offset:0});if(gameId!==null)query.set('game_id',String(gameId));
-   const data=await api('/members/'+userId+'/app-usage?'+query,{signal:request.signal});if(closed)return;
-   const ids=new Set(data.items.map(row=>row.id));
-   while(data.items.length<data.total){
-    query.set('offset',String(data.items.length));const next=await api('/members/'+userId+'/app-usage?'+query,{signal:request.signal});if(closed)return;
-    if(next.total!==data.total||!next.items.length)throw Error('数据已变化，请重新加载');
-    for(const row of next.items){if(ids.has(row.id))throw Error('数据已变化，请重新加载');ids.add(row.id);}data.items.push(...next.items);
-   }
-   if(data.items.length!==data.total||ids.size!==data.items.length)throw Error('数据已变化，请重新加载');
-   main.innerHTML='<div class="table-wrap"><table class="app-usage-table"><thead><tr>'+['APP名称','次数','包名','使用时间','当天第一次使用时间','最后一次使用时间'].map(label=>`<th>${label}</th>`).join('')+'</tr></thead><tbody>'+data.items.map(row=>`<tr><td>${esc(row.app_name)}</td><td>${esc(row.count)}</td><td>${esc(row.package_name)}</td><td>${esc(row.duration_seconds)}秒</td><td>${row.first_used_at?esc(profileLogTime(row.first_used_at)):''}</td><td>${row.last_used_at?esc(profileLogTime(row.last_used_at)):''}</td></tr>`).join('')+(data.items.length?'':'<tr><td colspan="6">没有找到匹配的记录</td></tr>')+'</tbody></table></div>';
-  }catch(error){if(!closed&&error.name!=='AbortError'){main.innerHTML='<p role="alert"></p><button type="button" data-retry>重试</button>';main.querySelector('[role=alert]').textContent=error.message;main.querySelector('[data-retry]').onclick=load;}}
+   const data=await api('/members/'+userId+'/usage'+(selectedDate?'?report_date='+encodeURIComponent(selectedDate):''),{signal:request.signal});if(closed||version!==generation)return;
+   const installed=data.installed_apps||[], usage=new Map(data.items.map(row=>[row.package_name,row]));
+   const rows=installed.map(row=>({...row,...(usage.get(row.package_name)||{}),installed:true}));
+   const packages=new Set(installed.map(row=>row.package_name));
+   data.items.filter(row=>!packages.has(row.package_name)).forEach(row=>rows.push({...row,installed:false}));
+   rows.sort((a,b)=>(b.duration_ms||0)-(a.duration_ms||0)||a.package_name.localeCompare(b.package_name));
+   const time=value=>value?new Date(value).toLocaleString('zh-CN',{timeZone:'Asia/Shanghai'}):'暂无';
+   main.innerHTML=`<form data-usage-date style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px"><label>统计日期（北京时间） <input type="date" name="date" value="${esc(data.report_date)}" required></label><button>查询</button><button type="button" data-latest>最近上报</button><input data-search placeholder="搜索应用名称或包名" aria-label="搜索应用名称或包名"></form>
+   <p>会员 #${esc(userId)} · 已安装应用 ${data.collected_at?installed.length:'未上报'} 个 · 采集时间：${esc(time(data.collected_at))} · 最近同步：${esc(time(data.usage_seen_at))}</p>
+   <p>最近上报授权：${data.last_report_granted==null?'未知':data.last_report_granted?'已授权':'已撤销'}。使用时长为前台时间，打开次数为估算；未观测到使用不代表未安装。${data.inventory_truncated?'安装列表已达采集上限，部分应用未包含。':''}</p><div data-usage-results></div>`;
+   const draw=()=>{
+    const q=main.querySelector('[data-search]').value.trim().toLowerCase();
+    const filtered=rows.filter(row=>(row.app_name||'').toLowerCase().includes(q)||row.package_name.toLowerCase().includes(q));
+    main.querySelector('[data-usage-results]').innerHTML='<div class="table-wrap"><table class="app-usage-table"><thead><tr>'+['APP名称','包名','版本','安装状态','使用时长（分钟）','估算打开次数'].map(label=>`<th>${label}</th>`).join('')+'</tr></thead><tbody>'+filtered.map(row=>`<tr><td>${esc(row.app_name||'—')}</td><td>${esc(row.package_name)}</td><td>${esc(row.version_name||'—')}</td><td>${row.installed?'采集时已安装':'安装状态未知'}</td><td>${row.duration_ms==null?'未观测到':esc((row.duration_ms/60000).toFixed(2))}</td><td>${row.opens==null?'未观测到':esc(row.opens)}</td></tr>`).join('')+(filtered.length?'':'<tr><td colspan="6">暂无匹配数据。请确认用户已授权并登录 APP 完成同步，或选择其他日期。</td></tr>')+'</tbody></table></div>';
+   };
+   main.querySelector('form').onsubmit=e=>{e.preventDefault();selectedDate=new FormData(e.target).get('date');load();};
+   main.querySelector('[data-latest]').onclick=()=>{selectedDate='';load();};
+   main.querySelector('[data-search]').oninput=draw;draw();
+  }catch(error){if(!closed&&version===generation&&error.name!=='AbortError'){main.innerHTML='<p role="alert"></p><button type="button" data-retry>重试</button>';main.querySelector('[role=alert]').textContent=error.message;main.querySelector('[data-retry]').onclick=()=>load();}}
  }
  load();
 }

@@ -454,6 +454,11 @@ class MemberPolicyTests(unittest.TestCase):
         path=f"/api/v1/members/1/usage?report_date={body['report_date']}"
         report=self.client.get(path,headers=headers).json()
         self.assertEqual(len(report['installed_apps']),2)
+        latest=self.client.get('/api/v1/members/1/usage',headers=headers)
+        self.assertEqual(latest.status_code,200,latest.text)
+        self.assertEqual(latest.json()['report_date'],body['report_date'])
+        self.assertEqual(latest.json()['items'],report['items'])
+        self.assertEqual(latest.json()['installed_apps'],report['installed_apps'])
         self.assertEqual(report['items'][0]['app_name'],'Used app')
         self.assertEqual(report['items'][0]['duration_ms'],65000)
         self.assertEqual(report['consent_version'],2)
