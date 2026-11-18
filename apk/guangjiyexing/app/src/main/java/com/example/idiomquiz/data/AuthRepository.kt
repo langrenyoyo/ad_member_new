@@ -123,7 +123,7 @@ class AuthRepository(context: Context) {
             val copy = JSONObject(payload.toString()).put("game_id", gameId)
             eventOutbox(epoch).enqueue(userId,
                 "${PENDING_SECONDARY_PREFIX}${userId}_${copy.optString("impression_id")}_${copy.optString("event")}",
-                "ads/secondary-events", copy)
+                if (copy.optString("event") == "preload") "ads/preload-events" else "ads/secondary-events", copy)
         }
         scheduleSecondaryAdEvents()
     }

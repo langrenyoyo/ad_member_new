@@ -386,7 +386,7 @@ function attachMemberPagination(total,size){
 const memberColumnSchema=[
  ['id','Id',true],['image_url','头像',false],['username','账号',true],
  ['parent_id','上级Id',false],['parent_username','上级账号',false],['parent_name','上级昵称',true],
- ['game_name','游戏名称',true],['member_level','会员身份',true],['agent_name','代理商名称',false],['name','昵称',false],
+ ['game_name','游戏名称',true],['member_level','会员身份',true],['agent_name','代理商名称',false],['name','微信昵称 / 昵称',true],
  ['receive_name','支付宝姓名',true],['coin_user','累计金币收益',true],['coin_user_month','本月金币收益',true],
  ['coin_user_day','今日金币收益',true],['coin','可用金币',true],['freeze_coin','冻结金币',true],
  ['game_addiction_enable','达标',false],['game_addiction_time','达标时间',false],['exchange_enable','兑换',false],

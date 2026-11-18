@@ -90,6 +90,22 @@ async function mountMemberPolicy(host) {
     try{await api(`/games/${loadedGame}/app-update`,{method:'PUT',body:JSON.stringify({enabled:data.has('enabled'),force_update:data.get('force_update')==='true',package_name:String(data.get('package_name')).trim(),version_code:Number(data.get('version_code')),version_name:String(data.get('version_name')).trim(),download_url:String(data.get('download_url')).trim(),notes:String(data.get('notes'))})});output.textContent='更新设置已保存';}catch(error){output.textContent=error.message;}finally{button.disabled=false;}
    };
    area.append(updateForm);
+   const preloads=document.createElement('section');
+   preloads.innerHTML='<h3>启动广告预加载记录</h3><p>预加载报价仅供诊断，不代表实际展示或结算，不发放金币。</p><label>会员 ID <input data-preload-member type="number" min="1"></label><button type="button" data-preload-load>查询</button><button type="button" data-preload-prev>上一页</button><button type="button" data-preload-next>下一页</button><p data-preload-status></p><div data-preload-rows></div>';
+   let preloadOffset=0;
+   async function loadPreloads(){const output=preloads.querySelector('[data-preload-status]');try{
+    const member=preloads.querySelector('[data-preload-member]').value;
+    const result=await api(`/games/${loadedGame}/ad-preloads?offset=${preloadOffset}&limit=50${member?'&member_id='+encodeURIComponent(member):''}`);
+    if(version!==generation||!host.isConnected)return;
+    output.textContent=`共 ${result.total} 条，第 ${Math.floor(preloadOffset/50)+1} 页`;
+    preloads.querySelector('[data-preload-prev]').disabled=preloadOffset===0;
+    preloads.querySelector('[data-preload-next]').disabled=preloadOffset+50>=result.total;
+    preloads.querySelector('[data-preload-rows]').innerHTML='<div class="table-wrap"><table><thead><tr><th>会员</th><th>广告类型</th><th>广告位</th><th>加载结果</th><th>耗时</th><th>人民币 ECPM</th><th>报价状态</th><th>上报时间</th></tr></thead><tbody>'+result.items.map(r=>`<tr><td>${esc(r.member_id)}</td><td>${esc(({splash:'开屏',rewarded:'激励',interstitial:'插屏',banner:'Banner',native:'信息流'})[r.ad_type]||r.ad_type)}</td><td>${esc(r.ad_unit_id)}</td><td>${esc(({loaded:'已加载',failed:'失败',timeout:'超时',unconfigured:'未配置'})[r.status]||r.status)}</td><td>${esc(r.duration_ms)} ms</td><td>${esc(r.ecpm_cny??'—')}</td><td>${esc(({decrypted:'已解密',missing:'未提供',invalid_proof:'校验失败',configuration_unavailable:'密钥不可用'})[r.revenue_diagnostic?.status]||'未知')}</td><td>${esc(r.occurred_at)}</td></tr>`).join('')+'</tbody></table></div>';
+   }catch(error){output.textContent=error.message;}}
+   preloads.querySelector('[data-preload-load]').onclick=()=>{preloadOffset=0;loadPreloads();};
+   preloads.querySelector('[data-preload-prev]').onclick=()=>{preloadOffset=Math.max(0,preloadOffset-50);loadPreloads();};
+   preloads.querySelector('[data-preload-next]').onclick=()=>{preloadOffset+=50;loadPreloads();};
+   area.append(preloads);
   }catch(error){status.textContent=error.message;}
  };
  async function loadLedger(offset=0) {

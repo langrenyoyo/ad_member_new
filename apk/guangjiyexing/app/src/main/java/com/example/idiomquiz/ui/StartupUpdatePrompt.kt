@@ -22,6 +22,7 @@ fun StartupUpdatePrompt(): Boolean {
     val context = LocalContext.current
     var checked by rememberSaveable { mutableStateOf(false) }
     var pending by rememberSaveable { mutableStateOf<String?>(null) }
+    if (!checked || pending != null) StartupLoadingScreen()
     LaunchedEffect(Unit) {
         if (checked) return@LaunchedEffect
         pending = withContext(Dispatchers.IO) {

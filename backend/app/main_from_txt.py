@@ -2983,7 +2983,9 @@ def _wechat_exchange_code(provider: str, code: str, app_id: str, secret: str) ->
     openid = str(result.get("openid") or "").strip()
     if not openid:
         raise HTTPException(status_code=401, detail="WeChat authorization did not return an openid")
-    return {"openid": openid, "unionid": str(result.get("unionid") or "").strip()}
+    from .wechat_profile import fetch_profile
+    return {"openid": openid, "unionid": str(result.get("unionid") or "").strip(),
+            **fetch_profile(result)}
 
 
 def _wechat_username(session: Session, openid: str) -> str:
@@ -3003,6 +3005,9 @@ def app_wechat_login(payload: AppWechatLoginRequest, request: Request) -> dict[s
         game = _wechat_game(session, payload.game_id)
         app_id = game.wx_appid.strip()
         identity = _wechat_exchange_code(payload.provider, payload.code.strip(), app_id, game.wx_secert.strip())
+        from .wechat_profile import display_name
+        nickname = display_name(identity.get('nickname') or payload.nickname)
+        avatar_url = identity.get('avatar_url') or payload.avatar_url.strip()
         stored = session.scalar(select(WechatIdentity).where(
             WechatIdentity.provider == payload.provider,
             WechatIdentity.app_id == app_id,
@@ -3018,23 +3023,25 @@ def app_wechat_login(payload: AppWechatLoginRequest, request: Request) -> dict[s
         if member is None:
             password, salt = hash_password(secrets.token_urlsafe(32))
             member = Member(agent_id=game.agent_id, game_id=game.id, username=_wechat_username(session, identity["openid"]),
-                            name=payload.nickname.strip(), image_url=payload.avatar_url.strip(), password_hash=password,
+                            name=nickname, image_url=avatar_url, password_hash=password,
                             password_salt=salt, status=1, system_password_set=False)
             session.add(member)
             session.flush()
             stored = WechatIdentity(member_id=member.id, provider=payload.provider, app_id=app_id,
                                     openid=identity["openid"], unionid=identity["unionid"],
-                                    nickname=payload.nickname.strip(), avatar_url=payload.avatar_url.strip())
+                                    nickname=nickname, avatar_url=avatar_url)
             session.add(stored)
             member_policy.bind_registration(session, member, payload.invite_code)
         elif member.status != 1:
             raise HTTPException(status_code=403, detail="Account is disabled")
         if stored.unionid == "" and identity["unionid"]:
             stored.unionid = identity["unionid"]
-        if payload.nickname.strip() and not member.name:
-            member.name = payload.nickname.strip()
-        if payload.avatar_url.strip() and not member.image_url:
-            member.image_url = payload.avatar_url.strip()
+        if nickname:
+            member.name = nickname
+            stored.nickname = nickname
+        if avatar_url:
+            member.image_url = avatar_url
+            stored.avatar_url = avatar_url
         device = session.get(MemberDevice, member.id)
         if device and device.device_id and device.device_id != payload.device_id and device.device_id_ban:
             raise HTTPException(status_code=403, detail="Device is blocked")
@@ -6799,6 +6806,7 @@ from . import member_policy
 from . import sms_auth
 from . import invite_landing
 from . import member_insights
+from . import ad_preloads
 from . import app_updates
 from . import taku_settings
 from . import taku_reports

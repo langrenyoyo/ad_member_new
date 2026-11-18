@@ -43,6 +43,17 @@ object AnyThinkAdManager {
     private var initialized = false
     private var splashRequested = false
     private var splashAd: ATSplashAd? = null
+    private var splashContainer: FrameLayout? = null
+    private var splashTimeout: Runnable? = null
+    private var splashShowing = false
+
+    fun preloadReporter(): (JSONObject) -> Unit = secondaryEventReporter?.invoke() ?: {}
+
+    fun releaseActivityAds() {
+        destroySplash()
+        StartupAdCache.clear()
+        clearInterstitialPreload()
+    }
     private var interstitialAd: ATInterstitial? = null
     private data class WarmInterstitial(val activity: Activity, val unit: String, val ad: ATInterstitial,
         val started: Long = android.os.SystemClock.elapsedRealtime(), var ready: Boolean = false,
@@ -62,7 +73,8 @@ object AnyThinkAdManager {
                 android.os.SystemClock.elapsedRealtime() - it.started < 120_000) return
         }
         clearInterstitialPreload()
-        val ad = ATInterstitial(activity, placement.adUnitId)
+        val ad = StartupAdCache.take("interstitial", activity, placement.adUnitId) as? ATInterstitial
+            ?: ATInterstitial(activity, placement.adUnitId)
         val warm = WarmInterstitial(activity, placement.adUnitId, ad)
         warmInterstitial = warm
         ad.setAdListener(object : ATInterstitialListener {
@@ -81,7 +93,8 @@ object AnyThinkAdManager {
             override fun onInterstitialAdVideoError(error: AdError) = Unit
         })
         mainHandler.postDelayed({ if (warmInterstitial === warm) clearInterstitialPreload() }, 120_000L)
-        runCatching { ad.load() }.onFailure { if (warmInterstitial === warm) clearInterstitialPreload() }
+        if (ad.isAdReady) warm.ready = true
+        else runCatching { ad.load() }.onFailure { if (warmInterstitial === warm) clearInterstitialPreload() }
     }
     private var rewardedAd: ATRewardVideoAd? = null
     private val mainHandler = Handler(Looper.getMainLooper())
@@ -132,24 +145,30 @@ object AnyThinkAdManager {
         var impressionId: String? = null
 
         lateinit var ad: ATSplashAd
-        ad = ATSplashAd(activity, placement.adUnitId, object : ATSplashAdListener {
+        val listener = object : ATSplashAdListener {
             override fun onAdLoaded(isTimeout: Boolean) {
+                mainHandler.post {
+                if (splashAd !== ad) return@post
                 if (isTimeout && !ad.isAdReady) {
                     Log.w(TAG, "Splash ad load timed out")
                     destroySplash()
-                    return
+                    return@post
                 }
                 showSplash(activity, ad)
+                }
             }
 
             override fun onAdLoadTimeout() {
+                mainHandler.post {
+                if (splashAd !== ad) return@post
                 Log.w(TAG, "Splash ad load timeout callback")
                 if (ad.isAdReady) showSplash(activity, ad) else destroySplash()
+                }
             }
 
             override fun onNoAdError(error: AdError) {
                 Log.w(TAG, "Splash ad load failed: ${error.fullErrorInfo}")
-                destroySplash()
+                mainHandler.post { if (splashAd === ad) destroySplash() }
             }
 
             override fun onAdShow(adInfo: ATAdInfo) {
@@ -165,12 +184,20 @@ object AnyThinkAdManager {
 
             override fun onAdDismiss(adInfo: ATAdInfo, extraInfo: ATSplashAdExtraInfo) {
                 Log.d(TAG, "Splash ad dismissed")
-                impressionId?.let { reportSecondaryEvent(reporter, placement, it, "closed", adInfo) }
-                destroySplash()
+                mainHandler.post {
+                    if (splashAd === ad) destroySplash()
+                    runCatching { impressionId?.let { reportSecondaryEvent(reporter, placement, it, "closed", adInfo) } }
+                }
             }
-        })
+        }
+        ad = StartupAdCache.take("splash", activity, placement.adUnitId) as? ATSplashAd
+            ?: ATSplashAd(activity, placement.adUnitId, listener, 5000)
+        ad.setAdListener(listener)
         splashAd = ad
-        ad.loadAd()
+        splashTimeout = Runnable { if (splashAd === ad) destroySplash() }
+        mainHandler.postDelayed(splashTimeout!!, 15_000)
+        runCatching { if (ad.isAdReady) showSplash(activity,ad) else ad.loadAd() }
+            .onFailure { destroySplash() }
     }
 
     fun createBannerView(
@@ -180,7 +207,8 @@ object AnyThinkAdManager {
     ): ATBannerView {
         val reporter = secondaryEventReporter?.invoke()
         onStatus("loading")
-        return ATBannerView(context).apply {
+        return ((context as? Activity)?.let { StartupAdCache.take("banner", it, placement.adUnitId) as? ATBannerView }
+            ?: ATBannerView(context)).apply {
             var impressionId: String? = null
             var latestAdInfo: ATAdInfo? = null
             setPlacementId(placement.adUnitId)
@@ -506,7 +534,7 @@ object AnyThinkAdManager {
         var cancelled = false
         var loadedView: ATNativeAdView? = null
         lateinit var native: ATNative
-        native = ATNative(context, placement.adUnitId, object : ATNativeNetworkListener {
+        val nativeListener = object : ATNativeNetworkListener {
             override fun onNativeAdLoaded() {
                 mainHandler.post {
                 if (cancelled) return@post
@@ -553,8 +581,13 @@ object AnyThinkAdManager {
             override fun onNativeAdLoadFail(error: AdError) {
                 mainHandler.post { if (!cancelled) { native.destroyAd(); onFailure("原生广告加载失败，请稍后重试") } }
             }
-        })
-        runCatching { native.makeAdRequest() }.onFailure { onFailure("原生广告请求失败，请稍后重试") }
+        }
+        native = ((context as? Activity)?.let { StartupAdCache.take("native", it, placement.adUnitId) as? ATNative }
+            ?: ATNative(context, placement.adUnitId, nativeListener))
+        native.setAdListener(nativeListener)
+        runCatching {
+            if(native.checkAdStatus().isReady) nativeListener.onNativeAdLoaded() else native.makeAdRequest()
+        }.onFailure { onFailure("原生广告请求失败，请稍后重试") }
         return {
             mainHandler.post {
                 cancelled = true
@@ -566,6 +599,7 @@ object AnyThinkAdManager {
     }
 
     private fun showSplash(activity: Activity, ad: ATSplashAd) {
+        if (splashAd !== ad || splashShowing) return
         if (activity.isFinishing || activity.isDestroyed || !ad.isAdReady) {
             destroySplash()
             return
@@ -575,12 +609,24 @@ object AnyThinkAdManager {
             destroySplash()
             return
         }
-        ad.show(activity, container)
+        val overlay = FrameLayout(activity)
+        splashContainer = overlay
+        splashShowing = true
+        container.addView(overlay, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        runCatching { ad.show(activity, overlay) }.onFailure { destroySplash() }
     }
 
     private fun destroySplash() {
-        splashAd?.onDestory()
+        val ad = splashAd
         splashAd = null
+        splashShowing = false
+        splashTimeout?.let { mainHandler.removeCallbacks(it) }
+        splashTimeout = null
+        val overlay = splashContainer
+        splashContainer = null
+        (overlay?.parent as? ViewGroup)?.removeView(overlay)
+        overlay?.removeAllViews()
+        runCatching { ad?.onDestory() }
     }
 
     private fun AppBootstrap.isAdAvailable(): Boolean =

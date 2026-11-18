@@ -93,4 +93,9 @@ class MainActivity : ComponentActivity() {
         outState.putBoolean("waitingForAccess", waitingForAccess)
         super.onSaveInstanceState(outState)
     }
+
+    override fun onDestroy() {
+        com.example.idiomquiz.ads.AnyThinkAdManager.releaseActivityAds()
+        super.onDestroy()
+    }
 }
