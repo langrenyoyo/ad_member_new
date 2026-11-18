@@ -532,7 +532,7 @@ private fun DetailContent(
                 if (reasons != null) for (i in 0 until reasons.length()) {
                     Text(reasons.getString(i), style = MaterialTheme.typography.bodySmall)
                 }
-                Text("今日已确认提现：¥${centsText(detail.optLong("confirmed_withdrawal_cents"))}", style = MaterialTheme.typography.bodySmall)
+                Text("今日提现申请：¥${centsText(detail.optLong("submitted_withdrawal_cents", detail.optLong("confirmed_withdrawal_cents")))}", style = MaterialTheme.typography.bodySmall)
                 OutlinedButton(enabled = !state.busy, onClick = { model.detail(detail.get("id").toString()) }) { Text("刷新资格") }
             }
             Button(

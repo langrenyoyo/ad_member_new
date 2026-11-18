@@ -334,7 +334,7 @@ class AppSubsidyTests(unittest.TestCase):
             campaign = m.subsidy_campaigns.SubsidyCampaign(game_id=1, title='Recharge subsidy', enabled=1, daily_quota=quota)
             s.add(campaign)
             s.add_all([m.Withdrawal(user_id=uid, agent_id=1, game_id=1, exchange_value=5,
-                status=1, plan_status=1, transferred_at=fixed) for uid in (1, 2)])
+                status=1, plan_status=1, transferred_at=fixed, created_at=fixed) for uid in (1, 2)])
             s.commit()
             cid = campaign.id
         urls = []
@@ -424,18 +424,18 @@ class AppSubsidyTests(unittest.TestCase):
         with self.factory() as s:
             self.assertEqual(s.scalar(select(func.count()).select_from(m.subsidy_campaigns.SubsidyReservation)), 1)
 
-    def test_campaign_beijing_day_and_confirmed_eligibility(self):
+    def test_campaign_beijing_day_and_submitted_eligibility(self):
         from datetime import timedelta
         cid = self.campaign_setup()
         _, start, end = m.subsidy_campaigns.day_bounds()
         with self.factory() as s:
             s.query(m.Withdrawal).delete()
             s.add_all([
-                m.Withdrawal(user_id=1, agent_id=1, game_id=1, exchange_value=3, status=1, plan_status=1, transferred_at=start),
-                m.Withdrawal(user_id=1, agent_id=1, game_id=1, exchange_value=10, status=1, plan_status=1, transferred_at=start-timedelta(seconds=1)),
-                m.Withdrawal(user_id=1, agent_id=1, game_id=1, exchange_value=10, status=1, plan_status=1, transferred_at=end),
-                m.Withdrawal(user_id=1, agent_id=1, game_id=1, exchange_value=10, status=1, plan_status=0, transferred_at=m.now()),
-                m.Withdrawal(user_id=2, agent_id=1, game_id=1, exchange_value=10, status=1, plan_status=1, transferred_at=m.now()),
+                m.Withdrawal(user_id=1, agent_id=1, game_id=1, exchange_value=3, status=0, plan_status=0, created_at=start),
+                m.Withdrawal(user_id=1, agent_id=1, game_id=1, exchange_value=10, status=1, plan_status=1, created_at=start-timedelta(seconds=1)),
+                m.Withdrawal(user_id=1, agent_id=1, game_id=1, exchange_value=10, status=1, plan_status=1, created_at=end),
+                m.Withdrawal(user_id=1, agent_id=1, game_id=1, exchange_value=0, status=1, plan_status=0, created_at=m.now()),
+                m.Withdrawal(user_id=2, agent_id=1, game_id=1, exchange_value=10, status=1, plan_status=1, created_at=m.now()),
             ])
             s.commit()
         path = f'/api/app/v1/subsidy-campaigns/{cid}'
@@ -444,7 +444,7 @@ class AppSubsidyTests(unittest.TestCase):
         self.assertFalse(info['eligible'])
         self.assertEqual(self.client.post(path+'/applications', json=self.campaign_body, headers=self.auth).status_code, 409)
         with self.factory() as s:
-            s.add(m.Withdrawal(user_id=1, agent_id=1, game_id=1, exchange_value=2, status=1, plan_status=1, transferred_at=m.now()))
+            s.add(m.Withdrawal(user_id=1, agent_id=1, game_id=1, exchange_value=2, status=2, plan_status=0, created_at=m.now()))
             s.commit()
         self.assertEqual(self.client.post(path+'/applications', json=self.campaign_body, headers=self.auth).status_code, 201)
         m.now.return_value = end + timedelta(seconds=1)

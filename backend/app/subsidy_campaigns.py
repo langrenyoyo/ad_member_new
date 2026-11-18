@@ -100,13 +100,11 @@ def campaign_payload(session, campaign, at=None):
 def eligibility(session, campaign, member, at=None):
     at = at or m.now()
     day, start, end = day_bounds(at)
-    # Only confirmed transfers count, using their transfer time, not creation
-    # time or a client supplied amount. Historical unconfirmed rows never count.
+    # Eligibility is earned by submitting a withdrawal, regardless of payout outcome.
     amounts = session.scalars(select(m.Withdrawal.exchange_value).where(
         m.Withdrawal.user_id == member.id, m.Withdrawal.game_id == campaign.game_id,
-        m.Withdrawal.agent_id == member.agent_id, m.Withdrawal.status == 1,
-        m.Withdrawal.plan_status == 1, m.Withdrawal.transferred_at >= start,
-        m.Withdrawal.transferred_at < end)).all()
+        m.Withdrawal.agent_id == member.agent_id, m.Withdrawal.created_at >= start,
+        m.Withdrawal.created_at < end)).all()
     confirmed = sum((Decimal(str(x)) for x in amounts), Decimal(0))
     confirmed_cents = int(confirmed * 100)
     used = session.scalar(select(SubsidyReservation.id).where(
@@ -121,7 +119,8 @@ def eligibility(session, campaign, member, at=None):
     if info['remaining'] <= 0: reasons.append('今日名额已满')
     if used: reasons.append('今日已申请该活动')
     if pending: reasons.append('该游戏已有待审核申请')
-    if confirmed_cents < campaign.withdrawal_cents: reasons.append('今日已确认提现金额不足')
+    if confirmed_cents < campaign.withdrawal_cents: reasons.append('今日提现申请金额不足')
+    info.update(withdrawal_basis='submitted', submitted_withdrawal_cents=confirmed_cents)
     info.update(confirmed_withdrawal_cents=confirmed_cents, eligible=not reasons, reasons=reasons,
                 required_images=['download_image', 'install_image', 'recharge_image'])
     return info
@@ -203,7 +202,8 @@ def apply_campaign(campaign_id: int, payload: CampaignApplication, member: m.Mem
         session.add(item)
         session.flush()
         snapshot = {key: info[key] for key in ['id', 'title', 'game_id', 'withdrawal_cents',
-            'recharge_cents', 'reward_cents', 'review_hours', 'instructions', 'confirmed_withdrawal_cents', 'quota_date']}
+            'recharge_cents', 'reward_cents', 'review_hours', 'instructions', 'confirmed_withdrawal_cents', 'quota_date',
+            'withdrawal_basis', 'submitted_withdrawal_cents']}
         snapshot['evidence'] = {k: getattr(payload, k) for k in ['download_image', 'install_image', 'recharge_image']}
         session.add(SubsidyReservation(campaign_id=campaign.id, member_id=member.id, subsidy_id=item.id,
             quota_date=date.fromisoformat(info['quota_date']), request_key=payload.request_key, request_json=request_json,
