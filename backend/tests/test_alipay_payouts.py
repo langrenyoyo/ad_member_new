@@ -92,6 +92,69 @@ class AlipayPayoutTests(unittest.TestCase):
         r = self.client.post(f'/api/v1/withdrawals/{wid}/approve', headers=self.admin_auth)
         self.assertEqual(r.status_code, 200, r.text)
 
+    def test_rebind_cancels_unsent_orders_refunds_once_and_restores_quota(self):
+        with self.factory() as session:
+            session.get(m.Game, 1).exchange_num = 2
+            session.commit()
+        ids = [self.apply(request_key=f'rebind-order-{i}').json()['data']['id'] for i in range(2)]
+        self.approve(ids[0])
+        self.assertEqual(self.balance(), (60, 40))
+        changed = {**self.binding, 'account': '13100000000'}
+        response = self.client.put('/api/app/v1/me/alipay', json=changed, headers=self.auth)
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(set(response.json()['data']['cancelled_withdrawal_ids']), set(ids))
+        self.assertEqual(self.balance(), (100, 0))
+        with self.factory() as session:
+            self.assertEqual(session.get(m.payouts.AlipayAccount, 1).account, changed['account'])
+            for wid in ids:
+                item = session.get(m.Withdrawal, wid)
+                order = session.scalar(select(m.payouts.Payout).where(m.payouts.Payout.withdrawal_id == wid))
+                self.assertEqual((item.status, item.plan_status, order.state), (2, 0, 'rejected'))
+                self.assertEqual(order.account, self.binding['account'])
+        repeated = self.client.put('/api/app/v1/me/alipay', json=changed, headers=self.auth)
+        self.assertEqual(repeated.json()['data']['cancelled_withdrawal_ids'], [])
+        self.assertEqual(self.balance(), (100, 0))
+        for wid in ids:
+            result = self.client.post(f'/api/v1/withdrawals/{wid}/transfer', headers=self.admin_auth)
+            self.assertEqual(result.json()['payout']['state'], 'rejected')
+        self.assertEqual(self.provider.sends, [])
+        self.assertEqual(self.apply(request_key='after-rebinding-1').status_code, 201)
+        self.assertEqual(self.apply(request_key='after-rebinding-2').status_code, 201)
+
+    def test_rebind_anomalous_order_rolls_back_all_changes(self):
+        self.apply()
+        second = self.apply(request_key='anomalous-order').json()['data']['id']
+        with self.factory() as session:
+            session.scalar(select(m.payouts.Payout).where(m.payouts.Payout.withdrawal_id == second)).provider_order_id = 'unexpected-provider-order'
+            session.commit()
+        response = self.client.put('/api/app/v1/me/alipay',
+            json={**self.binding, 'account': '13100000000'}, headers=self.auth)
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(self.balance(), (60, 40))
+        with self.factory() as session:
+            self.assertEqual(session.get(m.payouts.AlipayAccount, 1).account, self.binding['account'])
+            self.assertEqual(set(session.scalars(select(m.payouts.Payout.state))), {'pending_review'})
+            self.assertEqual(session.scalar(select(func.count()).select_from(m.CoinLog).where(m.CoinLog.type == 201)), 0)
+
+    def test_rebind_invalid_password_or_processing_order_never_refunds(self):
+        first = self.apply().json()['data']['id']
+        second = self.apply(request_key='another-pending').json()['data']['id']
+        changed = {**self.binding, 'account': '13100000000'}
+        invalid = self.client.put('/api/app/v1/me/alipay', json={**changed, 'current_password': 'wrong'}, headers=self.auth)
+        self.assertEqual(invalid.status_code, 401)
+        for state in ['queued', 'processing']:
+            with self.factory() as session:
+                session.scalar(select(m.payouts.Payout).where(m.payouts.Payout.withdrawal_id == second)).state = state
+                session.commit()
+            blocked = self.client.put('/api/app/v1/me/alipay', json=changed, headers=self.auth)
+            self.assertEqual(blocked.status_code, 409, blocked.text)
+            self.assertEqual(self.balance(), (60, 40))
+            with self.factory() as session:
+                self.assertEqual(session.get(m.payouts.AlipayAccount, 1).account, self.binding['account'])
+                self.assertEqual(session.scalar(select(m.payouts.Payout).where(m.payouts.Payout.withdrawal_id == first)).state, 'pending_review')
+            unchanged = self.client.put('/api/app/v1/me/alipay', json=self.binding, headers=self.auth)
+            self.assertEqual(unchanged.status_code, 200)
+
     def test_payee_rejection_confirmed_missing_refunds_once_and_restores_daily_slot(self):
         with self.factory() as s:
             s.get(m.Game,1).exchange_num = 1
@@ -146,7 +209,7 @@ class AlipayPayoutTests(unittest.TestCase):
         self.assertEqual(self.apply().json()['data']['id'], wid)
         self.assertEqual(self.balance(), (80, 20))
         self.assertEqual(self.apply(amount_cents=1000).status_code, 409)
-        self.assertEqual(self.client.put('/api/app/v1/me/alipay', json=self.binding, headers=self.auth).status_code, 409)
+        self.assertEqual(self.client.put('/api/app/v1/me/alipay', json=self.binding, headers=self.auth).status_code, 200)
         self.approve(wid)
         path = f'/api/v1/withdrawals/{wid}/transfer'
         result = self.client.post(path, headers=self.admin_auth)

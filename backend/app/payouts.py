@@ -138,10 +138,22 @@ def bind_alipay(payload: BindAlipay, member: m.Member = Depends(m.require_app_me
             if not payload.new_password:
                 raise HTTPException(422, '首次绑定支付宝，请设置系统密码')
             m._app_validate_password(payload.new_password)
-        if session.scalar(select(Payout.id).where(Payout.member_id == user.id,
-            Payout.state.in_(['pending_review', 'queued', 'processing']))) is not None:
-            raise HTTPException(409, '存在处理中提现，暂不能更换支付宝账号')
         account = session.get(AlipayAccount, user.id)
+        changed = account is not None and (account.account != payload.account or account.real_name != payload.real_name)
+        cancelled = []
+        if changed:
+            orders = list(session.scalars(select(Payout).where(Payout.member_id == user.id,
+                Payout.state.in_(['pending_review', 'queued', 'processing'])).with_for_update()))
+            if any(order.state != 'pending_review' for order in orders):
+                raise HTTPException(409, '存在已进入打款流程的提现，请先确认打款结果后再修改支付宝账号')
+            for order in orders:
+                item = session.scalar(select(m.Withdrawal).where(m.Withdrawal.id == order.withdrawal_id).with_for_update())
+                if item is None or item.transferred_at or order.provider_order_id:
+                    raise HTTPException(409, '提现状态异常，请联系管理员核对')
+                release_funds(session, item)
+                item.status, item.plan_status = 2, 0
+                item.sub_msg = order.error = '修改支付宝收款资料，原提现已撤回，金币及提现次数已退回，请重新申请'
+                cancelled.append(item.id)
         if account is None:
             account = AlipayAccount(member_id=user.id)
             session.add(account)
@@ -151,7 +163,7 @@ def bind_alipay(payload: BindAlipay, member: m.Member = Depends(m.require_app_me
             user.system_password_set = True
         session.commit()
         return {'data': {'account_masked': mask(account.account), 'real_name': account.real_name,
-                         'identity_verified': False}, 'request_id': secrets.token_urlsafe(12)}
+                         'identity_verified': False, 'cancelled_withdrawal_ids': cancelled}, 'request_id': secrets.token_urlsafe(12)}
 
 
 @m.app_api.get('/me/alipay')
